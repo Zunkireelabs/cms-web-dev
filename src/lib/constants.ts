@@ -28,7 +28,9 @@ export const NAV_ITEMS: NavItem[] = [
   { label: 'Home', href: '/' },
   { label: 'About', href: '/about' },
   { label: 'Products & Services', href: '/products-services' },
+  { label: 'Brands', href: '/brands' },
   { label: 'Projects', href: '/projects' },
+  { label: 'Career', href: '/career' },
   { label: 'Contact', href: '/contact' },
 ];
 
@@ -75,7 +77,7 @@ export const FOOTER_LINKS = {
   company: [
     { label: 'About Us', href: '/about' },
     { label: 'Our Team', href: '/about#team' },
-    { label: 'Careers', href: '/careers' },
+    { label: 'Careers', href: '/career' },
     { label: 'News', href: '/news' },
   ],
   services: SERVICES.slice(0, 4).map((service) => ({
