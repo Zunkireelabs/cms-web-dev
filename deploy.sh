@@ -18,13 +18,13 @@ NC='\033[0m' # No Color
 
 echo -e "${GREEN}Starting dev deployment...${NC}"
 
-# Step 1: Build Eleventy
-echo -e "${YELLOW}Building Eleventy static site...${NC}"
+# Step 1: Build Next.js
+echo -e "${YELLOW}Building Next.js application...${NC}"
 npm run build
 
-# Step 2: Check if dist directory exists
-if [ ! -d "dist" ]; then
-    echo -e "${RED}Build failed - 'dist' directory not found${NC}"
+# Step 2: Check if .next directory exists
+if [ ! -d ".next" ]; then
+    echo -e "${RED}Build failed - '.next' directory not found${NC}"
     exit 1
 fi
 

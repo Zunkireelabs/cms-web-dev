@@ -1,16 +1,43 @@
-# Lightweight Nginx for serving static files
-FROM nginx:alpine
+# Build stage
+FROM node:20-alpine AS builder
 
-# Remove default nginx config
-RUN rm /etc/nginx/conf.d/default.conf
+WORKDIR /app
 
-# Copy custom nginx config
-COPY nginx/static.conf /etc/nginx/conf.d/default.conf
+# Copy package files
+COPY package*.json ./
 
-# Copy static files from Eleventy build
-COPY dist/ /usr/share/nginx/html/
+# Install dependencies
+RUN npm ci
 
-# Expose port 80
-EXPOSE 80
+# Copy source files
+COPY . .
 
-CMD ["nginx", "-g", "daemon off;"]
+# Build the application
+ENV NEXT_TELEMETRY_DISABLED=1
+RUN npm run build
+
+# Production stage
+FROM node:20-alpine AS runner
+
+WORKDIR /app
+
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+
+# Create non-root user
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+# Copy built application
+COPY --from=builder /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+USER nextjs
+
+EXPOSE 3000
+
+ENV PORT=3000
+ENV HOSTNAME="0.0.0.0"
+
+CMD ["node", "server.js"]

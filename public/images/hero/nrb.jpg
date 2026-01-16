@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>  404  | Republica</title>
+        <meta name="description" content="Nepal’s trusted English news portal and The New York Times partner, delivering the latest news, analysis, and opinions on politics, business, society, and more.">
+    <meta name="keyword" content="">
+    <meta name="language" content="English">
+    <meta name="revisit-after" content="1 day">
+        <meta property="og:description" content="Nepal’s trusted English news portal and The New York Times partner, delivering the latest news, analysis, and opinions on politics, business, society, and more."/>
+    <meta property="og:keywords" content=""/>
+    <meta property="og:title" content=" 404 ">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="icon" type="image/png" href="https://myrepublica.nagariknetwork.com/favicon.ico">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&family=STIX+Two+Text:ital,wght@0,400..700;1,400..700&display=swap"
+        rel="stylesheet" />
+    <link rel="alternate" type="application/rss+xml" href="https://myrepublica.nagariknetwork.com/feeds" />
+    <!-- Swiper -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+            <link rel="modulepreload" href="https://republicajscss.nagariknewscdn.com/assets/variables-l0sNRNKZ.js">
+<script type="module" src="https://republicajscss.nagariknewscdn.com/assets/variables-l0sNRNKZ.js"></script>
+<link rel="preload" as="style" href="https://republicajscss.nagariknewscdn.com/assets/typography-CuzvwjqX.css">
+<link rel="stylesheet" href="https://republicajscss.nagariknewscdn.com/assets/typography-CuzvwjqX.css">
+<link rel="preload" as="style" href="https://republicajscss.nagariknewscdn.com/assets/styles-CZUFVyqF.css">
+<link rel="stylesheet" href="https://republicajscss.nagariknewscdn.com/assets/styles-CZUFVyqF.css">
+<link rel="preload" as="style" href="https://republicajscss.nagariknewscdn.com/assets/lifestyle-DZUWEFFv.css">
+<link rel="stylesheet" href="https://republicajscss.nagariknewscdn.com/assets/lifestyle-DZUWEFFv.css">
+<link rel="preload" as="style" href="https://republicajscss.nagariknewscdn.com/assets/inputs-FinNJLUl.css">
+<link rel="stylesheet" href="https://republicajscss.nagariknewscdn.com/assets/inputs-FinNJLUl.css">
+<link rel="preload" as="style" href="https://republicajscss.nagariknewscdn.com/assets/footer-CQi_o0b3.css">
+<link rel="stylesheet" href="https://republicajscss.nagariknewscdn.com/assets/footer-CQi_o0b3.css">
+<link rel="preload" as="style" href="https://republicajscss.nagariknewscdn.com/assets/article-CG7ZKY-O.css">
+<link rel="stylesheet" href="https://republicajscss.nagariknewscdn.com/assets/article-CG7ZKY-O.css">
+<link rel="modulepreload" href="https://republicajscss.nagariknewscdn.com/assets/app-DbwkOzrR.js">
+<script type="module" src="https://republicajscss.nagariknewscdn.com/assets/app-DbwkOzrR.js"></script>
+<link rel="preload" as="style" href="https://republicajscss.nagariknewscdn.com/assets/app-Bbp3kbpJ.css">
+<link rel="stylesheet" href="https://republicajscss.nagariknewscdn.com/assets/app-Bbp3kbpJ.css">
+    
+    <style>
+        @media (min-width: 768px) {
+            .rep-header__search-bar {
+                height: 40px;
+            }
+        }
+
+        #loader {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #3498db;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            margin-bottom: 10px;
+            opacity: 1;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loader-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.7);
+            /* Semi-transparent background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            /* Ensure it's above all content */
+        }
+
+        /* Loader box */
+        .loader-box {
+            background-color: #fff;
+            /* Solid white background for the box */
+            padding: 20px 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            /* Subtle shadow to elevate the box */
+            text-align: center;
+            width: 350px;
+            /* Adjust as needed */
+        }
+
+        /* Loader spinner */
+        .loader-spinner {
+            border: 4px solid #f3f3f3;
+            /* Light grey border */
+            border-top: 4px solid #3498db;
+            /* Blue border for spinner effect */
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            margin: 0 auto 20px;
+            /* Center the spinner and add space below */
+            animation: spin 1s linear infinite;
+            /* Spinner animation */
+        }
+
+        /* Spinner animation */
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Loader message */
+        .loader-message {
+            font-size: 16px;
+            color: #333;
+        }
+
+        @media (max-width: 768px) {
+            .loader-container {
+                top: -5rem;
+            }
+        }
+    </style>
+        <!-- Google tag (gtag.js) -->
+            <script async src="https://www.googletagmanager.com/gtag/js?id=G-HZ1BE1JXKF"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+
+            gtag('js', new Date());
+
+            gtag('config', 'G-HZ1BE1JXKF');
+        </script>
+        <script async
+                src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3069964176811472"
+                crossorigin="anonymous"></script>
+
+        <script async custom-element="amp-auto-ads"
+                src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+        </script>
+
+
+
+
+
+
+
+
+
+
+
+    </head>
+
+<body>
+    <amp-ad width="100vw" height="320"
+            type="adsense"
+            data-ad-client="ca-pub-3069964176811472"
+            data-ad-slot="6903836536"
+            data-auto-format="rspv"
+            data-full-width="">
+        <div overflow=""></div>
+    </amp-ad>
+
+
+
+
+
+    <header class="fixed top-0 left-0 w-screen h-12 md:h-14 bg-neutral-white border-b border-component-border z-40">
+        <nav class="rep-container h-full flex justify-between items-center">
+            <div class="flex items-center gap-8">
+                <div class="flex gap-4 items-baseline">
+                    <box-icon name="menu" class="rep-sidebar-menu__opener cursor-pointer"></box-icon>
+                    <button onclick="toggleSearch()">
+                        <box-icon name="search"></box-icon>
+                    </button>
+                    <a href="https://myrepublica.nagariknetwork.com" class="hidden lg:block md:block">
+                        <img src="https://republicajscss.nagariknewscdn.com//img/logo.svg" alt="Republica logo"
+                            class="rep-main-logo size-7" />
+                    </a>
+                </div>
+            </div>
+            <div class="flex items-center lg:hidden md:hidden">
+                <a href="https://myrepublica.nagariknetwork.com">
+                    <img src="https://republicajscss.nagariknewscdn.com//img/logo-mobile.svg" alt="Republica logo"
+                        class="rep-main-logo" />
+                </a>
+            </div>
+            <div class="flex items-center gap-4 gap-4 lg:w-[auto] md:w-[auto] w-[65px] justify-end">
+                                <button onclick="location.href='https://myrepublica.nagariknetwork.com/plans'"
+                    class="font-medium bg-primary-blue text-neutral-white rounded-full px-[14px] items-center gap-[6px] h-[36px] hidden md:flex lg:flex">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="https://www.w3.org/2000/svg">
+                        <path d="M7 0L5.0201 5.0201L0 7L5.0201 8.9799L7 14L8.9799 8.9799L14 7L8.9799 5.0201L7 0Z"
+                            fill="white" />
+                    </svg>
+                    <span class="rep-body--small--sans">Subscribe</span>
+                </button>
+                <button onclick="location.href='https://myrepublica.nagariknetwork.com/plans'"
+                    class="font-medium bg-primary-blue text-neutral-white rounded-full px-[10px] items-center  h-[34px] md:hidden lg:hidden">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="https://www.w3.org/2000/svg">
+                        <path d="M7 0L5.0201 5.0201L0 7L5.0201 8.9799L7 14L8.9799 8.9799L14 7L8.9799 5.0201L7 0Z"
+                            fill="white" />
+                    </svg>
+                </button>
+                <a href="https://myrepublica.nagariknetwork.com/login" class="rep-body--small--sans hidden font-semibold show-after-shrink">
+                    Login
+                </a>
+                
+                                            </div>
+        </nav>
+        <div class="h-[60px] w-full bg-[#F5F5F5]">
+            <a href="https://myrepublica.nagariknetwork.com/plans">
+                <figure class="rep-container size-full">
+                    <img data-src="https://republicajscss.nagariknewscdn.com/img/advertisement/1200X100-Banner-Festival.gif?v=2026-01-15"
+                         alt="header banner" class="size-full object-contain lazyload hidden lg:block md:block">
+                    <img data-src="https://republicajscss.nagariknewscdn.com/img/advertisement/1200X100-Banner-Festival.gif?v=2026-01-15"
+                         alt="header banner" class="size-full object-contain lazyload lg:hidden md:hidden">
+                </figure>
+            </a>
+        </div>
+        <div class="loader-container" style="display:none">
+            <div class="loader-box">
+                <div class="loader-spinner"></div>
+                <div class="loader-message">Our search uses full-text indexing, we're fetching the best results for
+                    you.</div>
+            </div>
+        </div>
+        <div class="relative">
+            <div id="rep-header-search"
+                class="absolute top-[1px] bg-neutral-white w-screen py-8 px-4 md:px-20 items-center justify-center gap-6 mx-auto border-b border-component-border hidden">
+                <div class="relative w-[62.333333%]">
+                                        <form action="https://myrepublica.nagariknetwork.com/news/search" method="GET" class="searchForm">
+                        <input type="text" placeholder="Search" name="search_term"
+                            class="rep-header__search-bar w-full border border-component-outline rounded pl-3" />
+                        <button class="absolute right-3 top-1/2 -translate-y-1/2 grid place-items-center" type="submit">
+                            <box-icon name="search" size="24px"></box-icon>
+                        </button>
+                    </form>
+                                    </div>
+
+                <button class="size-8" onclick="toggleSearch()">
+                    <box-icon name="x" size="32px" class="fill-neutral-light-gray"></box-icon>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    
+    <!-- sidebar -->
+    <div class="h-dvh hidden rep-sidebar w-dvw bg-neutral-black fixed left-0 top-0 z-50 bg-opacity-40">
+        <div class="h-dvh bg-neutral-white w-80 pb-10 rep-sidebar-content">
+            <div class="px-4 py-[0.875rem] flex justify-between items-center">
+                <img src="https://republicajscss.nagariknewscdn.com//img/side-bar-logo.svg"
+                    alt="Republica logo with New York Times association" />
+                <box-icon name="x" class="rep-sidebar-menu__close cursor-pointer"></box-icon>
+            </div>
+
+            <div class="p-4 border-y border-component-border">
+                                <button class="h-10 rounded-full mb-4 flex justify-center items-center w-full bg-primary-blue"
+                    onclick="location.href='https://myrepublica.nagariknetwork.com/plans'">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="https://www.w3.org/2000/svg">
+                        <path
+                            d="M10 3L8.0201 8.0201L3 10L8.0201 11.9799L10 17L11.9799 11.9799L17 10L11.9799 8.0201L10 3Z"
+                            fill="white" />
+                    </svg>
+                    <span class="rep-body--small--sans px-[0.375rem] text-neutral-white font-semibold">
+                        Subscribe
+                    </span>
+                </button>
+                                                <form action="https://myrepublica.nagariknetwork.com/news/search" method="GET" class="searchForm">
+                    <div
+                        class="relative h-11 flex items-center gap-2 px-3 border border-component-outline rounded justify-evenly">
+                        <input type="text" placeholder="Search"
+                            class="flex-grow focus:outline-none rep-body--regular--sans" name="search_term" />
+                        <button class="size-6 flex-shrink-0" type="submit">
+                            <box-icon name="search" size="24px"></box-icon>
+                        </button>
+                    </div>
+                </form>
+                            </div>
+                        <div class="py-2">
+                <ul class="cursor-pointer">
+                    <a href="https://myrepublica.nagariknetwork.com/category/politics"
+                        class="hover:bg-component-border flex items-center h-[34px]">
+                        <li class="h-10 pl-4 rep-body--small--sans  font-semibold flex items-center">
+                            Politics
+                        </li>
+                    </a>
+                    <a href="https://myrepublica.nagariknetwork.com/category/economy"
+                        class="hover:bg-component-border flex items-center h-[34px]">
+                        <li class="h-10 pl-4 rep-body--small--sans  font-semibold flex items-center">
+                            Economy
+                        </li>
+                    </a>
+
+                    <a href="https://myrepublica.nagariknetwork.com/category/society"
+                        class="hover:bg-component-border flex items-center h-[34px]">
+                        <li class="h-10 pl-4 rep-body--small--sans  font-semibold flex items-center !mt-0">
+                            Society
+                        </li>
+                    </a>
+
+                    <a href="https://myrepublica.nagariknetwork.com/category/world"
+                        class="hover:bg-component-border flex items-center h-[34px]">
+                        <li
+                            class="h-10 px-4 rep-sidebar-sublink justify-between rep-body--small--sans  font-semibold flex items-center !mt-0">
+                            World
+                        </li>
+                    </a>
+
+                    <a href="https://myrepublica.nagariknetwork.com/category/op-ed"
+                        class="hover:bg-component-border flex items-center h-[34px]">
+                        <li class="h-10 pl-4 rep-body--small--sans  font-semibold flex items-center !mt-0">
+                            OP-ED
+                        </li>
+                    </a>
+
+                    
+
+                    <a href="https://myrepublica.nagariknetwork.com/category/sports"
+                        class="hover:bg-component-border flex items-center h-[34px]">
+                        <li class="h-10 pl-4 rep-body--small--sans  font-semibold flex items-center !mt-0">
+                            Sports
+                        </li>
+                    </a>
+
+                    <a href="https://myrepublica.nagariknetwork.com/category/republica-watch"
+                        class="hover:bg-component-border flex items-center h-[34px]">
+                        <li class="h-10 pl-4 rep-body--small--sans  font-semibold flex items-center !mt-0">
+                            Republica Watch
+                        </li>
+                    </a>
+
+                    <a href="https://myrepublica.nagariknetwork.com/category/diaspora"
+                        class="hover:bg-component-border flex items-center h-[34px]">
+                        <li class="h-10 pl-4 rep-body--small--sans  font-semibold flex items-center !mt-0">
+                            Diaspora
+                        </li>
+                    </a>
+                    <a href="https://myrepublica.nagariknetwork.com/category/market"
+                        class="hover:bg-component-border flex items-center h-[34px]">
+                        <li class="h-10 pl-4 rep-body--small--sans font-semibold flex items-center !mt-0">
+                            Market
+                        </li>
+                    </a>
+
+                    
+                </ul>
+            </div>
+                    </div>
+    </div>
+    <main class="rep-header__offset--padding-top">
+    <section class="rep-container rep-grid md:pt-12 pt-16 mb-20 lg:mb-[200px]">
+        <div class="col-span-6 col-start-4">
+            <h2 class="rep-misc__tag--large text-neutral-black mb-3 lg:mb-4">Error 404</h2>
+            <h1 class="rep-display mb-4 lg:mb-6">Sorry, we couldn’t find the page you’re looking for</h1>
+            <p class="rep-body--medium text-neutral-dark-gray mb-8 lg:mb-10">The page may have moved, or the address may
+                have been entered incorrectly. Please check the page
+                address or search for it below.</p>
+                        <form action="https://myrepublica.nagariknetwork.com/news/search" method="GET" class="searchForm">
+                <div
+                    class="relative h-11 flex items-center gap-2 px-3 border border-component-outline rounded mb-8 lg:mb-10">
+                    <input type="text" placeholder="Search" id="search_term"
+                        value=""
+                        class="flex-grow focus:outline-none rep-body--regular--sans" name="search_term" />
+                    <button class="size-6 flex-shrink-0">
+                        <box-icon name="search" size="24px"></box-icon>
+                    </button>
+                </div>
+            </form>
+            
+
+            <a href="https://myrepublica.nagariknetwork.com" class="rep-body--medium text-primary-blue underline underline-offset-2 block">
+                Go back to homepage
+            </a>
+        </div>
+    </section>
+</main>
+    <footer>
+        <div class="rep-container">
+                            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3069964176811472"
+                        crossorigin="anonymous"></script>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-format="autorelaxed"
+                     data-ad-client="ca-pub-3069964176811472"
+                     data-ad-slot="8219119335"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+                <amp-auto-ads type="adsense" data-ad-client="ca-pub-3069964176811472"></amp-auto-ads>
+                        <div class="rep-footer__main border-t-2 border-t-neutral-black pt-10 mb-16">
+                <div>
+                    <figure class="mb-6 md:mb-8">
+                        <img src="https://republicajscss.nagariknewscdn.com/img/logo-with-tagline.png"
+                            alt="Republica logo with tag line" />
+                    </figure>
+
+                    <div class="flex gap-3">
+                        <a href="https://www.facebook.com/myrepublica" target="_blank"
+                            class="size-10 rounded-full border border-neutral-pure-black/[0.24] grid place-items-center">
+                            <box-icon type="logo" name="facebook" size="24px"></box-icon>
+                        </a>
+
+                        <a href="https://x.com/RepublicaNepal" target="_blank"
+                            class="size-10 rounded-full border border-neutral-pure-black/[0.24] grid place-items-center">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="https://www.w3.org/2000/svg">
+                                <g clip-path="url(#clip0_4434_17871)">
+                                    <path
+                                        d="M16.9378 4H19.64L13.7378 10.7911L20.7067 20H15.2311L10.9644 14.4178L6.05778 20H3.35556L9.68444 12.7467L3 4H8.61778L12.4933 9.12L16.9378 4ZM15.9778 18.3644H17.4711L7.8 5.52889H6.16444L15.9778 18.3644Z"
+                                        fill="#0A0A0A" />
+                                </g>
+                                <defs>
+                                    <clipPath id="clip0_4434_17871">
+                                        <rect width="17.7067" height="16" fill="white" transform="translate(3 4)" />
+                                    </clipPath>
+                                </defs>
+                            </svg>
+                        </a>
+
+                        <a href="https://www.youtube.com/@RepublicaNP" target="_blank"
+                            class="size-10 rounded-full border border-neutral-pure-black/[0.24] grid place-items-center">
+                            <box-icon type="logo" name="youtube" size="24px"></box-icon>
+                        </a>
+                    </div>
+                </div>
+                                <ul
+                    class="grid grid-cols-2 md:grid-cols-3 gap-x-4 md:gap-x-8 gap-y-1 rep-body--small--sans text-neutral-dark-gray font-medium">
+                    <a href="https://myrepublica.nagariknetwork.com/category/politics" class="col-span-1 md:min-w-[186px]">
+                        <li class="flex items-center h-[34px]">
+                            Politics
+                        </li>
+                    </a>
+                    <a href="https://myrepublica.nagariknetwork.com/category/video">
+                        <li class="flex items-center h-[34px]">
+                            Video
+                        </li>
+                    </a>
+                    <a href="https://myrepublica.nagariknetwork.com/category/economy">
+                        <li class="flex items-center h-[34px]">
+                            Economy
+                        </li>
+                    </a>
+                    <a href="https://myrepublica.nagariknetwork.com/category/the-week">
+                        <li class="flex items-center h-[34px]">
+                            The Week
+                        </li>
+                    </a>
+                    <a href="https://myrepublica.nagariknetwork.com/category/life-style">
+                        <li class="flex items-center h-[34px]">
+                            Lifestyle
+                        </li>
+                    </a>
+                    <a href="https://myrepublica.nagariknetwork.com/category/society">
+                        <li class="flex items-center h-[34px]">
+                            Society
+                        </li>
+                    </a>
+                    <a href="https://myrepublica.nagariknetwork.com/category/republica-watch">
+                        <li class="flex items-center h-[34px]">
+                            Republica Watch
+                        </li>
+                    </a>
+                    <a href="https://myrepublica.nagariknetwork.com/category/sports">
+                        <li class="flex items-center h-[34px]">
+                            Sports
+                        </li>
+                    </a>
+                    <a href="https://myrepublica.nagariknetwork.com/category/blog">
+                        <li class="flex items-center h-[34px]">
+                            Blog
+                        </li>
+                    </a>
+                    <a href="https://myrepublica.nagariknetwork.com/category/productreview">
+                        <li class="flex items-center h-[34px]">
+                            Review
+                        </li>
+                    </a>
+                    <a href="https://myrepublica.nagariknetwork.com/category/op-ed">
+                        <li class="flex items-center h-[34px]">
+                            Op-Ed
+                        </li>
+                    </a>
+                    <a href="https://myrepublica.nagariknetwork.com/category/world">
+                        <li class="flex items-center h-[34px]">
+                            World
+                        </li>
+                    </a>
+                    <a href="https://myrepublica.nagariknetwork.com/category/interview">
+                        <li class="flex items-center h-[34px]">
+                            Interview
+                        </li>
+                    </a>
+                    <a href="https://myrepublica.nagariknetwork.com/category/diaspora">
+                        <li class="flex items-center h-[34px]">
+                            Diaspora Watch
+                        </li>
+                    </a>
+                    <a href="https://myrepublica.nagariknetwork.com/category/market">
+                        <li class="flex items-center h-[34px]">
+                            Market
+                        </li>
+                    </a>
+                </ul>
+                
+                <ul class="rep-body--regular--sans font-semibold flex flex-col gap-4 md:gap-1">
+                                        <li>
+                        <a href="https://myrepublica.nagariknetwork.com/plans" class="flex items-center gap-[6px] py-[5px]">
+                            <img src="https://republicajscss.nagariknewscdn.com//img/republica-group-logo-mini.svg" alt="Republica logo mini" />
+                            <span>Subscribe</span>
+                        </a>
+                    </li>
+                                                            <li>
+                        <a  href="https://myrepublica.nagariknetwork.com/login"   class="flex items-center gap-[6px] py-[5px]">
+                            <box-icon type="solid" size="20px" name="user"></box-icon>
+                            <span>Manage my account</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="mailto:cmo@republica.com" class="flex items-center gap-[6px] py-[5px]">
+                            <box-icon type="solid" size="20px" name="megaphone"></box-icon>
+                            <span>Advertise with us</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="mailto:it@republica.com" class="flex items-center gap-[6px] py-[5px]">
+                            <box-icon type="solid" size="20px" name="message-detail"></box-icon>
+                            <span>Give us feedback</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="flex flex-col md:flex-row md:items-center justify-between md:py-6 gap-10 mb-6 md:mb-0">
+                <a href="https://nepalrepublicmedia.com/" target="_blank">
+                    <img src="https://republicajscss.nagariknewscdn.com//img/nrm-logo-with-tagline-english.png" alt="Republica Logo with Tagline"
+                        class="h-[72px] md:h-[75px]" />
+                </a>
+                <div class="flex items-center gap-6">
+                    <a href="https://nagariknews.nagariknetwork.com/" target="_blank"><img
+                            src="https://republicajscss.nagariknewscdn.com//img/nagarik-logo.png" alt="Nagarik Logo" class="h-7 w-auto" /></a>
+                    <a href="https://shukrabar.nagariknetwork.com/" target="_blank"><img
+                            src="https://republicajscss.nagariknewscdn.com//img/sukrabar-logo.png" alt="Shukrabar Logo" class="h-7 w-auto" /></a>
+                    <a href="https://radio.nagariknetwork.com/" target="_blank"><img
+                            src="https://republicajscss.nagariknewscdn.com//img/radio-nagarik-logo.png" alt="Radio Nagarik Logo"
+                            class="h-12 w-auto" /></a>
+                </div>
+            </div>
+
+            <div
+                class="border-y border-y-neutral-pure-black/[0.16] py-6 flex flex-col md:flex-row gap-6 justify-between md:items-center">
+                <div class="flex gap-6 rep-footer--small font-semibold text-neutral-black"> <a
+                        href="mailto:cmo@republica.com" target="_blank" class="flex items-center gap-1">
+                        Advertise with Us
+                        <box-icon name="link-external" class="fill-neutral-pure-black/[0.56]" size="16px">
+                        </box-icon>
+                    </a>
+                    
+                </div>
+
+                <div class="flex gap-6 rep-footer--small text-neutral-dark-gray font-medium">
+                    <a href="mailto:info@republica.com">Contact Us</a>
+                    <a href="https://nepalrepublicmedia.com/company.php" target="_blank">About Us</a>
+                    
+                    <a href="https://myrepublica.nagariknetwork.com/plans">Subscribe</a>
+                </div>
+            </div>
+            <div class="py-6 rep-footer--small text-neutral-dark-gray">
+                <div class="flex flex-col gap-6 md:hidden">
+                    <div class="flex gap-6">
+                        <a href="#">Privacy Policy</a>
+                        <a href="#">Terms of use</a>
+                    </div>
+                    <p>Nepal Republic Media Limited © 2026.<br /> All right reserved</p>
+                </div>
+                <p class="hidden md:block">
+                    Nepal Republic Media Limited © 2024. All right reserved |
+                    <a href="#privacy-policy">Privacy Policy</a> |
+                    <a href="#terms">Terms of use</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+        <div class="h-dvh hidden rep-login-modal w-dvw bg-neutral-black fixed left-0 top-0 z-50 bg-opacity-40">
+        <div
+            class="absolute bottom-0 left-0 bg-neutral-white w-full pt-8 md:pt-12 pb-12 md:pb-16 flex justify-center rep-login-modal__body">
+            <div class="px-4 max-w-[492px] w-full text-center">
+                <h2 class="rep-headline--small font-medium mb-2">Create an account, or log in</h2>
+                <p class="rep-regular--sans mb-6 md:mb-10">Gain access to up to 10 free articles per month.</p>
+
+                
+                     
+                        
+                        
+                        
+                     
+                        
+                        
+                        
+                     
+                        
+                        
+                        
+                     
+                        
+                        
+                        
+                    
+
+                <p class="rep-body--small--sans mb-6 md:mb-10">Already have an account? <a href="https://myrepublica.nagariknetwork.com/login"
+                        class="underline underline-offset-2 font-semibold">Log in</a></p>
+                            </div>
+        </div>
+    </div>
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.0/lazysizes.min.js" async></script>
+
+    <script src="https://republicajscss.nagariknewscdn.com/js/header.js"></script>
+    <script src="https://republicajscss.nagariknewscdn.com/js/loginModal.js"></script>
+    <script src="https://republicajscss.nagariknewscdn.com/js/filterModal.js"></script>
+    <script src="https://republicajscss.nagariknewscdn.com/js/custom.js"></script>
+    <script src="https://republicajscss.nagariknewscdn.com/js/header/searchBar.js"></script>
+    <script src="https://republicajscss.nagariknewscdn.com/js/header/sideBar.js"></script>
+    <script src="https://republicajscss.nagariknewscdn.com/js/header/index.js"></script>
+    <script src="https://republicajscss.nagariknewscdn.com/js/passwordEye.js"></script>
+    <script src="https://republicajscss.nagariknewscdn.com/js/webStories.js"></script>
+
+    <script src="https://republicajscss.nagariknewscdn.com/js/profile/swiper.js"></script>
+            <script>
+        window.addEventListener('load', function() {
+            const defaultImage = "https:\/\/republicajscss.nagariknewscdn.com\/img\/default_image.png";
+
+            document.querySelectorAll('img').forEach(function(img) {
+                // Get the image source from data-src or fallback to src
+                let imgSrc = img.getAttribute('data-src') || img.src;
+
+
+                // Check if the image source is empty or if it's the page URL
+                if (!imgSrc || imgSrc.trim() === "" || imgSrc === window.location.href) {
+                    img.src = defaultImage; // Set the default image in src
+                } else {
+                    img.src = imgSrc; // Set the src from data-src
+                }
+
+                img.onerror = function() {
+                    this.onerror = null; // Prevent infinite loop
+                    this.src = defaultImage; // Set default image if the original one fails
+                    this.setAttribute('data-src', defaultImage); // Optionally set data-src to default image
+                };
+            });
+            const forms = document.getElementsByClassName('searchForm');
+            const loaderContainer = document.getElementsByClassName('loader-container')[0];
+            for (let i = 0; i < forms.length; i++) {
+                forms[i].addEventListener('submit', function (event) {
+                    event.preventDefault();
+                    if (loaderContainer) {
+                        loaderContainer.style.display = 'flex';
+                    }
+                    setTimeout(() => {
+                        this.submit();
+                    }, 100);
+                });
+            }
+        });
+    </script>
+
+
+</body>
+
+</html>

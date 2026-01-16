@@ -10,7 +10,7 @@ services:
       - "traefik.http.routers.cms-web-dev.rule=Host(`cms-dev.zunkireelabs.com`)"
       - "traefik.http.routers.cms-web-dev.entrypoints=websecure"
       - "traefik.http.routers.cms-web-dev.tls.certresolver=letsencrypt"
-      - "traefik.http.services.cms-web-dev.loadbalancer.server.port=80"
+      - "traefik.http.services.cms-web-dev.loadbalancer.server.port=3000"
 
 networks:
   hosting:
