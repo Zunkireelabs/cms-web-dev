@@ -3,65 +3,49 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion, useInView, useSpring, useTransform } from 'framer-motion';
 import { Container } from '@/components/ui/Container';
-import { cn } from '@/lib/utils';
+import { LayoutGrid, Home, DoorOpen, Layers, LucideIcon } from 'lucide-react';
 
 interface Metric {
   id: string;
   label: string;
   value: number;
   suffix: string;
-  unit: string;
-  icon: React.ReactNode;
+  description: string;
+  icon: LucideIcon;
 }
 
 const METRICS: Metric[] = [
   {
     id: 'false-ceiling',
     label: 'False Ceiling',
-    value: 200000,
+    value: 200,
     suffix: '+',
-    unit: 'Sq.ft',
-    icon: (
-      <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21" />
-      </svg>
-    ),
+    description: 'Sq.ft installed across commercial and residential projects (in 000s)',
+    icon: LayoutGrid,
   },
   {
     id: 'roofing',
     label: 'Roofing',
-    value: 300000,
+    value: 300,
     suffix: '+',
-    unit: 'Sq.ft',
-    icon: (
-      <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
-      </svg>
-    ),
+    description: 'Sq.ft of quality roofing solutions delivered (in 000s)',
+    icon: Home,
   },
   {
     id: 'aluminum',
-    label: 'Aluminum Doors & Windows',
-    value: 90000,
+    label: 'Aluminum Works',
+    value: 90,
     suffix: '+',
-    unit: 'Sq.ft',
-    icon: (
-      <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z" />
-      </svg>
-    ),
+    description: 'Sq.ft of doors and windows fabricated and installed (in 000s)',
+    icon: DoorOpen,
   },
   {
     id: 'flooring',
     label: 'Flooring',
-    value: 250000,
+    value: 250,
     suffix: '+',
-    unit: 'Sq.ft',
-    icon: (
-      <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12" />
-      </svg>
-    ),
+    description: 'Sq.ft of premium flooring completed (in 000s)',
+    icon: Layers,
   },
 ];
 
@@ -114,34 +98,30 @@ function MetricCard({ metric, index }: MetricCardProps) {
         delay: index * 0.1,
         ease: [0.25, 0.46, 0.45, 0.94],
       }}
-      className="group relative"
+      className="p-6 sm:p-8 lg:p-10 bg-[#F4F4F4] border border-neutral-200 rounded-lg shadow-sm"
     >
-      <div className="relative overflow-hidden rounded-2xl border border-neutral-border bg-white p-8 shadow-card transition-all duration-300 hover:shadow-card-hover">
-        {/* Background accent */}
-        <div className="absolute -right-4 -top-4 h-24 w-24 rounded-full bg-brand-50 opacity-50 transition-transform duration-300 group-hover:scale-150" />
+      {/* Content wrapper with flex */}
+      <div className="flex items-center justify-between gap-4 lg:gap-6">
+        <div className="flex-1 min-w-0">
+          {/* Label */}
+          <span className="text-xs sm:text-sm font-medium text-neutral-500 uppercase tracking-wide">
+            {metric.label}
+          </span>
 
-        {/* Icon */}
-        <div className="relative mb-6 inline-flex rounded-xl bg-brand-50 p-3 text-brand-600 transition-colors duration-300 group-hover:bg-brand-600 group-hover:text-white">
-          {metric.icon}
-        </div>
-
-        {/* Value */}
-        <div className="relative">
-          <div className="text-4xl font-bold tracking-tight text-neutral-charcoal sm:text-5xl">
+          {/* Large stat number */}
+          <div className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-neutral-charcoal tracking-tight mt-4 lg:mt-6">
             <AnimatedCounter value={metric.value} suffix={metric.suffix} />
           </div>
-          <div className="mt-1 text-lg font-medium text-brand-600">
-            {metric.unit}
-          </div>
+          {/* Description */}
+          <p className="mt-3 lg:mt-4 text-neutral-600 text-xs sm:text-sm lg:text-base">
+            {metric.description}
+          </p>
         </div>
 
-        {/* Label */}
-        <div className="mt-4 text-neutral-600">
-          {metric.label}
+        {/* Icon - vertically centered */}
+        <div className="flex-shrink-0 flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 rounded-full bg-white shadow-sm">
+          <metric.icon className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 text-brand-600" strokeWidth={1.5} />
         </div>
-
-        {/* Bottom accent line */}
-        <div className="absolute bottom-0 left-0 h-1 w-0 bg-brand-600 transition-all duration-300 group-hover:w-full" />
       </div>
     </motion.div>
   );
@@ -154,71 +134,33 @@ export function ImpactMetrics() {
   return (
     <section
       ref={sectionRef}
-      className="relative overflow-hidden bg-neutral-off-white py-20 lg:py-28"
+      className="relative overflow-hidden bg-white py-20 lg:py-28"
     >
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-30">
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `radial-gradient(circle at 1px 1px, rgb(148 163 184 / 0.3) 1px, transparent 0)`,
-            backgroundSize: '24px 24px',
-          }}
-        />
-      </div>
-
       <Container className="relative">
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.5 }}
-          className="mx-auto max-w-2xl text-center"
+          className="mb-16"
         >
           <span className="inline-block rounded-full bg-brand-100 px-4 py-1.5 text-sm font-semibold text-brand-700">
             Our Impact
           </span>
-          <h2 className="mt-4 text-3xl font-bold tracking-tight text-neutral-charcoal sm:text-4xl lg:text-5xl">
+          <h2 className="mt-4 text-3xl font-medium tracking-tight text-neutral-charcoal sm:text-4xl lg:text-5xl">
             Proven Track Record
           </h2>
           <p className="mt-4 text-lg text-neutral-600">
-            Delivering excellence across every project, measured in results that speak for themselves.
+            Excellence measured in results that speak for themselves.
           </p>
         </motion.div>
 
-        {/* Metrics Grid */}
-        <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {/* Metrics Grid - 2x2 layout */}
+        <div className="grid grid-cols-2 gap-4 lg:gap-6">
           {METRICS.map((metric, index) => (
             <MetricCard key={metric.id} metric={metric} index={index} />
           ))}
         </div>
-
-        {/* Bottom CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.5, delay: 0.5 }}
-          className="mt-16 text-center"
-        >
-          <p className="text-neutral-600">
-            Ready to add your project to our portfolio?
-          </p>
-          <a
-            href="/contact"
-            className="mt-4 inline-flex items-center gap-2 font-semibold text-brand-600 transition-colors hover:text-brand-700"
-          >
-            Get in touch
-            <svg
-              className="h-4 w-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-            </svg>
-          </a>
-        </motion.div>
       </Container>
     </section>
   );
