@@ -1,18 +1,17 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Container } from '@/components/ui/Container';
-import { getAllTradingCategories } from '@/data/trading';
+import { ContactCTA } from '@/components/sections';
+import { PRODUCT_DOMAINS } from '@/data/products';
 import { ArrowRight } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Trading Division',
   description:
-    'Explore our trading division - premium building materials from world-leading manufacturers including false ceilings, roofing, aluminum systems, flooring, and insulation.',
+    'Explore our trading division - premium building materials from world-leading manufacturers across 11 product domains.',
 };
 
 export default function TradingPage() {
-  const categories = getAllTradingCategories();
-
   return (
     <>
       {/* Hero Section */}
@@ -37,42 +36,42 @@ export default function TradingPage() {
             </h1>
             <p className="mt-6 text-xl text-brand-100">
               We partner with world-leading manufacturers to supply high-quality
-              construction materials for projects of all scales.
+              construction materials across {PRODUCT_DOMAINS.length} product domains.
             </p>
           </div>
         </Container>
       </section>
 
-      {/* Categories Grid */}
+      {/* Domains Grid */}
       <section className="py-20 lg:py-28">
         <Container>
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {categories.map((category, index) => (
+            {PRODUCT_DOMAINS.map((domain, index) => (
               <Link
-                key={category.slug}
-                href={`/trading/${category.slug}`}
+                key={domain.slug}
+                href={`/trading/${domain.slug}`}
                 className="group relative overflow-hidden rounded-2xl border border-neutral-border bg-white p-8 shadow-card transition-all duration-300 hover:shadow-card-hover"
               >
                 {/* Background gradient on hover */}
                 <div className="absolute inset-0 bg-gradient-to-br from-brand-50 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
                 <div className="relative">
-                  {/* Category number */}
+                  {/* Domain number */}
                   <span className="text-5xl font-bold text-neutral-100 transition-colors group-hover:text-brand-100">
                     {String(index + 1).padStart(2, '0')}
                   </span>
 
-                  {/* Category name */}
+                  {/* Domain title */}
                   <h2 className="mt-4 text-2xl font-bold text-neutral-charcoal transition-colors group-hover:text-brand-700">
-                    {category.name}
+                    {domain.title}
                   </h2>
 
                   {/* Description */}
-                  <p className="mt-2 text-neutral-600">{category.description}</p>
+                  <p className="mt-2 line-clamp-2 text-neutral-600">{domain.description}</p>
 
                   {/* Brands count */}
                   <p className="mt-4 text-sm text-neutral-400">
-                    {category.brands.length} Partner Brands
+                    {domain.brands.length} {domain.brands.length === 1 ? 'Brand Partner' : 'Brand Partners'}
                   </p>
 
                   {/* Arrow */}
@@ -91,21 +90,7 @@ export default function TradingPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="bg-neutral-off-white py-16">
-        <Container>
-          <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-2xl font-bold text-neutral-charcoal sm:text-3xl">
-              Can&apos;t Find What You Need?
-            </h2>
-            <p className="mt-4 text-neutral-600">
-              Our procurement team can source specialized materials from our global network of suppliers.
-            </p>
-            <Link href="/contact" className="btn-primary mt-8 inline-flex">
-              Contact Our Team
-            </Link>
-          </div>
-        </Container>
-      </section>
+      <ContactCTA />
     </>
   );
 }
