@@ -4,6 +4,7 @@ import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Container } from '@/components/ui/Container';
+import { ContactCTA } from '@/components/sections';
 import { cn } from '@/lib/utils';
 import {
   PROJECTS,
@@ -366,27 +367,7 @@ export default function ProjectsPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="bg-neutral-off-white py-16">
-        <Container>
-          <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-2xl font-bold text-neutral-charcoal sm:text-3xl">
-              Ready to Start Your Project?
-            </h2>
-            <p className="mt-4 text-neutral-600">
-              Join our growing list of satisfied clients. Let&apos;s discuss how we can
-              bring your vision to life.
-            </p>
-            <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
-              <Link href="/contact" className="btn-primary">
-                Get in Touch
-              </Link>
-              <Link href="/contracting" className="btn-secondary">
-                Our Services
-              </Link>
-            </div>
-          </div>
-        </Container>
-      </section>
+      <ContactCTA />
     </>
   );
 }

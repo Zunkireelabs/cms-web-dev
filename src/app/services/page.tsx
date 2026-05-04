@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Container } from '@/components/ui/Container';
+import { ContactCTA } from '@/components/sections';
 import { SERVICES } from '@/lib/constants';
 
 export const metadata: Metadata = {
@@ -37,6 +38,7 @@ export default function ServicesPage() {
           ))}
         </div>
       </Container>
+      <ContactCTA />
     </section>
   );
 }

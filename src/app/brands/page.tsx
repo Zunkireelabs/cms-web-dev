@@ -3,6 +3,7 @@
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Container } from '@/components/ui/Container';
+import { ContactCTA } from '@/components/sections';
 import {
   PaintBucket,
   Armchair,
@@ -307,39 +308,7 @@ export default function BrandsPage() {
       </section>
 
       {/* Partnership CTA */}
-      <section className="bg-neutral-off-white py-20 lg:py-28">
-        <Container>
-          <AnimatedSection>
-            <motion.div
-              variants={fadeInUp}
-              custom={0}
-              className="mx-auto max-w-3xl rounded-2xl bg-gradient-to-br from-brand-600 to-brand-700 p-8 text-center shadow-xl lg:p-12"
-            >
-              <h2 className="text-3xl font-bold text-white sm:text-4xl">
-                Interested in Our Products?
-              </h2>
-              <p className="mt-4 text-lg text-brand-100">
-                Contact us to learn more about our brand partnerships and how we can
-                supply quality products for your next project.
-              </p>
-              <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
-                <a
-                  href="/contact"
-                  className="inline-flex items-center justify-center rounded-lg bg-white px-6 py-3 font-semibold text-brand-600 transition-colors hover:bg-brand-50"
-                >
-                  Get a Quote
-                </a>
-                <a
-                  href="/products-services/trading"
-                  className="inline-flex items-center justify-center rounded-lg border-2 border-white/30 px-6 py-3 font-semibold text-white transition-colors hover:bg-white/10"
-                >
-                  View Products
-                </a>
-              </div>
-            </motion.div>
-          </AnimatedSection>
-        </Container>
-      </section>
+      <ContactCTA />
     </>
   );
 }

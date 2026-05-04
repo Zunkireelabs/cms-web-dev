@@ -3,6 +3,7 @@
 import { useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Container } from '@/components/ui/Container';
+import { ContactCTA } from '@/components/sections';
 import {
   Shield,
   TrendingUp,
@@ -596,33 +597,7 @@ export default function CareerPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="bg-brand-600 py-20">
-        <Container>
-          <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-3xl font-bold text-white sm:text-4xl">
-              Ready to Build Your Future?
-            </h2>
-            <p className="mt-4 text-lg text-brand-100">
-              Join our team and be part of a company that values growth, innovation,
-              and making a real difference in people&apos;s lives.
-            </p>
-            <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
-              <a
-                href="#openings"
-                className="inline-flex items-center justify-center rounded-lg bg-white px-6 py-3 font-semibold text-brand-600 transition-colors hover:bg-brand-50"
-              >
-                View Openings
-              </a>
-              <a
-                href="/contact"
-                className="inline-flex items-center justify-center rounded-lg border-2 border-white/30 px-6 py-3 font-semibold text-white transition-colors hover:bg-white/10"
-              >
-                Contact HR
-              </a>
-            </div>
-          </div>
-        </Container>
-      </section>
+      <ContactCTA />
     </>
   );
 }

@@ -17,17 +17,16 @@ export const SITE_CONFIG: SiteConfig = {
   phone: '+974 4444 5555',
   email: 'info@cmstc.com',
   address: {
-    street: '123 Business District',
-    city: 'Doha',
-    country: 'Qatar',
-    postal: '00000',
+    street: 'Tara Bhawan',
+    city: 'Kathmandu',
+    country: 'Nepal',
   },
 };
 
 export const NAV_ITEMS: NavItem[] = [
   { label: 'Home', href: '/' },
   { label: 'About', href: '/about' },
-  { label: 'Products & Services', href: '/products-services' },
+  { label: 'Products & Services', href: '/trading' },
   { label: 'Brands', href: '/brands' },
   { label: 'Projects', href: '/projects' },
   { label: 'Career', href: '/career' },

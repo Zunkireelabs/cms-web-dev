@@ -4,6 +4,7 @@ import { useRef } from 'react';
 import Link from 'next/link';
 import { motion, useInView } from 'framer-motion';
 import { Container } from '@/components/ui/Container';
+import { ContactCTA } from '@/components/sections';
 import {
   Target,
   Eye,
@@ -68,7 +69,7 @@ const LEADERSHIP_TEAM = [
   {
     name: 'Ahmed Al-Mansouri',
     role: 'Chief Executive Officer',
-    bio: 'Over 25 years of experience in construction and project management across the GCC region.',
+    bio: 'Over 25 years of experience in construction and project management across Nepal.',
   },
   {
     name: 'Sarah Mitchell',
@@ -88,21 +89,27 @@ const LEADERSHIP_TEAM = [
 ];
 
 const CERTIFICATIONS = [
-  'ISO 9001:2015 Quality Management',
-  'ISO 14001:2015 Environmental Management',
-  'ISO 45001:2018 Occupational Health & Safety',
   'Grade A Contractor Classification',
-  'Qatar Chamber of Commerce Member',
+  'Nepal Chamber of Commerce Member',
   'ASHRAE Member Organization',
 ];
 
-const MILESTONES = [
-  { year: '2004', title: 'Company Founded', description: 'CMS Trading & Contracting established in Doha, Qatar.' },
-  { year: '2008', title: 'ISO Certification', description: 'Achieved ISO 9001 certification for quality management.' },
-  { year: '2012', title: 'Trading Division', description: 'Expanded operations with dedicated trading division.' },
-  { year: '2016', title: 'Regional Expansion', description: 'Extended services across GCC countries.' },
-  { year: '2020', title: 'Digital Transformation', description: 'Implemented BIM and smart construction technologies.' },
-  { year: '2024', title: 'Sustainability Focus', description: 'Launched green building initiative and carbon reduction program.' },
+const MILESTONES: { year: string; title: string; description: string; type: 'establishment' | 'trading' | 'brand' }[] = [
+  { year: '2002', title: 'Company Established', description: 'CMS Trading & Contracting founded in Nepal.', type: 'establishment' },
+  { year: '2004', title: 'Trading Division Commenced', description: 'Launched dedicated trading operations to supply quality building materials.', type: 'trading' },
+  { year: '2006', title: 'Armstrong Ceiling', description: 'First brand collaboration — premium ceiling systems.', type: 'brand' },
+  { year: '2007', title: 'IKO', description: 'Partnered for roofing solutions.', type: 'brand' },
+  { year: '2008', title: 'Hunter Douglas', description: 'Introduced facade solutions.', type: 'brand' },
+  { year: '2010', title: 'Dormakaba', description: 'Door hardware & access solutions.', type: 'brand' },
+  { year: '2011', title: 'Schomburg', description: 'Waterproofing systems.', type: 'brand' },
+  { year: '2012', title: 'Tostem', description: 'Aluminum doors & windows.', type: 'brand' },
+  { year: '2014', title: 'ICA Pidilite', description: 'Wood coatings.', type: 'brand' },
+  { year: '2015', title: 'American Standard', description: 'Sanitaryware.', type: 'brand' },
+  { year: '2016', title: 'Grohe', description: 'Bathroom fittings.', type: 'brand' },
+  { year: '2017', title: 'Sintex', description: 'Wastewater management.', type: 'brand' },
+  { year: '2018', title: 'SOS Office', description: 'Office furniture.', type: 'brand' },
+  { year: '2019', title: 'AGT', description: 'Flooring.', type: 'brand' },
+  { year: '2020', title: 'Zolon', description: 'Architectural railings.', type: 'brand' },
 ];
 
 const fadeInUp = {
@@ -172,7 +179,7 @@ export default function AboutPage() {
               custom={0.1}
               className="mt-4 text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl"
             >
-              Building Excellence Since 2004
+              Building Excellence Since 2002
             </motion.h1>
             <motion.p
               variants={fadeInUp}
@@ -182,7 +189,7 @@ export default function AboutPage() {
               className="mt-6 text-xl text-neutral-300"
             >
               CMS Trading & Contracting is a leading construction and trading company
-              delivering world-class projects across Qatar and the GCC region.
+              delivering world-class projects across Nepal.
             </motion.p>
           </div>
         </Container>
@@ -237,10 +244,10 @@ export default function AboutPage() {
                 className="mt-6 space-y-4 text-neutral-600 leading-relaxed"
               >
                 <p>
-                  Founded in 2004, CMS Trading & Contracting began as a small contracting
-                  firm with a vision to deliver quality construction services in Qatar.
-                  Over the years, we have grown into a diversified company offering
-                  comprehensive contracting and trading solutions.
+                  Founded in 2002, CMS Trading & Contracting began with a vision to deliver
+                  quality construction and trading services in Nepal. Over the years, we
+                  have grown into a diversified company offering comprehensive contracting
+                  and trading solutions.
                 </p>
                 <p>
                   Our journey has been marked by continuous growth, strategic partnerships,
@@ -251,7 +258,7 @@ export default function AboutPage() {
                 <p>
                   With a team of over 500 professionals and a portfolio of 500+ completed
                   projects, we have established ourselves as a trusted partner for
-                  construction and trading needs in the GCC region.
+                  construction and trading needs in Nepal.
                 </p>
               </motion.div>
             </AnimatedSection>
@@ -270,7 +277,7 @@ export default function AboutPage() {
                   <p className="text-lg font-semibold text-white">
                     Corporate Headquarters
                   </p>
-                  <p className="text-sm text-brand-200">Doha, Qatar</p>
+                  <p className="text-sm text-brand-200">Tara Bhawan, Kathmandu</p>
                 </div>
               </motion.div>
             </AnimatedSection>
@@ -294,11 +301,11 @@ export default function AboutPage() {
               <h3 className="mt-6 text-2xl font-bold text-neutral-charcoal">
                 Our Mission
               </h3>
-              <p className="mt-4 text-neutral-600 leading-relaxed">
-                To deliver exceptional construction and trading services that exceed
-                client expectations through innovative solutions, skilled craftsmanship,
-                and unwavering commitment to quality, safety, and sustainability.
-              </p>
+              <ul className="mt-4 text-neutral-600 leading-relaxed space-y-4 list-disc pl-5">
+                <li>To deliver end-to-end trading and contracting solutions by combining globally recognized products with precise project execution.</li>
+                <li>To uphold the highest standards of quality, safety, and integrity in every stage of our operations.</li>
+                <li>To build long-term partnerships with clients, suppliers, and stakeholders through reliability and performance.</li>
+              </ul>
             </motion.div>
 
             {/* Vision */}
@@ -314,9 +321,7 @@ export default function AboutPage() {
                 Our Vision
               </h3>
               <p className="mt-4 text-neutral-600 leading-relaxed">
-                To be the most trusted and preferred construction and trading partner
-                in the GCC region, recognized for our excellence, integrity, and
-                positive impact on communities and the built environment.
+                To be a trusted and preferred trading and contracting partner, recognized for delivering integrated building solutions with technical excellence, global brand partnerships, and sustainable value across every project we undertake.
               </p>
             </motion.div>
           </AnimatedSection>
@@ -396,9 +401,14 @@ export default function AboutPage() {
                       {/* Content */}
                       <div className={`flex-1 lg:pr-12 ${index % 2 === 0 ? 'lg:text-right lg:pr-12' : 'lg:text-left lg:pl-12 lg:pr-0'}`}>
                         <div className={`rounded-xl bg-white/5 p-6 backdrop-blur-sm ${index % 2 === 0 ? 'lg:ml-auto' : 'lg:mr-auto'} lg:max-w-md`}>
-                          <span className="text-2xl font-bold text-brand-400">
-                            {milestone.year}
-                          </span>
+                          <div className="flex items-center gap-3">
+                            <span className="text-2xl font-bold text-brand-400">
+                              {milestone.year}
+                            </span>
+                            <span className="rounded-full bg-brand-600/20 px-2 py-0.5 text-xs font-medium uppercase tracking-wider text-brand-300">
+                              {milestone.type === 'establishment' ? 'Milestone' : milestone.type === 'trading' ? 'Trading' : 'Brand'}
+                            </span>
+                          </div>
                           <h3 className="mt-2 text-lg font-semibold text-white">
                             {milestone.title}
                           </h3>
@@ -504,33 +514,7 @@ export default function AboutPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="bg-brand-600 py-20">
-        <Container>
-          <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-3xl font-bold text-white sm:text-4xl">
-              Let&apos;s Build Something Great Together
-            </h2>
-            <p className="mt-4 text-lg text-brand-100">
-              Ready to start your next project? Our team is here to help turn your
-              vision into reality.
-            </p>
-            <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
-              <Link
-                href="/contact"
-                className="inline-flex items-center justify-center rounded-lg bg-white px-6 py-3 font-semibold text-brand-600 transition-colors hover:bg-brand-50"
-              >
-                Contact Us
-              </Link>
-              <Link
-                href="/projects"
-                className="inline-flex items-center justify-center rounded-lg border-2 border-white/30 px-6 py-3 font-semibold text-white transition-colors hover:bg-white/10"
-              >
-                View Our Work
-              </Link>
-            </div>
-          </div>
-        </Container>
-      </section>
+      <ContactCTA />
     </>
   );
 }

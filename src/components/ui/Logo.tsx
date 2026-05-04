@@ -1,21 +1,31 @@
+import Image from 'next/image';
 import { cn } from '@/lib/utils';
 
 interface LogoProps {
-  variant?: 'default' | 'light';
   className?: string;
+  variant?: 'dark' | 'white';
 }
 
-export function Logo({ variant = 'default', className }: LogoProps) {
+export function Logo({ className, variant = 'dark' }: LogoProps) {
   return (
     <div
       className={cn(
-        'flex h-10 w-10 items-center justify-center rounded-lg',
-        variant === 'light' ? 'bg-white/10' : 'bg-brand-600',
+        'relative h-10 w-auto',
         className
       )}
       aria-hidden="true"
     >
-      <span className="text-lg font-bold text-white">CMS</span>
+      <Image
+        src="/images/logo/cms-logo.png"
+        alt="CMS Logo"
+        width={120}
+        height={40}
+        className={cn(
+          'h-10 w-auto object-contain transition-all duration-300',
+          variant === 'white' && 'brightness-0 invert'
+        )}
+        priority
+      />
     </div>
   );
 }

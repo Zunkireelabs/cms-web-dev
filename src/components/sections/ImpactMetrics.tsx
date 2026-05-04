@@ -3,55 +3,55 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion, useInView, useSpring, useTransform } from 'framer-motion';
 import { Container } from '@/components/ui/Container';
-import { LayoutGrid, Home, DoorOpen, Layers, LucideIcon } from 'lucide-react';
+import { Building2, Calendar, Users, Globe, LucideIcon } from 'lucide-react';
 
 interface Metric {
   id: string;
-  label: string;
   value: number;
   suffix: string;
+  label: string;
   description: string;
   icon: LucideIcon;
 }
 
 const METRICS: Metric[] = [
   {
-    id: 'false-ceiling',
-    label: 'False Ceiling',
+    id: 'projects',
+    value: 500,
+    suffix: '+',
+    label: 'Projects Delivered',
+    description: 'Successfully completed projects across commercial, residential, and infrastructure sectors in Nepal.',
+    icon: Building2,
+  },
+  {
+    id: 'years',
+    value: 20,
+    suffix: '+',
+    label: 'Years of Excellence',
+    description: 'Over two decades of delivering integrated trading and contracting solutions since 2002.',
+    icon: Calendar,
+  },
+  {
+    id: 'clients',
     value: 200,
     suffix: '+',
-    description: 'Sq.ft installed across commercial and residential projects (in 000s)',
-    icon: LayoutGrid,
+    label: 'Satisfied Clients',
+    description: 'Trusted by leading organizations across healthcare, education, hospitality, and government sectors.',
+    icon: Users,
   },
   {
-    id: 'roofing',
-    label: 'Roofing',
-    value: 300,
-    suffix: '+',
-    description: 'Sq.ft of quality roofing solutions delivered (in 000s)',
-    icon: Home,
-  },
-  {
-    id: 'aluminum',
-    label: 'Aluminum Works',
-    value: 90,
-    suffix: '+',
-    description: 'Sq.ft of doors and windows fabricated and installed (in 000s)',
-    icon: DoorOpen,
-  },
-  {
-    id: 'flooring',
-    label: 'Flooring',
-    value: 250,
-    suffix: '+',
-    description: 'Sq.ft of premium flooring completed (in 000s)',
-    icon: Layers,
+    id: 'partners',
+    value: 13,
+    suffix: '',
+    label: 'Global Partners',
+    description: 'Authorized partnerships with world-renowned brands from Canada, USA, Germany, Japan, and more.',
+    icon: Globe,
   },
 ];
 
 function AnimatedCounter({ value, suffix }: { value: number; suffix: string }) {
   const ref = useRef<HTMLSpanElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const isInView = useInView(ref, { once: true, margin: '-50px' });
   const [hasAnimated, setHasAnimated] = useState(false);
 
   const spring = useSpring(0, {
@@ -79,88 +79,88 @@ function AnimatedCounter({ value, suffix }: { value: number; suffix: string }) {
   );
 }
 
-interface MetricCardProps {
-  metric: Metric;
-  index: number;
-}
-
-function MetricCard({ metric, index }: MetricCardProps) {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '-50px' });
-
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 30 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-      transition={{
-        duration: 0.5,
-        delay: index * 0.1,
-        ease: [0.25, 0.46, 0.45, 0.94],
-      }}
-      className="p-6 sm:p-8 lg:p-10 bg-[#F4F4F4] border border-neutral-200 rounded-lg shadow-sm"
-    >
-      {/* Content wrapper with flex */}
-      <div className="flex items-center justify-between gap-4 lg:gap-6">
-        <div className="flex-1 min-w-0">
-          {/* Label */}
-          <span className="text-xs sm:text-sm font-medium text-neutral-500 uppercase tracking-wide">
-            {metric.label}
-          </span>
-
-          {/* Large stat number */}
-          <div className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-neutral-charcoal tracking-tight mt-4 lg:mt-6">
-            <AnimatedCounter value={metric.value} suffix={metric.suffix} />
-          </div>
-          {/* Description */}
-          <p className="mt-3 lg:mt-4 text-neutral-600 text-xs sm:text-sm lg:text-base">
-            {metric.description}
-          </p>
-        </div>
-
-        {/* Icon - vertically centered */}
-        <div className="flex-shrink-0 flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 rounded-full bg-white shadow-sm">
-          <metric.icon className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 text-brand-600" strokeWidth={1.5} />
-        </div>
-      </div>
-    </motion.div>
-  );
-}
-
 export function ImpactMetrics() {
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: '-100px' });
 
   return (
-    <section
-      ref={sectionRef}
-      className="relative overflow-hidden bg-white py-20 lg:py-28"
-    >
-      <Container className="relative">
-        {/* Section Header */}
+    <section ref={sectionRef} className="relative py-8 lg:py-10 overflow-hidden bg-neutral-900">
+      {/* Background Video */}
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover"
+      >
+        <source src="/images/videos/hero-video.mp4" type="video/mp4" />
+      </video>
+      <div className="absolute inset-0 bg-neutral-900/80" />
+
+      <Container className="relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.5 }}
-          className="mb-16"
+          transition={{ duration: 0.6 }}
+          className="rounded-2xl bg-white/5 backdrop-blur-lg border border-white/10 overflow-hidden"
         >
-          <span className="inline-block rounded-full bg-brand-100 px-4 py-1.5 text-sm font-semibold text-brand-700">
-            Our Impact
-          </span>
-          <h2 className="mt-4 text-3xl font-medium tracking-tight text-neutral-charcoal sm:text-4xl lg:text-5xl">
-            Proven Track Record
-          </h2>
-          <p className="mt-4 text-lg text-neutral-600">
-            Excellence measured in results that speak for themselves.
-          </p>
+          {/* 2x2 Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2">
+            {METRICS.map((metric, index) => (
+              <motion.div
+                key={metric.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className={`relative p-5 lg:p-6 ${
+                  index < 2 ? 'border-b border-white/10' : ''
+                } ${index % 2 === 0 ? 'sm:border-r border-white/10' : ''}`}
+              >
+                {/* Top row: Category label + Icon */}
+                <div className="flex items-start justify-between mb-4">
+                  <span className="text-xs font-medium text-white/60 uppercase tracking-wider">
+                    {metric.label}
+                  </span>
+                  <div className="flex items-center justify-center h-11 w-11 rounded-full bg-accent/15">
+                    <metric.icon className="h-5 w-5 text-accent" strokeWidth={1.5} />
+                  </div>
+                </div>
+
+                {/* Large number */}
+                <div className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight leading-none">
+                  <AnimatedCounter value={metric.value} suffix={metric.suffix} />
+                </div>
+
+                {/* Description */}
+                <p className="mt-3 text-sm text-white/60 leading-relaxed max-w-sm">
+                  {metric.description}
+                </p>
+              </motion.div>
+            ))}
+          </div>
         </motion.div>
 
-        {/* Metrics Grid - 2x2 layout */}
-        <div className="grid grid-cols-2 gap-4 lg:gap-6">
-          {METRICS.map((metric, index) => (
-            <MetricCard key={metric.id} metric={metric} index={index} />
-          ))}
-        </div>
+        {/* Bottom CTA links */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+          transition={{ duration: 0.5, delay: 0.5 }}
+          className="mt-5 flex flex-wrap items-center gap-6"
+        >
+          <a
+            href="/projects"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-white/90 hover:text-white transition-colors"
+          >
+            More about our projects &rarr;
+          </a>
+          <span className="h-4 w-px bg-white/30" />
+          <a
+            href="/brands"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-white/90 hover:text-white transition-colors"
+          >
+            More about our partners &rarr;
+          </a>
+        </motion.div>
       </Container>
     </section>
   );

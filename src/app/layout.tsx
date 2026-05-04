@@ -1,14 +1,15 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter } from 'next/font/google';
+import { Source_Sans_3 } from 'next/font/google';
 import { Providers } from '@/providers/Providers';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import './globals.css';
 
-const inter = Inter({
+const sourceSans = Source_Sans_3({
   subsets: ['latin'],
   display: 'swap',
-  variable: '--font-inter',
+  weight: ['300', '400', '500', '600', '700', '800'],
+  variable: '--font-source-sans',
 });
 
 export const metadata: Metadata = {
@@ -77,7 +78,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#0284c7',
+  themeColor: '#D4A84B',
   width: 'device-width',
   initialScale: 1,
   maximumScale: 5,
@@ -89,7 +90,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={inter.variable} suppressHydrationWarning>
+    <html lang="en" className={sourceSans.variable} suppressHydrationWarning>
       <body className="min-h-screen bg-neutral-off-white font-sans text-neutral-charcoal antialiased">
         <Providers>
           <div className="flex min-h-screen flex-col">

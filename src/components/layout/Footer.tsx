@@ -50,7 +50,7 @@ export function Footer() {
                 className="inline-flex items-center gap-2"
                 aria-label={`${SITE_CONFIG.name} - Home`}
               >
-                <Logo variant="light" />
+                <Logo />
                 <span className="text-xl font-bold">{SITE_CONFIG.shortName}</span>
               </Link>
               <p className="mt-4 max-w-sm leading-relaxed text-neutral-400">

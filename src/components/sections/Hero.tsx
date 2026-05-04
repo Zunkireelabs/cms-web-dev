@@ -6,10 +6,12 @@ import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { Container } from '@/components/ui/Container';
+import { ArrowRight } from 'lucide-react';
 
 interface HeroSlide {
   id: number;
-  image: string;
+  image?: string;
+  video?: string;
   alt: string;
   title?: string;
 }
@@ -17,8 +19,8 @@ interface HeroSlide {
 const HERO_SLIDES: HeroSlide[] = [
   {
     id: 1,
-    image: '/images/hero/project-1.jpg',
-    alt: 'Construction workers at project site',
+    video: '/images/videos/307398.mp4',
+    alt: 'CMS Construction Excellence',
     title: 'Construction Excellence',
   },
   {
@@ -49,7 +51,7 @@ const fadeUpVariants = {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.6,
+      duration: 0.7,
       delay,
       ease: [0.25, 0.46, 0.45, 0.94],
     },
@@ -85,7 +87,7 @@ export function Hero() {
 
   return (
     <section
-      className="relative h-screen min-h-[600px] w-full overflow-hidden"
+      className="relative h-screen min-h-[600px] w-full overflow-hidden -mt-16 lg:-mt-20"
       onMouseEnter={() => setIsAutoPlaying(false)}
       onMouseLeave={() => setIsAutoPlaying(true)}
     >
@@ -96,153 +98,144 @@ export function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 1, ease: 'easeInOut' }}
+          transition={{ duration: 1.2, ease: 'easeInOut' }}
           className="absolute inset-0"
         >
-          {/* Image with Zoom-Out Effect */}
           <motion.div
-            initial={{ scale: 1.2 }}
+            initial={{ scale: 1.15 }}
             animate={{ scale: 1 }}
             transition={{
               duration: SLIDE_DURATION / 1000,
               ease: 'easeOut',
             }}
-            className="absolute inset-0 bg-gradient-to-br from-brand-900 via-brand-800 to-neutral-charcoal"
+            className="absolute inset-0 bg-neutral-900"
           >
-            <Image
-              src={HERO_SLIDES[currentSlide].image}
-              alt={HERO_SLIDES[currentSlide].alt}
-              fill
-              priority={currentSlide === 0}
-              className="object-cover"
-              sizes="100vw"
-              onError={(e) => {
-                e.currentTarget.style.display = 'none';
-              }}
-            />
+            {HERO_SLIDES[currentSlide].video ? (
+              <video
+                src={HERO_SLIDES[currentSlide].video}
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="absolute inset-0 h-full w-full object-cover"
+              />
+            ) : (
+              <Image
+                src={HERO_SLIDES[currentSlide].image!}
+                alt={HERO_SLIDES[currentSlide].alt}
+                fill
+                priority={currentSlide === 0}
+                className="object-cover"
+                sizes="100vw"
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none';
+                }}
+              />
+            )}
           </motion.div>
         </motion.div>
       </AnimatePresence>
 
-      {/* Dark Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-neutral-black/60 via-neutral-black/50 to-neutral-black/70" />
+      {/* Cinematic Gradient Overlay - heavier at bottom for text, darker at top for navbar */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/50" />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-transparent" />
 
-      {/* Content */}
-      <Container className="relative z-10 flex h-full flex-col items-center justify-center text-center">
-        {/* CMS Group Branding */}
-        <motion.div
-          variants={fadeUpVariants}
-          initial="hidden"
-          animate="visible"
-          custom={0}
-          className="mb-6"
-        >
-          <h1 className="text-6xl font-black tracking-tight text-white sm:text-7xl md:text-8xl lg:text-9xl">
-            CMS <span className="text-brand-400">Group</span>
-          </h1>
-        </motion.div>
-
-        {/* Full Form */}
-        <motion.div
-          variants={fadeUpVariants}
-          initial="hidden"
-          animate="visible"
-          custom={0.1}
-          className="mb-8"
-        >
-          <p className="text-xl font-medium tracking-[0.2em] text-white/80 uppercase sm:text-2xl md:text-3xl">
-            Construction Material Solutions
-          </p>
-        </motion.div>
-
-        {/* Divider */}
-        <motion.div
-          variants={fadeUpVariants}
-          initial="hidden"
-          animate="visible"
-          custom={0.15}
-          className="mb-8 h-px w-24 bg-gradient-to-r from-transparent via-brand-400 to-transparent sm:w-32"
-        />
-
-        {/* Services */}
-        <motion.div
-          variants={fadeUpVariants}
-          initial="hidden"
-          animate="visible"
-          custom={0.2}
-          className="mb-10 flex flex-wrap items-center justify-center gap-3 sm:gap-4"
-        >
-          {[
-            'Manufacturing',
-            'Constructions',
-            'Renewable Energy',
-            'Mining',
-            'Developer',
-            'E-commerce',
-            'Contracting',
-          ].map((service) => (
-            <span
-              key={service}
-              className="rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-medium text-white backdrop-blur-sm transition-all hover:border-brand-400/50 hover:bg-brand-400/20 sm:px-5 sm:py-2.5 sm:text-base"
-            >
-              {service}
-            </span>
-          ))}
-        </motion.div>
-
-        {/* CTA Buttons */}
-        <motion.div
-          variants={fadeUpVariants}
-          initial="hidden"
-          animate="visible"
-          custom={0.3}
-          className="mt-4 flex flex-col gap-4 sm:flex-row sm:gap-6"
-        >
-          <Link
-            href="/trading"
-            className="group relative inline-flex items-center justify-center overflow-hidden rounded-lg bg-brand-600 px-8 py-4 text-base font-semibold text-white transition-all hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 focus:ring-offset-transparent"
-          >
-            <span className="relative z-10">Explore Trading</span>
-            <motion.div
-              className="absolute inset-0 bg-brand-500"
-              initial={{ x: '-100%' }}
-              whileHover={{ x: 0 }}
-              transition={{ type: 'tween', duration: 0.3 }}
-            />
-          </Link>
-
-          <Link
-            href="/contracting"
-            className="group relative inline-flex items-center justify-center overflow-hidden rounded-lg border-2 border-white/30 bg-white/10 px-8 py-4 text-base font-semibold text-white backdrop-blur-sm transition-all hover:border-white/50 hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-transparent"
-          >
-            <span className="relative z-10">Explore Contracting</span>
-          </Link>
-        </motion.div>
-
-        {/* Current Project Label */}
-        <AnimatePresence mode="wait">
+      {/* Content - Bottom Left Aligned */}
+      <Container className="relative z-10 flex h-full flex-col justify-end pb-28 sm:pb-32 lg:pb-36">
+        <div className="max-w-2xl">
+          {/* Gold Accent Line */}
           <motion.div
-            key={currentSlide}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.3 }}
-            className="mt-10 text-sm text-white/60"
+            variants={fadeUpVariants}
+            initial="hidden"
+            animate="visible"
+            custom={0}
           >
-            {HERO_SLIDES[currentSlide].title}
+            <div className="mb-6 h-[3px] w-16 bg-accent" />
           </motion.div>
-        </AnimatePresence>
+
+          {/* Main Heading */}
+          <motion.h1
+            variants={fadeUpVariants}
+            initial="hidden"
+            animate="visible"
+            custom={0.1}
+            className="font-display text-5xl font-semibold tracking-tight text-white sm:text-6xl md:text-7xl lg:text-8xl"
+          >
+            CMS <span className="text-accent">Group</span>
+          </motion.h1>
+
+          {/* Subtitle - Full Form */}
+          <motion.p
+            variants={fadeUpVariants}
+            initial="hidden"
+            animate="visible"
+            custom={0.2}
+            className="mt-4 text-sm font-medium uppercase tracking-[0.25em] text-white/70 sm:text-base md:text-lg"
+          >
+            Construction Material Solutions
+          </motion.p>
+
+          {/* Sub-subtitle */}
+          <motion.p
+            variants={fadeUpVariants}
+            initial="hidden"
+            animate="visible"
+            custom={0.25}
+            className="mt-2 text-base font-normal text-white/50 sm:text-lg"
+          >
+            Trading and Contracting
+          </motion.p>
+
+          {/* CTA Buttons */}
+          <motion.div
+            variants={fadeUpVariants}
+            initial="hidden"
+            animate="visible"
+            custom={0.35}
+            className="mt-10 flex flex-col gap-4 sm:flex-row sm:gap-5"
+          >
+            <Link
+              href="/trading"
+              className="group inline-flex items-center justify-center gap-2 rounded-lg bg-accent px-8 py-4 text-sm font-semibold uppercase tracking-widest text-white transition-all hover:bg-accent/90"
+            >
+              Trading Division
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Link>
+
+            <Link
+              href="/contracting"
+              className="group inline-flex items-center justify-center gap-2 rounded-lg border-2 border-white/30 px-8 py-4 text-sm font-semibold uppercase tracking-widest text-white backdrop-blur-sm transition-all hover:border-white hover:bg-white/10"
+            >
+              Contracting Division
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Link>
+          </motion.div>
+
+          {/* Current Slide Label */}
+          <AnimatePresence mode="wait">
+            <motion.p
+              key={currentSlide}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.3 }}
+              className="mt-10 text-xs font-medium uppercase tracking-widest text-white/40"
+            >
+              {HERO_SLIDES[currentSlide].title}
+            </motion.p>
+          </AnimatePresence>
+        </div>
       </Container>
 
-      {/* Slide Indicators */}
-      <div className="absolute bottom-8 left-1/2 z-20 flex -translate-x-1/2 gap-2">
+      {/* Slide Indicators - Bottom Center */}
+      <div className="absolute bottom-10 left-1/2 z-20 flex -translate-x-1/2 gap-2.5">
         {HERO_SLIDES.map((slide, index) => (
           <button
             key={slide.id}
             onClick={() => goToSlide(index)}
             className={cn(
-              'group relative h-2 overflow-hidden rounded-full transition-all duration-300',
-              index === currentSlide ? 'w-8 bg-white' : 'w-2 bg-white/40 hover:bg-white/60'
+              'group relative h-[3px] overflow-hidden transition-all duration-300',
+              index === currentSlide ? 'w-10 bg-white/40' : 'w-5 bg-white/20 hover:bg-white/30'
             )}
             aria-label={`Go to slide ${index + 1}: ${slide.title}`}
             aria-current={index === currentSlide ? 'true' : 'false'}
@@ -250,7 +243,7 @@ export function Hero() {
             {index === currentSlide && isAutoPlaying && (
               <motion.div
                 key={`progress-${currentSlide}`}
-                className="absolute inset-0 origin-left bg-brand-400"
+                className="absolute inset-0 origin-left bg-accent"
                 initial={{ scaleX: 0 }}
                 animate={{ scaleX: 1 }}
                 transition={{ duration: SLIDE_DURATION / 1000, ease: 'linear' }}
@@ -260,53 +253,22 @@ export function Hero() {
         ))}
       </div>
 
-      {/* Navigation Arrows */}
-      <button
-        onClick={() => paginate(-1)}
-        className="absolute left-4 top-1/2 z-20 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition-all hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white/50 sm:left-8"
-        aria-label="Previous slide"
-      >
-        <svg
-          className="h-6 w-6"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          strokeWidth={2}
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-        </svg>
-      </button>
-
-      <button
-        onClick={() => paginate(1)}
-        className="absolute right-4 top-1/2 z-20 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-sm transition-all hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white/50 sm:right-8"
-        aria-label="Next slide"
-      >
-        <svg
-          className="h-6 w-6"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          strokeWidth={2}
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-        </svg>
-      </button>
-
-      {/* Scroll Indicator */}
+      {/* Scroll Indicator - Right Side */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1 }}
-        className="absolute bottom-8 right-8 z-20 hidden flex-col items-center gap-2 text-white/60 lg:flex"
+        transition={{ delay: 1.5 }}
+        className="absolute bottom-10 right-8 z-20 hidden flex-col items-center gap-2 lg:flex"
       >
-        <span className="text-xs uppercase tracking-widest">Scroll</span>
+        <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-white/40">
+          Scroll
+        </span>
         <motion.div
-          animate={{ y: [0, 8, 0] }}
+          animate={{ y: [0, 6, 0] }}
           transition={{ repeat: Infinity, duration: 1.5, ease: 'easeInOut' }}
-          className="h-6 w-4 rounded-full border-2 border-white/40 p-1"
+          className="flex h-8 w-5 items-start justify-center rounded-full border border-white/20 pt-1.5"
         >
-          <div className="h-1 w-1 rounded-full bg-white/60" />
+          <div className="h-1.5 w-0.5 bg-white/40" />
         </motion.div>
       </motion.div>
     </section>
