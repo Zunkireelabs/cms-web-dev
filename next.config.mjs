@@ -14,6 +14,30 @@ const nextConfig = {
   experimental: {
     optimizePackageImports: ['framer-motion', 'lucide-react'],
   },
+  async redirects() {
+    return [
+      {
+        source: '/products-services',
+        destination: '/trading',
+        permanent: true,
+      },
+      {
+        source: '/products-services/trading',
+        destination: '/trading',
+        permanent: true,
+      },
+      {
+        source: '/products-services/contracting',
+        destination: '/contracting',
+        permanent: true,
+      },
+      {
+        source: '/products-services/:slug',
+        destination: '/trading/:slug',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
