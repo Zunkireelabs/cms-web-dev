@@ -13,24 +13,29 @@ const sourceSans = Source_Sans_3({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://cmstc.com'),
+  metadataBase: new URL('https://cmsgrps.com'),
   title: {
-    default: 'CMS Trading & Contracting | Professional Construction Services',
-    template: '%s | CMS Trading & Contracting',
+    default: 'CMS Group | Construction Material Solutions in Nepal',
+    template: '%s | CMS Group',
   },
   description:
-    'CMS Trading & Contracting delivers excellence in construction, contracting, and trading services. Trusted partner for commercial and industrial projects.',
+    "CMS Group — Nepal's leading provider of construction materials and building finishing solutions since 2002. Trading, contracting, and industrial development across hospital, education, airport, office, hotel, and residential projects.",
   keywords: [
-    'construction',
-    'contracting',
-    'trading',
-    'commercial construction',
-    'industrial projects',
-    'CMS Trading',
+    'CMS Group',
+    'Construction Material Solutions',
+    'construction materials Nepal',
+    'building finishing Nepal',
+    'Bath N Room',
+    'Baba Muktinath',
+    '4R Technologies',
+    'Cubic Meter',
+    'Techwood',
+    'Prime Ceramics',
+    'Kathmandu construction supplier',
   ],
-  authors: [{ name: 'CMS Trading & Contracting' }],
-  creator: 'CMS Trading & Contracting',
-  publisher: 'CMS Trading & Contracting',
+  authors: [{ name: 'CMS Group' }],
+  creator: 'CMS Group',
+  publisher: 'CMS Group',
   formatDetection: {
     email: false,
     address: false,
@@ -39,25 +44,25 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://cmstc.com',
-    siteName: 'CMS Trading & Contracting',
-    title: 'CMS Trading & Contracting | Professional Construction Services',
+    url: 'https://cmsgrps.com',
+    siteName: 'CMS Group',
+    title: 'CMS Group | Construction Material Solutions in Nepal',
     description:
-      'CMS Trading & Contracting delivers excellence in construction, contracting, and trading services.',
+      "Nepal's leading provider of construction materials and building finishing solutions since 2002.",
     images: [
       {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'CMS Trading & Contracting',
+        alt: 'CMS Group — Construction Material Solutions',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'CMS Trading & Contracting',
+    title: 'CMS Group',
     description:
-      'Excellence in construction, contracting, and trading services.',
+      "Nepal's leading provider of construction materials and building finishing solutions since 2002.",
     images: ['/og-image.png'],
   },
   robots: {
