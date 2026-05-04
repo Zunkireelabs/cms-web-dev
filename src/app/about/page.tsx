@@ -1,7 +1,6 @@
 'use client';
 
 import { useRef } from 'react';
-import Link from 'next/link';
 import { motion, useInView } from 'framer-motion';
 import { Container } from '@/components/ui/Container';
 import { ContactCTA } from '@/components/sections';
@@ -19,11 +18,14 @@ import {
   TrendingUp,
 } from 'lucide-react';
 
+const FOUNDED_YEAR = 2002;
+const YEARS_IN_BUSINESS = new Date().getFullYear() - FOUNDED_YEAR;
+
 const COMPANY_STATS = [
-  { label: 'Years of Experience', value: '20+', icon: Calendar },
-  { label: 'Projects Completed', value: '500+', icon: Building2 },
-  { label: 'Satisfied Clients', value: '200+', icon: Users },
-  { label: 'Countries Served', value: '5+', icon: Globe },
+  { label: 'Years of Experience', value: `${YEARS_IN_BUSINESS}+`, icon: Calendar },
+  { label: 'Projects Delivered', value: '200+', icon: Building2 },
+  { label: 'Global Brand Partners', value: '60+', icon: Users },
+  { label: 'Sectors Served', value: '6', icon: Globe },
 ];
 
 const CORE_VALUES = [
@@ -31,85 +33,77 @@ const CORE_VALUES = [
     icon: Shield,
     title: 'Integrity',
     description:
-      'We conduct our business with the highest ethical standards, ensuring transparency and honesty in every interaction.',
+      'Honesty, integrity, and moral behavior are the cornerstone of our commercial operations. These ideals are incorporated into every facet of how our organization operates.',
   },
   {
     icon: Award,
     title: 'Excellence',
     description:
-      'We strive for excellence in every project, maintaining rigorous quality standards and continuous improvement.',
+      'We are committed to providing competitive excellence through high-quality products and services, maintaining worldwide quality standards across every venture in the group.',
   },
   {
     icon: Users,
-    title: 'Teamwork',
+    title: 'Customer Satisfaction',
     description:
-      'We believe in the power of collaboration, fostering strong partnerships with clients, suppliers, and team members.',
+      'Customer satisfaction is our top priority. We strive to exceed expectations, cultivate long-term partnerships, and constantly improve our services for clients at every level.',
   },
   {
     icon: TrendingUp,
     title: 'Innovation',
     description:
-      'We embrace new technologies and methodologies to deliver cutting-edge solutions that exceed expectations.',
+      'We foster growth through creativity and innovation, continuously seeking new ideas, technologies, and techniques that drive progress and add value for our clients.',
   },
   {
     icon: Handshake,
-    title: 'Commitment',
+    title: 'Trust & Partnership',
     description:
-      'We are dedicated to delivering on our promises, completing projects on time and within budget.',
+      'Building strong and long-lasting partnerships is key to our business. We win our clients’ trust by keeping our commitments and exceeding their expectations.',
   },
   {
     icon: CheckCircle,
-    title: 'Safety',
+    title: 'Sustainability',
     description:
-      'We prioritize the health and safety of our workforce, maintaining zero-tolerance policies for unsafe practices.',
+      'We actively engage in sourcing materials from sustainable and eco-friendly sources, aligning our operations with responsible practices and contributing to a greener future.',
   },
 ];
 
 const LEADERSHIP_TEAM = [
   {
-    name: 'Ahmed Al-Mansouri',
-    role: 'Chief Executive Officer',
-    bio: 'Over 25 years of experience in construction and project management across Nepal.',
+    name: 'Mr. Prashant Agarwal',
+    role: 'Chairman, CMS Group',
+    bio: 'Founded Construction Materials Group in 2002. Drives the group’s expansion across trading, contracting, industrial development, and e-commerce.',
   },
   {
-    name: 'Sarah Mitchell',
-    role: 'Chief Operations Officer',
-    bio: 'Expert in operational excellence with a track record of delivering complex infrastructure projects.',
+    name: 'Ms. Rima Lamichhane',
+    role: 'Director, CMS Group',
+    bio: 'Champions client satisfaction and personalized solutions through cutting-edge technologies and trusted, collaborative partnerships.',
   },
   {
-    name: 'Mohammed Hassan',
-    role: 'Technical Director',
-    bio: 'Licensed engineer specializing in MEP systems and sustainable building technologies.',
+    name: 'Mr. Sandeep Goenka',
+    role: 'Director, CMS Group',
+    bio: 'Leads the group’s product strategy that blends innovation and environmental sustainability with conventional building offerings.',
   },
   {
-    name: 'James Wilson',
-    role: 'Commercial Director',
-    bio: 'Strategic leader with extensive experience in trading and supply chain management.',
+    name: 'Mr. Sumit Agarwal',
+    role: 'Director, CMS Group',
+    bio: 'Builds the group’s competitive edge through state-of-the-art technologies and pioneering construction concepts.',
   },
 ];
 
 const CERTIFICATIONS = [
-  'Grade A Contractor Classification',
-  'Nepal Chamber of Commerce Member',
-  'ASHRAE Member Organization',
+  'Authorized Distributor for 60+ Global Brands',
+  'Trusted by Nepal’s Government, Hospital, and Hospitality Sectors',
+  'Joint-Venture Manufacturing Partner with Fortune Ventures (Prime Ceramics)',
 ];
 
 const MILESTONES: { year: string; title: string; description: string; type: 'establishment' | 'trading' | 'brand' }[] = [
-  { year: '2002', title: 'Company Established', description: 'CMS Trading & Contracting founded in Nepal.', type: 'establishment' },
-  { year: '2004', title: 'Trading Division Commenced', description: 'Launched dedicated trading operations to supply quality building materials.', type: 'trading' },
-  { year: '2006', title: 'Armstrong Ceiling', description: 'First brand collaboration — premium ceiling systems.', type: 'brand' },
-  { year: '2007', title: 'IKO', description: 'Partnered for roofing solutions.', type: 'brand' },
-  { year: '2008', title: 'Hunter Douglas', description: 'Introduced facade solutions.', type: 'brand' },
-  { year: '2010', title: 'Dormakaba', description: 'Door hardware & access solutions.', type: 'brand' },
-  { year: '2011', title: 'Schomburg', description: 'Waterproofing systems.', type: 'brand' },
-  { year: '2012', title: 'Tostem', description: 'Aluminum doors & windows.', type: 'brand' },
-  { year: '2014', title: 'ICA Pidilite', description: 'Wood coatings.', type: 'brand' },
-  { year: '2015', title: 'American Standard', description: 'Sanitaryware.', type: 'brand' },
-  { year: '2016', title: 'Grohe', description: 'Bathroom fittings.', type: 'brand' },
-  { year: '2017', title: 'Sintex', description: 'Wastewater management.', type: 'brand' },
-  { year: '2018', title: 'SOS Office', description: 'Office furniture.', type: 'brand' },
-  { year: '2019', title: 'AGT', description: 'Flooring.', type: 'brand' },
-  { year: '2020', title: 'Zolon', description: 'Architectural railings.', type: 'brand' },
+  { year: '2002', title: 'Kantipur', description: 'CMS Group founded as Italian Marble & Granite trading firm.', type: 'establishment' },
+  { year: '2003', title: 'Bath N Room Trade Concern Pvt. Ltd.', description: 'One-stop solution for building finishing products in the Nepalese market.', type: 'trading' },
+  { year: '2010', title: 'Baba Muktinath Fabricators Pvt. Ltd.', description: 'Leading dealer, distributor and fabricator for world-class building systems.', type: 'brand' },
+  { year: '2015', title: '4R Technologies Pvt. Ltd.', description: 'Associated with world-renowned brands to provide a wide range of green products.', type: 'brand' },
+  { year: '2018', title: 'Cubic Meter Pvt. Ltd.', description: 'Interior finishing and contracting venture serving hotels, hospitals, and corporate offices.', type: 'trading' },
+  { year: '2019', title: 'Techwood Pvt. Ltd.', description: 'Quality modular furniture solutions for corporate offices and schools.', type: 'trading' },
+  { year: '2021', title: 'Prime Ceramics Pvt. Ltd.', description: 'Ceramic tile manufacturing in Nepal — joint venture with Fortune Ventures Pvt. Ltd.', type: 'brand' },
 ];
 
 const fadeInUp = {
@@ -170,7 +164,7 @@ export default function AboutPage() {
               custom={0}
               className="inline-block rounded-full bg-white/10 px-4 py-1.5 text-sm font-medium text-white backdrop-blur-sm"
             >
-              About Us
+              About CMS Group
             </motion.span>
             <motion.h1
               variants={fadeInUp}
@@ -179,7 +173,7 @@ export default function AboutPage() {
               custom={0.1}
               className="mt-4 text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl"
             >
-              Building Excellence Since 2002
+              Delivering Exceptional Construction Solutions Since 2002
             </motion.h1>
             <motion.p
               variants={fadeInUp}
@@ -188,8 +182,7 @@ export default function AboutPage() {
               custom={0.2}
               className="mt-6 text-xl text-neutral-300"
             >
-              CMS Trading & Contracting is a leading construction and trading company
-              delivering world-class projects across Nepal.
+              Construction Material Solutions — Nepal’s trusted partner for premium building materials, finishing systems, and integrated contracting across six specialized ventures.
             </motion.p>
           </div>
         </Container>
@@ -235,7 +228,7 @@ export default function AboutPage() {
                   Our Story
                 </span>
                 <h2 className="mt-4 text-3xl font-bold tracking-tight text-neutral-charcoal sm:text-4xl">
-                  Two Decades of Building Trust
+                  Two decades of building trust in Nepal
                 </h2>
               </motion.div>
               <motion.div
@@ -244,21 +237,13 @@ export default function AboutPage() {
                 className="mt-6 space-y-4 text-neutral-600 leading-relaxed"
               >
                 <p>
-                  Founded in 2002, CMS Trading & Contracting began with a vision to deliver
-                  quality construction and trading services in Nepal. Over the years, we
-                  have grown into a diversified company offering comprehensive contracting
-                  and trading solutions.
+                  CMS Group is a leading provider of construction materials and building services in Nepal. Since 2002, we have built a solid reputation for reliability, professionalism, and customer satisfaction across the construction sector.
                 </p>
                 <p>
-                  Our journey has been marked by continuous growth, strategic partnerships,
-                  and an unwavering commitment to excellence. Today, we serve clients across
-                  multiple sectors including healthcare, education, hospitality, and
-                  commercial real estate.
+                  Our core specialization lies in the trading and distribution of premium building and construction materials. We bring forth top-of-the-line items that cater to the needs of industrial clients, builders, architects, interior designers, engineers, and contractors through strategic collaborations with worldwide manufacturers.
                 </p>
                 <p>
-                  With a team of over 500 professionals and a portfolio of 500+ completed
-                  projects, we have established ourselves as a trusted partner for
-                  construction and trading needs in Nepal.
+                  Today, the group spans six associated ventures — Bath N Room, Baba Muktinath Fabricators, 4R Technologies, Cubic Meter, Techwood, and Prime Ceramics — serving hospitals, education, airports, offices, hotels, and residential projects across the country.
                 </p>
               </motion.div>
             </AnimatedSection>
@@ -277,7 +262,7 @@ export default function AboutPage() {
                   <p className="text-lg font-semibold text-white">
                     Corporate Headquarters
                   </p>
-                  <p className="text-sm text-brand-200">Tara Bhawan, Kathmandu</p>
+                  <p className="text-sm text-brand-200">Tara Bhawan, Teku, Kathmandu</p>
                 </div>
               </motion.div>
             </AnimatedSection>
@@ -302,9 +287,9 @@ export default function AboutPage() {
                 Our Mission
               </h3>
               <ul className="mt-4 text-neutral-600 leading-relaxed space-y-4 list-disc pl-5">
-                <li>To deliver end-to-end trading and contracting solutions by combining globally recognized products with precise project execution.</li>
-                <li>To uphold the highest standards of quality, safety, and integrity in every stage of our operations.</li>
-                <li>To build long-term partnerships with clients, suppliers, and stakeholders through reliability and performance.</li>
+                <li>To provide competitive excellence through high-quality construction products and services across every venture in the group.</li>
+                <li>To deliver on time and at competitive prices for clients at every level — from individual residences to nation-scale infrastructure.</li>
+                <li>To cultivate long-term partnerships with clients, suppliers, and stakeholders through reliability and integrated solutions.</li>
               </ul>
             </motion.div>
 
@@ -321,7 +306,7 @@ export default function AboutPage() {
                 Our Vision
               </h3>
               <p className="mt-4 text-neutral-600 leading-relaxed">
-                To be a trusted and preferred trading and contracting partner, recognized for delivering integrated building solutions with technical excellence, global brand partnerships, and sustainable value across every project we undertake.
+                To be Nepal’s leading one-stop solution provider for all building &amp; construction materials. By providing best-in-class materials and comprehensive solutions, we strive to go above and beyond customer expectations, earning their trust as a partner in building.
               </p>
             </motion.div>
           </AnimatedSection>
@@ -485,7 +470,7 @@ export default function AboutPage() {
                 Credentials
               </span>
               <h2 className="mt-4 text-3xl font-bold tracking-tight text-neutral-charcoal sm:text-4xl">
-                Certifications & Accreditations
+                Certifications &amp; Accreditations
               </h2>
               <p className="mt-4 text-neutral-600">
                 Recognized standards of quality and excellence

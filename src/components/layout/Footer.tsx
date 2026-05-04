@@ -28,9 +28,9 @@ function InstagramIcon({ className }: { className?: string }) {
 }
 
 const socialLinks = [
-  { name: 'LinkedIn', href: 'https://linkedin.com/company/cmstc', icon: LinkedInIcon },
-  { name: 'Twitter', href: 'https://twitter.com/cmstc', icon: TwitterIcon },
-  { name: 'Instagram', href: 'https://instagram.com/cmstc', icon: InstagramIcon },
+  { name: 'LinkedIn', href: 'https://linkedin.com/company/cms-group-nepal', icon: LinkedInIcon },
+  { name: 'Twitter', href: 'https://twitter.com/cmsgrps', icon: TwitterIcon },
+  { name: 'Instagram', href: 'https://instagram.com/cmsgrps', icon: InstagramIcon },
 ];
 
 export function Footer() {

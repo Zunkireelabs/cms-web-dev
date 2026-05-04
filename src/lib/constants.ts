@@ -9,15 +9,18 @@ import {
 import type { NavItem, Service, SiteConfig } from '@/types';
 
 export const SITE_CONFIG: SiteConfig = {
-  name: 'CMS Trading & Contracting',
-  shortName: 'CMS T&C',
+  name: 'CMS Group',
+  shortName: 'CMS Group',
+  legalName: 'Construction Material Solutions',
+  tagline: 'Delivering Exceptional Construction Solutions since 2002',
   description:
-    'Delivering excellence in construction, contracting, and trading services. Your trusted partner for commercial and industrial projects.',
-  url: 'https://cmstc.com',
-  phone: '+974 4444 5555',
-  email: 'info@cmstc.com',
+    "CMS Group is Nepal's leading provider of construction materials and building finishing solutions. Trusted partner since 2002 across hospital, education, airport, office, hotel, and residential projects.",
+  url: 'https://cmsgrps.com',
+  phone: '+977-1-4100235',
+  phoneSecondary: '+977-1-4100236',
+  email: 'info@cmsgrps.com',
   address: {
-    street: 'Tara Bhawan',
+    street: 'Tara Bhawan, Near Teku Hospital (behind Prakash Pharmacia), Teku',
     city: 'Kathmandu',
     country: 'Nepal',
   },
