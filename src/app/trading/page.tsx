@@ -3,12 +3,12 @@ import Link from 'next/link';
 import { Container } from '@/components/ui/Container';
 import { ContactCTA } from '@/components/sections';
 import { PRODUCT_DOMAINS } from '@/data/products';
+import { TOTAL_BRAND_COUNT } from '@/data/brands';
 import { ArrowRight } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Trading Division',
-  description:
-    'Explore our trading division - premium building materials from world-leading manufacturers across 11 product domains.',
+  description: `CMS Group Trading — premium building materials from ${TOTAL_BRAND_COUNT}+ global brand partners across ${PRODUCT_DOMAINS.length} specialized domains, distributed in Nepal through Bath N Room and Baba Muktinath Fabricators.`,
 };
 
 export default function TradingPage() {
@@ -34,9 +34,17 @@ export default function TradingPage() {
             <h1 className="mt-4 text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
               Premium Building Materials
             </h1>
-            <p className="mt-6 text-xl text-brand-100">
-              We partner with world-leading manufacturers to supply high-quality
-              construction materials across {PRODUCT_DOMAINS.length} product domains.
+            <p className="mt-6 text-xl text-brand-100 leading-relaxed">
+              {TOTAL_BRAND_COUNT}+ global brand partners across {PRODUCT_DOMAINS.length} specialized
+              domains, distributed in Nepal through our{' '}
+              <Link href="/brands" className="font-semibold text-white underline-offset-4 hover:underline">
+                Bath N Room
+              </Link>{' '}
+              and{' '}
+              <Link href="/brands" className="font-semibold text-white underline-offset-4 hover:underline">
+                Baba Muktinath
+              </Link>{' '}
+              ventures.
             </p>
           </div>
         </Container>
