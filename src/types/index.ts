@@ -34,8 +34,16 @@ export interface SiteConfig {
   url: string;
   phone: string;
   phoneSecondary?: string;
+  phoneMobile?: string;
   email: string;
   address: Address;
+  mapsUrl?: string;
+  social?: {
+    instagram?: string;
+    facebook?: string;
+    tiktok?: string;
+    linkedin?: string;
+  };
 }
 
 export interface Director {

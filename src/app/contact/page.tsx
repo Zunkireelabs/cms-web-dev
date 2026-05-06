@@ -30,10 +30,20 @@ const SERVICE_OPTIONS = [
 const CONTACT_INFO = [
   {
     icon: Phone,
-    label: 'Phone',
-    value: SITE_CONFIG.phone,
+    label: 'Office',
+    value: `${SITE_CONFIG.phone}${SITE_CONFIG.phoneSecondary ? ` · ${SITE_CONFIG.phoneSecondary}` : ''}`,
     href: `tel:${SITE_CONFIG.phone.replace(/\s/g, '')}`,
   },
+  ...(SITE_CONFIG.phoneMobile
+    ? [
+        {
+          icon: Phone,
+          label: 'Mobile',
+          value: SITE_CONFIG.phoneMobile,
+          href: `tel:${SITE_CONFIG.phoneMobile.replace(/\s/g, '')}`,
+        },
+      ]
+    : []),
   {
     icon: Mail,
     label: 'Email',
@@ -44,7 +54,7 @@ const CONTACT_INFO = [
     icon: MapPin,
     label: 'Head Office',
     value: `${SITE_CONFIG.address.street}, ${SITE_CONFIG.address.city}, ${SITE_CONFIG.address.country}`,
-    href: '#',
+    href: SITE_CONFIG.mapsUrl ?? null,
   },
   {
     icon: Store,
@@ -483,22 +493,32 @@ export default function ContactPage() {
                   </motion.div>
                 ))}
 
-                {/* Map Placeholder */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 0.8 }}
-                  className="overflow-hidden rounded-xl border border-neutral-border bg-neutral-surface"
-                >
-                  <div className="flex h-48 items-center justify-center bg-gradient-to-br from-brand-50 to-neutral-surface">
-                    <div className="text-center">
-                      <MapPin className="mx-auto h-10 w-10 text-brand-300" />
-                      <p className="mt-2 text-sm text-neutral-500">
-                        Interactive map coming soon
-                      </p>
+                {/* Google Maps Link */}
+                {SITE_CONFIG.mapsUrl && (
+                  <motion.a
+                    href={SITE_CONFIG.mapsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: 0.8 }}
+                    className="group block overflow-hidden rounded-xl border border-neutral-border bg-neutral-surface transition-all hover:border-brand-300 hover:shadow-card"
+                  >
+                    <div className="flex h-48 items-center justify-center bg-gradient-to-br from-brand-50 to-neutral-surface">
+                      <div className="text-center">
+                        <div className="mx-auto inline-flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-card transition-transform group-hover:scale-110">
+                          <MapPin className="h-7 w-7 text-brand-600" strokeWidth={1.75} />
+                        </div>
+                        <p className="mt-3 text-sm font-semibold text-neutral-charcoal">
+                          View on Google Maps
+                        </p>
+                        <p className="mt-1 text-xs text-neutral-500">
+                          {SITE_CONFIG.address.city}, {SITE_CONFIG.address.country}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                </motion.div>
+                  </motion.a>
+                )}
 
                 {/* Quick Response Note */}
                 <motion.div
