@@ -16,32 +16,32 @@ interface HighlightItem {
 
 const HIGHLIGHTS: HighlightItem[] = [
   {
-    id: 'partnership',
-    label: 'Partnership',
+    id: 'global-brands',
+    label: '60+ Global Brands',
     image: '/images/products/facade.jpg',
     link: '/brands',
   },
   {
-    id: 'achievement',
-    label: 'Achievement',
+    id: 'projects-delivered',
+    label: '200+ Projects Delivered',
     image: '/images/hero/project-1.jpg',
     link: '/projects',
   },
   {
-    id: 'projects',
-    label: 'Projects',
+    id: 'hospitality',
+    label: 'Hotel & Hospitality',
     image: '/images/projects/hospitality.jpg',
     link: '/projects',
   },
   {
-    id: 'company-news',
-    label: 'Company News',
+    id: 'contracting-division',
+    label: 'Contracting Division',
     image: '/images/hero/project-5.jpg',
     link: '/contracting',
   },
   {
-    id: 'interior-solutions',
-    label: 'Interior Solutions',
+    id: 'sectors-served',
+    label: '6 Sectors Served',
     image: '/images/hero/project-3.jpg',
     link: '/services',
   },
@@ -111,7 +111,7 @@ export function Highlights() {
                 Latest Highlights
               </h2>
               <p className="mt-4 text-sm sm:text-base text-neutral-600 leading-relaxed">
-                CMS brings together the latest from our projects, partnerships, and milestones. Explore our offerings by Industry or by Business.
+                Two decades of building Nepal — from hospitals and hotels to airports and offices, backed by 60+ global brand partners and six specialized ventures.
               </p>
             </div>
             <div className="mt-6">

@@ -22,71 +22,75 @@ import {
 
 const WHY_WORK_WITH_US = [
   {
-    icon: Shield,
-    title: 'Safety-First Culture',
+    icon: Building2,
+    title: 'Six Specialised Ventures',
     description:
-      'Your safety is our top priority. We maintain rigorous safety standards and provide comprehensive training to ensure a secure work environment for all team members.',
-  },
-  {
-    icon: TrendingUp,
-    title: 'Growth Opportunities',
-    description:
-      'We invest in our people through continuous learning programs, mentorship, and clear career advancement paths to help you reach your full potential.',
-  },
-  {
-    icon: Users,
-    title: 'Collaborative Team',
-    description:
-      'Join a diverse team of professionals who work together, share knowledge, and support each other to achieve exceptional results.',
-  },
-  {
-    icon: Heart,
-    title: 'Work-Life Balance',
-    description:
-      'We believe in maintaining a healthy balance between work and personal life, offering flexible arrangements and supportive policies.',
+      'Move across Bath N Room, Baba Muktinath, 4R Technologies, Cubic Meter, Techwood, and Prime Ceramics — broaden your scope without leaving the group.',
   },
   {
     icon: Award,
-    title: 'Competitive Benefits',
+    title: 'World-Class Brand Exposure',
     description:
-      'Enjoy competitive salaries, comprehensive health coverage, and additional perks that recognize your valuable contributions.',
+      'Work alongside 60+ global brand partners — Grohe, Duravit, Hunter Douglas, Dormakaba, IKO, Tarkett, Armstrong, and more — with vendor training built in.',
   },
   {
-    icon: Building2,
-    title: 'Impactful Projects',
+    icon: Users,
+    title: 'Marquee Project Portfolio',
     description:
-      'Work on meaningful projects that shape communities and infrastructure, making a lasting impact on the built environment.',
+      'Contribute to projects like Bir Hospital, Tiger Palace, Nepal Rastra Bank, AANSON, Mediciti, Dusit Thani — work that shapes Nepal\'s built environment.',
+  },
+  {
+    icon: TrendingUp,
+    title: 'Growth & Mentorship',
+    description:
+      'Continuous training programmes including factory visits with international partners (Tostem Thailand, Armstrong, IKO) — invest in your craft.',
+  },
+  {
+    icon: Heart,
+    title: 'Community-First Culture',
+    description:
+      'Annual blood-donation drives, Women\'s Day celebrations, technician meets — the CMS Group culture is built on people and contribution, not just deliverables.',
+  },
+  {
+    icon: Shield,
+    title: 'Twenty-Three Years Strong',
+    description:
+      'Join a group founded in 2002 with a deep-rooted reputation — your career has the runway of a stable, growing organisation behind it.',
   },
 ];
 
 const CURRENT_OPENINGS = [
   {
-    title: 'Senior Project Manager',
-    department: 'Construction',
+    title: 'Sales Executive — Sanitaryware & Tiles',
+    department: 'Bath N Room',
     location: 'Kathmandu, Nepal',
     type: 'Full-time',
-    description: 'Lead and manage large-scale construction projects from inception to completion.',
+    description:
+      'Build client relationships across hospitality, residential, and institutional projects — distributing Grohe, Duravit, RAK, American Standard, and more.',
   },
   {
-    title: 'Civil Engineer',
-    department: 'Engineering',
+    title: 'Site Supervisor — Interior Contracting',
+    department: 'Cubic Meter',
     location: 'Kathmandu, Nepal',
     type: 'Full-time',
-    description: 'Design and oversee construction of infrastructure projects including roads and buildings.',
+    description:
+      'Oversee on-site execution of interior fit-out projects from material delivery through commissioning, ensuring quality and timeline adherence.',
   },
   {
-    title: 'Safety Officer',
-    department: 'Health & Safety',
+    title: 'Technical Specialist — Building Systems',
+    department: 'Baba Muktinath Fabricators',
     location: 'Kathmandu, Nepal',
     type: 'Full-time',
-    description: 'Implement and monitor safety protocols across all project sites.',
+    description:
+      'Specify and support installation of roofing, ceilings, doors, hardware, and façade systems from international partners.',
   },
   {
-    title: 'Procurement Specialist',
-    department: 'Trading',
+    title: 'Project Engineer — Water & Wastewater',
+    department: '4R Technologies',
     location: 'Kathmandu, Nepal',
     type: 'Full-time',
-    description: 'Manage supplier relationships and procurement of construction materials.',
+    description:
+      'Design and commission STP / ETP plants, water storage, and pool systems — Sintex, Pentair, Kingspan Rhino, Oase product lines.',
   },
 ];
 
@@ -199,9 +203,9 @@ export default function CareerPage() {
               custom={0.2}
               className="mt-6 text-xl text-neutral-300 leading-relaxed"
             >
-              We believe our people are our greatest strength. At our company, you&apos;ll find
-              opportunities to learn, grow, and make a real impact in the construction and
-              building solutions industry.
+              Six specialised ventures. 60+ global brand partners. 200+ delivered projects
+              across hospitals, hotels, banks, airports, and homes in Nepal. Build a career
+              with the breadth a single firm rarely offers.
             </motion.p>
             <motion.p
               variants={fadeInUp}
@@ -210,9 +214,9 @@ export default function CareerPage() {
               custom={0.3}
               className="mt-4 text-lg text-neutral-400"
             >
-              Whether you&apos;re a skilled professional or a passionate learner, we offer a
-              supportive work environment, hands-on experience, and the chance to build a
-              career that grows with the company.
+              From Bath N Room and Baba Muktinath Fabricators to Cubic Meter, 4R
+              Technologies, Techwood, and Prime Ceramics — find your fit within the
+              CMS Group family.
             </motion.p>
             <motion.p
               variants={fadeInUp}
@@ -221,7 +225,7 @@ export default function CareerPage() {
               custom={0.4}
               className="mt-4 text-lg font-medium text-brand-300"
             >
-              Join us and be part of a team that builds more than structures—we build futures.
+              We&apos;ve been building Nepal since 2002. Help us build the next chapter.
             </motion.p>
             <motion.div
               variants={fadeInUp}
@@ -251,7 +255,7 @@ export default function CareerPage() {
                 Why Join Us
               </span>
               <h2 className="mt-4 text-3xl font-bold tracking-tight text-neutral-charcoal sm:text-4xl">
-                Why Work With CMS Trading & Contracting
+                Why Work With CMS Group
               </h2>
               <p className="mt-4 text-neutral-600">
                 Discover what makes us a great place to build your career
@@ -291,10 +295,11 @@ export default function CareerPage() {
                 Join Our Team
               </span>
               <h2 className="mt-4 text-3xl font-bold tracking-tight text-neutral-charcoal sm:text-4xl">
-                Current Openings
+                Roles We Recruit For
               </h2>
               <p className="mt-4 text-neutral-600">
-                Explore our available positions and find your next opportunity
+                Representative positions across our six ventures — submit your CV below
+                and we&apos;ll match you to current openings.
               </p>
             </motion.div>
           </AnimatedSection>
@@ -390,7 +395,7 @@ export default function CareerPage() {
                     Application Submitted Successfully!
                   </h3>
                   <p className="mt-2 text-green-700">
-                    Thank you for your interest in joining CMS Trading & Contracting.
+                    Thank you for your interest in joining CMS Group.
                     Our HR team will review your application and contact you soon.
                   </p>
                   <button

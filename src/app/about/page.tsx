@@ -3,7 +3,9 @@
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Container } from '@/components/ui/Container';
-import { ContactCTA } from '@/components/sections';
+import { ContactCTA, Testimonials } from '@/components/sections';
+import { CERTIFICATIONS, CERTIFICATIONS_COUNT } from '@/data/certifications';
+import { LEADERSHIP } from '@/data/leadership';
 import {
   Target,
   Eye,
@@ -16,6 +18,8 @@ import {
   Calendar,
   Globe,
   TrendingUp,
+  ScrollText,
+  MapPin,
 } from 'lucide-react';
 
 const FOUNDED_YEAR = 2002;
@@ -65,35 +69,6 @@ const CORE_VALUES = [
     description:
       'We actively engage in sourcing materials from sustainable and eco-friendly sources, aligning our operations with responsible practices and contributing to a greener future.',
   },
-];
-
-const LEADERSHIP_TEAM = [
-  {
-    name: 'Mr. Prashant Agarwal',
-    role: 'Chairman, CMS Group',
-    bio: 'Founded Construction Materials Group in 2002. Drives the group’s expansion across trading, contracting, industrial development, and e-commerce.',
-  },
-  {
-    name: 'Ms. Rima Lamichhane',
-    role: 'Director, CMS Group',
-    bio: 'Champions client satisfaction and personalized solutions through cutting-edge technologies and trusted, collaborative partnerships.',
-  },
-  {
-    name: 'Mr. Sandeep Goenka',
-    role: 'Director, CMS Group',
-    bio: 'Leads the group’s product strategy that blends innovation and environmental sustainability with conventional building offerings.',
-  },
-  {
-    name: 'Mr. Sumit Agarwal',
-    role: 'Director, CMS Group',
-    bio: 'Builds the group’s competitive edge through state-of-the-art technologies and pioneering construction concepts.',
-  },
-];
-
-const CERTIFICATIONS = [
-  'Authorized Distributor for 60+ Global Brands',
-  'Trusted by Nepal’s Government, Hospital, and Hospitality Sectors',
-  'Joint-Venture Manufacturing Partner with Fortune Ventures (Prime Ceramics)',
 ];
 
 const MILESTONES: { year: string; title: string; description: string; type: 'establishment' | 'trading' | 'brand' }[] = [
@@ -420,7 +395,7 @@ export default function AboutPage() {
       </section>
 
       {/* Leadership Team */}
-      <section className="py-20 lg:py-28">
+      <section id="leadership" className="py-20 lg:py-28">
         <Container>
           <AnimatedSection>
             <motion.div variants={fadeInUp} custom={0} className="mx-auto max-w-2xl text-center">
@@ -431,72 +406,129 @@ export default function AboutPage() {
                 Meet Our Team
               </h2>
               <p className="mt-4 text-neutral-600">
-                Experienced professionals dedicated to delivering excellence
+                Chairman and six directors steering CMS Group across trading,
+                contracting, and manufacturing.
               </p>
             </motion.div>
           </AnimatedSection>
 
-          <AnimatedSection className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {LEADERSHIP_TEAM.map((member, index) => (
-              <motion.div
-                key={member.name}
-                variants={fadeInUp}
-                custom={index * 0.1}
-                className="group text-center"
-              >
-                {/* Avatar Placeholder */}
-                <div className="mx-auto h-32 w-32 overflow-hidden rounded-full bg-gradient-to-br from-brand-100 to-brand-50 p-1">
-                  <div className="flex h-full w-full items-center justify-center rounded-full bg-white">
-                    <Users className="h-12 w-12 text-brand-300" />
+          <AnimatedSection className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {LEADERSHIP.map((member, index) => {
+              const isChairman = member.title === 'Chairman';
+              const summary = member.summary ?? `${member.bio.split('.')[0]}.`;
+              return (
+                <motion.div
+                  key={member.name}
+                  variants={fadeInUp}
+                  custom={index * 0.08}
+                  className="group text-center"
+                >
+                  {/* Avatar Placeholder */}
+                  <div className="relative mx-auto h-32 w-32 overflow-hidden rounded-full bg-gradient-to-br from-brand-100 to-brand-50 p-1">
+                    <div className="flex h-full w-full items-center justify-center rounded-full bg-white">
+                      <Users className="h-12 w-12 text-brand-300" />
+                    </div>
+                    {isChairman && (
+                      <span className="absolute -top-1 left-1/2 -translate-x-1/2 inline-block rounded-full bg-brand-600 px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-white shadow-sm">
+                        Chairman
+                      </span>
+                    )}
                   </div>
-                </div>
-                <h3 className="mt-4 text-lg font-semibold text-neutral-charcoal">
-                  {member.name}
-                </h3>
-                <p className="text-sm font-medium text-brand-600">{member.role}</p>
-                <p className="mt-2 text-sm text-neutral-600">{member.bio}</p>
-              </motion.div>
-            ))}
+                  <h3 className="mt-4 text-lg font-semibold text-neutral-charcoal">
+                    {member.name}
+                  </h3>
+                  <p className="text-sm font-medium text-brand-600">
+                    {member.title}, {member.company}
+                  </p>
+                  <p className="mt-2 text-sm text-neutral-600 leading-relaxed">
+                    {summary}
+                  </p>
+                </motion.div>
+              );
+            })}
           </AnimatedSection>
         </Container>
       </section>
 
-      {/* Certifications */}
-      <section className="bg-neutral-off-white py-20 lg:py-28">
+      {/* Our Associations / Certifications */}
+      <section id="associations" className="bg-neutral-off-white py-20 lg:py-28">
         <Container>
           <AnimatedSection>
             <motion.div variants={fadeInUp} custom={0} className="mx-auto max-w-2xl text-center">
               <span className="inline-block rounded-full bg-brand-100 px-4 py-1.5 text-sm font-semibold text-brand-700">
-                Credentials
+                Our Associations
               </span>
               <h2 className="mt-4 text-3xl font-bold tracking-tight text-neutral-charcoal sm:text-4xl">
-                Certifications &amp; Accreditations
+                Authorised Distribution &amp; Channel Partner Across {CERTIFICATIONS_COUNT} Global Brands
               </h2>
               <p className="mt-4 text-neutral-600">
-                Recognized standards of quality and excellence
+                Every brand we represent is backed by a current dealership, channel partner,
+                or distributorship certificate — so you get authentic products with full
+                manufacturer warranty and after-sales support.
               </p>
             </motion.div>
           </AnimatedSection>
 
-          <AnimatedSection className="mt-12">
-            <motion.div
-              variants={fadeInUp}
-              custom={0.1}
-              className="flex flex-wrap justify-center gap-4"
-            >
-              {CERTIFICATIONS.map((cert) => (
-                <div
-                  key={cert}
-                  className="flex items-center gap-2 rounded-full border border-neutral-border bg-white px-4 py-2 shadow-sm"
-                >
-                  <CheckCircle className="h-4 w-4 text-brand-600" />
-                  <span className="text-sm font-medium text-neutral-700">{cert}</span>
+          <AnimatedSection className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {CERTIFICATIONS.map((cert, index) => (
+              <motion.div
+                key={cert.id}
+                variants={fadeInUp}
+                custom={index * 0.04}
+                className="group relative rounded-2xl border border-neutral-border bg-white p-6 shadow-card transition-all hover:shadow-card-hover"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-600">
+                    <ScrollText className="h-5 w-5" strokeWidth={1.5} />
+                  </div>
+                  {cert.country && (
+                    <span className="inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider text-neutral-400">
+                      <MapPin className="h-3 w-3" strokeWidth={1.5} />
+                      {cert.country}
+                    </span>
+                  )}
                 </div>
-              ))}
-            </motion.div>
+
+                <h3 className="mt-4 text-lg font-bold text-neutral-charcoal leading-tight">
+                  {cert.brand}
+                </h3>
+                <p className="mt-1 text-xs font-semibold uppercase tracking-wider text-brand-600">
+                  {cert.type}
+                </p>
+                <p className="mt-3 text-sm text-neutral-600 leading-relaxed line-clamp-3">
+                  {cert.scope}
+                </p>
+
+                <div className="mt-4 flex flex-wrap items-center gap-2 pt-4 border-t border-neutral-100">
+                  <span className="inline-flex items-center gap-1 text-[11px] text-neutral-500">
+                    <CheckCircle className="h-3 w-3 text-brand-600" strokeWidth={1.5} />
+                    {cert.holder}
+                  </span>
+                  {(cert.validFrom || cert.validUntil || cert.issued) && (
+                    <span className="inline-flex items-center gap-1 text-[11px] text-neutral-400">
+                      <Calendar className="h-3 w-3" strokeWidth={1.5} />
+                      {cert.validUntil
+                        ? `Valid till ${cert.validUntil}`
+                        : cert.issued ?? cert.validFrom}
+                    </span>
+                  )}
+                </div>
+
+                <div className="absolute bottom-0 left-0 h-0.5 w-0 bg-brand-600 transition-all duration-300 group-hover:w-full" />
+              </motion.div>
+            ))}
+          </AnimatedSection>
+
+          <AnimatedSection className="mt-10 text-center">
+            <motion.p variants={fadeInUp} custom={0.4} className="text-sm text-neutral-500">
+              Joint-Venture Manufacturing Partner with Fortune Ventures Pvt. Ltd. — Prime Ceramics tile manufacturing in Nepal.
+            </motion.p>
           </AnimatedSection>
         </Container>
       </section>
+
+      {/* Client Testimonials */}
+      <Testimonials />
 
       {/* CTA Section */}
       <ContactCTA />

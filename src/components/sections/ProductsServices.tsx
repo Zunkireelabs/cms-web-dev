@@ -105,7 +105,7 @@ export function ProductsServices() {
               Products & Services
             </h2>
             <p className="mt-3 text-neutral-500 text-base">
-              Integrated building solutions from 13 global partners
+              Integrated building solutions from 60+ global brand partners
             </p>
           </div>
           <span className="text-sm text-neutral-400 font-medium">

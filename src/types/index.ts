@@ -43,6 +43,7 @@ export interface Director {
   title: string;
   company: string;
   bio: string;
+  summary?: string;
   photo?: string;
   order: number;
 }

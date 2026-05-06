@@ -1,6 +1,17 @@
 import Link from 'next/link';
 import { Container } from '@/components/ui/Container';
-import { AboutUs, CareersCTA, ContactCTA, Hero, Highlights, ImpactMetrics, ProductsServices, ProjectMap } from '@/components/sections';
+import {
+  AboutUs,
+  CareersCTA,
+  ChairmanMessage,
+  ContactCTA,
+  Hero,
+  Highlights,
+  ImpactMetrics,
+  ProductsServices,
+  ProjectMap,
+  Ventures,
+} from '@/components/sections';
 
 export default function HomePage() {
   return (
@@ -14,8 +25,14 @@ export default function HomePage() {
       {/* About Us Section */}
       <AboutUs />
 
+      {/* Chairman's Message Section */}
+      <ChairmanMessage />
+
       {/* Products & Services Section */}
       <ProductsServices />
+
+      {/* Our Ventures Section */}
+      <Ventures />
 
       {/* Impact Metrics Section */}
       <ImpactMetrics />
@@ -30,7 +47,7 @@ export default function HomePage() {
               Project Overview
             </h2>
             <p className="mt-2 text-neutral-500 text-base">
-              Our projects across Nepal - highlighting locations and impact
+              200+ projects delivered across Nepal — spanning hospitals, hotels, airports, offices, education, and residential sectors
             </p>
           </div>
 

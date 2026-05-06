@@ -2,18 +2,47 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Container } from '@/components/ui/Container';
 import { ContactCTA } from '@/components/sections';
-import { getAllBrandsWithDomain } from '@/data/products';
-import { ArrowRight, ShoppingBag } from 'lucide-react';
+import { PROJECTS } from '@/data/projects';
+import { SECTORS } from '@/data/sectors';
+import {
+  ArrowRight,
+  Building2,
+  Hammer,
+  HardHat,
+  Leaf,
+  MapPin,
+} from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Interior Contracting',
+  title: 'Contracting Division',
   description:
-    'Interior contracting services powered by 13 world-leading brand partners across ceiling systems, roofing, facades, and more.',
+    'Comprehensive interior contracting through Cubic Meter — full-service partner for hotels, hospitals, offices, airports, and residential projects across Nepal.',
 };
 
-export default function ContractingPage() {
-  const brands = getAllBrandsWithDomain();
+const SERVICES = [
+  {
+    icon: Hammer,
+    title: 'Interior Contracting & Fit-Out',
+    description:
+      'End-to-end interior fit-out for commercial, hospitality, and institutional projects — flooring, ceiling, partitions, doors, hardware, sanitaryware, and bespoke finishes.',
+  },
+  {
+    icon: HardHat,
+    title: 'Project Execution & Management',
+    description:
+      'Globally trained installers, structured project management, and stringent quality control. We deliver on time and to specification, from material procurement through commissioning.',
+  },
+  {
+    icon: Leaf,
+    title: 'Renovation & Sustainable Solutions',
+    description:
+      'Renovation contracting that brings ageing assets up to current codes, with eco-friendly material sourcing and energy-efficient systems aligned to green-building standards.',
+  },
+];
 
+const FEATURED_PROJECTS = PROJECTS.filter((p) => p.featured).slice(0, 6);
+
+export default function ContractingPage() {
   return (
     <>
       {/* Hero Section */}
@@ -34,72 +63,153 @@ export default function ContractingPage() {
               Contracting Division
             </span>
             <h1 className="mt-4 text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
-              Interior Contracting
+              Interior Contracting, End to End
             </h1>
             <p className="mt-6 text-xl text-neutral-300 leading-relaxed">
-              We deliver full-service interior contracting powered by{' '}
-              <span className="font-semibold text-white">{brands.length} world-leading brand partners</span>.
-              From ceiling systems to bathroom solutions, our contracting division
-              brings together the best products for exceptional project execution.
+              Through{' '}
+              <span className="font-semibold text-white">Cubic Meter Pvt. Ltd.</span> — our
+              dedicated interior contracting venture — we translate client visions into
+              tangible spaces. Material supply, installation, and on-site execution under
+              one accountable partner.
             </p>
           </div>
         </Container>
       </section>
 
-      {/* Brands Grid */}
+      {/* Services Section */}
       <section className="py-20 lg:py-28">
         <Container>
-          <div className="mb-12 max-w-2xl">
-            <h2 className="text-2xl font-bold text-neutral-charcoal sm:text-3xl">
-              Our Brand Partners
+          <div className="mx-auto mb-16 max-w-2xl text-center">
+            <span className="inline-block rounded-full bg-brand-100 px-4 py-1.5 text-sm font-semibold text-brand-700">
+              What We Do
+            </span>
+            <h2 className="mt-4 text-3xl font-bold tracking-tight text-neutral-charcoal sm:text-4xl">
+              Our Contracting Services
             </h2>
             <p className="mt-4 text-neutral-600">
-              Every contracting project is backed by premium products from our authorized
-              brand partners, ensuring quality and reliability.
+              From a single bathroom retrofit to a 1,50,000 sq.ft office fit-out — same
+              standard of execution.
             </p>
           </div>
 
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {brands.map((brand) => (
+          <div className="grid gap-6 md:grid-cols-3">
+            {SERVICES.map((service) => (
               <div
-                key={`${brand.domainSlug}-${brand.name}`}
-                className="group relative overflow-hidden rounded-2xl border border-neutral-border bg-white p-6 shadow-card transition-all duration-300 hover:shadow-card-hover"
+                key={service.title}
+                className="rounded-2xl border border-neutral-border bg-white p-8 shadow-card transition-all duration-300 hover:shadow-card-hover"
               >
-                {/* Domain category label */}
-                <span className="inline-block rounded-full bg-brand-50 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-brand-700">
-                  {brand.domainTitle}
-                </span>
-
-                {/* Brand name */}
-                <h3 className="mt-4 text-xl font-bold text-neutral-charcoal group-hover:text-brand-600 transition-colors">
-                  {brand.name}
-                </h3>
-
-                {/* Description */}
-                <p className="mt-2 text-sm text-neutral-600 leading-relaxed line-clamp-3">
-                  {brand.description}
-                </p>
-
-                {/* Action Buttons */}
-                <div className="mt-6 flex flex-wrap gap-3">
-                  <Link
-                    href="/contact"
-                    className="inline-flex items-center gap-2 rounded-lg bg-brand-700 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-800"
-                  >
-                    Contact Us
-                    <ArrowRight className="h-4 w-4" />
-                  </Link>
-                  <Link
-                    href={`/trading/${brand.domainSlug}`}
-                    className="inline-flex items-center gap-2 rounded-lg border-2 border-brand-200 px-5 py-2.5 text-sm font-semibold text-brand-700 transition-colors hover:bg-brand-50"
-                  >
-                    <ShoppingBag className="h-4 w-4" />
-                    View Products
-                  </Link>
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-50 text-brand-600">
+                  <service.icon className="h-6 w-6" />
                 </div>
+                <h3 className="mt-5 text-xl font-bold text-neutral-charcoal">
+                  {service.title}
+                </h3>
+                <p className="mt-3 text-sm leading-relaxed text-neutral-600">
+                  {service.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </Container>
+      </section>
 
-                {/* Bottom accent */}
-                <div className="absolute bottom-0 left-0 h-1 w-0 bg-brand-600 transition-all duration-300 group-hover:w-full" />
+      {/* Sectors We Serve */}
+      <section className="bg-neutral-off-white py-20 lg:py-28">
+        <Container>
+          <div className="mx-auto mb-16 max-w-2xl text-center">
+            <span className="inline-block rounded-full bg-brand-100 px-4 py-1.5 text-sm font-semibold text-brand-700">
+              Sectors
+            </span>
+            <h2 className="mt-4 text-3xl font-bold tracking-tight text-neutral-charcoal sm:text-4xl">
+              Sectors We Serve
+            </h2>
+            <p className="mt-4 text-neutral-600">
+              Six specialised sectors with distinct technical requirements — covered by
+              tailored contracting playbooks.
+            </p>
+          </div>
+
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {SECTORS.map((sector) => (
+              <Link
+                key={sector.slug}
+                href={`/services#${sector.slug}`}
+                className="group flex items-start gap-4 rounded-xl border border-neutral-border bg-white p-6 transition-all hover:border-brand-300 hover:shadow-card"
+              >
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-600">
+                  <sector.icon className="h-5 w-5" strokeWidth={1.5} />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-neutral-charcoal group-hover:text-brand-700 transition-colors">
+                    {sector.name}
+                  </h3>
+                  <p className="mt-1 text-sm text-neutral-600 leading-relaxed">
+                    {sector.summary}
+                  </p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      {/* Featured Projects */}
+      <section className="py-20 lg:py-28">
+        <Container>
+          <div className="mb-12 flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
+            <div>
+              <span className="inline-block rounded-full bg-brand-100 px-4 py-1.5 text-sm font-semibold text-brand-700">
+                Track Record
+              </span>
+              <h2 className="mt-4 text-3xl font-bold tracking-tight text-neutral-charcoal sm:text-4xl">
+                Featured Contracting Projects
+              </h2>
+              <p className="mt-4 max-w-2xl text-neutral-600">
+                A selection of recent work across hospitals, hotels, banks, and airports
+                in Nepal.
+              </p>
+            </div>
+            <Link
+              href="/projects"
+              className="inline-flex items-center gap-2 rounded-lg border-2 border-brand-200 px-5 py-2.5 text-sm font-semibold text-brand-700 transition-colors hover:bg-brand-50"
+            >
+              View All Projects
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {FEATURED_PROJECTS.map((project) => (
+              <div
+                key={project.id}
+                className="group rounded-2xl border border-neutral-border bg-white p-6 shadow-card transition-all hover:shadow-card-hover"
+              >
+                <div className="flex items-start justify-between gap-3 mb-3">
+                  {project.sector && (
+                    <span className="inline-block rounded-full bg-brand-50 px-2.5 py-0.5 text-xs font-medium capitalize text-brand-700">
+                      {project.sector}
+                    </span>
+                  )}
+                  <span className="text-[10px] font-semibold uppercase tracking-wider text-neutral-400">
+                    {project.year}
+                  </span>
+                </div>
+                <h3 className="text-lg font-semibold text-neutral-charcoal group-hover:text-brand-700 transition-colors leading-tight">
+                  {project.title}
+                </h3>
+                <div className="mt-2 flex items-center gap-1.5 text-xs text-neutral-500">
+                  <MapPin className="h-3 w-3 text-brand-600" strokeWidth={1.5} />
+                  <span>{project.location}</span>
+                </div>
+                {project.area && (
+                  <div className="mt-2 flex items-center gap-1.5 text-xs text-neutral-500">
+                    <Building2 className="h-3 w-3 text-brand-600" strokeWidth={1.5} />
+                    <span>{project.area}</span>
+                  </div>
+                )}
+                <p className="mt-4 text-sm text-neutral-600 leading-relaxed line-clamp-3">
+                  {project.description}
+                </p>
               </div>
             ))}
           </div>

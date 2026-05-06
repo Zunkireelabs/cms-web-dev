@@ -1,242 +1,103 @@
 'use client';
 
-import { useState, useRef } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
+import { useState, useRef, useMemo } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Container } from '@/components/ui/Container';
 import { ContactCTA } from '@/components/sections';
-import { Calendar, ArrowRight, Tag, Clock } from 'lucide-react';
-interface NewsArticle {
-  id: string;
-  title: string;
-  excerpt: string;
-  category: string;
-  date: string;
-  readTime: string;
-  image: string;
-  featured?: boolean;
-}
+import {
+  EVENTS,
+  EVENT_CATEGORY_LABELS,
+  type CMSEvent,
+  type EventCategory,
+} from '@/data/events';
+import {
+  Calendar,
+  Flag,
+  GraduationCap,
+  Handshake,
+  Heart,
+  Megaphone,
+  Sparkles,
+  type LucideIcon,
+} from 'lucide-react';
 
-const NEWS_ARTICLES: NewsArticle[] = [
-  {
-    id: 'hyatt-regency-completion',
-    title: 'CMS Completes Hyatt Regency Kathmandu Interior Fit-Out',
-    excerpt: 'Successfully delivered the complete interior fit-out for 300+ rooms including lobby, restaurants, and conference facilities at the prestigious Hyatt Regency Kathmandu.',
-    category: 'Projects',
-    date: 'January 2026',
-    readTime: '3 min read',
-    image: '/images/projects/hospitality.jpg',
-    featured: true,
-  },
-  {
-    id: 'hunter-douglas-partnership',
-    title: 'New Partnership with Hunter Douglas for Premium Facade Solutions',
-    excerpt: 'CMS expands its facade solutions portfolio through an exclusive partnership with Hunter Douglas, bringing world-class architectural products to Nepal.',
-    category: 'Partnership',
-    date: 'January 2026',
-    readTime: '2 min read',
-    image: '/images/products/facade.jpg',
-  },
-  {
-    id: '200-projects-milestone',
-    title: 'Celebrating 200+ Successfully Delivered Projects Across Nepal',
-    excerpt: 'A major milestone achievement as CMS reaches over 200 completed projects spanning hospitality, healthcare, corporate, and residential sectors.',
-    category: 'Achievement',
-    date: 'December 2025',
-    readTime: '4 min read',
-    image: '/images/hero/project-1.jpg',
-  },
-  {
-    id: 'mep-expansion',
-    title: 'CMS Expands MEP Services Division with New Technical Team',
-    excerpt: 'Strengthening our mechanical, electrical, and plumbing services capabilities with the addition of experienced engineers and technicians.',
-    category: 'Company News',
-    date: 'November 2025',
-    readTime: '2 min read',
-    image: '/images/hero/project-5.jpg',
-  },
-  {
-    id: 'green-building-initiative',
-    title: 'CMS Launches Green Building Initiative for Sustainable Construction',
-    excerpt: 'Introducing eco-friendly construction practices and sustainable materials to reduce environmental impact across all projects.',
-    category: 'Sustainability',
-    date: 'October 2025',
-    readTime: '3 min read',
-    image: '/images/hero/project-3.jpg',
-  },
-  {
-    id: 'nepal-medical-center',
-    title: 'Nepal Medical Center Project Wins Healthcare Design Excellence Award',
-    excerpt: 'Our interior fit-out work at Nepal Medical Center recognized for exceptional design and execution in healthcare facilities.',
-    category: 'Awards',
-    date: 'September 2025',
-    readTime: '2 min read',
-    image: '/images/hero/project-4.jpg',
-  },
-  {
-    id: 'iko-roofing-launch',
-    title: 'Introducing IKO Premium Roofing Systems to Nepal Market',
-    excerpt: 'CMS brings internationally acclaimed IKO roofing solutions to Nepal, offering superior durability and weather protection.',
-    category: 'Products',
-    date: 'August 2025',
-    readTime: '3 min read',
-    image: '/images/hero/project-2.jpg',
-  },
-  {
-    id: 'training-program',
-    title: 'CMS Launches Skill Development Program for Construction Workers',
-    excerpt: 'Investing in workforce development through comprehensive training programs focused on safety, quality, and modern construction techniques.',
-    category: 'CSR',
-    date: 'July 2025',
-    readTime: '4 min read',
-    image: '/images/hero/project-1.jpg',
-  },
-];
+const CATEGORY_ICONS: Record<EventCategory, LucideIcon> = {
+  training: GraduationCap,
+  partnership: Handshake,
+  csr: Heart,
+  'trade-show': Megaphone,
+  internal: Sparkles,
+  milestone: Flag,
+};
 
-const CATEGORIES = ['All', 'Projects', 'Partnership', 'Achievement', 'Company News', 'Products', 'Awards', 'CSR', 'Sustainability'];
+const CATEGORY_GRADIENTS: Record<EventCategory, string> = {
+  training: 'from-blue-500/20 to-blue-700/40',
+  partnership: 'from-amber-500/20 to-amber-700/40',
+  csr: 'from-rose-500/20 to-rose-700/40',
+  'trade-show': 'from-violet-500/20 to-violet-700/40',
+  internal: 'from-emerald-500/20 to-emerald-700/40',
+  milestone: 'from-orange-500/30 to-orange-700/50',
+};
 
-const fadeInUp = {
-  hidden: { opacity: 0, y: 30 },
+const ALL_FILTER = 'all' as const;
+type FilterValue = EventCategory | typeof ALL_FILTER;
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 25 },
   visible: (delay: number) => ({
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6, delay, ease: [0.25, 0.46, 0.45, 0.94] },
+    transition: { duration: 0.5, delay, ease: [0.25, 0.46, 0.45, 0.94] },
   }),
 };
 
-const staggerContainer = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.1 },
-  },
-};
-
-function AnimatedSection({ children, className }: { children: React.ReactNode; className?: string }) {
+function EventCard({ event, index }: { event: CMSEvent; index: number }) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const isInView = useInView(ref, { once: true, margin: '-50px' });
+  const Icon = CATEGORY_ICONS[event.category];
 
   return (
-    <motion.div
+    <motion.article
       ref={ref}
+      variants={fadeUp}
       initial="hidden"
       animate={isInView ? 'visible' : 'hidden'}
-      variants={staggerContainer}
-      className={className}
+      custom={index * 0.04}
+      className="group flex flex-col overflow-hidden rounded-xl border border-neutral-200 bg-white transition-shadow hover:shadow-lg"
     >
-      {children}
-    </motion.div>
-  );
-}
-
-function NewsCard({ article, index }: { article: NewsArticle; index: number }) {
-  return (
-    <motion.article
-      variants={fadeInUp}
-      custom={index * 0.05}
-      className="group bg-white rounded-xl overflow-hidden border border-neutral-200 hover:shadow-lg transition-shadow duration-300"
-    >
-      {/* Image */}
-      <div className="relative aspect-[16/10] overflow-hidden bg-neutral-100">
-        <Image
-          src={article.image}
-          alt={article.title}
-          fill
-          className="object-cover group-hover:scale-105 transition-transform duration-500"
-        />
+      {/* Visual block (gradient + icon, no real photo asset yet) */}
+      <div className={`relative aspect-[16/10] bg-gradient-to-br ${CATEGORY_GRADIENTS[event.category]} bg-neutral-900`}>
+        <div className="absolute inset-0 flex items-center justify-center">
+          <Icon className="h-16 w-16 text-white/40" strokeWidth={1.2} />
+        </div>
         <div className="absolute top-4 left-4">
-          <span className="inline-block px-3 py-1 bg-accent text-white text-xs font-semibold rounded-full">
-            {article.category}
+          <span className="inline-block px-3 py-1 bg-white/95 text-neutral-900 text-xs font-semibold rounded-full">
+            {EVENT_CATEGORY_LABELS[event.category]}
           </span>
+        </div>
+        {/* Date badge — overlay style matching PDF gallery cards */}
+        <div className="absolute bottom-4 left-4">
+          <div className="flex items-center bg-accent text-white rounded-lg overflow-hidden shadow-lg">
+            <div className="px-3 py-2 text-center border-r border-white/20">
+              <div className="text-[10px] font-semibold uppercase tracking-wider opacity-90">
+                {event.month}
+              </div>
+              <div className="text-lg font-bold leading-none">{event.year}</div>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Content */}
-      <div className="p-6">
-        <div className="flex items-center gap-4 text-sm text-neutral-500 mb-3">
-          <span className="flex items-center gap-1">
-            <Calendar className="w-4 h-4" />
-            {article.date}
-          </span>
-          <span className="flex items-center gap-1">
-            <Clock className="w-4 h-4" />
-            {article.readTime}
-          </span>
-        </div>
-
-        <h3 className="text-lg font-semibold text-neutral-900 mb-2 group-hover:text-accent transition-colors line-clamp-2">
-          {article.title}
+      <div className="flex flex-col flex-1 p-6">
+        <h3 className="text-lg font-semibold text-neutral-900 leading-tight group-hover:text-accent transition-colors">
+          {event.title}
         </h3>
-
-        <p className="text-neutral-600 text-sm leading-relaxed mb-4 line-clamp-3">
-          {article.excerpt}
+        <p className="mt-3 text-sm text-neutral-600 leading-relaxed flex-1">
+          {event.description}
         </p>
-
-        <span className="inline-flex items-center gap-1 text-accent font-medium text-sm group-hover:gap-2 transition-all">
-          Read More
-          <ArrowRight className="w-4 h-4" />
-        </span>
-      </div>
-    </motion.article>
-  );
-}
-
-function FeaturedNewsCard({ article }: { article: NewsArticle }) {
-  return (
-    <motion.article
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.3 }}
-      className="group bg-white rounded-2xl overflow-hidden border border-neutral-200 shadow-lg"
-    >
-      <div className="grid lg:grid-cols-2">
-        {/* Image */}
-        <div className="relative aspect-[16/10] lg:aspect-auto overflow-hidden bg-neutral-100">
-          <Image
-            src={article.image}
-            alt={article.title}
-            fill
-            className="object-cover group-hover:scale-105 transition-transform duration-500"
-          />
-          <div className="absolute top-4 left-4">
-            <span className="inline-block px-4 py-1.5 bg-accent text-white text-sm font-semibold rounded-full">
-              Featured
-            </span>
-          </div>
-        </div>
-
-        {/* Content */}
-        <div className="p-8 lg:p-10 flex flex-col justify-center">
-          <div className="flex items-center gap-4 text-sm text-neutral-500 mb-4">
-            <span className="inline-flex items-center gap-1 px-3 py-1 bg-neutral-100 rounded-full">
-              <Tag className="w-3 h-3" />
-              {article.category}
-            </span>
-            <span className="flex items-center gap-1">
-              <Calendar className="w-4 h-4" />
-              {article.date}
-            </span>
-          </div>
-
-          <h2 className="text-2xl lg:text-3xl font-bold text-neutral-900 mb-4 group-hover:text-accent transition-colors">
-            {article.title}
-          </h2>
-
-          <p className="text-neutral-600 leading-relaxed mb-6">
-            {article.excerpt}
-          </p>
-
-          <div className="flex items-center gap-4">
-            <span className="inline-flex items-center gap-2 px-6 py-3 bg-accent text-white font-semibold rounded-full hover:bg-accent-700 transition-colors cursor-pointer">
-              Read Full Story
-              <ArrowRight className="w-4 h-4" />
-            </span>
-            <span className="text-sm text-neutral-500 flex items-center gap-1">
-              <Clock className="w-4 h-4" />
-              {article.readTime}
-            </span>
-          </div>
+        <div className="mt-5 flex items-center gap-2 text-xs text-neutral-400">
+          <Calendar className="h-3.5 w-3.5" />
+          {event.date}
         </div>
       </div>
     </motion.article>
@@ -244,17 +105,26 @@ function FeaturedNewsCard({ article }: { article: NewsArticle }) {
 }
 
 export default function NewsroomPage() {
-  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [selectedCategory, setSelectedCategory] = useState<FilterValue>(ALL_FILTER);
 
-  const featuredArticle = NEWS_ARTICLES.find(a => a.featured);
-  const filteredArticles = NEWS_ARTICLES.filter(article => {
-    if (selectedCategory === 'All') return !article.featured;
-    return article.category === selectedCategory && !article.featured;
-  });
+  const featuredEvent = EVENTS.find((e) => e.featured);
+  const filteredEvents = useMemo(
+    () =>
+      EVENTS.filter((e) => {
+        if (e.featured) return false;
+        if (selectedCategory === ALL_FILTER) return true;
+        return e.category === selectedCategory;
+      }),
+    [selectedCategory],
+  );
+
+  const categoryEntries = (Object.entries(EVENT_CATEGORY_LABELS) as [EventCategory, string][]).map(
+    ([value, label]) => ({ value, label }),
+  );
 
   return (
     <>
-      {/* Hero Section */}
+      {/* Hero */}
       <section className="relative overflow-hidden bg-neutral-900 py-20 lg:py-28">
         <div className="absolute inset-0 opacity-10">
           <div
@@ -269,89 +139,134 @@ export default function NewsroomPage() {
         <Container className="relative">
           <div className="mx-auto max-w-3xl text-center">
             <motion.span
-              variants={fadeInUp}
-              initial="hidden"
-              animate="visible"
-              custom={0}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
               className="inline-block rounded-full bg-white/10 px-4 py-1.5 text-sm font-medium text-white backdrop-blur-sm"
             >
               Newsroom
             </motion.span>
             <motion.h1
-              variants={fadeInUp}
-              initial="hidden"
-              animate="visible"
-              custom={0.1}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
               className="mt-4 text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl"
             >
-              Latest News & Updates
+              Events, Training &amp; Community
             </motion.h1>
             <motion.p
-              variants={fadeInUp}
-              initial="hidden"
-              animate="visible"
-              custom={0.2}
-              className="mt-6 text-xl text-neutral-300"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="mt-6 text-xl text-neutral-300 leading-relaxed"
             >
-              Stay updated with the latest news, project completions, partnerships, and achievements from CMS Trading & Contracting.
+              Product launches, partner training, trade shows, and CSR initiatives —
+              moments from across CMS Group ventures since 2017.
             </motion.p>
           </div>
         </Container>
       </section>
 
-      {/* Featured Article */}
-      {featuredArticle && (
+      {/* Featured Event */}
+      {featuredEvent && (
         <section className="py-12 lg:py-16 bg-neutral-50">
           <Container>
-            <FeaturedNewsCard article={featuredArticle} />
+            <motion.article
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="group bg-white rounded-2xl overflow-hidden border border-neutral-200 shadow-lg"
+            >
+              <div className="grid lg:grid-cols-2">
+                <div className={`relative aspect-[16/10] lg:aspect-auto bg-gradient-to-br ${CATEGORY_GRADIENTS[featuredEvent.category]} bg-neutral-900`}>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    {(() => {
+                      const Icon = CATEGORY_ICONS[featuredEvent.category];
+                      return <Icon className="h-24 w-24 text-white/40" strokeWidth={1.2} />;
+                    })()}
+                  </div>
+                  <div className="absolute top-4 left-4">
+                    <span className="inline-block px-4 py-1.5 bg-accent text-white text-sm font-semibold rounded-full">
+                      Featured
+                    </span>
+                  </div>
+                </div>
+
+                <div className="p-8 lg:p-10 flex flex-col justify-center">
+                  <div className="flex items-center gap-3 text-sm text-neutral-500 mb-4">
+                    <span className="inline-flex items-center gap-1 px-3 py-1 bg-neutral-100 rounded-full">
+                      {EVENT_CATEGORY_LABELS[featuredEvent.category]}
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <Calendar className="w-4 h-4" />
+                      {featuredEvent.date}
+                    </span>
+                  </div>
+                  <h2 className="text-2xl lg:text-3xl font-bold text-neutral-900 mb-4 group-hover:text-accent transition-colors">
+                    {featuredEvent.title}
+                  </h2>
+                  <p className="text-neutral-600 leading-relaxed">
+                    {featuredEvent.description}
+                  </p>
+                </div>
+              </div>
+            </motion.article>
           </Container>
         </section>
       )}
 
       {/* Category Filter */}
-      <section className="py-8 bg-white border-b border-neutral-200 sticky top-0 z-20">
+      <section className="py-6 bg-white border-b border-neutral-200 sticky top-16 z-20 lg:top-20">
         <Container>
-          <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-hide">
-            {CATEGORIES.map((category) => (
-              <button
-                key={category}
-                onClick={() => setSelectedCategory(category)}
-                className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
-                  selectedCategory === category
-                    ? 'bg-accent text-white'
-                    : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
-                }`}
-              >
-                {category}
-              </button>
-            ))}
+          <div className="flex items-center gap-2 overflow-x-auto pb-1">
+            <button
+              onClick={() => setSelectedCategory(ALL_FILTER)}
+              className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
+                selectedCategory === ALL_FILTER
+                  ? 'bg-accent text-white'
+                  : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
+              }`}
+            >
+              All Events
+              <span className="ml-1.5 text-xs opacity-70">
+                ({EVENTS.filter((e) => !e.featured).length})
+              </span>
+            </button>
+            {categoryEntries.map(({ value, label }) => {
+              const count = EVENTS.filter((e) => !e.featured && e.category === value).length;
+              if (count === 0) return null;
+              return (
+                <button
+                  key={value}
+                  onClick={() => setSelectedCategory(value)}
+                  className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
+                    selectedCategory === value
+                      ? 'bg-accent text-white'
+                      : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
+                  }`}
+                >
+                  {label}
+                  <span className="ml-1.5 text-xs opacity-70">({count})</span>
+                </button>
+              );
+            })}
           </div>
         </Container>
       </section>
 
-      {/* News Grid */}
+      {/* Events Grid */}
       <section className="py-16 lg:py-20 bg-neutral-50">
         <Container>
-          <AnimatedSection>
-            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-              {filteredArticles.map((article, index) => (
-                <NewsCard key={article.id} article={article} index={index} />
-              ))}
-            </div>
-          </AnimatedSection>
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {filteredEvents.map((event, index) => (
+              <EventCard key={event.id} event={event} index={index} />
+            ))}
+          </div>
 
-          {filteredArticles.length === 0 && (
+          {filteredEvents.length === 0 && (
             <div className="text-center py-12">
-              <p className="text-neutral-500">No articles found in this category.</p>
+              <p className="text-neutral-500">No events found in this category.</p>
             </div>
           )}
-
-          {/* Load More Button */}
-          <div className="mt-12 text-center">
-            <button className="inline-flex items-center gap-2 px-8 py-3.5 border-2 border-neutral-300 text-neutral-700 font-semibold rounded-full hover:border-accent hover:text-accent transition-colors">
-              Load More Articles
-            </button>
-          </div>
         </Container>
       </section>
 
@@ -359,11 +274,10 @@ export default function NewsroomPage() {
       <section className="py-20 bg-white">
         <Container>
           <div className="max-w-2xl mx-auto text-center">
-            <h2 className="text-3xl font-bold text-neutral-900 mb-4">
-              Stay Informed
-            </h2>
+            <h2 className="text-3xl font-bold text-neutral-900 mb-4">Stay Informed</h2>
             <p className="text-neutral-600 mb-8">
-              Subscribe to our newsletter for the latest updates on projects, partnerships, and industry insights.
+              Get notified about upcoming events, product launches, and CSR initiatives
+              across CMS Group ventures.
             </p>
             <form className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
               <input

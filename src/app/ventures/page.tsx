@@ -1,0 +1,264 @@
+'use client';
+
+import { useRef } from 'react';
+import Link from 'next/link';
+import { motion, useInView } from 'framer-motion';
+import { Container } from '@/components/ui/Container';
+import { ContactCTA } from '@/components/sections';
+import { VENTURES } from '@/data/ventures';
+import { getBrandsByVenture, type VentureSlug } from '@/data/brands';
+import {
+  ArrowRight,
+  Armchair,
+  Bath,
+  Boxes,
+  Calendar,
+  CheckCircle2,
+  Grid3x3,
+  Layers,
+  Recycle,
+  Sparkles,
+  Wrench,
+  type LucideIcon,
+} from 'lucide-react';
+import type { Venture } from '@/types';
+
+const VENTURE_ICONS: Record<string, LucideIcon> = {
+  'bath-n-room': Bath,
+  'baba-muktinath': Wrench,
+  '4r-technologies': Recycle,
+  'cubic-meter': Boxes,
+  techwood: Armchair,
+  'prime-ceramics': Grid3x3,
+};
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 25 },
+  visible: (delay: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, delay, ease: [0.25, 0.46, 0.45, 0.94] },
+  }),
+};
+
+function isDistributingVenture(slug: string): slug is VentureSlug {
+  return ['bath-n-room', 'baba-muktinath', '4r-technologies', 'techwood'].includes(slug);
+}
+
+function VentureSection({ venture, index }: { venture: Venture; index: number }) {
+  const ref = useRef<HTMLElement>(null);
+  const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const isEven = index % 2 === 0;
+  const Icon = VENTURE_ICONS[venture.slug] ?? Layers;
+
+  const brandCount = isDistributingVenture(venture.slug)
+    ? getBrandsByVenture(venture.slug).length
+    : 0;
+
+  const isContractingVenture = venture.slug === 'cubic-meter';
+  const isJointVenture = venture.slug === 'prime-ceramics';
+
+  return (
+    <section
+      ref={ref}
+      id={venture.slug}
+      className={`scroll-mt-24 py-16 lg:py-24 ${isEven ? 'bg-white' : 'bg-neutral-off-white'}`}
+    >
+      <Container>
+        <motion.div
+          initial="hidden"
+          animate={isInView ? 'visible' : 'hidden'}
+          className="grid gap-10 lg:grid-cols-12 lg:gap-14 items-start"
+        >
+          {/* Left — Identity */}
+          <motion.div variants={fadeUp} custom={0} className="lg:col-span-4">
+            <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-brand-50 text-brand-600">
+              <Icon className="h-7 w-7" strokeWidth={1.5} />
+            </div>
+            <span className="mt-5 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-brand-600">
+              <Calendar className="h-3 w-3" strokeWidth={1.5} />
+              Founded {venture.founded}
+            </span>
+            <h2 className="mt-2 text-3xl font-bold tracking-tight text-neutral-charcoal sm:text-4xl">
+              {venture.shortName}
+            </h2>
+            {venture.tagline && (
+              <p className="mt-3 text-base text-brand-700 font-medium leading-tight">
+                {venture.tagline}
+              </p>
+            )}
+            <p className="mt-4 text-sm text-neutral-600 leading-relaxed">
+              {venture.description}
+            </p>
+
+            {/* Stat strip + cross-links */}
+            <div className="mt-6 flex flex-wrap gap-3">
+              {brandCount > 0 && (
+                <Link
+                  href="/brands"
+                  className="inline-flex items-center gap-2 rounded-lg border border-neutral-200 bg-white px-4 py-2 text-sm transition-colors hover:border-brand-300 hover:bg-brand-50"
+                >
+                  <Sparkles className="h-3.5 w-3.5 text-brand-600" strokeWidth={1.5} />
+                  <span className="font-semibold text-neutral-700">
+                    {brandCount} brand partners
+                  </span>
+                  <ArrowRight className="h-3 w-3 text-neutral-400" />
+                </Link>
+              )}
+              {isContractingVenture && (
+                <Link
+                  href="/contracting"
+                  className="inline-flex items-center gap-2 rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-brand-700"
+                >
+                  Contracting Services
+                  <ArrowRight className="h-3.5 w-3.5" />
+                </Link>
+              )}
+              {isJointVenture && (
+                <span className="inline-flex items-center gap-2 rounded-lg border border-amber-200 bg-amber-50 px-4 py-2 text-sm">
+                  <span className="h-1.5 w-1.5 rounded-full bg-amber-500" />
+                  <span className="font-semibold text-amber-700">
+                    JV with Fortune Ventures
+                  </span>
+                </span>
+              )}
+            </div>
+          </motion.div>
+
+          {/* Right — Products grid OR contracting message */}
+          <motion.div variants={fadeUp} custom={0.1} className="lg:col-span-8">
+            <div className="rounded-2xl border border-neutral-border bg-white p-6 shadow-card lg:p-8">
+              {venture.products.length > 0 ? (
+                <>
+                  <div className="flex items-baseline justify-between mb-5">
+                    <h3 className="text-sm font-semibold uppercase tracking-wider text-neutral-500">
+                      Product Range
+                    </h3>
+                    <span className="text-xs text-neutral-400">
+                      {venture.products.length} categories
+                    </span>
+                  </div>
+                  <ul className="grid gap-2 sm:grid-cols-2">
+                    {venture.products.map((product) => (
+                      <li
+                        key={product.name}
+                        className="flex items-start gap-2 rounded-lg border border-transparent p-2 text-sm text-neutral-700 leading-relaxed transition-colors hover:border-neutral-200 hover:bg-neutral-50"
+                      >
+                        <CheckCircle2
+                          className="mt-0.5 h-4 w-4 shrink-0 text-brand-600"
+                          strokeWidth={1.5}
+                        />
+                        <span>{product.name}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              ) : (
+                <div className="text-center py-10">
+                  <Boxes className="mx-auto h-12 w-12 text-brand-200" strokeWidth={1.2} />
+                  <h3 className="mt-4 text-base font-semibold text-neutral-charcoal">
+                    Service Venture — Contracting Only
+                  </h3>
+                  <p className="mt-2 text-sm text-neutral-500 max-w-md mx-auto">
+                    {venture.shortName} delivers end-to-end interior contracting using
+                    products supplied by sister ventures and authorised partner brands.
+                  </p>
+                  <Link
+                    href="/contracting"
+                    className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-brand-600 hover:text-brand-700"
+                  >
+                    See contracting services
+                    <ArrowRight className="h-3.5 w-3.5" />
+                  </Link>
+                </div>
+              )}
+            </div>
+          </motion.div>
+        </motion.div>
+      </Container>
+    </section>
+  );
+}
+
+export default function VenturesPage() {
+  const totalProducts = VENTURES.reduce((sum, v) => sum + v.products.length, 0);
+
+  return (
+    <>
+      {/* Hero Section */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-neutral-charcoal via-neutral-800 to-brand-900 py-20 lg:py-28">
+        <div className="absolute inset-0 opacity-10">
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundImage: `radial-gradient(circle at 1px 1px, white 1px, transparent 0)`,
+              backgroundSize: '32px 32px',
+            }}
+          />
+        </div>
+
+        <Container className="relative">
+          <div className="mx-auto max-w-3xl text-center">
+            <motion.span
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="inline-block rounded-full bg-white/10 px-4 py-1.5 text-sm font-medium text-white backdrop-blur-sm"
+            >
+              Associated Ventures
+            </motion.span>
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="mt-4 text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl"
+            >
+              Six Ventures, One Group
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="mt-6 text-xl text-neutral-300 leading-relaxed"
+            >
+              From Italian marble in 2002 to ceramic-tile manufacturing in 2021 — six
+              specialised businesses under the CMS Group umbrella, covering {totalProducts}+
+              product categories across trading, contracting, and manufacturing.
+            </motion.p>
+          </div>
+        </Container>
+      </section>
+
+      {/* Quick-jump Nav */}
+      <section className="sticky top-16 z-30 border-y border-neutral-border bg-white/95 backdrop-blur-md lg:top-20">
+        <Container>
+          <div className="flex flex-wrap items-center gap-2 py-3 sm:gap-3 sm:py-4">
+            <span className="text-xs font-semibold uppercase tracking-wider text-neutral-400 sm:mr-2">
+              Jump to
+            </span>
+            {VENTURES.map((venture) => {
+              const Icon = VENTURE_ICONS[venture.slug] ?? Layers;
+              return (
+                <a
+                  key={venture.slug}
+                  href={`#${venture.slug}`}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-neutral-200 px-3 py-1.5 text-xs font-medium text-neutral-700 transition-colors hover:border-brand-300 hover:bg-brand-50 hover:text-brand-700 sm:text-sm"
+                >
+                  <Icon className="h-3.5 w-3.5" strokeWidth={1.5} />
+                  {venture.shortName}
+                </a>
+              );
+            })}
+          </div>
+        </Container>
+      </section>
+
+      {/* Per-venture deep-dives */}
+      {VENTURES.map((venture, index) => (
+        <VentureSection key={venture.slug} venture={venture} index={index} />
+      ))}
+
+      {/* CTA */}
+      <ContactCTA />
+    </>
+  );
+}
