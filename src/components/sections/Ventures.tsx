@@ -40,16 +40,24 @@ export function Ventures() {
           className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10 lg:mb-12"
         >
           <div>
-            <div className="h-[3px] w-12 bg-accent mb-5" />
-            <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-medium text-neutral-900 tracking-tight">
-              Our Ventures
+            <div className="inline-flex items-center gap-3">
+              <span className="h-px w-8 bg-accent" />
+              <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-accent">
+                Associated Ventures
+              </span>
+            </div>
+            <h2 className="mt-5 font-display text-3xl font-bold tracking-tight leading-[1.1] text-neutral-charcoal sm:text-4xl lg:text-5xl">
+              Six specialised businesses,
+              <br />
+              one CMS Group.
             </h2>
-            <p className="mt-3 text-neutral-500 text-base">
-              Six specialized businesses under the CMS Group umbrella
+            <p className="mt-5 max-w-xl text-base leading-relaxed text-neutral-600 sm:text-lg">
+              From Italian marble in 2002 to ceramic-tile manufacturing in 2021 — each
+              venture serves a distinct slice of the construction value chain.
             </p>
           </div>
-          <span className="text-sm text-neutral-400 font-medium">
-            Founded 2002 — 2021
+          <span className="text-sm font-semibold uppercase tracking-wider text-neutral-400">
+            2002 — 2021
           </span>
         </motion.div>
 

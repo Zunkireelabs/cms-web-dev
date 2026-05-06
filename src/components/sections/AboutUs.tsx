@@ -37,18 +37,21 @@ export function AboutUs() {
             animate={isInView ? 'visible' : 'hidden'}
             className="flex flex-col justify-center"
           >
-          {/* Gold Accent Line */}
-          <motion.div variants={fadeUp} custom={0}>
-            <div className="h-[3px] w-12 bg-accent mb-5" />
+          {/* Kicker */}
+          <motion.div variants={fadeUp} custom={0} className="inline-flex items-center gap-3">
+            <span className="h-px w-8 bg-accent" />
+            <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-accent">
+              About CMS Group
+            </span>
           </motion.div>
 
           {/* Heading */}
           <motion.h2
             variants={fadeUp}
             custom={0.1}
-            className="font-display text-3xl sm:text-4xl lg:text-[42px] font-medium tracking-tight text-neutral-900 leading-tight"
+            className="mt-5 font-display text-3xl font-bold tracking-tight leading-[1.1] text-neutral-charcoal sm:text-4xl lg:text-5xl"
           >
-            About Us
+            Two decades of building Nepal.
           </motion.h2>
 
           {/* Lead Paragraph - slightly bolder */}

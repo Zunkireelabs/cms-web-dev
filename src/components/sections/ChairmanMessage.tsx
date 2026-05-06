@@ -6,19 +6,12 @@ import Image from 'next/image';
 import { motion, useInView } from 'framer-motion';
 import { ArrowRight, Quote, User2 } from 'lucide-react';
 import { Container } from '@/components/ui/Container';
+import { KickerLabel } from '@/components/ui/KickerLabel';
 import { CHAIRMAN } from '@/data/leadership';
+import { fadeUp } from '@/lib/motion';
 
 const PULL_QUOTE =
   'We endeavor to meet the different needs of our esteemed clientele by emphasizing integration and complete solutions — setting new standards in the Nepalese market.';
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 25 },
-  visible: (delay: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, delay, ease: [0.25, 0.46, 0.45, 0.94] },
-  }),
-};
 
 export function ChairmanMessage() {
   const ref = useRef<HTMLElement>(null);
@@ -27,29 +20,33 @@ export function ChairmanMessage() {
   return (
     <section ref={ref} className="bg-white py-20 lg:py-28">
       <Container>
-        <div className="grid lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+        <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
           {/* Portrait */}
           <motion.div
             variants={fadeUp}
             initial="hidden"
             animate={isInView ? 'visible' : 'hidden'}
             custom={0}
-            className="lg:col-span-4 flex justify-center lg:justify-start"
+            className="lg:col-span-5"
           >
-            <div className="relative">
-              <div className="absolute -inset-4 bg-accent/10 rounded-2xl -z-10" />
-              <div className="relative h-56 w-56 sm:h-64 sm:w-64 rounded-2xl bg-gradient-to-br from-accent-50 to-neutral-100 flex items-center justify-center overflow-hidden">
+            <div className="relative mx-auto max-w-[420px] lg:mx-0">
+              <div className="absolute -bottom-4 -right-4 h-full w-full rounded-2xl bg-accent/15 -z-10" />
+              <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-gradient-to-br from-accent-50 to-neutral-100">
                 {CHAIRMAN.photo ? (
                   <Image
                     src={CHAIRMAN.photo}
                     alt={CHAIRMAN.name}
                     fill
-                    sizes="(max-width: 640px) 224px, 256px"
+                    sizes="(max-width: 1024px) 90vw, 420px"
                     className="object-cover"
                   />
                 ) : (
-                  <User2 className="h-24 w-24 text-accent/40" strokeWidth={1.2} />
+                  <div className="flex h-full w-full items-center justify-center">
+                    <User2 className="h-32 w-32 text-accent/40" strokeWidth={1.2} />
+                  </div>
                 )}
+                {/* Subtle vignette to hold the image to the page */}
+                <div className="absolute inset-0 bg-gradient-to-t from-neutral-charcoal/20 via-transparent to-transparent pointer-events-none" />
               </div>
             </div>
           </motion.div>
@@ -58,39 +55,42 @@ export function ChairmanMessage() {
           <motion.div
             initial="hidden"
             animate={isInView ? 'visible' : 'hidden'}
-            className="lg:col-span-8"
+            className="lg:col-span-7"
           >
             <motion.div variants={fadeUp} custom={0.05}>
-              <div className="h-[3px] w-12 bg-accent mb-5" />
-              <span className="text-xs font-medium uppercase tracking-[0.25em] text-neutral-400">
-                Chairman&apos;s Message
-              </span>
+              <KickerLabel>Chairman&apos;s Message</KickerLabel>
             </motion.div>
 
-            <motion.div variants={fadeUp} custom={0.15} className="mt-5">
-              <Quote className="h-8 w-8 text-accent/30" strokeWidth={1.5} />
-              <blockquote className="mt-3 font-display text-2xl sm:text-3xl lg:text-[32px] font-medium text-neutral-900 leading-snug tracking-tight">
-                {PULL_QUOTE}
+            <motion.div variants={fadeUp} custom={0.15} className="mt-6">
+              <Quote className="h-10 w-10 text-accent/30" strokeWidth={1.5} />
+              <blockquote className="mt-4 font-display text-2xl font-bold leading-tight tracking-tight text-neutral-charcoal sm:text-3xl lg:text-4xl">
+                &ldquo;{PULL_QUOTE}&rdquo;
               </blockquote>
             </motion.div>
 
-            <motion.div variants={fadeUp} custom={0.25} className="mt-7 flex items-center gap-4">
+            <motion.div
+              variants={fadeUp}
+              custom={0.25}
+              className="mt-8 flex items-center gap-4"
+            >
               <div className="h-px w-10 bg-accent" />
               <div>
-                <div className="font-semibold text-neutral-900 text-sm">{CHAIRMAN.name}</div>
-                <div className="text-xs uppercase tracking-wider text-neutral-500 mt-0.5">
-                  {CHAIRMAN.title}, {CHAIRMAN.company}
+                <div className="font-display text-base font-bold text-neutral-charcoal">
+                  {CHAIRMAN.name}
+                </div>
+                <div className="mt-0.5 text-xs uppercase tracking-wider text-neutral-500">
+                  {CHAIRMAN.title} · {CHAIRMAN.company}
                 </div>
               </div>
             </motion.div>
 
-            <motion.div variants={fadeUp} custom={0.3} className="mt-7">
+            <motion.div variants={fadeUp} custom={0.3} className="mt-8">
               <Link
                 href="/about#leadership"
-                className="inline-flex items-center gap-2 text-sm font-semibold text-accent hover:text-accent-700 transition-colors"
+                className="group inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-accent transition-colors hover:text-accent-700"
               >
                 Read full message
-                <ArrowRight className="h-3.5 w-3.5" />
+                <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
               </Link>
             </motion.div>
           </motion.div>

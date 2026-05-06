@@ -104,16 +104,24 @@ export function ProductsServices() {
           className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10 lg:mb-12"
         >
           <div>
-            <div className="h-[3px] w-12 bg-accent mb-5" />
-            <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-medium text-neutral-900 tracking-tight">
-              Products & Services
+            <div className="inline-flex items-center gap-3">
+              <span className="h-px w-8 bg-accent" />
+              <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-accent">
+                Products &amp; Services
+              </span>
+            </div>
+            <h2 className="mt-5 font-display text-3xl font-bold tracking-tight leading-[1.1] text-neutral-charcoal sm:text-4xl lg:text-5xl">
+              Twelve specialised domains.
+              <br />
+              50+ global brand partners.
             </h2>
-            <p className="mt-3 text-neutral-500 text-base">
-              Integrated building solutions from 50+ global brand partners
+            <p className="mt-5 max-w-xl text-base leading-relaxed text-neutral-600 sm:text-lg">
+              Integrated building solutions distributed in Nepal — from roofing and
+              facades to sanitaryware, tiles, and access control.
             </p>
           </div>
-          <span className="text-sm text-neutral-400 font-medium">
-            12 Specialized Domains
+          <span className="text-sm font-semibold uppercase tracking-wider text-neutral-400">
+            12 Domains
           </span>
         </motion.div>
 
