@@ -4,6 +4,7 @@ import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Container } from '@/components/ui/Container';
 import { ContactCTA } from '@/components/sections';
+import Link from 'next/link';
 import {
   BRANDS,
   TOTAL_BRAND_COUNT,
@@ -13,7 +14,7 @@ import {
   type VentureSlug,
 } from '@/data/brands';
 import { VENTURES } from '@/data/ventures';
-import { Globe2, MapPin, Calendar, Sparkles } from 'lucide-react';
+import { ArrowRight, Globe2, MapPin, Calendar, Sparkles } from 'lucide-react';
 
 const VENTURE_ORDER: VentureSlug[] = [
   'bath-n-room',
@@ -122,6 +123,13 @@ function VentureSection({ ventureSlug }: { ventureSlug: VentureSlug }) {
               <Sparkles className="h-3.5 w-3.5 text-brand-600" strokeWidth={1.5} />
               <span className="font-semibold text-neutral-700">{brands.length} brands</span>
             </div>
+            <Link
+              href={`/ventures#${ventureSlug}`}
+              className="inline-flex items-center gap-1 font-semibold text-brand-600 hover:text-brand-700 transition-colors"
+            >
+              View venture
+              <ArrowRight className="h-3 w-3" />
+            </Link>
           </div>
         </div>
       </motion.div>

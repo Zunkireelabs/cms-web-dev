@@ -64,7 +64,7 @@ export function Ventures() {
                 transition={{ duration: 0.5, delay: index * 0.07 }}
               >
                 <Link
-                  href="/about"
+                  href={`/ventures#${venture.slug}`}
                   className="group relative block h-full p-6 lg:p-7 bg-white border border-neutral-200 rounded-xl hover:border-accent hover:shadow-md transition-all"
                 >
                   <div className="flex items-start justify-between gap-4 mb-5">
