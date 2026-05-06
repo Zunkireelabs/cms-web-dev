@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Container } from '@/components/ui/Container';
 import { SITE_CONFIG } from '@/lib/constants';
+import { SECTORS } from '@/data/sectors';
 import { cn } from '@/lib/utils';
 import {
   Mail,
@@ -17,13 +18,11 @@ import {
 } from 'lucide-react';
 
 const SERVICE_OPTIONS = [
-  { value: '', label: 'Select a service' },
-  { value: 'general-contracting', label: 'General Contracting' },
-  { value: 'mep-services', label: 'MEP Services' },
-  { value: 'interior-fit-out', label: 'Interior Fit-Out' },
-  { value: 'facility-management', label: 'Facility Management' },
-  { value: 'trading-supply', label: 'Trading & Supply' },
-  { value: 'consultation', label: 'Consultation' },
+  { value: '', label: 'Select an inquiry type' },
+  { value: 'trading', label: 'Trading — Material Supply' },
+  { value: 'contracting', label: 'Contracting — Interior Fit-Out' },
+  ...SECTORS.map((s) => ({ value: s.slug, label: `Sector: ${s.name}` })),
+  { value: 'partnership', label: 'Brand Partnership / Distribution' },
   { value: 'other', label: 'Other' },
 ];
 
@@ -199,10 +198,10 @@ export default function ContactPage() {
               initial="hidden"
               animate="visible"
               custom={0.2}
-              className="mt-6 text-xl text-brand-100"
+              className="mt-6 text-xl text-brand-100 leading-relaxed"
             >
-              Have a project in mind? We&apos;d love to hear from you. Send us a
-              message and we&apos;ll respond as soon as possible.
+              Material supply, interior contracting, brand partnerships, or general
+              inquiries — drop us a line and our team responds within one working day.
             </motion.p>
           </div>
         </Container>
