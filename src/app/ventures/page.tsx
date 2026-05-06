@@ -5,9 +5,12 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { motion, useInView } from 'framer-motion';
 import { Container } from '@/components/ui/Container';
+import { PageHero } from '@/components/ui/PageHero';
+import { KickerLabel } from '@/components/ui/KickerLabel';
 import { ContactCTA } from '@/components/sections';
 import { VENTURES } from '@/data/ventures';
 import { getBrandsByVenture, type VentureSlug } from '@/data/brands';
+import { fadeUp } from '@/lib/motion';
 import {
   ArrowRight,
   Armchair,
@@ -33,15 +36,6 @@ const VENTURE_ICONS: Record<string, LucideIcon> = {
   'prime-ceramics': Grid3x3,
 };
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 25 },
-  visible: (delay: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, delay, ease: [0.25, 0.46, 0.45, 0.94] },
-  }),
-};
-
 function isDistributingVenture(slug: string): slug is VentureSlug {
   return ['bath-n-room', 'baba-muktinath', '4r-technologies', 'techwood'].includes(slug);
 }
@@ -63,43 +57,43 @@ function VentureSection({ venture, index }: { venture: Venture; index: number })
     <section
       ref={ref}
       id={venture.slug}
-      className={`scroll-mt-24 py-16 lg:py-24 ${isEven ? 'bg-white' : 'bg-neutral-off-white'}`}
+      className={`scroll-mt-24 py-20 lg:py-28 ${isEven ? 'bg-white' : 'bg-neutral-off-white'}`}
     >
       <Container>
         <motion.div
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
-          className="grid gap-10 lg:grid-cols-12 lg:gap-14 items-start"
+          className="grid items-start gap-12 lg:grid-cols-12 lg:gap-16"
         >
           {/* Left — Identity */}
           <motion.div variants={fadeUp} custom={0} className="lg:col-span-4">
-            <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-brand-50 text-brand-600">
+            <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-accent-50 text-accent">
               <Icon className="h-7 w-7" strokeWidth={1.5} />
             </div>
-            <span className="mt-5 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-brand-600">
-              <Calendar className="h-3 w-3" strokeWidth={1.5} />
+            <div className="mt-6 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-accent">
+              <Calendar className="h-3 w-3" strokeWidth={1.75} />
               Founded {venture.founded}
-            </span>
-            <h2 className="mt-2 text-3xl font-bold tracking-tight text-neutral-charcoal sm:text-4xl">
+            </div>
+            <h2 className="mt-3 font-display text-3xl font-bold leading-[1.1] tracking-tight text-neutral-charcoal sm:text-4xl lg:text-5xl">
               {venture.shortName}
             </h2>
             {venture.tagline && (
-              <p className="mt-3 text-base text-brand-700 font-medium leading-tight">
+              <p className="mt-4 text-base font-medium leading-snug text-accent sm:text-lg">
                 {venture.tagline}
               </p>
             )}
-            <p className="mt-4 text-sm text-neutral-600 leading-relaxed">
+            <p className="mt-5 text-sm leading-relaxed text-neutral-600 sm:text-base">
               {venture.description}
             </p>
 
-            {/* Stat strip + cross-links */}
-            <div className="mt-6 flex flex-wrap gap-3">
+            {/* Cross-links */}
+            <div className="mt-7 flex flex-wrap gap-3">
               {brandCount > 0 && (
                 <Link
                   href="/brands"
-                  className="inline-flex items-center gap-2 rounded-lg border border-neutral-200 bg-white px-4 py-2 text-sm transition-colors hover:border-brand-300 hover:bg-brand-50"
+                  className="inline-flex items-center gap-2 rounded-lg border border-neutral-200 bg-white px-4 py-2 text-sm transition-colors hover:border-accent/40 hover:bg-accent-50"
                 >
-                  <Sparkles className="h-3.5 w-3.5 text-brand-600" strokeWidth={1.5} />
+                  <Sparkles className="h-3.5 w-3.5 text-accent" strokeWidth={1.75} />
                   <span className="font-semibold text-neutral-700">
                     {brandCount} brand partners
                   </span>
@@ -109,7 +103,7 @@ function VentureSection({ venture, index }: { venture: Venture; index: number })
               {isContractingVenture && (
                 <Link
                   href="/contracting"
-                  className="inline-flex items-center gap-2 rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-brand-700"
+                  className="inline-flex items-center gap-2 rounded-lg bg-accent px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-accent-700"
                 >
                   Contracting Services
                   <ArrowRight className="h-3.5 w-3.5" />
@@ -199,51 +193,17 @@ export default function VenturesPage() {
 
   return (
     <>
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-neutral-charcoal via-neutral-800 to-brand-900 py-20 lg:py-28">
-        <div className="absolute inset-0 opacity-10">
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage: `radial-gradient(circle at 1px 1px, white 1px, transparent 0)`,
-              backgroundSize: '32px 32px',
-            }}
-          />
-        </div>
-
-        <Container className="relative">
-          <div className="mx-auto max-w-3xl text-center">
-            <motion.span
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="inline-block rounded-full bg-white/10 px-4 py-1.5 text-sm font-medium text-white backdrop-blur-sm"
-            >
-              Associated Ventures
-            </motion.span>
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="mt-4 text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl"
-            >
-              Six Ventures, One Group
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="mt-6 text-xl text-neutral-300 leading-relaxed"
-            >
-              From Italian marble in 2002 to ceramic-tile manufacturing in 2021 — six
-              specialised businesses under the CMS Group umbrella, covering {totalProducts}+
-              product categories across trading, contracting, and manufacturing.
-            </motion.p>
-          </div>
-        </Container>
-      </section>
+      <PageHero
+        kicker="Associated Ventures"
+        title="Six ventures, one CMS Group."
+        subtitle={`From Italian marble in 2002 to ceramic-tile manufacturing in 2021 — six specialised businesses covering ${totalProducts}+ product categories across trading, contracting, and manufacturing.`}
+        image="/images/projects/aanson.jpg"
+        imageAlt="CMS Group ventures"
+        size="tall"
+      />
 
       {/* Quick-jump Nav */}
-      <section className="sticky top-16 z-30 border-y border-neutral-border bg-white/95 backdrop-blur-md lg:top-20">
+      <section className="sticky top-16 z-30 border-y border-neutral-200 bg-white/95 backdrop-blur-md lg:top-20">
         <Container>
           <div className="flex flex-wrap items-center gap-2 py-3 sm:gap-3 sm:py-4">
             <span className="text-xs font-semibold uppercase tracking-wider text-neutral-400 sm:mr-2">
@@ -255,7 +215,7 @@ export default function VenturesPage() {
                 <a
                   key={venture.slug}
                   href={`#${venture.slug}`}
-                  className="inline-flex items-center gap-1.5 rounded-full border border-neutral-200 px-3 py-1.5 text-xs font-medium text-neutral-700 transition-colors hover:border-brand-300 hover:bg-brand-50 hover:text-brand-700 sm:text-sm"
+                  className="inline-flex items-center gap-1.5 rounded-full border border-neutral-200 px-3 py-1.5 text-xs font-medium text-neutral-700 transition-colors hover:border-accent/40 hover:bg-accent-50 hover:text-accent sm:text-sm"
                 >
                   <Icon className="h-3.5 w-3.5" strokeWidth={1.5} />
                   {venture.shortName}

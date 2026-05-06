@@ -2,9 +2,13 @@
 
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { Container } from '@/components/ui/Container';
-import { ContactCTA } from '@/components/sections';
 import Link from 'next/link';
+import { Container } from '@/components/ui/Container';
+import { PageHero } from '@/components/ui/PageHero';
+import { SectionHeader } from '@/components/ui/SectionHeader';
+import { Section } from '@/components/ui/Section';
+import { StatBlock } from '@/components/ui/StatBlock';
+import { ContactCTA } from '@/components/sections';
 import {
   BRANDS,
   TOTAL_BRAND_COUNT,
@@ -14,7 +18,7 @@ import {
   type VentureSlug,
 } from '@/data/brands';
 import { VENTURES } from '@/data/ventures';
-import { ArrowRight, Globe2, MapPin, Calendar, Sparkles } from 'lucide-react';
+import { ArrowRight, MapPin, Calendar, Sparkles } from 'lucide-react';
 
 const VENTURE_ORDER: VentureSlug[] = [
   'bath-n-room',
@@ -149,110 +153,46 @@ function VentureSection({ ventureSlug }: { ventureSlug: VentureSlug }) {
 export default function BrandsPage() {
   return (
     <>
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-neutral-charcoal via-neutral-800 to-brand-900 py-20 lg:py-32">
-        <div className="absolute inset-0 opacity-10">
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage: `radial-gradient(circle at 1px 1px, white 1px, transparent 0)`,
-              backgroundSize: '32px 32px',
-            }}
-          />
-        </div>
+      <PageHero
+        kicker="Brand Partners"
+        title="World-renowned brands, distributed in Nepal."
+        subtitle={`${TOTAL_BRAND_COUNT}+ authorised partner brands across five CMS Group ventures — Grohe, Duravit, Hunter Douglas, Dormakaba, IKO, Tarkett, Armstrong, and more.`}
+        image="/images/projects/tiger-palace.jpg"
+        imageAlt="Tiger Palace Resort — featuring Grohe, Duravit, Viega"
+        size="tall"
+      />
 
-        <Container className="relative">
-          <div className="mx-auto max-w-3xl text-center">
-            <motion.span
-              variants={fadeInUp}
-              initial="hidden"
-              animate="visible"
-              custom={0}
-              className="inline-block rounded-full bg-white/10 px-4 py-1.5 text-sm font-medium text-white backdrop-blur-sm"
-            >
-              Our Partners
-            </motion.span>
-            <motion.h1
-              variants={fadeInUp}
-              initial="hidden"
-              animate="visible"
-              custom={0.1}
-              className="mt-4 text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl"
-            >
-              Global Brand Partners
-            </motion.h1>
-            <motion.p
-              variants={fadeInUp}
-              initial="hidden"
-              animate="visible"
-              custom={0.2}
-              className="mt-6 text-xl text-neutral-300 leading-relaxed"
-            >
-              {TOTAL_BRAND_COUNT}+ world-renowned brands across four CMS Group ventures —
-              authorized distribution, joint ventures, and exclusive partnerships powering
-              construction projects across Nepal.
-            </motion.p>
-
-            {/* Stat strip */}
-            <motion.div
-              variants={fadeInUp}
-              initial="hidden"
-              animate="visible"
-              custom={0.3}
-              className="mt-10 flex flex-wrap justify-center gap-8 sm:gap-12"
-            >
-              <div className="text-center">
-                <div className="text-3xl font-bold text-white sm:text-4xl">{TOTAL_BRAND_COUNT}+</div>
-                <div className="mt-1 text-xs uppercase tracking-wider text-neutral-400">
-                  Brand Partners
-                </div>
-              </div>
-              <div className="hidden h-12 w-px bg-white/20 sm:block" />
-              <div className="text-center">
-                <div className="text-3xl font-bold text-white sm:text-4xl">4</div>
-                <div className="mt-1 text-xs uppercase tracking-wider text-neutral-400">
-                  Distributing Ventures
-                </div>
-              </div>
-              <div className="hidden h-12 w-px bg-white/20 sm:block" />
-              <div className="text-center">
-                <div className="text-3xl font-bold text-white sm:text-4xl">{COUNTRY_COUNT}+</div>
-                <div className="mt-1 text-xs uppercase tracking-wider text-neutral-400">
-                  Countries of Origin
-                </div>
-              </div>
-            </motion.div>
+      {/* Stat anchor */}
+      <Section variant="soft" compact>
+        <div className="grid grid-cols-3 gap-x-6 gap-y-12 sm:gap-12">
+          <div className="border-l border-accent/40 pl-5 lg:pl-6">
+            <StatBlock value={`${TOTAL_BRAND_COUNT}+`} label="Brand Partners" size="md" />
           </div>
-        </Container>
-      </section>
+          <div className="border-l border-accent/40 pl-5 lg:pl-6">
+            <StatBlock value="5" label="Distributing Ventures" size="md" />
+          </div>
+          <div className="border-l border-accent/40 pl-5 lg:pl-6">
+            <StatBlock value={`${COUNTRY_COUNT}+`} label="Countries of Origin" size="md" />
+          </div>
+        </div>
+      </Section>
 
       {/* Brands Grouped by Venture */}
-      <section className="py-20 lg:py-28 bg-neutral-off-white">
-        <Container>
-          <AnimatedSection>
-            <motion.div variants={fadeInUp} custom={0} className="mx-auto max-w-2xl text-center mb-16">
-              <span className="inline-flex items-center gap-2 rounded-full bg-brand-100 px-4 py-1.5 text-sm font-semibold text-brand-700">
-                <Globe2 className="h-3.5 w-3.5" />
-                Organized by Venture
-              </span>
-              <h2 className="mt-4 text-3xl font-bold tracking-tight text-neutral-charcoal sm:text-4xl">
-                Quality Products from Industry Leaders
-              </h2>
-              <p className="mt-4 text-neutral-600">
-                Each CMS Group venture maintains exclusive partnerships with manufacturers
-                in its specialized domain — ensuring authentic products with full warranty
-                and after-sales support.
-              </p>
-            </motion.div>
-          </AnimatedSection>
+      <Section variant="light">
+        <SectionHeader
+          kicker="Organised by Venture"
+          title="Quality products from industry leaders."
+          lead="Each CMS Group venture maintains exclusive partnerships with manufacturers in its specialised domain — authentic products with full manufacturer warranty and after-sales support."
+          align="center"
+          className="mx-auto"
+        />
 
-          <div className="space-y-10">
-            {VENTURE_ORDER.map((ventureSlug) => (
-              <VentureSection key={ventureSlug} ventureSlug={ventureSlug} />
-            ))}
-          </div>
-        </Container>
-      </section>
+        <div className="mt-14 space-y-10">
+          {VENTURE_ORDER.map((ventureSlug) => (
+            <VentureSection key={ventureSlug} ventureSlug={ventureSlug} />
+          ))}
+        </div>
+      </Section>
 
       {/* Partnership CTA */}
       <ContactCTA />
