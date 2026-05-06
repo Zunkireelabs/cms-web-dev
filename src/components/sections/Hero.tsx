@@ -20,26 +20,26 @@ const HERO_SLIDES: HeroSlide[] = [
   {
     id: 1,
     video: '/images/videos/307398.mp4',
-    alt: 'CMS Construction Excellence',
-    title: 'Construction Excellence',
+    alt: 'CMS Group projects across Nepal',
+    title: 'Trading & Contracting Since 2002',
   },
   {
     id: 2,
     image: '/images/hero/project-3.jpg',
-    alt: 'Modern glass skyscraper',
-    title: 'Commercial Development',
+    alt: 'Hospital and healthcare projects',
+    title: 'Hospital & Healthcare',
   },
   {
     id: 3,
     image: '/images/hero/project-5.jpg',
-    alt: 'Industrial construction site',
-    title: 'Industrial Projects',
+    alt: 'Hotel and hospitality projects',
+    title: 'Hotel & Hospitality',
   },
   {
     id: 4,
     image: '/images/hero/project-6.jpg',
-    alt: 'Modern residential development',
-    title: 'Property Development',
+    alt: 'Office and commercial projects',
+    title: 'Office & Commercial',
   },
 ];
 

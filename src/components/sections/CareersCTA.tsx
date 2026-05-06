@@ -8,9 +8,9 @@ import { ArrowRight, Building2, Calendar, Globe } from 'lucide-react';
 import { Container } from '@/components/ui/Container';
 
 const TRUST_STATS = [
-  { icon: Building2, label: '500+ Projects' },
-  { icon: Calendar, label: '20+ Years' },
-  { icon: Globe, label: '13 Global Brands' },
+  { icon: Building2, label: '200+ Projects' },
+  { icon: Calendar, label: '23+ Years' },
+  { icon: Globe, label: '60+ Global Brands' },
 ];
 
 export function CareersCTA() {

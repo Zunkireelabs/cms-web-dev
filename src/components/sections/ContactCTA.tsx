@@ -18,7 +18,7 @@ import { SITE_CONFIG } from '@/lib/constants';
 const TRUST_POINTS = [
   { icon: MapPin, title: 'Site Assessment', desc: 'Free on-site survey' },
   { icon: FileText, title: 'Free Quotation', desc: 'Detailed estimate' },
-  { icon: Shield, title: '500+ Projects', desc: 'Across Nepal' },
+  { icon: Shield, title: '200+ Projects', desc: 'Across Nepal' },
 ];
 
 export function ContactCTA() {

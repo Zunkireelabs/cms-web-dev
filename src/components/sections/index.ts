@@ -1,5 +1,6 @@
 export { AboutUs } from './AboutUs';
 export { CareersCTA } from './CareersCTA';
+export { ChairmanMessage } from './ChairmanMessage';
 export { ContactCTA } from './ContactCTA';
 export { Hero } from './Hero';
 export { Highlights } from './Highlights';
@@ -7,3 +8,4 @@ export { ImpactMetrics } from './ImpactMetrics';
 export { ProductsServices } from './ProductsServices';
 export { ProjectMap } from './ProjectMap';
 export { Testimonials } from './Testimonials';
+export { Ventures } from './Ventures';
