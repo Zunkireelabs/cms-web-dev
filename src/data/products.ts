@@ -39,6 +39,7 @@ function entryToBrand(entry: BrandEntry): Brand {
     country: entry.country,
     website: entry.website,
     catalogueUrl: entry.website,
+    logo: entry.logoUrl,
   };
 }
 
@@ -58,7 +59,7 @@ const PRODUCT_DOMAIN_META: ProductDomainMeta[] = [
     title: 'Roofing Systems',
     description:
       'IKO roofing systems offer a reliable and high-performance solution for both residential and commercial buildings in Nepal. Manufactured in Canada and now available locally, IKO specializes in durable asphalt shingles designed to withstand diverse weather conditions, from heavy rainfall to intense sunlight. These shingles combine strong waterproofing, long-lasting protection, and modern aesthetic appeal — making them an ideal choice for projects that prioritise quality, efficiency, and visual finish, whether for new construction or renovation.',
-    image: '/images/products/roofing.jpg',
+    image: '/images/products/roofing-hero.png',
     projectKeywords: ['Roofing', 'IKO', 'Kalzip', 'Slate', 'Shingle'],
   },
   {
@@ -67,7 +68,7 @@ const PRODUCT_DOMAIN_META: ProductDomainMeta[] = [
     title: 'Facade Solutions',
     description:
       'Hunter Douglas façade solutions are now available in Nepal, bringing globally trusted design and engineering to modern building exteriors. Known for innovative architectural systems, Hunter Douglas offers high-performance façades that enhance aesthetics while improving energy efficiency, ventilation, and sun control. Designed for both commercial and residential projects, these systems combine durability with sleek, contemporary finishes — ideal for visually striking and functional building envelopes.',
-    image: '/images/products/facade.jpg',
+    image: '/images/products/facade-hero.png',
     projectKeywords: ['Facade', 'Façade', 'Hunter Douglas', 'Cladding'],
   },
   {
@@ -85,7 +86,7 @@ const PRODUCT_DOMAIN_META: ProductDomainMeta[] = [
     title: 'Aluminium Doors and Windows',
     description:
       'Premium aluminium doors and windows crafted for strength, durability, and modern design. Built with high-quality materials and long-lasting performance, they are perfect for residential and commercial spaces — providing excellent functionality, low maintenance, and a sleek architectural finish.',
-    image: '/images/products/aluminum.jpg',
+    image: '/images/products/aluminum-hero.png',
     projectKeywords: ['Tostem', 'Aluminium', 'Aluminum', 'Windows', 'Door'],
   },
   {
@@ -94,7 +95,7 @@ const PRODUCT_DOMAIN_META: ProductDomainMeta[] = [
     title: 'Wood, Glass, and Metal Coating',
     description:
       'ICA Group wood coatings bring premium Italian technology to Nepal, offering advanced surface-finishing solutions for wood, metal, and glass. Known for durability and refined aesthetics, ICA coatings enhance the natural look of wood while providing strong protection against wear, moisture, and environmental damage. The expanding services in Nepal now include high-performance metal and glass coatings — ensuring a consistent, long-lasting finish across different materials for residential and commercial applications.',
-    image: '/images/products/coating.jpg',
+    image: '/images/products/coating-hero.png',
     projectKeywords: ['ICA', 'Coating'],
   },
   {
@@ -103,7 +104,7 @@ const PRODUCT_DOMAIN_META: ProductDomainMeta[] = [
     title: 'Access Control Solutions',
     description:
       'A complete range of solutions including door hardware, access control systems, movable walls, glass partitions, and digital security — designed to enhance functionality, safety, and modern aesthetics. Ideal for residential, commercial, and institutional spaces, providing seamless integration of security, flexibility, and contemporary design.',
-    image: '/images/products/hardware.jpg',
+    image: '/images/products/door-hardware-hero.png',
     projectKeywords: ['Dormakaba', 'Hardware', 'Onity', 'Movable', 'Sensor', 'RFID'],
   },
   {
@@ -121,7 +122,7 @@ const PRODUCT_DOMAIN_META: ProductDomainMeta[] = [
     title: 'Waterproofing Systems',
     description:
       'Premium waterproofing solutions using high-quality chemicals designed to deliver long-lasting protection for decades. Our systems are ideal for residential, commercial, and industrial structures — ensuring durability, leak prevention, and enhanced structural life in all weather conditions.',
-    image: '/images/products/waterproofing.jpg',
+    image: '/images/products/waterproofing-hero.png',
     projectKeywords: ['Waterproof', 'Schomburg', 'Ardex'],
   },
   {
@@ -130,7 +131,7 @@ const PRODUCT_DOMAIN_META: ProductDomainMeta[] = [
     title: 'Wastewater Management',
     description:
       'Wastewater management — the systematic collection, treatment, and safe disposal or reuse of used water from households, industries, and commercial activities to protect public health and the environment. We deliver Sewage Treatment Plants (STP) for domestic wastewater and Effluent Treatment Plants (ETP) for industrial discharge, removing harmful chemicals, solids, and pollutants before release or reuse. Our systems also enable recycling, resource recovery, and sustainable practices that reduce water scarcity and pollution.',
-    image: '/images/products/wastewater.jpg',
+    image: '/images/products/wastewater-hero.png',
     projectKeywords: ['STP', 'ETP', 'Sintex', 'Sewage', 'Effluent', 'Storage Tank', 'Water Tank'],
   },
   {
@@ -139,7 +140,7 @@ const PRODUCT_DOMAIN_META: ProductDomainMeta[] = [
     title: 'Sanitaryware and Bathroom Solutions',
     description:
       'Premium sanitary ware solutions designed for durability, hygiene, and modern aesthetics — ideal for hotels, hospitals, residential, and commercial spaces. Our range combines high-quality materials with innovative designs to ensure reliability, easy maintenance, and a refined finish that enhances both functionality and overall space appeal.',
-    image: '/images/products/sanitaryware.jpg',
+    image: '/images/products/sanitaryware-hero.png',
     projectKeywords: ['Sanitary', 'Grohe', 'Duravit', 'American Standard', 'Bathroom', 'CP Fitting'],
   },
   {
@@ -148,7 +149,7 @@ const PRODUCT_DOMAIN_META: ProductDomainMeta[] = [
     title: 'Tiles',
     description:
       'A wide range of premium tiles featuring diverse design patterns, from transitional to modern styles, with every type of finish and texture. Crafted to suit residential and commercial spaces, our tile collection combines durability with elegant aesthetics — featuring our in-house Prime Tiles brand, manufactured in Nepal using cutting-edge European technology.',
-    image: '/images/products/sanitaryware.jpg',
+    image: '/images/products/tiles-hero.png',
     projectKeywords: ['Tile', 'RAK', 'Prime'],
   },
   {
@@ -157,7 +158,7 @@ const PRODUCT_DOMAIN_META: ProductDomainMeta[] = [
     title: 'Flooring',
     description:
       'A wide range of premium flooring options including wooden flooring, parquet, vinyl, engineered hardwood, and other modern finishes. Designed for durability and style, our flooring solutions enhance both residential and commercial spaces — featuring AGT, KLK Hardwood, and Tarkett with a perfect blend of elegance, comfort, and long-lasting performance.',
-    image: '/images/products/wood-glass.jpg',
+    image: '/images/products/flooring-hero.png',
     projectKeywords: ['Flooring', 'Tarkett', 'BKB', 'Welspun', 'Parquet', 'Vinyl', 'SPC'],
   },
 ];

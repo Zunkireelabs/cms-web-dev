@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Container } from '@/components/ui/Container';
 import {
   getProductDomain,
@@ -11,6 +12,7 @@ import {
 import { PROJECTS, type Project } from '@/data/projects';
 import { ContactCTA } from '@/components/sections';
 import {
+  Building2,
   ChevronRight,
   ExternalLink,
   Eye,
@@ -65,15 +67,16 @@ function BrandCard({ brand }: { brand: Brand }) {
 
   return (
     <div className="group relative overflow-hidden rounded-2xl border border-neutral-border bg-white shadow-card transition-all duration-300 hover:shadow-card-hover">
-      <div className="p-8 lg:p-10">
-        <h3 className="text-2xl font-bold text-neutral-charcoal lg:text-3xl">
-          {brand.name}
-        </h3>
-        <p className="mt-1 text-sm text-neutral-400">{brand.country}</p>
-        <p className="mt-4 text-lg font-bold text-brand-700">{brand.specialty}</p>
-        <p className="mt-3 text-neutral-600 leading-relaxed">{brand.description}</p>
+      <div className="grid gap-8 p-8 lg:grid-cols-[1fr_auto] lg:p-10">
+        <div>
+          <h3 className="text-2xl font-bold text-neutral-charcoal lg:text-3xl">
+            {brand.name}
+          </h3>
+          <p className="mt-1 text-sm text-neutral-400">{brand.country}</p>
+          <p className="mt-4 text-lg font-bold text-brand-700">{brand.specialty}</p>
+          <p className="mt-3 text-neutral-600 leading-relaxed">{brand.description}</p>
 
-        <div className="mt-8 flex flex-wrap gap-3">
+          <div className="mt-8 flex flex-wrap gap-3">
           {brand.catalogueUrl && (
             <a
               href={brand.catalogueUrl}
@@ -129,6 +132,25 @@ function BrandCard({ brand }: { brand: Brand }) {
                 Download Brochure
               </button>
             </>
+          )}
+          </div>
+        </div>
+
+        {/* Logo box */}
+        <div className="hidden lg:flex h-32 w-48 shrink-0 items-center justify-center rounded-xl border border-neutral-200 bg-neutral-off-white p-4">
+          {brand.logo ? (
+            <Image
+              src={brand.logo}
+              alt={`${brand.name} logo`}
+              width={160}
+              height={80}
+              className="max-h-full max-w-full object-contain"
+            />
+          ) : (
+            <div className="flex flex-col items-center gap-1 text-neutral-300">
+              <Building2 className="h-7 w-7" strokeWidth={1.25} />
+              <span className="text-[10px] uppercase tracking-wider font-medium">Logo</span>
+            </div>
           )}
         </div>
       </div>

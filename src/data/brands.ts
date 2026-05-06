@@ -14,6 +14,7 @@ export interface BrandEntry {
   venture: VentureSlug;
   tradingDomains?: string[];
   website?: string;
+  logoUrl?: string;
 }
 
 export const BRANDS: BrandEntry[] = [
@@ -214,6 +215,7 @@ export const BRANDS: BrandEntry[] = [
     venture: 'techwood',
     tradingDomains: ['flooring'],
     website: 'https://www.agtwood.com',
+    logoUrl: '/images/brands/agt.jpg',
   },
   {
     name: 'Piccolo',
