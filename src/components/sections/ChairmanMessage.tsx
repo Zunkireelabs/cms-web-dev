@@ -2,6 +2,7 @@
 
 import { useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion, useInView } from 'framer-motion';
 import { ArrowRight, Quote, User2 } from 'lucide-react';
 import { Container } from '@/components/ui/Container';
@@ -38,7 +39,17 @@ export function ChairmanMessage() {
             <div className="relative">
               <div className="absolute -inset-4 bg-accent/10 rounded-2xl -z-10" />
               <div className="relative h-56 w-56 sm:h-64 sm:w-64 rounded-2xl bg-gradient-to-br from-accent-50 to-neutral-100 flex items-center justify-center overflow-hidden">
-                <User2 className="h-24 w-24 text-accent/40" strokeWidth={1.2} />
+                {CHAIRMAN.photo ? (
+                  <Image
+                    src={CHAIRMAN.photo}
+                    alt={CHAIRMAN.name}
+                    fill
+                    sizes="(max-width: 640px) 224px, 256px"
+                    className="object-cover"
+                  />
+                ) : (
+                  <User2 className="h-24 w-24 text-accent/40" strokeWidth={1.2} />
+                )}
               </div>
             </div>
           </motion.div>
