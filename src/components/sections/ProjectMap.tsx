@@ -98,18 +98,33 @@ function getElbowPath(
   }
 }
 
+function resolveMapAnchor(location: string): string | null {
+  if (LOCATIONS[location]) return location;
+
+  const lower = location.toLowerCase();
+  if (lower.includes('lumbini') || lower.includes('bhairahawa')) return 'Bhairahawa, Nepal';
+  if (lower.includes('nagarkot')) return 'Bhaktapur, Nepal';
+  if (lower.includes('namo buddha') || lower.includes('kavre')) return 'Dhulikhel, Nepal';
+  if (lower.includes('nawalparasi')) return 'Chitwan, Nepal';
+
+  for (const key of Object.keys(LOCATIONS)) {
+    const city = key.split(',')[0].trim().toLowerCase();
+    if (lower.includes(city)) return key;
+  }
+  return null;
+}
+
 function getProjectLocations() {
   const locationMap = new Map<string, { projects: typeof PROJECTS }>();
 
   PROJECTS.forEach((project) => {
-    const config = LOCATIONS[project.location];
-    if (config) {
-      const existing = locationMap.get(project.location);
-      if (existing) {
-        existing.projects.push(project);
-      } else {
-        locationMap.set(project.location, { projects: [project] });
-      }
+    const anchor = resolveMapAnchor(project.location);
+    if (!anchor) return;
+    const existing = locationMap.get(anchor);
+    if (existing) {
+      existing.projects.push(project);
+    } else {
+      locationMap.set(anchor, { projects: [project] });
     }
   });
 
