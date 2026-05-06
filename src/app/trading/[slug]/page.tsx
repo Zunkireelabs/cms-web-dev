@@ -6,9 +6,18 @@ import {
   getProductDomain,
   getAllProductSlugs,
   type Brand,
+  type ProductDomain,
 } from '@/data/products';
+import { PROJECTS, type Project } from '@/data/projects';
 import { ContactCTA } from '@/components/sections';
-import { ExternalLink, FileDown, ChevronRight } from 'lucide-react';
+import {
+  ChevronRight,
+  ExternalLink,
+  Eye,
+  FileDown,
+  MapPin,
+  Maximize,
+} from 'lucide-react';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -36,29 +45,34 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
+function getRelatedProjects(domain: ProductDomain): Project[] {
+  if (!domain.projectKeywords || domain.projectKeywords.length === 0) return [];
+  const lowerKeywords = domain.projectKeywords.map((k) => k.toLowerCase());
+  return PROJECTS.filter((p) => {
+    const haystack = [
+      p.description,
+      ...p.scope,
+      p.title,
+    ]
+      .join(' ')
+      .toLowerCase();
+    return lowerKeywords.some((kw) => haystack.includes(kw));
+  }).slice(0, 6);
+}
+
 function BrandCard({ brand }: { brand: Brand }) {
+  const hasBrochure = Boolean(brand.brochureUrl) && brand.brochureUrl !== '#';
+
   return (
     <div className="group relative overflow-hidden rounded-2xl border border-neutral-border bg-white shadow-card transition-all duration-300 hover:shadow-card-hover">
       <div className="p-8 lg:p-10">
-        {/* Brand Name */}
         <h3 className="text-2xl font-bold text-neutral-charcoal lg:text-3xl">
           {brand.name}
         </h3>
-
-        {/* Country */}
         <p className="mt-1 text-sm text-neutral-400">{brand.country}</p>
+        <p className="mt-4 text-lg font-bold text-brand-700">{brand.specialty}</p>
+        <p className="mt-3 text-neutral-600 leading-relaxed">{brand.description}</p>
 
-        {/* Specialty - bold niche highlight */}
-        <p className="mt-4 text-lg font-bold text-brand-700">
-          {brand.specialty}
-        </p>
-
-        {/* Description */}
-        <p className="mt-3 text-neutral-600 leading-relaxed">
-          {brand.description}
-        </p>
-
-        {/* Action Buttons */}
         <div className="mt-8 flex flex-wrap gap-3">
           {brand.catalogueUrl && (
             <a
@@ -71,22 +85,89 @@ function BrandCard({ brand }: { brand: Brand }) {
               <ExternalLink className="h-4 w-4" />
             </a>
           )}
-          <button
-            disabled
-            className="inline-flex items-center gap-2 rounded-lg border-2 border-neutral-200 px-6 py-3 text-sm font-semibold text-neutral-400 cursor-not-allowed"
-            title="Brochure coming soon"
-          >
-            <FileDown className="h-4 w-4" />
-            Download Brochure
-            <span className="ml-1 rounded bg-neutral-100 px-1.5 py-0.5 text-[10px] font-medium uppercase">
-              Coming Soon
-            </span>
-          </button>
+
+          {/* Brochure: View + Download dual buttons */}
+          {hasBrochure ? (
+            <>
+              <a
+                href={brand.brochureUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-lg border-2 border-brand-300 px-6 py-3 text-sm font-semibold text-brand-700 transition-colors hover:bg-brand-50"
+              >
+                <Eye className="h-4 w-4" />
+                View Brochure
+              </a>
+              <a
+                href={brand.brochureUrl}
+                download
+                className="inline-flex items-center gap-2 rounded-lg border-2 border-brand-300 px-6 py-3 text-sm font-semibold text-brand-700 transition-colors hover:bg-brand-50"
+              >
+                <FileDown className="h-4 w-4" />
+                Download Brochure
+              </a>
+            </>
+          ) : (
+            <>
+              <button
+                disabled
+                className="inline-flex items-center gap-2 rounded-lg border-2 border-neutral-200 px-6 py-3 text-sm font-semibold text-neutral-400 cursor-not-allowed"
+                title="Brochure coming soon"
+              >
+                <Eye className="h-4 w-4" />
+                View Brochure
+                <span className="ml-1 rounded bg-neutral-100 px-1.5 py-0.5 text-[10px] font-medium uppercase">
+                  Soon
+                </span>
+              </button>
+              <button
+                disabled
+                className="inline-flex items-center gap-2 rounded-lg border-2 border-neutral-200 px-6 py-3 text-sm font-semibold text-neutral-400 cursor-not-allowed"
+                title="Brochure coming soon"
+              >
+                <FileDown className="h-4 w-4" />
+                Download Brochure
+              </button>
+            </>
+          )}
         </div>
       </div>
-
-      {/* Bottom accent */}
       <div className="absolute bottom-0 left-0 h-1 w-0 bg-brand-600 transition-all duration-300 group-hover:w-full" />
+    </div>
+  );
+}
+
+function RelatedProjectCard({ project }: { project: Project }) {
+  return (
+    <div className="group rounded-2xl border border-neutral-border bg-white p-6 shadow-card transition-all hover:shadow-card-hover">
+      <div className="flex items-start justify-between gap-3 mb-3">
+        {project.sector && (
+          <span className="inline-block rounded-full bg-brand-50 px-2.5 py-0.5 text-xs font-medium capitalize text-brand-700">
+            {project.sector}
+          </span>
+        )}
+        <span className="text-[10px] font-semibold uppercase tracking-wider text-neutral-400">
+          {project.year}
+        </span>
+      </div>
+      <h3 className="text-lg font-semibold text-neutral-charcoal group-hover:text-brand-700 transition-colors leading-tight">
+        {project.title}
+      </h3>
+      <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs text-neutral-500">
+        <span className="flex items-center gap-1.5">
+          <MapPin className="h-3 w-3 text-brand-600" strokeWidth={1.5} />
+          {project.location}
+        </span>
+        {project.area && (
+          <span className="flex items-center gap-1.5">
+            <Maximize className="h-3 w-3 text-brand-600" strokeWidth={1.5} />
+            {project.area}
+          </span>
+        )}
+      </div>
+      <p className="mt-3 text-sm text-neutral-600 leading-relaxed line-clamp-3">
+        {project.description}
+      </p>
     </div>
   );
 }
@@ -98,6 +179,8 @@ export default async function TradingSlugPage({ params }: PageProps) {
   if (!domain) {
     notFound();
   }
+
+  const relatedProjects = getRelatedProjects(domain);
 
   return (
     <>
@@ -114,7 +197,6 @@ export default async function TradingSlugPage({ params }: PageProps) {
         </div>
 
         <Container className="relative">
-          {/* Breadcrumb */}
           <nav className="mb-8 flex items-center gap-2 text-sm text-brand-200">
             <Link href="/" className="hover:text-white transition-colors">
               Home
@@ -134,7 +216,7 @@ export default async function TradingSlugPage({ params }: PageProps) {
             <h1 className="mt-4 text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
               {domain.title}
             </h1>
-            <p className="mt-6 text-xl text-brand-100">{domain.description}</p>
+            <p className="mt-6 text-xl text-brand-100 leading-relaxed">{domain.description}</p>
           </div>
         </Container>
       </section>
@@ -147,9 +229,11 @@ export default async function TradingSlugPage({ params }: PageProps) {
               Our Brand Partners
             </h2>
             <p className="mt-2 text-neutral-600">
-              {domain.brands.length === 1
-                ? 'Our exclusive partner for this domain'
-                : `${domain.brands.length} world-leading brands in ${domain.title.toLowerCase()}`}
+              {domain.brands.length === 0
+                ? 'Brand partners coming soon for this domain'
+                : domain.brands.length === 1
+                  ? 'Our exclusive partner for this domain'
+                  : `${domain.brands.length} world-leading brands in ${domain.title.toLowerCase()}`}
             </p>
           </div>
 
@@ -160,6 +244,38 @@ export default async function TradingSlugPage({ params }: PageProps) {
           </div>
         </Container>
       </section>
+
+      {/* Related Projects */}
+      {relatedProjects.length > 0 && (
+        <section className="py-16 lg:py-24 bg-white">
+          <Container>
+            <div className="mb-10 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
+              <div>
+                <h2 className="text-2xl font-bold text-neutral-charcoal sm:text-3xl">
+                  Projects Featuring {domain.title}
+                </h2>
+                <p className="mt-2 text-neutral-600">
+                  Recent CMS Group projects that supplied or installed{' '}
+                  {domain.title.toLowerCase()}.
+                </p>
+              </div>
+              <Link
+                href="/projects"
+                className="inline-flex items-center gap-2 rounded-lg border-2 border-brand-200 px-5 py-2.5 text-sm font-semibold text-brand-700 transition-colors hover:bg-brand-50"
+              >
+                View All Projects
+                <ChevronRight className="h-4 w-4" />
+              </Link>
+            </div>
+
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {relatedProjects.map((project) => (
+                <RelatedProjectCard key={project.id} project={project} />
+              ))}
+            </div>
+          </Container>
+        </section>
+      )}
 
       {/* CTA Section */}
       <ContactCTA />
