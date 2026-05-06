@@ -15,6 +15,7 @@ import {
   CheckCircle,
   AlertCircle,
   Loader2,
+  Store,
 } from 'lucide-react';
 
 const SERVICE_OPTIONS = [
@@ -41,14 +42,20 @@ const CONTACT_INFO = [
   },
   {
     icon: MapPin,
-    label: 'Address',
+    label: 'Head Office',
     value: `${SITE_CONFIG.address.street}, ${SITE_CONFIG.address.city}, ${SITE_CONFIG.address.country}`,
     href: '#',
   },
   {
+    icon: Store,
+    label: 'TOSTEM Studio Showroom',
+    value: 'Kathmandu — experiential studio for TOSTEM aluminium window & door systems (opened June 2023)',
+    href: null,
+  },
+  {
     icon: Clock,
     label: 'Working Hours',
-    value: 'Sun - Thu: 8:00 AM - 5:00 PM',
+    value: 'Sun – Thu: 8:00 AM – 5:00 PM',
     href: null,
   },
 ];

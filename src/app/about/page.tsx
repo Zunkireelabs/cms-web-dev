@@ -5,6 +5,7 @@ import { motion, useInView } from 'framer-motion';
 import { Container } from '@/components/ui/Container';
 import { ContactCTA, Testimonials } from '@/components/sections';
 import { CERTIFICATIONS, CERTIFICATIONS_COUNT } from '@/data/certifications';
+import { LEADERSHIP } from '@/data/leadership';
 import {
   Target,
   Eye,
@@ -67,29 +68,6 @@ const CORE_VALUES = [
     title: 'Sustainability',
     description:
       'We actively engage in sourcing materials from sustainable and eco-friendly sources, aligning our operations with responsible practices and contributing to a greener future.',
-  },
-];
-
-const LEADERSHIP_TEAM = [
-  {
-    name: 'Mr. Prashant Agarwal',
-    role: 'Chairman, CMS Group',
-    bio: 'Founded Construction Materials Group in 2002. Drives the group’s expansion across trading, contracting, industrial development, and e-commerce.',
-  },
-  {
-    name: 'Ms. Rima Lamichhane',
-    role: 'Director, CMS Group',
-    bio: 'Champions client satisfaction and personalized solutions through cutting-edge technologies and trusted, collaborative partnerships.',
-  },
-  {
-    name: 'Mr. Sandeep Goenka',
-    role: 'Director, CMS Group',
-    bio: 'Leads the group’s product strategy that blends innovation and environmental sustainability with conventional building offerings.',
-  },
-  {
-    name: 'Mr. Sumit Agarwal',
-    role: 'Director, CMS Group',
-    bio: 'Builds the group’s competitive edge through state-of-the-art technologies and pioneering construction concepts.',
   },
 ];
 
@@ -417,7 +395,7 @@ export default function AboutPage() {
       </section>
 
       {/* Leadership Team */}
-      <section className="py-20 lg:py-28">
+      <section id="leadership" className="py-20 lg:py-28">
         <Container>
           <AnimatedSection>
             <motion.div variants={fadeInUp} custom={0} className="mx-auto max-w-2xl text-center">
@@ -428,32 +406,46 @@ export default function AboutPage() {
                 Meet Our Team
               </h2>
               <p className="mt-4 text-neutral-600">
-                Experienced professionals dedicated to delivering excellence
+                Chairman and six directors steering CMS Group across trading,
+                contracting, and manufacturing.
               </p>
             </motion.div>
           </AnimatedSection>
 
-          <AnimatedSection className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {LEADERSHIP_TEAM.map((member, index) => (
-              <motion.div
-                key={member.name}
-                variants={fadeInUp}
-                custom={index * 0.1}
-                className="group text-center"
-              >
-                {/* Avatar Placeholder */}
-                <div className="mx-auto h-32 w-32 overflow-hidden rounded-full bg-gradient-to-br from-brand-100 to-brand-50 p-1">
-                  <div className="flex h-full w-full items-center justify-center rounded-full bg-white">
-                    <Users className="h-12 w-12 text-brand-300" />
+          <AnimatedSection className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {LEADERSHIP.map((member, index) => {
+              const isChairman = member.title === 'Chairman';
+              const summary = member.summary ?? `${member.bio.split('.')[0]}.`;
+              return (
+                <motion.div
+                  key={member.name}
+                  variants={fadeInUp}
+                  custom={index * 0.08}
+                  className="group text-center"
+                >
+                  {/* Avatar Placeholder */}
+                  <div className="relative mx-auto h-32 w-32 overflow-hidden rounded-full bg-gradient-to-br from-brand-100 to-brand-50 p-1">
+                    <div className="flex h-full w-full items-center justify-center rounded-full bg-white">
+                      <Users className="h-12 w-12 text-brand-300" />
+                    </div>
+                    {isChairman && (
+                      <span className="absolute -top-1 left-1/2 -translate-x-1/2 inline-block rounded-full bg-brand-600 px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-white shadow-sm">
+                        Chairman
+                      </span>
+                    )}
                   </div>
-                </div>
-                <h3 className="mt-4 text-lg font-semibold text-neutral-charcoal">
-                  {member.name}
-                </h3>
-                <p className="text-sm font-medium text-brand-600">{member.role}</p>
-                <p className="mt-2 text-sm text-neutral-600">{member.bio}</p>
-              </motion.div>
-            ))}
+                  <h3 className="mt-4 text-lg font-semibold text-neutral-charcoal">
+                    {member.name}
+                  </h3>
+                  <p className="text-sm font-medium text-brand-600">
+                    {member.title}, {member.company}
+                  </p>
+                  <p className="mt-2 text-sm text-neutral-600 leading-relaxed">
+                    {summary}
+                  </p>
+                </motion.div>
+              );
+            })}
           </AnimatedSection>
         </Container>
       </section>
