@@ -2,6 +2,7 @@
 
 import { useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion, useInView } from 'framer-motion';
 import { Container } from '@/components/ui/Container';
 import { ContactCTA } from '@/components/sections';
@@ -138,20 +139,33 @@ function VentureSection({ venture, index }: { venture: Venture; index: number })
                       {venture.products.length} categories
                     </span>
                   </div>
-                  <ul className="grid gap-2 sm:grid-cols-2">
+                  <div className="grid gap-3 grid-cols-2 sm:grid-cols-3">
                     {venture.products.map((product) => (
-                      <li
+                      <div
                         key={product.name}
-                        className="flex items-start gap-2 rounded-lg border border-transparent p-2 text-sm text-neutral-700 leading-relaxed transition-colors hover:border-neutral-200 hover:bg-neutral-50"
+                        className="group/tile overflow-hidden rounded-lg border border-neutral-200 bg-white transition-shadow hover:shadow-card"
                       >
-                        <CheckCircle2
-                          className="mt-0.5 h-4 w-4 shrink-0 text-brand-600"
-                          strokeWidth={1.5}
-                        />
-                        <span>{product.name}</span>
-                      </li>
+                        <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-brand-50 to-neutral-100">
+                          {product.image ? (
+                            <Image
+                              src={product.image}
+                              alt={product.name}
+                              fill
+                              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 200px"
+                              className="object-cover transition-transform duration-500 group-hover/tile:scale-105"
+                            />
+                          ) : (
+                            <div className="flex h-full w-full items-center justify-center text-brand-300">
+                              <CheckCircle2 className="h-8 w-8" strokeWidth={1.25} />
+                            </div>
+                          )}
+                        </div>
+                        <p className="px-2.5 py-2 text-[11px] font-medium leading-tight text-neutral-700">
+                          {product.name}
+                        </p>
+                      </div>
                     ))}
-                  </ul>
+                  </div>
                 </>
               ) : (
                 <div className="text-center py-10">
