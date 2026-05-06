@@ -4,6 +4,7 @@ import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Container } from '@/components/ui/Container';
 import { ContactCTA } from '@/components/sections';
+import { CERTIFICATIONS, CERTIFICATIONS_COUNT } from '@/data/certifications';
 import {
   Target,
   Eye,
@@ -16,6 +17,8 @@ import {
   Calendar,
   Globe,
   TrendingUp,
+  ScrollText,
+  MapPin,
 } from 'lucide-react';
 
 const FOUNDED_YEAR = 2002;
@@ -88,12 +91,6 @@ const LEADERSHIP_TEAM = [
     role: 'Director, CMS Group',
     bio: 'Builds the group’s competitive edge through state-of-the-art technologies and pioneering construction concepts.',
   },
-];
-
-const CERTIFICATIONS = [
-  'Authorized Distributor for 60+ Global Brands',
-  'Trusted by Nepal’s Government, Hospital, and Hospitality Sectors',
-  'Joint-Venture Manufacturing Partner with Fortune Ventures (Prime Ceramics)',
 ];
 
 const MILESTONES: { year: string; title: string; description: string; type: 'establishment' | 'trading' | 'brand' }[] = [
@@ -461,39 +458,79 @@ export default function AboutPage() {
         </Container>
       </section>
 
-      {/* Certifications */}
-      <section className="bg-neutral-off-white py-20 lg:py-28">
+      {/* Our Associations / Certifications */}
+      <section id="associations" className="bg-neutral-off-white py-20 lg:py-28">
         <Container>
           <AnimatedSection>
             <motion.div variants={fadeInUp} custom={0} className="mx-auto max-w-2xl text-center">
               <span className="inline-block rounded-full bg-brand-100 px-4 py-1.5 text-sm font-semibold text-brand-700">
-                Credentials
+                Our Associations
               </span>
               <h2 className="mt-4 text-3xl font-bold tracking-tight text-neutral-charcoal sm:text-4xl">
-                Certifications &amp; Accreditations
+                Authorised Distribution &amp; Channel Partner Across {CERTIFICATIONS_COUNT} Global Brands
               </h2>
               <p className="mt-4 text-neutral-600">
-                Recognized standards of quality and excellence
+                Every brand we represent is backed by a current dealership, channel partner,
+                or distributorship certificate — so you get authentic products with full
+                manufacturer warranty and after-sales support.
               </p>
             </motion.div>
           </AnimatedSection>
 
-          <AnimatedSection className="mt-12">
-            <motion.div
-              variants={fadeInUp}
-              custom={0.1}
-              className="flex flex-wrap justify-center gap-4"
-            >
-              {CERTIFICATIONS.map((cert) => (
-                <div
-                  key={cert}
-                  className="flex items-center gap-2 rounded-full border border-neutral-border bg-white px-4 py-2 shadow-sm"
-                >
-                  <CheckCircle className="h-4 w-4 text-brand-600" />
-                  <span className="text-sm font-medium text-neutral-700">{cert}</span>
+          <AnimatedSection className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {CERTIFICATIONS.map((cert, index) => (
+              <motion.div
+                key={cert.id}
+                variants={fadeInUp}
+                custom={index * 0.04}
+                className="group relative rounded-2xl border border-neutral-border bg-white p-6 shadow-card transition-all hover:shadow-card-hover"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-600">
+                    <ScrollText className="h-5 w-5" strokeWidth={1.5} />
+                  </div>
+                  {cert.country && (
+                    <span className="inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider text-neutral-400">
+                      <MapPin className="h-3 w-3" strokeWidth={1.5} />
+                      {cert.country}
+                    </span>
+                  )}
                 </div>
-              ))}
-            </motion.div>
+
+                <h3 className="mt-4 text-lg font-bold text-neutral-charcoal leading-tight">
+                  {cert.brand}
+                </h3>
+                <p className="mt-1 text-xs font-semibold uppercase tracking-wider text-brand-600">
+                  {cert.type}
+                </p>
+                <p className="mt-3 text-sm text-neutral-600 leading-relaxed line-clamp-3">
+                  {cert.scope}
+                </p>
+
+                <div className="mt-4 flex flex-wrap items-center gap-2 pt-4 border-t border-neutral-100">
+                  <span className="inline-flex items-center gap-1 text-[11px] text-neutral-500">
+                    <CheckCircle className="h-3 w-3 text-brand-600" strokeWidth={1.5} />
+                    {cert.holder}
+                  </span>
+                  {(cert.validFrom || cert.validUntil || cert.issued) && (
+                    <span className="inline-flex items-center gap-1 text-[11px] text-neutral-400">
+                      <Calendar className="h-3 w-3" strokeWidth={1.5} />
+                      {cert.validUntil
+                        ? `Valid till ${cert.validUntil}`
+                        : cert.issued ?? cert.validFrom}
+                    </span>
+                  )}
+                </div>
+
+                <div className="absolute bottom-0 left-0 h-0.5 w-0 bg-brand-600 transition-all duration-300 group-hover:w-full" />
+              </motion.div>
+            ))}
+          </AnimatedSection>
+
+          <AnimatedSection className="mt-10 text-center">
+            <motion.p variants={fadeInUp} custom={0.4} className="text-sm text-neutral-500">
+              Joint-Venture Manufacturing Partner with Fortune Ventures Pvt. Ltd. — Prime Ceramics tile manufacturing in Nepal.
+            </motion.p>
           </AnimatedSection>
         </Container>
       </section>
