@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useMemo } from 'react';
+import Image from 'next/image';
 import { motion, useInView } from 'framer-motion';
 import { Container } from '@/components/ui/Container';
 import { ContactCTA } from '@/components/sections';
@@ -65,18 +66,28 @@ function EventCard({ event, index }: { event: CMSEvent; index: number }) {
       custom={index * 0.04}
       className="group flex flex-col overflow-hidden rounded-xl border border-neutral-200 bg-white transition-shadow hover:shadow-lg"
     >
-      {/* Visual block (gradient + icon, no real photo asset yet) */}
-      <div className={`relative aspect-[16/10] bg-gradient-to-br ${CATEGORY_GRADIENTS[event.category]} bg-neutral-900`}>
-        <div className="absolute inset-0 flex items-center justify-center">
-          <Icon className="h-16 w-16 text-white/40" strokeWidth={1.2} />
-        </div>
-        <div className="absolute top-4 left-4">
+      {/* Visual block — real event photo, fall back to gradient+icon */}
+      <div className={`relative aspect-[16/10] overflow-hidden ${event.image ? '' : `bg-gradient-to-br ${CATEGORY_GRADIENTS[event.category]} bg-neutral-900`}`}>
+        {event.image ? (
+          <Image
+            src={event.image}
+            alt={event.title}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <Icon className="h-16 w-16 text-white/40" strokeWidth={1.2} />
+          </div>
+        )}
+        <div className="absolute top-4 left-4 z-10">
           <span className="inline-block px-3 py-1 bg-white/95 text-neutral-900 text-xs font-semibold rounded-full">
             {EVENT_CATEGORY_LABELS[event.category]}
           </span>
         </div>
         {/* Date badge — overlay style matching PDF gallery cards */}
-        <div className="absolute bottom-4 left-4">
+        <div className="absolute bottom-4 left-4 z-10">
           <div className="flex items-center bg-accent text-white rounded-lg overflow-hidden shadow-lg">
             <div className="px-3 py-2 text-center border-r border-white/20">
               <div className="text-[10px] font-semibold uppercase tracking-wider opacity-90">

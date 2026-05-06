@@ -486,43 +486,57 @@ export default function AboutPage() {
                 key={cert.id}
                 variants={fadeInUp}
                 custom={index * 0.04}
-                className="group relative rounded-2xl border border-neutral-border bg-white p-6 shadow-card transition-all hover:shadow-card-hover"
+                className="group relative overflow-hidden rounded-2xl border border-neutral-border bg-white shadow-card transition-all hover:shadow-card-hover"
               >
-                <div className="flex items-start justify-between gap-3">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-600">
-                    <ScrollText className="h-5 w-5" strokeWidth={1.5} />
-                  </div>
+                {/* Certificate scan thumbnail */}
+                <div className="relative aspect-[4/3] overflow-hidden bg-neutral-off-white">
+                  {cert.scanImage ? (
+                    <Image
+                      src={cert.scanImage}
+                      alt={`${cert.brand} certificate`}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="object-contain p-4 transition-transform duration-500 group-hover:scale-105"
+                    />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center text-brand-300">
+                      <ScrollText className="h-12 w-12" strokeWidth={1.25} />
+                    </div>
+                  )}
                   {cert.country && (
-                    <span className="inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider text-neutral-400">
+                    <span className="absolute top-3 right-3 inline-flex items-center gap-1 rounded-full bg-white/90 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-neutral-500 backdrop-blur-sm">
                       <MapPin className="h-3 w-3" strokeWidth={1.5} />
                       {cert.country}
                     </span>
                   )}
                 </div>
 
-                <h3 className="mt-4 text-lg font-bold text-neutral-charcoal leading-tight">
-                  {cert.brand}
-                </h3>
-                <p className="mt-1 text-xs font-semibold uppercase tracking-wider text-brand-600">
-                  {cert.type}
-                </p>
-                <p className="mt-3 text-sm text-neutral-600 leading-relaxed line-clamp-3">
-                  {cert.scope}
-                </p>
+                <div className="p-6">
 
-                <div className="mt-4 flex flex-wrap items-center gap-2 pt-4 border-t border-neutral-100">
-                  <span className="inline-flex items-center gap-1 text-[11px] text-neutral-500">
-                    <CheckCircle className="h-3 w-3 text-brand-600" strokeWidth={1.5} />
-                    {cert.holder}
-                  </span>
-                  {(cert.validFrom || cert.validUntil || cert.issued) && (
-                    <span className="inline-flex items-center gap-1 text-[11px] text-neutral-400">
-                      <Calendar className="h-3 w-3" strokeWidth={1.5} />
-                      {cert.validUntil
-                        ? `Valid till ${cert.validUntil}`
-                        : cert.issued ?? cert.validFrom}
+                  <h3 className="text-lg font-bold text-neutral-charcoal leading-tight">
+                    {cert.brand}
+                  </h3>
+                  <p className="mt-1 text-xs font-semibold uppercase tracking-wider text-brand-600">
+                    {cert.type}
+                  </p>
+                  <p className="mt-3 text-sm text-neutral-600 leading-relaxed line-clamp-3">
+                    {cert.scope}
+                  </p>
+
+                  <div className="mt-4 flex flex-wrap items-center gap-2 pt-4 border-t border-neutral-100">
+                    <span className="inline-flex items-center gap-1 text-[11px] text-neutral-500">
+                      <CheckCircle className="h-3 w-3 text-brand-600" strokeWidth={1.5} />
+                      {cert.holder}
                     </span>
-                  )}
+                    {(cert.validFrom || cert.validUntil || cert.issued) && (
+                      <span className="inline-flex items-center gap-1 text-[11px] text-neutral-400">
+                        <Calendar className="h-3 w-3" strokeWidth={1.5} />
+                        {cert.validUntil
+                          ? `Valid till ${cert.validUntil}`
+                          : cert.issued ?? cert.validFrom}
+                      </span>
+                    )}
+                  </div>
                 </div>
 
                 <div className="absolute bottom-0 left-0 h-0.5 w-0 bg-brand-600 transition-all duration-300 group-hover:w-full" />

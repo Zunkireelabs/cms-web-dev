@@ -39,6 +39,7 @@ export const DELIVERING_VENTURE_LABELS: Record<DeliveringVenture, string> = {
 export const TESTIMONIALS: Testimonial[] = [
   {
     id: 'ziec-bir-hospital',
+    scanImage: '/images/testimonials/ziec-bir-hospital.jpg',
     client: 'ZIEC – Sharma – Rasuwa',
     clientType: 'construction',
     date: '2022-03-31',
@@ -61,6 +62,7 @@ export const TESTIMONIALS: Testimonial[] = [
   },
   {
     id: 'airtech-tiger-palace',
+    scanImage: '/images/testimonials/airtech-tiger-palace.jpg',
     client: 'Airtech Industries Pvt. Ltd.',
     clientType: 'industrial',
     date: '2017-10-23',
@@ -72,6 +74,7 @@ export const TESTIMONIALS: Testimonial[] = [
   },
   {
     id: 'icimod',
+    scanImage: '/images/testimonials/icimod.jpg',
     client: 'ICIMOD',
     clientType: 'international',
     date: '2021-08-16',
@@ -83,6 +86,7 @@ export const TESTIMONIALS: Testimonial[] = [
   },
   {
     id: 'kedia-construction',
+    scanImage: '/images/testimonials/kedia-construction.jpg',
     client: 'Kedia Construction',
     clientType: 'construction',
     date: '2022-06-23',
@@ -94,6 +98,7 @@ export const TESTIMONIALS: Testimonial[] = [
   },
   {
     id: 'basera-boutique',
+    scanImage: '/images/testimonials/basera-boutique.jpg',
     client: 'Basera Boutique Hotel',
     clientType: 'hotel',
     date: '2021-08-16',
@@ -108,6 +113,7 @@ export const TESTIMONIALS: Testimonial[] = [
   },
   {
     id: 'adrisiya-nirman',
+    scanImage: '/images/testimonials/adrisiya-nirman.jpg',
     client: 'Adrisiya Nirman Sewa Pvt. Ltd.',
     clientType: 'construction',
     date: '2021-08-16',
@@ -119,6 +125,7 @@ export const TESTIMONIALS: Testimonial[] = [
   },
   {
     id: 'de-architects',
+    scanImage: '/images/testimonials/de-architects.jpg',
     client: "de' Architects Pvt. Ltd.",
     clientType: 'architecture',
     date: '2022-05-03',
@@ -141,6 +148,7 @@ export const TESTIMONIALS: Testimonial[] = [
   },
   {
     id: 'hotel-barahi',
+    scanImage: '/images/testimonials/hotel-barahi.jpg',
     client: 'Barahi Hospitality Group — Hotel Barahi',
     clientType: 'hotel',
     date: '2021-08-16',
@@ -152,6 +160,7 @@ export const TESTIMONIALS: Testimonial[] = [
   },
   {
     id: 'hotel-da-flamingo',
+    scanImage: '/images/testimonials/hotel-da-flamingo.jpg',
     client: 'Hotel Da Flamingo Pvt. Ltd.',
     clientType: 'hotel',
     date: '2021-09-03',
@@ -163,6 +172,7 @@ export const TESTIMONIALS: Testimonial[] = [
   },
   {
     id: 'mila-hotel',
+    scanImage: '/images/testimonials/mila-hotel.jpg',
     client: 'Mila Hotel Pvt. Ltd.',
     clientType: 'hotel',
     date: '2022-03-25',
@@ -174,6 +184,7 @@ export const TESTIMONIALS: Testimonial[] = [
   },
   {
     id: 'sarangkot-mountain',
+    scanImage: '/images/testimonials/sarangkot-mountain.jpg',
     client: 'Sarangkot Mountain Resort & Spa',
     clientType: 'hotel',
     date: '2021-08-16',
@@ -185,6 +196,7 @@ export const TESTIMONIALS: Testimonial[] = [
   },
   {
     id: 'diyalo-lords-plaza',
+    scanImage: '/images/testimonials/diyalo-lords-plaza.jpg',
     client: 'Diyalo Lords Plaza',
     clientType: 'hotel',
     date: '2021-08-01',
@@ -196,6 +208,7 @@ export const TESTIMONIALS: Testimonial[] = [
   },
   {
     id: 'kemtex-nepal',
+    scanImage: '/images/testimonials/kemtex-nepal.jpg',
     client: 'Kemtex Nepal Pvt. Ltd.',
     clientType: 'industrial',
     date: '2021-08-20',
@@ -207,6 +220,7 @@ export const TESTIMONIALS: Testimonial[] = [
   },
   {
     id: 'living-things-design',
+    scanImage: '/images/testimonials/living-things-design.jpg',
     client: 'Living Things Design Pvt. Ltd.',
     clientType: 'architecture',
     date: '2021-08-19',
@@ -217,6 +231,7 @@ export const TESTIMONIALS: Testimonial[] = [
   },
   {
     id: 'himalayan-builders',
+    scanImage: '/images/testimonials/himalayan-builders.jpg',
     client: 'Himalayan Builders & Engineers Pvt. Ltd.',
     clientType: 'construction',
     date: '2021-03-14',
@@ -228,6 +243,7 @@ export const TESTIMONIALS: Testimonial[] = [
   },
   {
     id: 'maruti-cements',
+    scanImage: '/images/testimonials/maruti-cements.jpg',
     client: 'Maruti Cements Limited',
     clientType: 'industrial',
     date: '2021-02-10',
@@ -239,6 +255,7 @@ export const TESTIMONIALS: Testimonial[] = [
   },
   {
     id: 'nanc-police',
+    scanImage: '/images/testimonials/nanc-police.jpg',
     client: 'NANC (Nepal Armoured Nirman Co.)',
     clientType: 'government',
     date: '2017-11-20',
@@ -254,6 +271,7 @@ export const TESTIMONIALS: Testimonial[] = [
   },
   {
     id: 'hama-iron-steel',
+    scanImage: '/images/testimonials/hama-iron-steel.jpg',
     client: 'Hama Iron & Steel Industries Pvt. Ltd.',
     clientType: 'industrial',
     date: '2017-11-01',

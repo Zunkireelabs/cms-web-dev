@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
+import Image from 'next/image';
 import { Container } from '@/components/ui/Container';
 import {
   ChevronLeft,
@@ -61,71 +62,86 @@ function TestimonialCard({ testimonial }: TestimonialCardProps) {
   const Icon = CLIENT_TYPE_ICONS[testimonial.clientType];
 
   return (
-    <div className="bg-white rounded-2xl p-6 md:p-8 shadow-sm h-full flex flex-col border border-neutral-100">
-      {/* Top: client + type */}
-      <div className="flex items-start justify-between gap-3 mb-4">
-        <div className="flex items-center gap-3 min-w-0">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-accent/10 text-accent">
-            <Icon className="h-5 w-5" strokeWidth={1.5} />
-          </div>
-          <div className="min-w-0">
-            <p className="font-semibold text-neutral-900 text-sm leading-tight truncate">
-              {testimonial.client}
-            </p>
-            <p className="text-[11px] uppercase tracking-wider text-neutral-400 mt-0.5">
-              {CLIENT_TYPE_LABELS[testimonial.clientType]}
-            </p>
-          </div>
-        </div>
-        <Quote className="h-6 w-6 text-accent/20 shrink-0" />
-      </div>
-
-      {/* Subject */}
-      <h3 className="text-base font-semibold text-neutral-900 leading-snug">
-        {testimonial.subject}
-      </h3>
-
-      {/* Scope */}
-      <ul className="mt-4 space-y-1.5 flex-grow">
-        {testimonial.scope.slice(0, 4).map((item) => (
-          <li key={item} className="flex items-start gap-2 text-xs text-neutral-600">
-            <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-accent" />
-            <span className="leading-relaxed">{item}</span>
-          </li>
-        ))}
-        {testimonial.scope.length > 4 && (
-          <li className="text-[11px] text-neutral-400 pl-3">
-            + {testimonial.scope.length - 4} more
-          </li>
-        )}
-      </ul>
-
-      {/* Project + location */}
-      {(testimonial.project || testimonial.location) && (
-        <div className="mt-5 pt-4 border-t border-neutral-100 space-y-1.5">
-          {testimonial.project && (
-            <p className="text-xs font-medium text-neutral-700 leading-tight">
-              {testimonial.project}
-            </p>
-          )}
-          {testimonial.location && (
-            <div className="flex items-center gap-1.5 text-[11px] text-neutral-500">
-              <MapPin className="h-3 w-3" strokeWidth={1.5} />
-              <span>{testimonial.location}</span>
-            </div>
-          )}
+    <div className="bg-white rounded-2xl shadow-sm h-full flex flex-col border border-neutral-100 overflow-hidden">
+      {/* Letter scan thumbnail */}
+      {testimonial.scanImage && (
+        <div className="relative aspect-[4/5] overflow-hidden bg-neutral-50 border-b border-neutral-100">
+          <Image
+            src={testimonial.scanImage}
+            alt={`${testimonial.client} testimonial letter`}
+            fill
+            sizes="(max-width: 768px) 100vw, 33vw"
+            className="object-contain p-3"
+          />
         </div>
       )}
 
-      {/* Footer: delivered by + date */}
-      <div className="mt-4 flex items-center justify-between gap-3 text-[10px] uppercase tracking-wider">
-        <span className="font-semibold text-accent">
-          via {DELIVERING_VENTURE_LABELS[testimonial.deliveredBy]}
-        </span>
-        <span className="flex items-center gap-1 text-neutral-400">
-          <CalendarDays className="h-3 w-3" strokeWidth={1.5} />
-          {formatDate(testimonial.date)}
-        </span>
+      <div className="p-6 md:p-8 flex flex-col flex-1">
+        {/* Top: client + type */}
+        <div className="flex items-start justify-between gap-3 mb-4">
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-accent/10 text-accent">
+              <Icon className="h-5 w-5" strokeWidth={1.5} />
+            </div>
+            <div className="min-w-0">
+              <p className="font-semibold text-neutral-900 text-sm leading-tight truncate">
+                {testimonial.client}
+              </p>
+              <p className="text-[11px] uppercase tracking-wider text-neutral-400 mt-0.5">
+                {CLIENT_TYPE_LABELS[testimonial.clientType]}
+              </p>
+            </div>
+          </div>
+          <Quote className="h-6 w-6 text-accent/20 shrink-0" />
+        </div>
+
+        {/* Subject */}
+        <h3 className="text-base font-semibold text-neutral-900 leading-snug">
+          {testimonial.subject}
+        </h3>
+
+        {/* Scope */}
+        <ul className="mt-4 space-y-1.5 flex-grow">
+          {testimonial.scope.slice(0, 4).map((item) => (
+            <li key={item} className="flex items-start gap-2 text-xs text-neutral-600">
+              <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-accent" />
+              <span className="leading-relaxed">{item}</span>
+            </li>
+          ))}
+          {testimonial.scope.length > 4 && (
+            <li className="text-[11px] text-neutral-400 pl-3">
+              + {testimonial.scope.length - 4} more
+            </li>
+          )}
+        </ul>
+
+        {/* Project + location */}
+        {(testimonial.project || testimonial.location) && (
+          <div className="mt-5 pt-4 border-t border-neutral-100 space-y-1.5">
+            {testimonial.project && (
+              <p className="text-xs font-medium text-neutral-700 leading-tight">
+                {testimonial.project}
+              </p>
+            )}
+            {testimonial.location && (
+              <div className="flex items-center gap-1.5 text-[11px] text-neutral-500">
+                <MapPin className="h-3 w-3" strokeWidth={1.5} />
+                <span>{testimonial.location}</span>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Footer: delivered by + date */}
+        <div className="mt-4 flex items-center justify-between gap-3 text-[10px] uppercase tracking-wider">
+          <span className="font-semibold text-accent">
+            via {DELIVERING_VENTURE_LABELS[testimonial.deliveredBy]}
+          </span>
+          <span className="flex items-center gap-1 text-neutral-400">
+            <CalendarDays className="h-3 w-3" strokeWidth={1.5} />
+            {formatDate(testimonial.date)}
+          </span>
+        </div>
       </div>
     </div>
   );

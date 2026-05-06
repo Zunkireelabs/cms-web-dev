@@ -26,6 +26,7 @@ export interface Certification {
 export const CERTIFICATIONS: Certification[] = [
   {
     id: 'dormakaba',
+    scanImage: '/images/certificates/dormakaba.jpg',
     brand: 'Dormakaba',
     type: 'Certified Project Partner',
     holder: 'CMS Group, Kathmandu',
@@ -37,6 +38,7 @@ export const CERTIFICATIONS: Certification[] = [
   },
   {
     id: 'gunnebo',
+    scanImage: '/images/certificates/gunnebo.jpg',
     brand: 'Gunnebo',
     type: 'Letter of Authorization',
     holder: 'Baba Muktinath Fabricators',
@@ -48,6 +50,7 @@ export const CERTIFICATIONS: Certification[] = [
   },
   {
     id: 'lixil-tostem',
+    scanImage: '/images/certificates/lixil-tostem.jpg',
     brand: 'LIXIL / Tostem',
     type: 'Letter of Authorization',
     holder: 'Baba Muktinath Fabricators',
@@ -59,6 +62,7 @@ export const CERTIFICATIONS: Certification[] = [
   },
   {
     id: 'kalzip',
+    scanImage: '/images/certificates/kalzip.jpg',
     brand: 'Kalzip',
     type: 'Letter of Authorization',
     holder: 'Baba Muktinath Fabricators',
@@ -70,6 +74,7 @@ export const CERTIFICATIONS: Certification[] = [
   },
   {
     id: 'navair',
+    scanImage: '/images/certificates/navair.jpg',
     brand: 'Navair',
     type: 'Authorised Distributorship',
     holder: 'Baba Muktinath Fabricators',
@@ -82,6 +87,7 @@ export const CERTIFICATIONS: Certification[] = [
   },
   {
     id: 'iko-armoroof',
+    scanImage: '/images/certificates/iko.jpg',
     brand: 'IKO (Armoroof Export Division)',
     type: 'Authorized Distributorship Certificate',
     holder: 'Baba Muktinath Fabricators',
@@ -92,6 +98,7 @@ export const CERTIFICATIONS: Certification[] = [
   },
   {
     id: 'tostem-channel',
+    scanImage: '/images/certificates/tostem.jpg',
     brand: 'Tostem',
     type: 'Authorised Channel Partner',
     holder: 'Baba Muktinath Fabricators',
@@ -103,6 +110,7 @@ export const CERTIFICATIONS: Certification[] = [
   },
   {
     id: 'knauf',
+    scanImage: '/images/certificates/knauf.jpg',
     brand: 'Knauf Ceiling Solutions',
     type: 'Letter of Authority',
     holder: 'Baba Muktinath Fabricators',
@@ -115,6 +123,7 @@ export const CERTIFICATIONS: Certification[] = [
   },
   {
     id: 'hunter-douglas',
+    scanImage: '/images/certificates/hunter-douglas.jpg',
     brand: 'Hunter Douglas',
     type: 'Dealership Certificate',
     holder: 'Baba Muktinath Fabricators',
@@ -126,6 +135,7 @@ export const CERTIFICATIONS: Certification[] = [
   },
   {
     id: 'duravit',
+    scanImage: '/images/certificates/duravit.jpg',
     brand: 'Duravit',
     type: 'Authorised Partner',
     holder: 'Shree Swastik Traders',
@@ -147,6 +157,7 @@ export const CERTIFICATIONS: Certification[] = [
   },
   {
     id: 'somany',
+    scanImage: '/images/certificates/somany.jpg',
     brand: 'Somany (Duragres Lounge)',
     type: 'Certificate of Association',
     holder: 'Shree Swastik Trader',
@@ -158,6 +169,7 @@ export const CERTIFICATIONS: Certification[] = [
   },
   {
     id: 'bkb-hevea',
+    scanImage: '/images/certificates/bkb.jpg',
     brand: 'BKB (Hevea Products)',
     type: 'Certificate of Authorization',
     holder: 'Cubic Meter Pvt. Ltd.',
@@ -168,6 +180,7 @@ export const CERTIFICATIONS: Certification[] = [
   },
   {
     id: 'sintex',
+    scanImage: '/images/certificates/sintex.jpg',
     brand: 'Sintex',
     type: 'Letter of Distribution',
     holder: 'Green Building Technologies',
@@ -178,6 +191,7 @@ export const CERTIFICATIONS: Certification[] = [
   },
   {
     id: 'sos-spacewood',
+    scanImage: '/images/certificates/sos-spacewood.jpg',
     brand: 'SOS / Spacewood',
     type: 'Dealer Certificate',
     holder: 'Tech Wood Pvt. Ltd., Pulchowk-10, Lalitpur',
@@ -189,6 +203,7 @@ export const CERTIFICATIONS: Certification[] = [
   },
   {
     id: 'kingspan-shubham',
+    scanImage: '/images/certificates/kingspan-rhino.jpg',
     brand: 'Kingspan Rhino (Shubham Tanks)',
     type: 'Authorized Letter',
     holder: 'Green Building Technologies',
@@ -200,6 +215,7 @@ export const CERTIFICATIONS: Certification[] = [
   },
   {
     id: 'oase',
+    scanImage: '/images/certificates/oase.jpg',
     brand: 'Oase',
     type: 'Authorised Distributor',
     holder: 'Green Building Technologies',
@@ -210,6 +226,7 @@ export const CERTIFICATIONS: Certification[] = [
   },
   {
     id: 'welspun',
+    scanImage: '/images/certificates/welspun.jpg',
     brand: 'Welspun Flooring',
     type: 'Authorised Channel Partner',
     holder: 'Techwood (CMS Group)',
