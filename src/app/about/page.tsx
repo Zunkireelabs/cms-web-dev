@@ -27,8 +27,8 @@ const YEARS_IN_BUSINESS = new Date().getFullYear() - FOUNDED_YEAR;
 
 const COMPANY_STATS = [
   { label: 'Years of Experience', value: `${YEARS_IN_BUSINESS}+`, icon: Calendar },
-  { label: 'Projects Delivered', value: '200+', icon: Building2 },
-  { label: 'Global Brand Partners', value: '60+', icon: Users },
+  { label: 'Projects Delivered', value: '500+', icon: Building2 },
+  { label: 'Global Brand Partners', value: '50+', icon: Users },
   { label: 'Sectors Served', value: '6', icon: Globe },
 ];
 

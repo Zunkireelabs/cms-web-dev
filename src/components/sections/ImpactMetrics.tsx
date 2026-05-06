@@ -17,7 +17,7 @@ interface Metric {
 const METRICS: Metric[] = [
   {
     id: 'projects',
-    value: 200,
+    value: 500,
     suffix: '+',
     label: 'Projects Delivered',
     description: 'Successfully completed projects across hospital, hotel, airport, education, office, and residential sectors in Nepal.',
@@ -41,7 +41,7 @@ const METRICS: Metric[] = [
   },
   {
     id: 'partners',
-    value: 60,
+    value: 50,
     suffix: '+',
     label: 'Global Brand Partners',
     description: 'Authorized distribution and joint ventures with manufacturers from Germany, Italy, Japan, USA, and more.',

@@ -31,7 +31,7 @@ const WHY_WORK_WITH_US = [
     icon: Award,
     title: 'World-Class Brand Exposure',
     description:
-      'Work alongside 60+ global brand partners — Grohe, Duravit, Hunter Douglas, Dormakaba, IKO, Tarkett, Armstrong, and more — with vendor training built in.',
+      'Work alongside 50+ global brand partners — Grohe, Duravit, Hunter Douglas, Dormakaba, IKO, Tarkett, Armstrong, and more — with vendor training built in.',
   },
   {
     icon: Users,
@@ -203,7 +203,7 @@ export default function CareerPage() {
               custom={0.2}
               className="mt-6 text-xl text-neutral-300 leading-relaxed"
             >
-              Six specialised ventures. 60+ global brand partners. 200+ delivered projects
+              Six specialised ventures. 50+ global brand partners. 500+ delivered projects
               across hospitals, hotels, banks, airports, and homes in Nepal. Build a career
               with the breadth a single firm rarely offers.
             </motion.p>

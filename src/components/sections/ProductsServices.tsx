@@ -33,7 +33,7 @@ const PRODUCTS: Product[] = [
   { title: 'Ceiling Systems', icon: Layers, image: '/images/products/ceiling.jpg', link: '/trading/ceiling-systems' },
   { title: 'Aluminium Doors & Windows', icon: Building2, image: '/images/products/aluminum-dw.jpg', link: '/trading/aluminum-doors-windows' },
   { title: 'Wood & Glass Coating', icon: PaintBucket, image: '/images/products/wood-glass.jpg', link: '/trading/wood-glass-metal-coating' },
-  { title: 'Door Hardware', icon: Lock, image: '/images/products/door-hardware.jpg', link: '/trading/door-hardware' },
+  { title: 'Access Control Solutions', icon: Lock, image: '/images/products/door-hardware.jpg', link: '/trading/door-hardware' },
   { title: 'Architectural Railings', icon: Fence, image: '/images/products/railings.jpg', link: '/trading/architectural-railings' },
   { title: 'Waterproofing Systems', icon: Droplets, image: '/images/products/waterproofing.jpg', link: '/trading/waterproofing' },
   { title: 'Wastewater Management', icon: Trash2, image: '/images/products/wastewater.jpg', link: '/trading/wastewater-management' },
@@ -105,7 +105,7 @@ export function ProductsServices() {
               Products & Services
             </h2>
             <p className="mt-3 text-neutral-500 text-base">
-              Integrated building solutions from 60+ global brand partners
+              Integrated building solutions from 50+ global brand partners
             </p>
           </div>
           <span className="text-sm text-neutral-400 font-medium">

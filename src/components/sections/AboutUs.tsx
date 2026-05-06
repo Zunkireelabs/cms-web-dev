@@ -18,8 +18,8 @@ const fadeUp = {
 
 const STATS = [
   { value: '23+', label: 'Years' },
-  { value: '200+', label: 'Projects' },
-  { value: '60+', label: 'Global Brands' },
+  { value: '500+', label: 'Projects' },
+  { value: '50+', label: 'Global Brands' },
 ];
 
 export function AboutUs() {

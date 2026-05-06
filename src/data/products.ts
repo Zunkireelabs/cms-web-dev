@@ -53,7 +53,7 @@ const PRODUCT_DOMAIN_META: ProductDomainMeta[] = [
     slug: 'roofing',
     title: 'Roofing Systems',
     description:
-      'Premium roofing solutions for commercial, industrial, and residential projects — asphalt shingles, metal sheets, ceramic concrete tiles, and UPVC roofing for every climate.',
+      'IKO roofing systems offer a reliable and high-performance solution for both residential and commercial buildings in Nepal. Manufactured in Canada and now available locally, IKO specializes in durable asphalt shingles designed to withstand diverse weather conditions, from heavy rainfall to intense sunlight. These shingles combine strong waterproofing, long-lasting protection, and modern aesthetic appeal — making them an ideal choice for projects that prioritise quality, efficiency, and visual finish, whether for new construction or renovation.',
     image: '/images/products/roofing.jpg',
   },
   {
@@ -61,7 +61,7 @@ const PRODUCT_DOMAIN_META: ProductDomainMeta[] = [
     slug: 'facade-solutions',
     title: 'Facade Solutions',
     description:
-      'Architectural facade systems combining aesthetics with thermal and acoustic performance. Cladding, sun control, and curtain wall solutions for commercial buildings.',
+      'Hunter Douglas façade solutions are now available in Nepal, bringing globally trusted design and engineering to modern building exteriors. Known for innovative architectural systems, Hunter Douglas offers high-performance façades that enhance aesthetics while improving energy efficiency, ventilation, and sun control. Designed for both commercial and residential projects, these systems combine durability with sleek, contemporary finishes — ideal for visually striking and functional building envelopes.',
     image: '/images/products/facade.jpg',
   },
   {
@@ -77,7 +77,7 @@ const PRODUCT_DOMAIN_META: ProductDomainMeta[] = [
     slug: 'aluminum-doors-windows',
     title: 'Aluminium Doors and Windows',
     description:
-      'Pre-engineered aluminium window and door systems delivering thermal efficiency, acoustic isolation, and structural performance for residential and commercial use.',
+      'Premium aluminium doors and windows crafted for strength, durability, and modern design. Built with high-quality materials and long-lasting performance, they are perfect for residential and commercial spaces — providing excellent functionality, low maintenance, and a sleek architectural finish.',
     image: '/images/products/aluminum.jpg',
   },
   {
@@ -85,15 +85,15 @@ const PRODUCT_DOMAIN_META: ProductDomainMeta[] = [
     slug: 'wood-glass-metal-coating',
     title: 'Wood, Glass, and Metal Coating',
     description:
-      'Italian-engineered surface coatings for wood, glass, and metal — polyurethane, water-based, and UV-cured systems for interior and exterior applications.',
+      'ICA Group wood coatings bring premium Italian technology to Nepal, offering advanced surface-finishing solutions for wood, metal, and glass. Known for durability and refined aesthetics, ICA coatings enhance the natural look of wood while providing strong protection against wear, moisture, and environmental damage. The expanding services in Nepal now include high-performance metal and glass coatings — ensuring a consistent, long-lasting finish across different materials for residential and commercial applications.',
     image: '/images/products/coating.jpg',
   },
   {
     id: 'hardware',
     slug: 'door-hardware',
-    title: 'Door Hardware and Access',
+    title: 'Access Control Solutions',
     description:
-      'Door hardware, digital and RFID locks, automatic sensor doors, glass shower cubicles, and acoustic movable walls — complete access and partition systems.',
+      'A complete range of solutions including door hardware, access control systems, movable walls, glass partitions, and digital security — designed to enhance functionality, safety, and modern aesthetics. Ideal for residential, commercial, and institutional spaces, providing seamless integration of security, flexibility, and contemporary design.',
     image: '/images/products/hardware.jpg',
   },
   {
@@ -101,7 +101,7 @@ const PRODUCT_DOMAIN_META: ProductDomainMeta[] = [
     slug: 'architectural-railings',
     title: 'Architectural Railings',
     description:
-      'Glass, aluminium, and stainless steel railing systems for balconies, staircases, and terraces — combining safety regulations with modern architectural design.',
+      'Zolon is a modern architectural solutions brand known for premium railing systems, glass fittings, and hardware used in residential and commercial spaces. Originating from Rajkot, Zolon focuses on combining durability, safety, and sleek contemporary design using stainless steel and glass. Now available in Nepal, Zolon brings internationally styled railing solutions — from balcony and stair railings to façade systems — to local projects.',
     image: '/images/products/railings.jpg',
   },
   {
@@ -109,15 +109,15 @@ const PRODUCT_DOMAIN_META: ProductDomainMeta[] = [
     slug: 'waterproofing',
     title: 'Waterproofing Systems',
     description:
-      'Comprehensive waterproofing and construction chemicals — for basements, roofs, bathrooms, expansion joints, and foundations across every project scale.',
+      'Premium waterproofing solutions using high-quality chemicals designed to deliver long-lasting protection for decades. Our systems are ideal for residential, commercial, and industrial structures — ensuring durability, leak prevention, and enhanced structural life in all weather conditions.',
     image: '/images/products/waterproofing.jpg',
   },
   {
     id: 'wastewater',
     slug: 'wastewater-management',
-    title: 'Wastewater & Water Management',
+    title: 'Wastewater Management',
     description:
-      'Sewage and effluent treatment plants, bulk water storage tanks, fountains, and swimming pool solutions from world-renowned manufacturers.',
+      'Wastewater management — the systematic collection, treatment, and safe disposal or reuse of used water from households, industries, and commercial activities to protect public health and the environment. We deliver Sewage Treatment Plants (STP) for domestic wastewater and Effluent Treatment Plants (ETP) for industrial discharge, removing harmful chemicals, solids, and pollutants before release or reuse. Our systems also enable recycling, resource recovery, and sustainable practices that reduce water scarcity and pollution.',
     image: '/images/products/wastewater.jpg',
   },
   {
@@ -125,7 +125,7 @@ const PRODUCT_DOMAIN_META: ProductDomainMeta[] = [
     slug: 'sanitaryware',
     title: 'Sanitaryware and Bathroom Solutions',
     description:
-      'Premium sanitary fixtures, faucets, bathtubs, and bathroom accessories from Europe, USA, and Asia — for residences, hotels, hospitals, and commercial projects.',
+      'Premium sanitary ware solutions designed for durability, hygiene, and modern aesthetics — ideal for hotels, hospitals, residential, and commercial spaces. Our range combines high-quality materials with innovative designs to ensure reliability, easy maintenance, and a refined finish that enhances both functionality and overall space appeal.',
     image: '/images/products/sanitaryware.jpg',
   },
 ];

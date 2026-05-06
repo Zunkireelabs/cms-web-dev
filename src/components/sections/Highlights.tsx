@@ -17,13 +17,13 @@ interface HighlightItem {
 const HIGHLIGHTS: HighlightItem[] = [
   {
     id: 'global-brands',
-    label: '60+ Global Brands',
+    label: '50+ Global Brands',
     image: '/images/products/facade.jpg',
     link: '/brands',
   },
   {
     id: 'projects-delivered',
-    label: '200+ Projects Delivered',
+    label: '500+ Projects Delivered',
     image: '/images/hero/project-1.jpg',
     link: '/projects',
   },
@@ -111,7 +111,7 @@ export function Highlights() {
                 Latest Highlights
               </h2>
               <p className="mt-4 text-sm sm:text-base text-neutral-600 leading-relaxed">
-                Two decades of building Nepal — from hospitals and hotels to airports and offices, backed by 60+ global brand partners and six specialized ventures.
+                Two decades of building Nepal — from hospitals and hotels to airports and offices, backed by 50+ global brand partners and six specialized ventures.
               </p>
             </div>
             <div className="mt-6">

@@ -47,7 +47,7 @@ export default function HomePage() {
               Project Overview
             </h2>
             <p className="mt-2 text-neutral-500 text-base">
-              200+ projects delivered across Nepal — spanning hospitals, hotels, airports, offices, education, and residential sectors
+              500+ projects delivered across Nepal — spanning hospitals, hotels, airports, offices, education, and residential sectors
             </p>
           </div>
 
