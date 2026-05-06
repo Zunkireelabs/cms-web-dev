@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef } from 'react';
+import Image from 'next/image';
 import { motion, useInView } from 'framer-motion';
 import { Container } from '@/components/ui/Container';
 import { ContactCTA, Testimonials } from '@/components/sections';
@@ -423,10 +424,20 @@ export default function AboutPage() {
                   custom={index * 0.08}
                   className="group text-center"
                 >
-                  {/* Avatar Placeholder */}
+                  {/* Portrait */}
                   <div className="relative mx-auto h-32 w-32 overflow-hidden rounded-full bg-gradient-to-br from-brand-100 to-brand-50 p-1">
-                    <div className="flex h-full w-full items-center justify-center rounded-full bg-white">
-                      <Users className="h-12 w-12 text-brand-300" />
+                    <div className="relative flex h-full w-full items-center justify-center overflow-hidden rounded-full bg-white">
+                      {member.photo ? (
+                        <Image
+                          src={member.photo}
+                          alt={member.name}
+                          width={160}
+                          height={160}
+                          className="h-full w-full object-cover"
+                        />
+                      ) : (
+                        <Users className="h-12 w-12 text-brand-300" />
+                      )}
                     </div>
                     {isChairman && (
                       <span className="absolute -top-1 left-1/2 -translate-x-1/2 inline-block rounded-full bg-brand-600 px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-white shadow-sm">

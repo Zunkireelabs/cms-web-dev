@@ -27,6 +27,7 @@ export const BRANDS: BrandEntry[] = [
     segments: ['Sewage Treatment Plant'],
     venture: '4r-technologies',
     tradingDomains: ['wastewater-management'],
+    website: 'https://www.sintex.in',
   },
   {
     name: 'Oase',
@@ -36,6 +37,7 @@ export const BRANDS: BrandEntry[] = [
     segments: ['Water Fountain'],
     venture: '4r-technologies',
     tradingDomains: ['wastewater-management'],
+    website: 'https://www.oase.com',
   },
   {
     name: 'Pentair',
@@ -45,6 +47,7 @@ export const BRANDS: BrandEntry[] = [
     segments: ['Swimming Pool Solution'],
     venture: '4r-technologies',
     tradingDomains: ['wastewater-management'],
+    website: 'https://www.pentair.com',
   },
   {
     name: 'Kingspan Rhino',
@@ -54,6 +57,7 @@ export const BRANDS: BrandEntry[] = [
     segments: ['Water Storage'],
     venture: '4r-technologies',
     tradingDomains: ['wastewater-management'],
+    website: 'https://www.kingspan.com',
   },
 
   // Bath n Room — Sanitary Fixtures
@@ -65,6 +69,7 @@ export const BRANDS: BrandEntry[] = [
     segments: ['Sanitary Fixtures'],
     venture: 'bath-n-room',
     tradingDomains: ['sanitaryware'],
+    website: 'https://www.americanstandard-us.com',
   },
   {
     name: 'Grohe',
@@ -74,6 +79,7 @@ export const BRANDS: BrandEntry[] = [
     segments: ['Sanitary Fixtures'],
     venture: 'bath-n-room',
     tradingDomains: ['sanitaryware'],
+    website: 'https://www.grohe.com',
   },
   {
     name: 'Duravit',
@@ -83,6 +89,7 @@ export const BRANDS: BrandEntry[] = [
     segments: ['Sanitary Fixtures'],
     venture: 'bath-n-room',
     tradingDomains: ['sanitaryware'],
+    website: 'https://www.duravit.com',
   },
   {
     name: 'RAK Ceramics',
@@ -92,6 +99,7 @@ export const BRANDS: BrandEntry[] = [
     segments: ['Sanitary Fixtures', 'Flooring'],
     venture: 'bath-n-room',
     tradingDomains: ['sanitaryware'],
+    website: 'https://www.rakceramics.com',
   },
   {
     name: 'Acquaviva',
@@ -110,6 +118,7 @@ export const BRANDS: BrandEntry[] = [
     segments: ['Sanitary Fixtures'],
     venture: 'bath-n-room',
     tradingDomains: ['sanitaryware'],
+    website: 'https://www.viega.com',
   },
   {
     name: 'Schell',
@@ -119,6 +128,7 @@ export const BRANDS: BrandEntry[] = [
     segments: ['Sanitary Fixtures'],
     venture: 'bath-n-room',
     tradingDomains: ['sanitaryware'],
+    website: 'https://www.schell.eu',
   },
   {
     name: 'VRH',
@@ -137,6 +147,7 @@ export const BRANDS: BrandEntry[] = [
     segments: ['Sanitary Fixtures'],
     venture: 'bath-n-room',
     tradingDomains: ['sanitaryware'],
+    website: 'https://www.parryware.in',
   },
   {
     name: 'Plato',
@@ -155,6 +166,7 @@ export const BRANDS: BrandEntry[] = [
     segments: ['Sanitary Fixtures'],
     venture: 'bath-n-room',
     tradingDomains: ['sanitaryware'],
+    website: 'https://www.huida.com',
   },
   {
     name: 'Essel',
@@ -174,6 +186,7 @@ export const BRANDS: BrandEntry[] = [
     founded: 1968,
     segments: ['Flooring'],
     venture: 'bath-n-room',
+    website: 'https://www.somanyceramics.com',
   },
   {
     name: 'Nitco',
@@ -182,6 +195,7 @@ export const BRANDS: BrandEntry[] = [
     founded: 1966,
     segments: ['Flooring'],
     venture: 'bath-n-room',
+    website: 'https://www.nitco.in',
   },
   {
     name: 'Ardey Endura',
@@ -235,6 +249,7 @@ export const BRANDS: BrandEntry[] = [
     segments: ['Asphalt Roofing'],
     venture: 'baba-muktinath',
     tradingDomains: ['roofing'],
+    website: 'https://www.iko.com',
   },
   {
     name: 'Kalzip',
@@ -244,6 +259,7 @@ export const BRANDS: BrandEntry[] = [
     segments: ['Metal Roofing'],
     venture: 'baba-muktinath',
     tradingDomains: ['roofing'],
+    website: 'https://www.kalzip.com',
   },
   {
     name: 'Kingspan',
@@ -253,6 +269,7 @@ export const BRANDS: BrandEntry[] = [
     segments: ['Metal Roofing'],
     venture: 'baba-muktinath',
     tradingDomains: ['roofing'],
+    website: 'https://www.kingspan.com',
   },
   {
     name: 'SCG',
@@ -262,6 +279,7 @@ export const BRANDS: BrandEntry[] = [
     segments: ['Ceramic Concrete Roofing'],
     venture: 'baba-muktinath',
     tradingDomains: ['roofing'],
+    website: 'https://www.scgbuildingmaterials.com',
   },
   {
     name: 'First Corp',
@@ -281,6 +299,7 @@ export const BRANDS: BrandEntry[] = [
     segments: ['False Ceiling and Wall Panel'],
     venture: 'baba-muktinath',
     tradingDomains: ['ceiling-systems'],
+    website: 'https://www.armstrongceilings.com',
   },
   {
     name: 'Hunter Douglas',
@@ -290,6 +309,7 @@ export const BRANDS: BrandEntry[] = [
     segments: ['False Ceiling and Wall Panel', 'Facade', 'Window Blinds'],
     venture: 'baba-muktinath',
     tradingDomains: ['ceiling-systems', 'facade-solutions'],
+    website: 'https://www.hunterdouglasarchitectural.eu',
   },
   {
     name: 'Rucca',
@@ -319,6 +339,7 @@ export const BRANDS: BrandEntry[] = [
     segments: ['Pre-Engineered Aluminium Windows, Doors, Facade, Levers'],
     venture: 'baba-muktinath',
     tradingDomains: ['aluminum-doors-windows'],
+    website: 'https://www.tostem.co.jp',
   },
   {
     name: 'Navair',
@@ -346,6 +367,7 @@ export const BRANDS: BrandEntry[] = [
     segments: ['Wood Coating'],
     venture: 'baba-muktinath',
     tradingDomains: ['wood-glass-metal-coating'],
+    website: 'https://www.icaspa.com',
   },
   {
     name: 'Zolon',
@@ -355,6 +377,7 @@ export const BRANDS: BrandEntry[] = [
     segments: ['Glass Railing'],
     venture: 'baba-muktinath',
     tradingDomains: ['architectural-railings'],
+    website: 'https://zolon.in',
   },
   {
     name: 'Dormakaba',
@@ -372,6 +395,7 @@ export const BRANDS: BrandEntry[] = [
     ],
     venture: 'baba-muktinath',
     tradingDomains: ['door-hardware', 'aluminum-doors-windows'],
+    website: 'https://www.dormakaba.com',
   },
   {
     name: 'Gunnebo',
@@ -380,6 +404,7 @@ export const BRANDS: BrandEntry[] = [
     founded: 1764,
     segments: ['Security Products'],
     venture: 'baba-muktinath',
+    website: 'https://www.gunnebo.com',
   },
   {
     name: 'Wöhr',
@@ -388,6 +413,7 @@ export const BRANDS: BrandEntry[] = [
     founded: 1902,
     segments: ['Parking Solution'],
     venture: 'baba-muktinath',
+    website: 'https://www.woehr.de',
   },
   {
     name: 'Stylam',
@@ -407,6 +433,7 @@ export const BRANDS: BrandEntry[] = [
     segments: ['Waterproofing, Epoxy, Construction Chemicals'],
     venture: 'baba-muktinath',
     tradingDomains: ['waterproofing'],
+    website: 'https://www.schomburg.com',
   },
   {
     name: 'Shalimar Tar Products',
@@ -425,6 +452,7 @@ export const BRANDS: BrandEntry[] = [
     segments: ['Waterproofing, Epoxy, Construction Chemicals'],
     venture: 'baba-muktinath',
     tradingDomains: ['waterproofing'],
+    website: 'https://www.ardexendura.com',
   },
   {
     name: 'Construction Specialities',

@@ -35,7 +35,7 @@ function entryToBrand(entry: BrandEntry): Brand {
     description: entry.founded
       ? `${entry.country} • Established ${entry.founded}${entry.segments.length > 1 ? ` • ${entry.segments.slice(1).join(', ')}` : ''}`
       : entry.country,
-    brochureUrl: '#',
+    brochureUrl: entry.website ?? '#',
     country: entry.country,
     website: entry.website,
     catalogueUrl: entry.website,

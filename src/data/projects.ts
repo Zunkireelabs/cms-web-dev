@@ -48,6 +48,7 @@ export const PROJECTS: Project[] = [
       "Nepal's oldest and largest public hospital. Supplied 2,20,000 sq.ft of SCG cement fibre wall partitions along with ceiling, flooring, hardware, and sanitary fixtures.",
     scope: ['SCG Cement Fibre Wall Partition', 'Armstrong Ceiling', 'Tarkett Vinyl Flooring', 'Dormakaba Hardware', 'American Standard Sanitaryware'],
     area: '2,20,000 sq.ft',
+    image: '/images/projects/bir-hospital.jpg',
     featured: true,
   },
   {
@@ -61,6 +62,7 @@ export const PROJECTS: Project[] = [
     description:
       'Tertiary-care multi-specialty hospital. Supplied complete sewage treatment plant for hospital-grade wastewater management.',
     scope: ['Sintex Sewage Treatment Plant'],
+    image: '/images/projects/grande-hospital.jpg',
   },
   {
     id: 'mediciti-hospital',
@@ -74,6 +76,7 @@ export const PROJECTS: Project[] = [
       'Major specialty hospital with research and teaching facilities. Installed 1,50,000 sq.ft of Armstrong acoustic false ceiling.',
     scope: ['Armstrong Acoustic False Ceiling'],
     area: '1,50,000 sq.ft',
+    image: '/images/projects/mediciti-hospital.jpg',
     featured: true,
   },
   {
@@ -88,6 +91,7 @@ export const PROJECTS: Project[] = [
       'Multi-disciplinary hospital project. Supplied 20,000 sq.ft of Armstrong ceiling, windows, sewage treatment plant, false ceiling, and parquet flooring.',
     scope: ['Dormakaba Hardware', 'Sintex STP', 'Armstrong Ceiling', 'Spacewood Furniture'],
     area: '20,000 sq.ft',
+    image: '/images/projects/frontline-hospital.jpg',
   },
 
   // Education
@@ -103,6 +107,7 @@ export const PROJECTS: Project[] = [
       'Higher education campus. Supplied and installed 30,000 sq.ft of Tarkett vinyl flooring along with Armstrong false ceiling.',
     scope: ['Tarkett Vinyl Flooring', 'Armstrong False Ceiling'],
     area: '30,000 sq.ft',
+    image: '/images/projects/kmc.jpg',
   },
   {
     id: 'ullens-school',
@@ -115,6 +120,7 @@ export const PROJECTS: Project[] = [
     description:
       'International K-12 school campus. Supplied windows and false ceiling systems for academic blocks.',
     scope: ['Dormakaba Windows & Hardware', 'Armstrong False Ceiling'],
+    image: '/images/projects/ullens-school.jpg',
   },
 
   // Hospitality
@@ -129,6 +135,7 @@ export const PROJECTS: Project[] = [
     description:
       'Integrated resort and casino with 5-star hotel rooms. Supplied sanitary and CP fittings for 128 bathrooms plus 2,230 cum swimming pool system.',
     scope: ['Grohe / Duravit / Viega Sanitary Fittings (128 bathrooms)', 'Pentair 2,230 cum Swimming Pool'],
+    image: '/images/projects/tiger-palace.jpg',
     featured: true,
   },
   {
@@ -143,6 +150,7 @@ export const PROJECTS: Project[] = [
       'Luxury 5-star Himalayan retreat. Supplied 42,000 sq.ft of premium Mountain Slate roofing from the Royal Estate Series.',
     scope: ['Mountain Slate Roofing — Royal Estate Series'],
     area: '42,000 sq.ft',
+    image: '/images/projects/dusit-thani.jpg',
     featured: true,
   },
   {
@@ -157,6 +165,7 @@ export const PROJECTS: Project[] = [
       'Hill-top resort with panoramic Himalayan views. Supplied tiles, sewage treatment plant, parquet flooring, and 4,000 sq.ft of IKO asphalt roofing shingles.',
     scope: ['Onity', 'Sintex STP', 'IKO Asphalt Shingles', 'BKB Parquet'],
     area: '4,000 sq.ft (roofing)',
+    image: '/images/projects/country-villa.jpg',
   },
 
   // Government
@@ -172,6 +181,7 @@ export const PROJECTS: Project[] = [
       "Central bank's main office. Installed 1.5 lakh sq.ft of BKB parquet flooring and Armstrong ceiling systems.",
     scope: ['BKB Parquet Flooring', 'Armstrong Ceiling', 'Dormakaba Hardware'],
     area: '1,50,000 sq.ft',
+    image: '/images/projects/nrb-thapathali.jpg',
     featured: true,
   },
   {
@@ -186,6 +196,7 @@ export const PROJECTS: Project[] = [
       'Central bank annex building. Installed 86,000 sq.ft of BKB parquet flooring with Armstrong ceiling and Dormakaba hardware.',
     scope: ['BKB Parquet Flooring', 'Armstrong Ceiling', 'Dormakaba Hardware'],
     area: '86,000 sq.ft',
+    image: '/images/projects/nrb-baluwatar.jpg',
   },
   {
     id: 'dept-of-road',
@@ -198,6 +209,7 @@ export const PROJECTS: Project[] = [
     description:
       'Federal road infrastructure agency headquarters. Supplied false ceiling, windows, doors, furniture, tiles, and sewage treatment plant.',
     scope: ['Armstrong Ceiling', 'Dormakaba Hardware', 'Spacewood Furniture', 'RAK Tiles', 'STP System'],
+    image: '/images/projects/dept-of-road.jpg',
   },
   {
     id: 'attorney-general',
@@ -211,6 +223,7 @@ export const PROJECTS: Project[] = [
       "Federal legal authority's office complex. Supplied 1.5 lakh sq.ft of Armstrong ceiling along with sanitaryware, tiles, and hardware.",
     scope: ['Armstrong Ceiling (1.5 lakh sq.ft)', 'Duravit / Grohe Sanitaryware', 'SCG', 'Dormakaba Hardware'],
     area: '1,50,000 sq.ft',
+    image: '/images/projects/attorney-general.jpg',
   },
   {
     id: 'icimod',
@@ -223,6 +236,7 @@ export const PROJECTS: Project[] = [
     description:
       "Regional intergovernmental knowledge centre's head office. Installed Dormakaba acoustic movable wall partition for flexible workspace zones.",
     scope: ['Dormakaba Acoustic Movable Wall Partition'],
+    image: '/images/projects/icimod.jpg',
   },
 
   // Office
@@ -237,6 +251,7 @@ export const PROJECTS: Project[] = [
     description:
       "Corporate headquarters for Nepal's leading telecommunications company. Complete interior fit-out with movable walls, fire-rated doors, toilet cubicles, and tiles.",
     scope: ['Dormakaba Movable Walls', 'Dormakaba Hardware', 'Navair Fire Doors', 'Stylam Toilet Cubicles', 'RAK Tiles'],
+    image: '/images/projects/ncell-hq.jpg',
     featured: true,
   },
 
@@ -264,6 +279,7 @@ export const PROJECTS: Project[] = [
       'BKB Engineered Wood',
       'RAK UAE Tiles',
     ],
+    image: '/images/projects/aanson.jpg',
     featured: true,
   },
 
@@ -280,6 +296,7 @@ export const PROJECTS: Project[] = [
       'Industrial brewery facility. Installed 950 KLD effluent treatment plant for brewery wastewater compliance.',
     scope: ['Effluent Treatment Plant — 950 KLD capacity'],
     area: '950 KLD ETP',
+    image: '/images/projects/cg-brewery.jpg',
   },
   {
     id: 'lumbini-convention',
@@ -292,6 +309,7 @@ export const PROJECTS: Project[] = [
     description:
       'International convention center at the birthplace of Buddha. Supplied roofing, ceiling systems, and Dormakaba automatic sensor doors.',
     scope: ['Roofing Systems', 'Ceiling Systems', 'Dormakaba Automatic Sensor Doors'],
+    image: '/images/projects/lumbini-convention.jpg',
   },
 
   // Residential
@@ -306,6 +324,7 @@ export const PROJECTS: Project[] = [
       'Premium residential colony. Supplied 9,000 sq.ft of IKO Earthtone Cedar asphalt roofing shingles.',
     scope: ['IKO Earthtone Cedar Asphalt Shingles'],
     area: '9,000 sq.ft',
+    image: '/images/projects/kcl-colony.jpg',
   },
   {
     id: 'green-hill-city',
@@ -317,6 +336,7 @@ export const PROJECTS: Project[] = [
     description:
       'Gated residential development. Installed sanitary and CP fittings for 100 bathrooms plus sewage treatment plant.',
     scope: ['Grohe Sanitaryware', 'Duravit Sanitaryware', 'STP System'],
+    image: '/images/projects/green-hill-city.jpg',
   },
   {
     id: 'padma-colony',
@@ -328,5 +348,6 @@ export const PROJECTS: Project[] = [
     description:
       'Residential colony with traditional Nepali roofing aesthetics. Supplied premium German sanitaryware throughout.',
     scope: ['Grohe Sanitaryware', 'Duravit Sanitaryware'],
+    image: '/images/projects/padma-colony.jpg',
   },
 ];

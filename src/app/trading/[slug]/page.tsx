@@ -161,35 +161,53 @@ function BrandCard({ brand }: { brand: Brand }) {
 
 function RelatedProjectCard({ project }: { project: Project }) {
   return (
-    <div className="group rounded-2xl border border-neutral-border bg-white p-6 shadow-card transition-all hover:shadow-card-hover">
-      <div className="flex items-start justify-between gap-3 mb-3">
-        {project.sector && (
-          <span className="inline-block rounded-full bg-brand-50 px-2.5 py-0.5 text-xs font-medium capitalize text-brand-700">
-            {project.sector}
-          </span>
+    <div className="group overflow-hidden rounded-2xl border border-neutral-border bg-white shadow-card transition-all hover:shadow-card-hover">
+      {/* 16:9 image header */}
+      <div className="relative aspect-[16/9] overflow-hidden bg-neutral-off-white">
+        {project.image ? (
+          <Image
+            src={project.image}
+            alt={project.title}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center text-neutral-300">
+            <Building2 className="h-10 w-10" strokeWidth={1.25} />
+          </div>
         )}
-        <span className="text-[10px] font-semibold uppercase tracking-wider text-neutral-400">
-          {project.year}
-        </span>
       </div>
-      <h3 className="text-lg font-semibold text-neutral-charcoal group-hover:text-brand-700 transition-colors leading-tight">
-        {project.title}
-      </h3>
-      <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs text-neutral-500">
-        <span className="flex items-center gap-1.5">
-          <MapPin className="h-3 w-3 text-brand-600" strokeWidth={1.5} />
-          {project.location}
-        </span>
-        {project.area && (
+      <div className="p-6">
+        <div className="flex items-start justify-between gap-3 mb-3">
+          {project.sector && (
+            <span className="inline-block rounded-full bg-brand-50 px-2.5 py-0.5 text-xs font-medium capitalize text-brand-700">
+              {project.sector}
+            </span>
+          )}
+          <span className="text-[10px] font-semibold uppercase tracking-wider text-neutral-400">
+            {project.year}
+          </span>
+        </div>
+        <h3 className="text-lg font-semibold text-neutral-charcoal group-hover:text-brand-700 transition-colors leading-tight">
+          {project.title}
+        </h3>
+        <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs text-neutral-500">
           <span className="flex items-center gap-1.5">
-            <Maximize className="h-3 w-3 text-brand-600" strokeWidth={1.5} />
-            {project.area}
+            <MapPin className="h-3 w-3 text-brand-600" strokeWidth={1.5} />
+            {project.location}
           </span>
-        )}
+          {project.area && (
+            <span className="flex items-center gap-1.5">
+              <Maximize className="h-3 w-3 text-brand-600" strokeWidth={1.5} />
+              {project.area}
+            </span>
+          )}
+        </div>
+        <p className="mt-3 text-sm text-neutral-600 leading-relaxed line-clamp-3">
+          {project.description}
+        </p>
       </div>
-      <p className="mt-3 text-sm text-neutral-600 leading-relaxed line-clamp-3">
-        {project.description}
-      </p>
     </div>
   );
 }

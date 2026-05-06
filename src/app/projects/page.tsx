@@ -66,7 +66,7 @@ const itemVariants = {
 
 function ProjectCard({ project }: { project: Project }) {
   const imageKey = project.sector || project.type;
-  const imageSrc = SECTOR_IMAGES[imageKey] || SECTOR_IMAGES.office;
+  const imageSrc = project.image ?? SECTOR_IMAGES[imageKey] ?? SECTOR_IMAGES.office;
 
   return (
     <motion.div
