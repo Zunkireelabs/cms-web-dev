@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Source_Sans_3 } from 'next/font/google';
+import { Source_Sans_3, Manrope } from 'next/font/google';
 import { Providers } from '@/providers/Providers';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
@@ -10,6 +10,13 @@ const sourceSans = Source_Sans_3({
   display: 'swap',
   weight: ['300', '400', '500', '600', '700', '800'],
   variable: '--font-source-sans',
+});
+
+const manrope = Manrope({
+  subsets: ['latin'],
+  display: 'swap',
+  weight: ['400', '500', '600', '700', '800'],
+  variable: '--font-manrope',
 });
 
 export const metadata: Metadata = {
@@ -95,7 +102,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={sourceSans.variable} suppressHydrationWarning>
+    <html
+      lang="en"
+      className={`${sourceSans.variable} ${manrope.variable}`}
+      suppressHydrationWarning
+    >
       <body className="min-h-screen bg-neutral-off-white font-sans text-neutral-charcoal antialiased">
         <Providers>
           <div className="flex min-h-screen flex-col">
