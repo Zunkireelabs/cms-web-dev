@@ -1,3 +1,5 @@
+import { BRANDS, getBrandsByTradingDomain, type BrandEntry } from './brands';
+
 export interface Brand {
   name: string;
   description: string;
@@ -25,224 +27,113 @@ export interface ContractingService {
   features: string[];
 }
 
-export const PRODUCT_DOMAINS: ProductDomain[] = [
+function entryToBrand(entry: BrandEntry): Brand {
+  return {
+    name: entry.name,
+    specialty: entry.segments[0] ?? '',
+    description: entry.founded
+      ? `${entry.country} • Established ${entry.founded}${entry.segments.length > 1 ? ` • ${entry.segments.slice(1).join(', ')}` : ''}`
+      : entry.country,
+    brochureUrl: '#',
+    country: entry.country,
+  };
+}
+
+interface ProductDomainMeta {
+  id: string;
+  slug: string;
+  title: string;
+  description: string;
+  image: string;
+}
+
+const PRODUCT_DOMAIN_META: ProductDomainMeta[] = [
   {
     id: 'roofing',
     slug: 'roofing',
     title: 'Roofing Systems',
-    description: 'Premium roofing solutions for commercial, industrial, and residential projects. Our roofing systems offer superior weather protection, durability, and aesthetic appeal.',
+    description:
+      'Premium roofing solutions for commercial, industrial, and residential projects — asphalt shingles, metal sheets, ceramic concrete tiles, and UPVC roofing for every climate.',
     image: '/images/products/roofing.jpg',
-    brands: [
-      {
-        name: 'IKO',
-        specialty: 'Bituminous Roofing & Waterproofing Membranes',
-        description: 'Experience the excellence of IKO, a global leader in roofing and waterproofing solutions, known for innovative design and lasting performance.',
-        website: 'https://www.iko.com',
-        catalogueUrl: 'https://www.iko.com/commercial/products/',
-        brochureUrl: '#',
-        country: 'Canada',
-      },
-    ],
   },
   {
     id: 'facade',
     slug: 'facade-solutions',
     title: 'Facade Solutions',
-    description: 'Innovative facade systems that combine aesthetics with functionality. Transform building exteriors with our premium cladding and curtain wall solutions.',
+    description:
+      'Architectural facade systems combining aesthetics with thermal and acoustic performance. Cladding, sun control, and curtain wall solutions for commercial buildings.',
     image: '/images/products/facade.jpg',
-    brands: [
-      {
-        name: 'Hunter Douglas',
-        specialty: 'Architectural Facades & Sun Control Systems',
-        description: 'Discover Hunter Douglas, the world-renowned leader in architectural products and custom window coverings, offering exceptional design and innovation.',
-        website: 'https://www.hunterdouglas.com',
-        catalogueUrl: 'https://www.hunterdouglas.com/architectural',
-        brochureUrl: '#',
-        country: 'Netherlands',
-      },
-    ],
   },
   {
     id: 'ceiling',
     slug: 'ceiling-systems',
     title: 'Ceiling Systems',
-    description: 'Professional ceiling solutions for commercial and residential spaces. Our ceiling systems offer superior acoustics, aesthetics, and functionality.',
+    description:
+      'Commercial and acoustic ceiling solutions including metal, mineral fiber, wood, and stretch ceilings — engineered for offices, hotels, hospitals, and airports.',
     image: '/images/products/ceiling.jpg',
-    brands: [
-      {
-        name: 'Armstrong',
-        specialty: 'Commercial Ceiling Systems & Acoustic Solutions',
-        description: 'Trust Armstrong, the global leader in ceiling solutions, providing innovative ceiling systems that enhance acoustics, aesthetics, and sustainability.',
-        website: 'https://www.armstrongceilings.com',
-        catalogueUrl: 'https://www.armstrongceilings.com/commercial/en/',
-        brochureUrl: '#',
-        country: 'USA',
-      },
-    ],
   },
   {
     id: 'aluminum',
     slug: 'aluminum-doors-windows',
-    title: 'Aluminum Doors and Windows',
-    description: 'High-performance aluminum door and window systems that deliver superior thermal insulation, acoustic performance, and design flexibility.',
+    title: 'Aluminium Doors and Windows',
+    description:
+      'Pre-engineered aluminium window and door systems delivering thermal efficiency, acoustic isolation, and structural performance for residential and commercial use.',
     image: '/images/products/aluminum.jpg',
-    brands: [
-      {
-        name: 'Tostem',
-        specialty: 'High-Performance Aluminum Housing Solutions',
-        description: 'Experience the precision of Tostem, global leader in high-performance aluminum housing solutions, known for premium quality and durability.',
-        website: 'https://www.tostem.co.jp/english/',
-        catalogueUrl: 'https://www.tostem.co.jp/english/products/',
-        brochureUrl: '#',
-        country: 'Japan',
-      },
-    ],
   },
   {
     id: 'coating',
     slug: 'wood-glass-metal-coating',
     title: 'Wood, Glass, and Metal Coating',
-    description: 'Advanced coating solutions for wood, glass, and metal surfaces, providing protection, enhancement, and longevity for interior and exterior applications.',
+    description:
+      'Italian-engineered surface coatings for wood, glass, and metal — polyurethane, water-based, and UV-cured systems for interior and exterior applications.',
     image: '/images/products/coating.jpg',
-    brands: [
-      {
-        name: 'ICA',
-        specialty: 'Italian Wood, Glass & Metal Coatings',
-        description: 'Trust ICA, the Italian leader in wood coatings, offering innovative solutions for wood, glass, and metal with superior protection and aesthetics.',
-        website: 'https://www.icaspa.com',
-        catalogueUrl: 'https://www.icaspa.com/en/products',
-        brochureUrl: '#',
-        country: 'Italy',
-      },
-    ],
   },
   {
     id: 'hardware',
     slug: 'door-hardware',
-    title: 'Door Hardware and Accessories',
-    description: 'Complete range of door hardware and accessories including locks, hinges, handles, and access control systems for commercial and residential applications.',
+    title: 'Door Hardware and Access',
+    description:
+      'Door hardware, digital and RFID locks, automatic sensor doors, glass shower cubicles, and acoustic movable walls — complete access and partition systems.',
     image: '/images/products/hardware.jpg',
-    brands: [
-      {
-        name: 'Dormakaba',
-        specialty: 'Smart Access & Door Control Solutions',
-        description: 'Rely on Dormakaba, the premium door technology brand offering innovative solutions for door control, automatic doors, and access systems worldwide.',
-        website: 'https://www.dormakaba.com',
-        catalogueUrl: 'https://www.dormakaba.com/products-solutions',
-        brochureUrl: '#',
-        country: 'Switzerland',
-      },
-    ],
   },
   {
     id: 'railings',
     slug: 'architectural-railings',
     title: 'Architectural Railings',
-    description: 'Premium railing systems for balconies, staircases, and terraces. Combining safety with elegant design for modern architectural projects.',
+    description:
+      'Glass, aluminium, and stainless steel railing systems for balconies, staircases, and terraces — combining safety regulations with modern architectural design.',
     image: '/images/products/railings.jpg',
-    brands: [
-      {
-        name: 'Zolon',
-        specialty: 'Premium Architectural Railing Systems',
-        description: 'Discover Zolon, the leader in premium railing systems, offering innovative designs for balustrades, handrails, and glass railings.',
-        website: 'https://www.zolon.com',
-        catalogueUrl: 'https://www.zolon.com/products/',
-        brochureUrl: '#',
-        country: 'India',
-      },
-    ],
   },
   {
     id: 'waterproofing',
     slug: 'waterproofing',
     title: 'Waterproofing Systems',
-    description: 'Comprehensive waterproofing solutions for basements, roofs, bathrooms, and foundations. Protect your structures from water damage.',
+    description:
+      'Comprehensive waterproofing and construction chemicals — for basements, roofs, bathrooms, expansion joints, and foundations across every project scale.',
     image: '/images/products/waterproofing.jpg',
-    brands: [
-      {
-        name: 'Schomburg',
-        specialty: 'Construction Chemicals & Waterproofing Solutions',
-        description: 'Trust Schomburg, the German leader in waterproofing and construction chemicals, providing reliable protection for buildings and infrastructure.',
-        website: 'https://www.schomburg.com',
-        catalogueUrl: 'https://www.schomburg.com/products',
-        brochureUrl: '#',
-        country: 'Germany',
-      },
-    ],
   },
   {
     id: 'wastewater',
     slug: 'wastewater-management',
-    title: 'Wastewater Management Solutions',
-    description: 'Efficient wastewater treatment and management systems for commercial, industrial, and municipal applications.',
+    title: 'Wastewater & Water Management',
+    description:
+      'Sewage and effluent treatment plants, bulk water storage tanks, fountains, and swimming pool solutions from world-renowned manufacturers.',
     image: '/images/products/wastewater.jpg',
-    brands: [
-      {
-        name: 'Sintex',
-        specialty: 'Water Storage & Wastewater Management Systems',
-        description: 'Partner with Sintex, the leader in water storage and wastewater management solutions, offering advanced systems for all applications.',
-        website: 'https://www.sintex.in',
-        catalogueUrl: 'https://www.sintex.in/products',
-        brochureUrl: '#',
-        country: 'India',
-      },
-    ],
   },
   {
     id: 'sanitaryware',
     slug: 'sanitaryware',
     title: 'Sanitaryware and Bathroom Solutions',
-    description: 'Premium bathroom fixtures and sanitaryware from leading global brands. Complete solutions for modern, luxurious bathrooms.',
+    description:
+      'Premium sanitary fixtures, faucets, bathtubs, and bathroom accessories from Europe, USA, and Asia — for residences, hotels, hospitals, and commercial projects.',
     image: '/images/products/sanitaryware.jpg',
-    brands: [
-      {
-        name: 'American Standard',
-        specialty: 'Bathroom Fixtures & Kitchen Solutions',
-        description: 'Experience American Standard, a premier sanitaryware brand, offering innovative bathroom solutions with cutting-edge technology and elegant design.',
-        website: 'https://www.americanstandard.com',
-        catalogueUrl: 'https://www.americanstandard.com/products',
-        brochureUrl: '#',
-        country: 'USA',
-      },
-      {
-        name: 'Grohe',
-        specialty: 'Premium Bathroom Fittings & Technology',
-        description: 'Discover Grohe, the German leader in premium bathroom fittings, known for exceptional quality, technology, and design.',
-        website: 'https://www.grohe.com',
-        catalogueUrl: 'https://www.grohe.com/en/products',
-        brochureUrl: '#',
-        country: 'Germany',
-      },
-    ],
-  },
-  {
-    id: 'furniture',
-    slug: 'office-furniture-flooring',
-    title: 'Office Furnitures and Flooring',
-    description: 'Ergonomic and stylish office furniture and flooring solutions for modern workplaces. Create productive and comfortable work environments.',
-    image: '/images/products/furniture.jpg',
-    brands: [
-      {
-        name: 'SOS',
-        specialty: 'Ergonomic Office Furniture Solutions',
-        description: 'Choose SOS for innovative office furniture solutions designed for the modern workplace, combining style with functionality.',
-        website: 'https://www.sosfurniture.com',
-        catalogueUrl: 'https://www.sosfurniture.com/products/',
-        brochureUrl: '#',
-        country: 'India',
-      },
-      {
-        name: 'AGT',
-        specialty: 'Premium Wood-Based Flooring Products',
-        description: 'Trust AGT, the leader in premium flooring solutions, offering durable and stylish flooring for commercial and residential spaces.',
-        website: 'https://www.agt.com.tr',
-        catalogueUrl: 'https://www.agt.com.tr/en/products',
-        brochureUrl: '#',
-        country: 'Turkey',
-      },
-    ],
   },
 ];
+
+export const PRODUCT_DOMAINS: ProductDomain[] = PRODUCT_DOMAIN_META.map((meta) => ({
+  ...meta,
+  brands: getBrandsByTradingDomain(meta.slug).map(entryToBrand),
+}));
 
 export const CONTRACTING_SERVICES: ContractingService[] = [
   {
@@ -288,6 +179,8 @@ export function getAllBrandsWithDomain(): BrandWithDomain[] {
       ...brand,
       domainTitle: domain.title,
       domainSlug: domain.slug,
-    }))
+    })),
   );
 }
+
+export { BRANDS };
