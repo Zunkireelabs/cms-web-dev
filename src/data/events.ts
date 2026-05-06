@@ -3,7 +3,8 @@ export type EventCategory =
   | 'partnership'
   | 'csr'
   | 'trade-show'
-  | 'internal';
+  | 'internal'
+  | 'milestone';
 
 export interface CMSEvent {
   id: string;
@@ -22,9 +23,141 @@ export const EVENT_CATEGORY_LABELS: Record<EventCategory, string> = {
   csr: 'Community & CSR',
   'trade-show': 'Trade Shows',
   internal: 'Company',
+  milestone: 'Milestones',
 };
 
 export const EVENTS: CMSEvent[] = [
+  {
+    id: 'prime-launch-2023',
+    title: 'Prime Ceramics Launch Event',
+    month: 'Jun',
+    year: 2023,
+    date: 'June 2023',
+    category: 'milestone',
+    description:
+      'Grand launch of Prime Tiles — the CMS Group × Fortune Ventures joint-venture ceramic-tile manufacturing brand. Attended by Mr. Paolo Mongardi (President), Mr. Rakesh Garg (Chairman, Prime Tiles), and Mr. Prashant Agarwal (Managing Director, CMS Group).',
+    featured: true,
+  },
+  {
+    id: 'prime-factory-2023',
+    title: 'Prime Ceramics Factory Operational',
+    month: 'Jun',
+    year: 2023,
+    date: 'June 2023',
+    category: 'milestone',
+    description:
+      'Prime Ceramics tile-manufacturing factory enters operation in Nepal — kiln line, body-press line, and packaging line all live. First locally manufactured vitrified and ceramic tiles using cutting-edge European technology.',
+  },
+  {
+    id: 'tostem-buildcon-2023',
+    title: 'Tostem at Buildcon Exhibition',
+    month: 'Jun',
+    year: 2023,
+    date: 'June 2023',
+    category: 'trade-show',
+    description:
+      'CMS Group & Baba Muktinath Fabricators exhibited the full TOSTEM aluminium door & window range at Buildcon Nepal — featuring the latest TOSTEM ALU+ premium living systems.',
+  },
+  {
+    id: 'tostem-showroom-2023',
+    title: 'TOSTEM Studio Showroom Opening',
+    month: 'Jun',
+    year: 2023,
+    date: 'June 2023',
+    category: 'milestone',
+    description:
+      "Opening of the TOSTEM Studio dedicated showroom in Kathmandu — Nepal's first experiential studio for TOSTEM aluminium window and door systems, where architects and homeowners can specify with real product walls.",
+  },
+  {
+    id: 'blood-donation-2023',
+    title: 'Blood Donation Camp 2023',
+    month: 'Jun',
+    year: 2023,
+    date: 'June 2023',
+    category: 'csr',
+    description:
+      'Fourth annual CMS Group Blood Donation Camp — a continuing CSR commitment, "A Gift of Blood is Gift of Life."',
+  },
+  {
+    id: 'tostem-launch-lixil-2023',
+    title: 'LIXIL — TOSTEM Premium Product Launch',
+    month: 'Apr',
+    year: 2023,
+    date: 'April 2023',
+    category: 'partnership',
+    description:
+      'Official LIXIL TOSTEM premium product launch event in Kathmandu — introducing the next-generation TOSTEM aluminium systems to architects, contractors, and trade partners.',
+  },
+  {
+    id: 'ica-designers-meet-2023',
+    title: "ICA Designers' Meet",
+    month: 'Dec',
+    year: 2023,
+    date: 'December 2023',
+    category: 'training',
+    description:
+      'Designer-focused meet showcasing the ICA Italian wood-coatings range — colour-effect samples, finish technical sessions, and one-on-one consultation for interior designers and architects.',
+  },
+  {
+    id: 'structural-engineer-meet-2022',
+    title: 'Structural Engineers Meet',
+    month: 'Nov',
+    year: 2022,
+    date: 'November 2022',
+    category: 'training',
+    description:
+      'Technical engagement with Nepal\'s structural engineering community — material specification, code-compliant detailing, and product-system Q&A across CMS portfolios.',
+  },
+  {
+    id: 'marketing-meet-nov-2022',
+    title: 'Marketing Meet — November',
+    month: 'Nov',
+    year: 2022,
+    date: 'November 2022',
+    category: 'internal',
+    description:
+      'Cycle marketing meet aligning the CMS Group sales and BD teams across ventures on the upcoming Q-cycle vision and account targets.',
+  },
+  {
+    id: 'fabricators-meet-2022',
+    title: "Fabricators' Meet",
+    month: 'Nov',
+    year: 2022,
+    date: 'November 2022',
+    category: 'training',
+    description:
+      'Trade engagement with Nepal\'s fabricator community — installation standards, technical Q&A, and partner certification for downstream fabrication of CMS-supplied building systems.',
+  },
+  {
+    id: 'plumbers-meet-2022',
+    title: "Plumbers' Meet — October",
+    month: 'Oct',
+    year: 2022,
+    date: 'October 2022',
+    category: 'training',
+    description:
+      'Second edition of the CMS Plumbers\' Meet — installation training and product walkthrough for the plumbing trade across Bath N Room\'s sanitary and CP fittings range.',
+  },
+  {
+    id: 'engineers-meet-2022',
+    title: "Engineer's Meet",
+    month: 'Sep',
+    year: 2022,
+    date: 'September 2022',
+    category: 'training',
+    description:
+      'Engineering community engagement bringing together project, civil, and MEP engineers — product orientation, project case studies, and Q&A on building-system specifications.',
+  },
+  {
+    id: 'public-works-presentation-2022',
+    title: 'Public Works Department Presentation',
+    month: 'Aug',
+    year: 2022,
+    date: 'August 2022',
+    category: 'partnership',
+    description:
+      'CMS Group presentation to Nepal\'s Public Works Department — showcasing the full distribution catalogue and contracting capabilities for federal infrastructure projects.',
+  },
   {
     id: 'tostem-thailand-2022',
     title: 'Tostem Thailand Factory Visit',
@@ -34,7 +167,6 @@ export const EVENTS: CMSEvent[] = [
     category: 'partnership',
     description:
       'CMS team visited the Tostem manufacturing facility in Thailand to deepen technical understanding of pre-engineered aluminium window and door systems.',
-    featured: true,
   },
   {
     id: 'marketing-vision-quest-2022',
@@ -145,7 +277,6 @@ export const EVENTS: CMSEvent[] = [
     category: 'partnership',
     description:
       'Official launch of IKO premium roofing systems for the Nepali market at Hotel Soaltee Crowne Plaza, Kathmandu — bringing world-class asphalt roofing to local projects.',
-    featured: true,
   },
   {
     id: 'armstrong-seminar-2017',

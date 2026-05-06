@@ -12,6 +12,7 @@ import {
 } from '@/data/events';
 import {
   Calendar,
+  Flag,
   GraduationCap,
   Handshake,
   Heart,
@@ -26,6 +27,7 @@ const CATEGORY_ICONS: Record<EventCategory, LucideIcon> = {
   csr: Heart,
   'trade-show': Megaphone,
   internal: Sparkles,
+  milestone: Flag,
 };
 
 const CATEGORY_GRADIENTS: Record<EventCategory, string> = {
@@ -34,6 +36,7 @@ const CATEGORY_GRADIENTS: Record<EventCategory, string> = {
   csr: 'from-rose-500/20 to-rose-700/40',
   'trade-show': 'from-violet-500/20 to-violet-700/40',
   internal: 'from-emerald-500/20 to-emerald-700/40',
+  milestone: 'from-orange-500/30 to-orange-700/50',
 };
 
 const ALL_FILTER = 'all' as const;
