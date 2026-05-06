@@ -3,7 +3,7 @@
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Container } from '@/components/ui/Container';
-import { ContactCTA } from '@/components/sections';
+import { ContactCTA, Testimonials } from '@/components/sections';
 import { CERTIFICATIONS, CERTIFICATIONS_COUNT } from '@/data/certifications';
 import {
   Target,
@@ -534,6 +534,9 @@ export default function AboutPage() {
           </AnimatedSection>
         </Container>
       </section>
+
+      {/* Client Testimonials */}
+      <Testimonials />
 
       {/* CTA Section */}
       <ContactCTA />

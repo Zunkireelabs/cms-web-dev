@@ -2,106 +2,130 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { Container } from '@/components/ui/Container';
-import { Quote, ChevronLeft, ChevronRight } from 'lucide-react';
+import {
+  ChevronLeft,
+  ChevronRight,
+  MapPin,
+  CalendarDays,
+  Quote,
+  type LucideIcon,
+  Building2,
+  Hospital,
+  HardHat,
+  PencilRuler,
+  Factory,
+  Landmark,
+  Globe2,
+  Home,
+} from 'lucide-react';
+import {
+  TESTIMONIALS,
+  DELIVERING_VENTURE_LABELS,
+  type Testimonial,
+  type ClientType,
+} from '@/data/testimonials';
 
-const TESTIMONIALS = [
-  {
-    id: 1,
-    quote: "CMS Trading & Contracting delivered exceptional quality on our office renovation project. Their attention to detail and professional approach made the entire process seamless.",
-    author: "Rajesh Shrestha",
-    position: "Managing Director",
-    company: "Himalayan Enterprises",
-  },
-  {
-    id: 2,
-    quote: "We've been sourcing construction materials from CMS for over 5 years. Their product range and reliable delivery have made them our trusted partner for all projects.",
-    author: "Anita Gurung",
-    position: "Project Manager",
-    company: "BuildTech Nepal",
-  },
-  {
-    id: 3,
-    quote: "The team at CMS demonstrated remarkable expertise in interior fit-out work. They completed our hotel lobby renovation ahead of schedule with outstanding results.",
-    author: "Sunil Pradhan",
-    position: "Operations Head",
-    company: "Hotel Everest View",
-  },
-  {
-    id: 4,
-    quote: "Their roofing solutions from IKO have been outstanding. The quality and durability exceeded our expectations, and the installation team was highly professional.",
-    author: "Bikash Tamang",
-    position: "Chief Engineer",
-    company: "Nepal Infrastructure Ltd",
-  },
-  {
-    id: 5,
-    quote: "CMS provided excellent facade solutions for our commercial building. The Hunter Douglas products they supplied transformed the entire look of our property.",
-    author: "Priya Sharma",
-    position: "Property Developer",
-    company: "Sharma Constructions",
-  },
-  {
-    id: 6,
-    quote: "From ceiling systems to door hardware, CMS has been our one-stop solution. Their technical support and after-sales service are truly commendable.",
-    author: "Deepak Maharjan",
-    position: "Procurement Manager",
-    company: "Kathmandu Mall",
-  },
-  {
-    id: 7,
-    quote: "Working with CMS on our hospital project was a pleasure. They understood our strict requirements and delivered medical-grade interiors on time.",
-    author: "Dr. Suman Rana",
-    position: "Director",
-    company: "Nepal Medical Center",
-  },
-  {
-    id: 8,
-    quote: "The waterproofing solutions provided by CMS saved our basement from recurring leakage issues. Their Schomburg products are top-notch.",
-    author: "Ramesh Adhikari",
-    position: "Facility Manager",
-    company: "Corporate Tower Nepal",
-  },
-  {
-    id: 9,
-    quote: "CMS's contracting team handled our restaurant fit-out with creativity and precision. The final result exceeded our vision for the space.",
-    author: "Sita Basnet",
-    position: "Owner",
-    company: "The Himalayan Kitchen",
-  },
-];
+const CLIENT_TYPE_ICONS: Record<ClientType, LucideIcon> = {
+  hotel: Building2,
+  hospital: Hospital,
+  construction: HardHat,
+  architecture: PencilRuler,
+  industrial: Factory,
+  government: Landmark,
+  international: Globe2,
+  residential: Home,
+};
+
+const CLIENT_TYPE_LABELS: Record<ClientType, string> = {
+  hotel: 'Hospitality',
+  hospital: 'Healthcare',
+  construction: 'Construction',
+  architecture: 'Architecture',
+  industrial: 'Industrial',
+  government: 'Government',
+  international: 'International',
+  residential: 'Residential',
+};
+
+function formatDate(iso: string): string {
+  const date = new Date(iso);
+  if (Number.isNaN(date.getTime())) return iso;
+  return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+}
 
 interface TestimonialCardProps {
-  testimonial: typeof TESTIMONIALS[0];
+  testimonial: Testimonial;
 }
 
 function TestimonialCard({ testimonial }: TestimonialCardProps) {
+  const Icon = CLIENT_TYPE_ICONS[testimonial.clientType];
+
   return (
-    <div className="bg-white rounded-2xl p-6 md:p-8 shadow-sm h-full flex flex-col">
-      {/* Quote icon */}
-      <div className="flex justify-end mb-4">
-        <Quote className="h-8 w-8 text-accent/30" />
+    <div className="bg-white rounded-2xl p-6 md:p-8 shadow-sm h-full flex flex-col border border-neutral-100">
+      {/* Top: client + type */}
+      <div className="flex items-start justify-between gap-3 mb-4">
+        <div className="flex items-center gap-3 min-w-0">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-accent/10 text-accent">
+            <Icon className="h-5 w-5" strokeWidth={1.5} />
+          </div>
+          <div className="min-w-0">
+            <p className="font-semibold text-neutral-900 text-sm leading-tight truncate">
+              {testimonial.client}
+            </p>
+            <p className="text-[11px] uppercase tracking-wider text-neutral-400 mt-0.5">
+              {CLIENT_TYPE_LABELS[testimonial.clientType]}
+            </p>
+          </div>
+        </div>
+        <Quote className="h-6 w-6 text-accent/20 shrink-0" />
       </div>
 
-      {/* Quote text */}
-      <blockquote className="text-base md:text-lg text-neutral-700 leading-relaxed mb-6 flex-grow">
-        "{testimonial.quote}"
-      </blockquote>
+      {/* Subject */}
+      <h3 className="text-base font-semibold text-neutral-900 leading-snug">
+        {testimonial.subject}
+      </h3>
 
-      {/* Author info */}
-      <div className="flex items-center gap-3">
-        <div className="w-12 h-12 bg-accent rounded-full flex items-center justify-center flex-shrink-0">
-          <span className="text-white font-semibold text-lg">
-            {testimonial.author.charAt(0)}
-          </span>
+      {/* Scope */}
+      <ul className="mt-4 space-y-1.5 flex-grow">
+        {testimonial.scope.slice(0, 4).map((item) => (
+          <li key={item} className="flex items-start gap-2 text-xs text-neutral-600">
+            <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-accent" />
+            <span className="leading-relaxed">{item}</span>
+          </li>
+        ))}
+        {testimonial.scope.length > 4 && (
+          <li className="text-[11px] text-neutral-400 pl-3">
+            + {testimonial.scope.length - 4} more
+          </li>
+        )}
+      </ul>
+
+      {/* Project + location */}
+      {(testimonial.project || testimonial.location) && (
+        <div className="mt-5 pt-4 border-t border-neutral-100 space-y-1.5">
+          {testimonial.project && (
+            <p className="text-xs font-medium text-neutral-700 leading-tight">
+              {testimonial.project}
+            </p>
+          )}
+          {testimonial.location && (
+            <div className="flex items-center gap-1.5 text-[11px] text-neutral-500">
+              <MapPin className="h-3 w-3" strokeWidth={1.5} />
+              <span>{testimonial.location}</span>
+            </div>
+          )}
         </div>
-        <div>
-          <p className="font-semibold text-neutral-900">
-            {testimonial.author}
-          </p>
-          <p className="text-sm text-neutral-500">
-            {testimonial.position}, {testimonial.company}
-          </p>
-        </div>
+      )}
+
+      {/* Footer: delivered by + date */}
+      <div className="mt-4 flex items-center justify-between gap-3 text-[10px] uppercase tracking-wider">
+        <span className="font-semibold text-accent">
+          via {DELIVERING_VENTURE_LABELS[testimonial.deliveredBy]}
+        </span>
+        <span className="flex items-center gap-1 text-neutral-400">
+          <CalendarDays className="h-3 w-3" strokeWidth={1.5} />
+          {formatDate(testimonial.date)}
+        </span>
       </div>
     </div>
   );
@@ -113,7 +137,6 @@ export function Testimonials() {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const trackRef = useRef<HTMLDivElement>(null);
 
-  // Number of cards visible at once (responsive)
   const visibleCards = 3;
   const totalSlides = TESTIMONIALS.length;
 
@@ -142,16 +165,14 @@ export function Testimonials() {
     }, 5000);
   };
 
-  // Auto-play with slow interval (6 seconds)
   useEffect(() => {
     if (!isAutoPlaying) return;
     const interval = setInterval(nextSlide, 6000);
     return () => clearInterval(interval);
   }, [isAutoPlaying, nextSlide]);
 
-  // Get visible testimonials (3 at a time, wrapping around)
   const getVisibleTestimonials = () => {
-    const visible = [];
+    const visible: (Testimonial & { displayIndex: number })[] = [];
     for (let i = 0; i < visibleCards; i++) {
       const index = (currentIndex + i) % totalSlides;
       visible.push({ ...TESTIMONIALS[index], displayIndex: index });
@@ -165,16 +186,19 @@ export function Testimonials() {
     <section className="py-20 lg:py-28 bg-neutral-100">
       <Container>
         <div className="mx-auto max-w-2xl text-center mb-12">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-medium text-neutral-900">
+          <span className="inline-block rounded-full bg-accent/10 px-4 py-1.5 text-sm font-semibold text-accent">
+            Client References
+          </span>
+          <h2 className="mt-4 text-3xl md:text-4xl lg:text-5xl font-medium text-neutral-900">
             What Our Clients Say
           </h2>
           <p className="text-lg text-neutral-600 mt-4">
-            Trusted by leading businesses across Nepal
+            {totalSlides} signed reference letters from hotels, hospitals, government
+            offices, and contractors across Nepal.
           </p>
         </div>
 
         <div className="relative">
-          {/* Navigation arrows */}
           <button
             onClick={() => {
               prevSlide();
@@ -198,7 +222,6 @@ export function Testimonials() {
             <ChevronRight className="h-6 w-6" />
           </button>
 
-          {/* Cards container */}
           <div className="overflow-hidden px-8 md:px-16">
             <div
               ref={trackRef}
@@ -215,7 +238,6 @@ export function Testimonials() {
             </div>
           </div>
 
-          {/* Dots navigation */}
           <div className="flex justify-center gap-2 mt-10">
             {TESTIMONIALS.map((_, index) => (
               <button
@@ -231,7 +253,6 @@ export function Testimonials() {
             ))}
           </div>
 
-          {/* Counter */}
           <div className="text-center mt-4 text-sm text-neutral-500">
             {currentIndex + 1} / {TESTIMONIALS.length}
           </div>
