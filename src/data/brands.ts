@@ -2,7 +2,8 @@ export type VentureSlug =
   | 'bath-n-room'
   | 'baba-muktinath'
   | '4r-technologies'
-  | 'techwood';
+  | 'techwood'
+  | 'prime-ceramics';
 
 export interface BrandEntry {
   name: string;
@@ -12,6 +13,7 @@ export interface BrandEntry {
   segments: string[];
   venture: VentureSlug;
   tradingDomains?: string[];
+  website?: string;
 }
 
 export const BRANDS: BrandEntry[] = [
@@ -208,8 +210,10 @@ export const BRANDS: BrandEntry[] = [
     slug: 'agt',
     country: 'Turkey',
     founded: 1984,
-    segments: ['Flooring'],
-    venture: 'bath-n-room',
+    segments: ['Wooden Flooring', 'Engineered Wood'],
+    venture: 'techwood',
+    tradingDomains: ['flooring'],
+    website: 'https://www.agtwood.com',
   },
   {
     name: 'Piccolo',
@@ -474,8 +478,10 @@ export const BRANDS: BrandEntry[] = [
     slug: 'tarkett',
     country: 'France',
     founded: 1997,
-    segments: ['Flooring'],
+    segments: ['Vinyl Flooring', 'Commercial Flooring'],
     venture: 'techwood',
+    tradingDomains: ['flooring'],
+    website: 'https://commercial.tarkett.com',
   },
   {
     name: 'Unitile (Flooring)',
@@ -499,6 +505,7 @@ export const BRANDS: BrandEntry[] = [
     founded: 1985,
     segments: ['Flooring'],
     venture: 'techwood',
+    tradingDomains: ['flooring'],
   },
   {
     name: 'Brazilian Wood',
@@ -507,6 +514,32 @@ export const BRANDS: BrandEntry[] = [
     segments: ['Seasoned Wood'],
     venture: 'techwood',
   },
+  {
+    name: 'KLK Hardwood Flooring',
+    slug: 'klk-hardwood',
+    country: 'Malaysia',
+    segments: ['Engineered Hardwood Flooring'],
+    venture: 'techwood',
+    tradingDomains: ['flooring'],
+    website: 'https://klkflooring.com',
+  },
+
+  // Prime Ceramics — in-house manufacturing
+  {
+    name: 'Prime Tiles',
+    slug: 'prime-tiles',
+    country: 'Nepal',
+    founded: 2021,
+    segments: [
+      'Vitrified Tiles',
+      'Ceramic Tiles',
+      'Floor Tiles',
+      'Wall Tiles',
+    ],
+    venture: 'prime-ceramics',
+    tradingDomains: ['tiles'],
+    website: 'https://primeceramics.com.np',
+  },
 ];
 
 export const VENTURE_LABELS: Record<VentureSlug, string> = {
@@ -514,6 +547,7 @@ export const VENTURE_LABELS: Record<VentureSlug, string> = {
   'baba-muktinath': 'Baba Muktinath Fabricators',
   '4r-technologies': '4R Technologies',
   techwood: 'Techwood',
+  'prime-ceramics': 'Prime Ceramics',
 };
 
 export function getBrandsByVenture(venture: VentureSlug): BrandEntry[] {
@@ -530,7 +564,13 @@ export function getBrandCountByVenture(): Record<VentureSlug, number> {
       acc[b.venture] = (acc[b.venture] ?? 0) + 1;
       return acc;
     },
-    { 'bath-n-room': 0, 'baba-muktinath': 0, '4r-technologies': 0, techwood: 0 } as Record<VentureSlug, number>,
+    {
+      'bath-n-room': 0,
+      'baba-muktinath': 0,
+      '4r-technologies': 0,
+      techwood: 0,
+      'prime-ceramics': 0,
+    } as Record<VentureSlug, number>,
   );
 }
 

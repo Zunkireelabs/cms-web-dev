@@ -21,6 +21,7 @@ const VENTURE_ORDER: VentureSlug[] = [
   'baba-muktinath',
   '4r-technologies',
   'techwood',
+  'prime-ceramics',
 ];
 
 const VENTURE_TAGLINES: Record<VentureSlug, string> = {
@@ -28,6 +29,7 @@ const VENTURE_TAGLINES: Record<VentureSlug, string> = {
   'baba-muktinath': 'Roofing, ceilings, doors, hardware, and waterproofing systems',
   '4r-technologies': 'Sustainable water management, treatment plants, and pool solutions',
   techwood: 'Modular office furniture and flooring for corporate and education sectors',
+  'prime-ceramics': 'In-house tile manufacturing — Prime Tiles, made in Nepal with European technology',
 };
 
 const COUNTRY_COUNT = new Set(BRANDS.map((b) => b.country.split(' ')[0])).size;

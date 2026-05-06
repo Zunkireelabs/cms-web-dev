@@ -128,6 +128,22 @@ const PRODUCT_DOMAIN_META: ProductDomainMeta[] = [
       'Premium sanitary ware solutions designed for durability, hygiene, and modern aesthetics — ideal for hotels, hospitals, residential, and commercial spaces. Our range combines high-quality materials with innovative designs to ensure reliability, easy maintenance, and a refined finish that enhances both functionality and overall space appeal.',
     image: '/images/products/sanitaryware.jpg',
   },
+  {
+    id: 'tiles',
+    slug: 'tiles',
+    title: 'Tiles',
+    description:
+      'A wide range of premium tiles featuring diverse design patterns, from transitional to modern styles, with every type of finish and texture. Crafted to suit residential and commercial spaces, our tile collection combines durability with elegant aesthetics — featuring our in-house Prime Tiles brand, manufactured in Nepal using cutting-edge European technology.',
+    image: '/images/products/sanitaryware.jpg',
+  },
+  {
+    id: 'flooring',
+    slug: 'flooring',
+    title: 'Flooring',
+    description:
+      'A wide range of premium flooring options including wooden flooring, parquet, vinyl, engineered hardwood, and other modern finishes. Designed for durability and style, our flooring solutions enhance both residential and commercial spaces — featuring AGT, KLK Hardwood, and Tarkett with a perfect blend of elegance, comfort, and long-lasting performance.',
+    image: '/images/products/wood-glass.jpg',
+  },
 ];
 
 export const PRODUCT_DOMAINS: ProductDomain[] = PRODUCT_DOMAIN_META.map((meta) => ({

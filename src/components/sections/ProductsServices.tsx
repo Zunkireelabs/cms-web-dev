@@ -17,6 +17,8 @@ import {
   Droplets,
   Trash2,
   Bath,
+  Grid3x3,
+  Footprints,
   LucideIcon,
 } from 'lucide-react';
 
@@ -38,6 +40,8 @@ const PRODUCTS: Product[] = [
   { title: 'Waterproofing Systems', icon: Droplets, image: '/images/products/waterproofing.jpg', link: '/trading/waterproofing' },
   { title: 'Wastewater Management', icon: Trash2, image: '/images/products/wastewater.jpg', link: '/trading/wastewater-management' },
   { title: 'Sanitaryware', icon: Bath, image: '/images/products/sanitaryware.jpg', link: '/trading/sanitaryware' },
+  { title: 'Tiles', icon: Grid3x3, image: '/images/products/sanitaryware.jpg', link: '/trading/tiles' },
+  { title: 'Flooring', icon: Footprints, image: '/images/products/wood-glass.jpg', link: '/trading/flooring' },
 ];
 
 function ProductCard({ product, index }: { product: Product; index: number }) {
@@ -109,12 +113,12 @@ export function ProductsServices() {
             </p>
           </div>
           <span className="text-sm text-neutral-400 font-medium">
-            10 Specialized Domains
+            12 Specialized Domains
           </span>
         </motion.div>
 
-        {/* 5x2 Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 lg:gap-5">
+        {/* 4x3 Grid (12 domains) */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-5">
           {PRODUCTS.map((product, index) => (
             <ProductCard key={product.title} product={product} index={index} />
           ))}
