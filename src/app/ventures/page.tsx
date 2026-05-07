@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
@@ -9,13 +10,15 @@ import { Section } from '@/components/ui/Section';
 import { ContactCTA } from '@/components/sections';
 import { VENTURES } from '@/data/ventures';
 import { getBrandsByVenture, type VentureSlug } from '@/data/brands';
-import { fadeUp } from '@/lib/motion';
+import { fadeUp, stagger, inViewOptions } from '@/lib/motion';
+import { cn } from '@/lib/utils';
 import {
   ArrowRight,
   Armchair,
   Bath,
   Boxes,
   Calendar,
+  ChevronDown,
   DoorClosed,
   Droplets,
   Grid2x2,
@@ -67,9 +70,70 @@ function getProductIcon(name: string, ventureSlug: string): LucideIcon {
   return Boxes;
 }
 
+function Kpi({ value, label }: { value: number | string; label: string }) {
+  return (
+    <div className="rounded-xl border border-neutral-200 bg-white px-3.5 py-3 sm:px-4 sm:py-3.5">
+      <div className="font-display text-2xl font-extrabold leading-none tracking-tight text-neutral-charcoal sm:text-3xl">
+        {value}
+      </div>
+      <div className="mt-1.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-neutral-500 sm:text-[11px]">
+        {label}
+      </div>
+    </div>
+  );
+}
+
+function ProductRow({
+  product,
+  ventureSlug,
+  index,
+}: {
+  product: Venture['products'][number];
+  ventureSlug: string;
+  index: number;
+}) {
+  const ProductIcon = product.image ? null : getProductIcon(product.name, ventureSlug);
+  return (
+    <motion.li
+      variants={fadeUp}
+      custom={Math.min(index * 0.03, 0.36)}
+      className="group relative flex items-center gap-3 border-b border-neutral-100 px-5 py-3.5 transition-colors last:border-0 hover:bg-accent-50/70 sm:gap-4 sm:px-6 sm:py-4"
+    >
+      <span
+        aria-hidden
+        className="absolute left-0 top-2 bottom-2 w-[3px] origin-center scale-y-0 rounded-r-sm bg-accent transition-transform duration-200 group-hover:scale-y-100"
+      />
+      {product.image ? (
+        <div className="relative h-11 w-11 flex-shrink-0 overflow-hidden rounded-xl border border-neutral-200 sm:h-12 sm:w-12">
+          <Image
+            src={product.image}
+            alt={product.name}
+            fill
+            sizes="48px"
+            className="object-cover"
+          />
+        </div>
+      ) : (
+        <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-accent-50 to-neutral-100 text-accent sm:h-12 sm:w-12">
+          {ProductIcon && <ProductIcon className="h-5 w-5" strokeWidth={1.5} />}
+        </div>
+      )}
+      <p className="min-w-0 flex-1 text-[14px] font-semibold leading-snug text-neutral-charcoal sm:text-[15px]">
+        {product.name}
+      </p>
+      <ArrowRight
+        aria-hidden
+        className="h-4 w-4 flex-shrink-0 text-accent opacity-0 transition-all duration-200 group-hover:translate-x-0.5 group-hover:opacity-100"
+        strokeWidth={2}
+      />
+    </motion.li>
+  );
+}
+
 function VentureSection({ venture, index }: { venture: Venture; index: number }) {
   const Icon = VENTURE_ICONS[venture.slug] ?? Layers;
   const isEven = index % 2 === 0;
+  const [expanded, setExpanded] = useState(false);
 
   const brandCount = isDistributingVenture(venture.slug)
     ? getBrandsByVenture(venture.slug).length
@@ -77,17 +141,22 @@ function VentureSection({ venture, index }: { venture: Venture; index: number })
 
   const isContractingVenture = venture.slug === 'cubic-meter';
   const isJointVenture = venture.slug === 'prime-ceramics';
+  const hasProducts = venture.products.length > 0;
 
   return (
     <Section variant={isEven ? 'light' : 'soft'} id={venture.slug}>
       <motion.div
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, margin: '-100px' }}
-        className="grid items-start gap-12 lg:grid-cols-12 lg:gap-16"
+        viewport={inViewOptions}
+        className="grid items-start gap-10 lg:grid-cols-12 lg:gap-14 xl:gap-16"
       >
-        {/* Identity column */}
-        <motion.div variants={fadeUp} custom={0} className="lg:col-span-5">
+        {/* Identity column — sticky on lg+ */}
+        <motion.aside
+          variants={fadeUp}
+          custom={0}
+          className="border-l-[3px] border-accent pl-6 lg:col-span-5 lg:sticky lg:top-36 lg:pl-7"
+        >
           <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-accent-50 text-accent">
             <Icon className="h-7 w-7" strokeWidth={1.5} />
           </div>
@@ -95,20 +164,50 @@ function VentureSection({ venture, index }: { venture: Venture; index: number })
             <Calendar className="h-3 w-3" strokeWidth={1.75} />
             Founded {venture.founded}
           </div>
-          <h2 className="mt-3 font-display text-3xl font-bold leading-[1.1] tracking-tight text-neutral-charcoal sm:text-4xl lg:text-5xl">
+          <h2 className="mt-3 font-display text-3xl font-bold leading-[1.05] tracking-tight text-neutral-charcoal sm:text-4xl lg:text-5xl">
             {venture.shortName}
           </h2>
           {venture.tagline && (
-            <p className="mt-4 text-base font-semibold leading-snug text-accent sm:text-lg">
+            <p className="mt-3 text-base font-semibold leading-snug text-accent sm:text-lg">
               {venture.tagline}
             </p>
           )}
-          <p className="mt-5 text-sm leading-relaxed text-neutral-600 sm:text-base">
+
+          {/* KPI strip */}
+          <dl
+            className={cn(
+              'mt-6 grid gap-2.5',
+              hasProducts && brandCount > 0 ? 'grid-cols-3' : hasProducts || brandCount > 0 ? 'grid-cols-2' : 'grid-cols-1',
+            )}
+          >
+            <Kpi value={venture.founded} label="Founded" />
+            {hasProducts && <Kpi value={venture.products.length} label="Categories" />}
+            {brandCount > 0 && <Kpi value={brandCount} label="Brands" />}
+          </dl>
+
+          {/* Description with line-clamp + Read more */}
+          <p
+            className={cn(
+              'mt-6 text-sm leading-relaxed text-neutral-600 sm:text-[15px]',
+              !expanded && 'line-clamp-4',
+            )}
+          >
             {venture.description}
           </p>
+          <button
+            type="button"
+            onClick={() => setExpanded((v) => !v)}
+            className="mt-2.5 inline-flex items-center gap-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-accent transition-colors hover:text-accent-700"
+          >
+            {expanded ? 'Read less' : 'Read more'}
+            <ChevronDown
+              className={cn('h-3 w-3 transition-transform', expanded && 'rotate-180')}
+              strokeWidth={2}
+            />
+          </button>
 
           {/* Cross-links */}
-          <div className="mt-7 flex flex-wrap gap-3">
+          <div className="mt-7 flex flex-wrap gap-2.5">
             {brandCount > 0 && (
               <Link
                 href="/brands"
@@ -133,88 +232,51 @@ function VentureSection({ venture, index }: { venture: Venture; index: number })
             {isJointVenture && (
               <span className="inline-flex items-center gap-2 rounded-lg border border-amber-200 bg-amber-50 px-4 py-2 text-sm">
                 <span className="h-1.5 w-1.5 rounded-full bg-amber-500" />
-                <span className="font-semibold text-amber-700">
-                  JV with Fortune Ventures
-                </span>
+                <span className="font-semibold text-amber-700">JV with Fortune Ventures</span>
               </span>
             )}
           </div>
-        </motion.div>
+        </motion.aside>
 
-        {/* Products column */}
+        {/* Right column — product feed (or service-venture card) */}
         <motion.div variants={fadeUp} custom={0.1} className="lg:col-span-7">
-          <div className="rounded-2xl border border-neutral-border bg-white p-6 shadow-card lg:p-8">
-            {venture.products.length > 0 ? (
+          <div className="overflow-hidden rounded-2xl border border-neutral-border bg-white shadow-card">
+            {hasProducts ? (
               <>
-                <div className="mb-5 flex items-baseline justify-between">
+                <div className="flex items-baseline justify-between border-b border-neutral-100 px-5 py-4 sm:px-6 sm:py-5">
                   <h3 className="text-[11px] font-semibold uppercase tracking-[0.22em] text-accent">
                     Product Range
                   </h3>
-                  <span className="text-xs text-neutral-400">
+                  <span className="text-xs font-medium text-neutral-400">
                     {venture.products.length} categories
                   </span>
                 </div>
-                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                  {venture.products.map((product) => {
-                    const ProductIcon = product.image
-                      ? null
-                      : getProductIcon(product.name, venture.slug);
-                    return (
-                      <div
-                        key={product.name}
-                        className="group/tile overflow-hidden rounded-lg border border-neutral-200 bg-white transition-shadow hover:shadow-card"
-                      >
-                        <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-brand-50 to-neutral-100">
-                          {product.image ? (
-                            <Image
-                              src={product.image}
-                              alt={product.name}
-                              fill
-                              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 200px"
-                              className="object-cover transition-transform duration-500 group-hover/tile:scale-105"
-                            />
-                          ) : (
-                            <>
-                              <div
-                                aria-hidden
-                                className="absolute inset-0 opacity-60"
-                                style={{
-                                  backgroundImage:
-                                    'radial-gradient(circle at 30% 25%, rgba(255,255,255,0.75), transparent 55%), radial-gradient(circle at 80% 85%, rgba(0,0,0,0.05), transparent 60%)',
-                                }}
-                              />
-                              <div className="relative flex h-full w-full items-center justify-center transition-transform duration-500 group-hover/tile:scale-110">
-                                {ProductIcon && (
-                                  <ProductIcon
-                                    className="h-11 w-11 text-accent/45"
-                                    strokeWidth={1.2}
-                                  />
-                                )}
-                              </div>
-                            </>
-                          )}
-                        </div>
-                        <p className="px-2.5 py-2 text-[11px] font-semibold leading-tight text-neutral-700">
-                          {product.name}
-                        </p>
-                      </div>
-                    );
-                  })}
-                </div>
+                <motion.ul variants={stagger} initial="hidden" whileInView="visible" viewport={inViewOptions}>
+                  {venture.products.map((product, i) => (
+                    <ProductRow
+                      key={product.name}
+                      product={product}
+                      ventureSlug={venture.slug}
+                      index={i}
+                    />
+                  ))}
+                </motion.ul>
               </>
             ) : (
-              <div className="py-10 text-center">
-                <Boxes className="mx-auto h-12 w-12 text-brand-200" strokeWidth={1.2} />
-                <h3 className="mt-4 font-display text-base font-bold text-neutral-charcoal">
+              <div className="px-6 py-14 text-center sm:px-8">
+                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-accent-50 text-accent">
+                  <Boxes className="h-7 w-7" strokeWidth={1.4} />
+                </div>
+                <h3 className="mt-5 font-display text-lg font-bold text-neutral-charcoal">
                   Service Venture — Contracting Only
                 </h3>
-                <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-neutral-500">
-                  {venture.shortName} delivers end-to-end interior contracting using
-                  products supplied by sister ventures and authorised partner brands.
+                <p className="mx-auto mt-2.5 max-w-md text-sm leading-relaxed text-neutral-500">
+                  {venture.shortName} delivers end-to-end interior contracting using products
+                  supplied by sister ventures and authorised partner brands.
                 </p>
                 <Link
                   href="/contracting"
-                  className="mt-5 inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-accent transition-colors hover:text-accent-700"
+                  className="mt-6 inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-accent transition-colors hover:text-accent-700"
                 >
                   See contracting services
                   <ArrowRight className="h-3.5 w-3.5" />
@@ -230,6 +292,26 @@ function VentureSection({ venture, index }: { venture: Venture; index: number })
 
 export default function VenturesPage() {
   const totalProducts = VENTURES.reduce((sum, v) => sum + v.products.length, 0);
+  const [activeId, setActiveId] = useState<string | null>(null);
+
+  useEffect(() => {
+    const obs = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.filter((e) => e.isIntersecting);
+        if (visible.length === 0) return;
+        const closest = visible.reduce((a, b) =>
+          Math.abs(a.boundingClientRect.top) < Math.abs(b.boundingClientRect.top) ? a : b,
+        );
+        setActiveId(closest.target.id);
+      },
+      { rootMargin: '-30% 0px -55% 0px', threshold: 0 },
+    );
+    VENTURES.forEach((v) => {
+      const el = document.getElementById(v.slug);
+      if (el) obs.observe(el);
+    });
+    return () => obs.disconnect();
+  }, []);
 
   return (
     <>
@@ -242,7 +324,7 @@ export default function VenturesPage() {
         size="tall"
       />
 
-      {/* Quick-jump Nav */}
+      {/* Sticky jump-nav with active-section highlight */}
       <section className="sticky top-16 z-30 border-y border-neutral-200 bg-white/95 backdrop-blur-md lg:top-20">
         <Container>
           <div className="flex flex-wrap items-center gap-2 py-3 sm:gap-3 sm:py-4">
@@ -251,11 +333,18 @@ export default function VenturesPage() {
             </span>
             {VENTURES.map((venture) => {
               const Icon = VENTURE_ICONS[venture.slug] ?? Layers;
+              const isActive = activeId === venture.slug;
               return (
                 <a
                   key={venture.slug}
                   href={`#${venture.slug}`}
-                  className="inline-flex items-center gap-1.5 rounded-full border border-neutral-200 px-3 py-1.5 text-xs font-medium text-neutral-700 transition-colors hover:border-accent/40 hover:bg-accent-50 hover:text-accent sm:text-sm"
+                  aria-current={isActive ? 'location' : undefined}
+                  className={cn(
+                    'inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors sm:text-sm',
+                    isActive
+                      ? 'border-accent bg-accent-50 text-accent-700 shadow-[0_0_0_3px_rgba(212,168,75,0.12)]'
+                      : 'border-neutral-200 text-neutral-700 hover:border-accent/40 hover:bg-accent-50 hover:text-accent',
+                  )}
                 >
                   <Icon className="h-3.5 w-3.5" strokeWidth={1.5} />
                   {venture.shortName}
