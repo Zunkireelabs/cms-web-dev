@@ -5,6 +5,8 @@ import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Container } from '@/components/ui/Container';
 import { PageHero } from '@/components/ui/PageHero';
+import { Section } from '@/components/ui/Section';
+import { StatBlock } from '@/components/ui/StatBlock';
 import { ContactCTA } from '@/components/sections';
 import { cn } from '@/lib/utils';
 import {
@@ -157,6 +159,25 @@ export default function ProjectsPage() {
         imageAlt="CMS Group featured projects"
         size="tall"
       />
+
+      {/* Stat anchor */}
+      <Section variant="soft" compact>
+        <div className="grid grid-cols-3 gap-x-6 gap-y-12 sm:gap-12">
+          <div className="border-l border-accent/40 pl-5 lg:pl-6">
+            <StatBlock value={`${PROJECTS.length}+`} label="Projects Delivered" size="md" />
+          </div>
+          <div className="border-l border-accent/40 pl-5 lg:pl-6">
+            <StatBlock
+              value={`${COMMERCIAL_SECTORS.length}`}
+              label="Commercial Sectors"
+              size="md"
+            />
+          </div>
+          <div className="border-l border-accent/40 pl-5 lg:pl-6">
+            <StatBlock value="23+" label="Years of Delivery" size="md" />
+          </div>
+        </div>
+      </Section>
 
       {/* Tabs & Filters */}
       <section className="sticky top-16 z-30 border-y border-neutral-200 bg-white/95 backdrop-blur-md lg:top-20">

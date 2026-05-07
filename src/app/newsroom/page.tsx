@@ -16,6 +16,7 @@ import {
 } from '@/data/events';
 import {
   Calendar,
+  CalendarOff,
   Flag,
   GraduationCap,
   Handshake,
@@ -244,8 +245,16 @@ export default function NewsroomPage() {
         </div>
 
         {filteredEvents.length === 0 && (
-          <div className="py-12 text-center text-neutral-500">
-            No events found in this category.
+          <div className="rounded-2xl border border-dashed border-neutral-300 bg-white px-8 py-16 text-center">
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-accent-50 text-accent">
+              <CalendarOff className="h-6 w-6" strokeWidth={1.5} />
+            </div>
+            <h3 className="mt-5 font-display text-xl font-bold text-neutral-charcoal">
+              No events in this category
+            </h3>
+            <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-neutral-600">
+              Try a different category, or browse all events.
+            </p>
           </div>
         )}
       </Section>
