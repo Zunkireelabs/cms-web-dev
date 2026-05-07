@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
+import Image from 'next/image';
 import { Container } from '@/components/ui/Container';
 import { KickerLabel } from '@/components/ui/KickerLabel';
 import {
@@ -48,6 +49,36 @@ const CLIENT_TYPE_LABELS: Record<ClientType, string> = {
   residential: 'Residential',
 };
 
+// Sector-themed bright fallback photos per client type
+const CLIENT_TYPE_PHOTO: Record<ClientType, string> = {
+  hotel: '/images/projects/hospitality.jpg',
+  hospital: '/images/projects/healthcare.jpg',
+  construction: '/images/projects/country-villa.jpg',
+  architecture: '/images/projects/residential.jpg',
+  industrial: '/images/projects/infrastructure.jpg',
+  government: '/images/projects/government.jpg',
+  international: '/images/projects/icimod.jpg',
+  residential: '/images/projects/residential.jpg',
+};
+
+// Direct project matches override the sector fallback
+const TESTIMONIAL_PHOTO_OVERRIDE: Record<string, string> = {
+  'ziec-bir-hospital': '/images/projects/bir-hospital.jpg',
+  'airtech-tiger-palace': '/images/projects/tiger-palace.jpg',
+  icimod: '/images/projects/icimod.jpg',
+  'adrisiya-nirman': '/images/projects/attorney-general.jpg',
+  'himalayan-builders': '/images/projects/government.jpg',
+  'maruti-cements': '/images/projects/infrastructure.jpg',
+  'nanc-police': '/images/projects/government.jpg',
+  'hama-iron-steel': '/images/projects/infrastructure.jpg',
+  'kemtex-nepal': '/images/projects/ncell-hq.jpg',
+  'kedia-construction': '/images/projects/country-villa.jpg',
+};
+
+function getTestimonialPhoto(t: Testimonial): string {
+  return TESTIMONIAL_PHOTO_OVERRIDE[t.id] ?? CLIENT_TYPE_PHOTO[t.clientType];
+}
+
 function formatDate(iso: string): string {
   const date = new Date(iso);
   if (Number.isNaN(date.getTime())) return iso;
@@ -56,31 +87,52 @@ function formatDate(iso: string): string {
 
 function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
   const Icon = CLIENT_TYPE_ICONS[testimonial.clientType];
+  const photo = getTestimonialPhoto(testimonial);
 
   return (
     <article className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
-      {/* Accent corner decoration */}
-      <div className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-gradient-to-br from-accent/15 to-transparent blur-2xl" />
-      <div className="pointer-events-none absolute right-6 top-6">
-        <Quote className="h-12 w-12 text-accent/15" strokeWidth={1.25} />
+      {/* Photo header */}
+      <div className="relative aspect-[16/10] overflow-hidden bg-neutral-100">
+        <Image
+          src={photo}
+          alt={`${testimonial.client} — ${testimonial.project ?? testimonial.subject}`}
+          fill
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-neutral-charcoal/85 via-neutral-charcoal/30 to-transparent" />
+
+        <span className="absolute top-4 left-4 inline-flex items-center gap-1.5 rounded-full bg-accent px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-white shadow-sm">
+          Signed Reference
+        </span>
+
+        <div className="absolute bottom-4 left-4 right-4">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-accent">
+            {CLIENT_TYPE_LABELS[testimonial.clientType]}
+          </p>
+          {testimonial.project && (
+            <p className="mt-1 truncate font-display text-base font-bold leading-tight text-white">
+              {testimonial.project}
+            </p>
+          )}
+        </div>
       </div>
 
-      <div className="relative flex flex-1 flex-col p-7 lg:p-8">
-        {/* Kicker — Reference Letter */}
-        <div className="mb-5">
-          <span className="inline-flex items-center gap-2 rounded-full bg-accent-50 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-accent">
-            Signed Reference
-          </span>
-        </div>
+      <div className="relative flex flex-1 flex-col p-6 lg:p-7">
+        {/* Faint Quote watermark */}
+        <Quote
+          className="pointer-events-none absolute right-5 top-5 h-10 w-10 text-accent/15"
+          strokeWidth={1.25}
+        />
 
-        {/* Subject as the headline */}
-        <h3 className="font-display text-lg font-bold leading-snug text-neutral-charcoal lg:text-xl">
+        {/* Subject */}
+        <h3 className="font-display text-base font-bold leading-snug text-neutral-charcoal lg:text-lg">
           {testimonial.subject}
         </h3>
 
-        {/* Scope bullets */}
+        {/* Scope */}
         {testimonial.scope.length > 0 && (
-          <ul className="mt-5 space-y-2">
+          <ul className="mt-4 space-y-2">
             {testimonial.scope.slice(0, 4).map((item) => (
               <li
                 key={item}
@@ -98,29 +150,11 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
           </ul>
         )}
 
-        {/* Project + location card */}
-        {(testimonial.project || testimonial.location) && (
-          <div className="mt-5 rounded-xl border border-neutral-100 bg-neutral-50 p-4">
-            {testimonial.project && (
-              <p className="font-display text-sm font-bold leading-tight text-neutral-charcoal">
-                {testimonial.project}
-              </p>
-            )}
-            {testimonial.location && (
-              <div className="mt-1.5 flex items-center gap-1.5 text-xs text-neutral-500">
-                <MapPin className="h-3 w-3 text-accent" strokeWidth={1.5} />
-                <span>{testimonial.location}</span>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Spacer to push footer down */}
         <div className="flex-1" />
 
-        {/* Client + type + date footer */}
-        <div className="mt-6 flex items-end justify-between gap-3 border-t border-neutral-100 pt-5">
-          <div className="flex items-center gap-3 min-w-0">
+        {/* Footer: client + via venture + date */}
+        <div className="mt-5 flex items-end justify-between gap-3 border-t border-neutral-100 pt-5">
+          <div className="flex min-w-0 items-center gap-3">
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-accent text-white">
               <Icon className="h-4 w-4" strokeWidth={1.75} />
             </div>
@@ -128,9 +162,12 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
               <p className="truncate font-display text-sm font-bold leading-tight text-neutral-charcoal">
                 {testimonial.client}
               </p>
-              <p className="mt-0.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-accent">
-                {CLIENT_TYPE_LABELS[testimonial.clientType]}
-              </p>
+              {testimonial.location && (
+                <p className="mt-0.5 flex items-center gap-1 text-[10px] text-neutral-500">
+                  <MapPin className="h-2.5 w-2.5" strokeWidth={1.75} />
+                  {testimonial.location}
+                </p>
+              )}
             </div>
           </div>
           <div className="text-right">
@@ -145,7 +182,6 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
         </div>
       </div>
 
-      {/* Bottom accent line */}
       <div className="absolute bottom-0 left-0 h-0.5 w-0 bg-accent transition-all duration-300 group-hover:w-full" />
     </article>
   );
