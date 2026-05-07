@@ -158,10 +158,12 @@ export default function ContactPage() {
         subtitle="Material supply, interior contracting, brand partnerships, or general inquiries — drop us a line and our team responds within one working day."
         image="/images/projects/icimod.jpg"
         imageAlt="CMS Group head office"
+        primaryCta={{ label: 'Send a Message', href: '#contact-form' }}
+        secondaryCta={{ label: `Call ${SITE_CONFIG.phone}`, href: `tel:${SITE_CONFIG.phone.replace(/\s/g, '')}` }}
         size="compact"
       />
 
-      <Section variant="light">
+      <Section variant="light" id="contact-form">
         <div className="grid gap-12 lg:grid-cols-5 lg:gap-16">
           {/* Contact Form */}
           <motion.div

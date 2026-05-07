@@ -167,10 +167,15 @@ export default function CareerPage() {
               viewport={{ once: true, margin: '-80px' }}
               variants={fadeUp}
               custom={index * 0.05}
-              className="group rounded-2xl border border-neutral-border bg-white p-7 shadow-card transition-all hover:-translate-y-0.5 hover:shadow-card-hover"
+              className="group relative overflow-hidden rounded-2xl border border-neutral-border bg-white p-7 shadow-card transition-all hover:-translate-y-1 hover:shadow-lg"
             >
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent-50 text-accent transition-colors group-hover:bg-accent group-hover:text-white">
-                <item.icon className="h-6 w-6" strokeWidth={1.5} />
+              <div className="flex items-start justify-between">
+                <span className="font-display text-3xl font-bold leading-none text-accent/30 tabular-nums">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent-50 text-accent transition-colors group-hover:bg-accent group-hover:text-white">
+                  <item.icon className="h-6 w-6" strokeWidth={1.5} />
+                </div>
               </div>
               <h3 className="mt-6 font-display text-lg font-bold leading-tight tracking-tight text-neutral-charcoal sm:text-xl">
                 {item.title}
@@ -178,6 +183,7 @@ export default function CareerPage() {
               <p className="mt-3 text-sm leading-relaxed text-neutral-600">
                 {item.description}
               </p>
+              <div className="absolute bottom-0 left-0 h-0.5 w-0 bg-accent transition-all duration-300 group-hover:w-full" />
             </motion.div>
           ))}
         </div>
