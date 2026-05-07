@@ -1,14 +1,9 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
+import Link from 'next/link';
 import Image from 'next/image';
-import {
-  motion,
-  AnimatePresence,
-  useMotionValue,
-  useSpring,
-  useTransform,
-} from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Container } from '@/components/ui/Container';
 import { PageHero } from '@/components/ui/PageHero';
 import { Section } from '@/components/ui/Section';
@@ -22,7 +17,16 @@ import {
   type ProjectType,
   type CommercialSector,
 } from '@/data/projects';
-import { MapPin, Maximize, Building2, Home } from 'lucide-react';
+import {
+  MapPin,
+  Maximize,
+  Building2,
+  Home,
+  Eye,
+  X,
+  Calendar,
+  ArrowRight,
+} from 'lucide-react';
 
 const SECTOR_IMAGES: Record<string, string> = {
   office: '/images/projects/office.jpg',
@@ -61,111 +65,23 @@ function getProjectImageSrc(project: Project): string {
   return project.image ?? SECTOR_IMAGES[imageKey] ?? SECTOR_IMAGES.office;
 }
 
-function ProjectsGrid({ projects, tabKey }: { projects: Project[]; tabKey: string }) {
-  const [activeId, setActiveId] = useState<string | null>(null);
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-  const springX = useSpring(mouseX, { stiffness: 320, damping: 28, mass: 0.45 });
-  const springY = useSpring(mouseY, { stiffness: 320, damping: 28, mass: 0.45 });
-  const offsetX = useTransform(springX, (v) => v + 24);
-  const offsetY = useTransform(springY, (v) => v + 24);
-
-  const activeProject = projects.find((p) => p.id === activeId) ?? null;
-
-  return (
-    <div
-      onPointerMove={(e) => {
-        if (e.pointerType === 'mouse') {
-          mouseX.set(e.clientX);
-          mouseY.set(e.clientY);
-        }
-      }}
-      onPointerLeave={() => setActiveId(null)}
-      className="relative"
-    >
-      <AnimatePresence>
-        {activeProject && (
-          <motion.div
-            key={activeProject.id}
-            initial={{ opacity: 0, scale: 0.85 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.85 }}
-            transition={{ duration: 0.18, ease: [0.25, 0.46, 0.45, 0.94] }}
-            style={{
-              x: offsetX,
-              y: offsetY,
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              pointerEvents: 'none',
-              zIndex: 60,
-              transformOrigin: 'top left',
-            }}
-            className="hidden h-56 w-72 overflow-hidden rounded-xl shadow-2xl ring-1 ring-black/10 lg:block"
-            aria-hidden
-          >
-            <Image
-              src={getProjectImageSrc(activeProject)}
-              alt=""
-              fill
-              sizes="288px"
-              className="object-cover"
-            />
-            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-neutral-charcoal/95 via-neutral-charcoal/40 to-transparent p-4">
-              {activeProject.sector && (
-                <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-accent">
-                  {activeProject.sector} · {activeProject.year}
-                </div>
-              )}
-              <div className="mt-1 font-display text-sm font-bold leading-tight text-white">
-                {activeProject.title}
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={tabKey}
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          exit="hidden"
-          className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
-        >
-          {projects.map((project) => (
-            <ProjectCard
-              key={project.id}
-              project={project}
-              onPointerEnter={() => setActiveId(project.id)}
-              onPointerLeave={() => setActiveId(null)}
-            />
-          ))}
-        </motion.div>
-      </AnimatePresence>
-    </div>
-  );
-}
-
 function ProjectCard({
   project,
-  onPointerEnter,
-  onPointerLeave,
+  onOpen,
 }: {
   project: Project;
-  onPointerEnter?: () => void;
-  onPointerLeave?: () => void;
+  onOpen: (project: Project) => void;
 }) {
   const imageSrc = getProjectImageSrc(project);
 
   return (
-    <motion.div
+    <motion.button
+      type="button"
       variants={itemVariants}
       layout
-      onPointerEnter={onPointerEnter}
-      onPointerLeave={onPointerLeave}
-      className="group relative flex flex-col overflow-hidden rounded-xl border border-neutral-200 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+      onClick={() => onOpen(project)}
+      aria-label={`Preview ${project.title}`}
+      className="group relative flex flex-col overflow-hidden rounded-xl border border-neutral-200 bg-white text-left transition-all duration-300 hover:-translate-y-1 hover:shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
     >
       <div className="relative aspect-[16/10] overflow-hidden bg-neutral-100">
         <Image
@@ -175,6 +91,16 @@ function ProjectCard({
           className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
+
+        {/* Dim overlay on hover */}
+        <div className="pointer-events-none absolute inset-0 bg-neutral-charcoal/0 transition-colors duration-300 group-hover:bg-neutral-charcoal/25" />
+
+        {/* Eye preview cue — centered on image */}
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+          <div className="flex h-12 w-12 scale-75 items-center justify-center rounded-full bg-white/95 text-neutral-charcoal opacity-0 shadow-lg backdrop-blur-sm transition-all duration-300 group-hover:scale-100 group-hover:opacity-100">
+            <Eye className="h-5 w-5" strokeWidth={1.75} />
+          </div>
+        </div>
 
         {project.featured && (
           <span className="absolute top-4 left-4 inline-block rounded-full bg-accent px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-white shadow-sm">
@@ -235,13 +161,164 @@ function ProjectCard({
       </div>
 
       <div className="absolute bottom-0 left-0 h-0.5 w-0 bg-accent transition-all duration-300 group-hover:w-full" />
-    </motion.div>
+    </motion.button>
+  );
+}
+
+function ProjectDetailModal({
+  project,
+  onClose,
+}: {
+  project: Project | null;
+  onClose: () => void;
+}) {
+  const closeBtnRef = useRef<HTMLButtonElement>(null);
+
+  // Lock body scroll, listen for ESC, focus close button on open
+  useEffect(() => {
+    if (!project) return;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', onKey);
+    closeBtnRef.current?.focus();
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [project, onClose]);
+
+  return (
+    <AnimatePresence>
+      {project && (
+        <motion.div
+          key="project-modal"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-neutral-charcoal/70 backdrop-blur-sm p-4 sm:p-6"
+          onClick={onClose}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="project-modal-title"
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.96, y: 12 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.96, y: 12 }}
+            transition={{ duration: 0.25, ease: [0.25, 0.46, 0.45, 0.94] }}
+            onClick={(e) => e.stopPropagation()}
+            className="relative grid w-full max-w-5xl overflow-hidden rounded-2xl bg-white shadow-2xl md:grid-cols-[55fr_45fr] max-h-[90vh]"
+          >
+            {/* Image side */}
+            <div className="relative aspect-[4/3] w-full bg-neutral-100 md:aspect-auto md:h-full md:min-h-[480px]">
+              <Image
+                src={getProjectImageSrc(project)}
+                alt={project.title}
+                fill
+                sizes="(max-width: 768px) 100vw, 55vw"
+                className="object-cover"
+                priority
+              />
+              {project.featured && (
+                <span className="absolute top-4 left-4 inline-block rounded-full bg-accent px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-white shadow-sm">
+                  Featured
+                </span>
+              )}
+            </div>
+
+            {/* Detail side */}
+            <div className="relative flex flex-col overflow-y-auto p-6 sm:p-8 md:p-10">
+              <button
+                ref={closeBtnRef}
+                type="button"
+                onClick={onClose}
+                aria-label="Close"
+                className="absolute top-4 right-4 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-neutral-100 text-neutral-600 transition-colors hover:bg-neutral-200 hover:text-neutral-charcoal focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+              >
+                <X className="h-4 w-4" strokeWidth={2} />
+              </button>
+
+              {project.sector && (
+                <span className="inline-block w-fit rounded-full bg-accent-50 px-3 py-1 text-[11px] font-semibold capitalize text-accent">
+                  {project.sector}
+                </span>
+              )}
+
+              <h2
+                id="project-modal-title"
+                className="mt-4 pr-12 font-display text-2xl font-bold leading-tight text-neutral-charcoal sm:text-3xl"
+              >
+                {project.title}
+              </h2>
+              <p className="mt-1.5 text-sm font-medium text-neutral-500">{project.client}</p>
+
+              <div className="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-sm text-neutral-600">
+                <span className="flex items-center gap-1.5">
+                  <MapPin className="h-3.5 w-3.5 text-accent shrink-0" strokeWidth={1.75} />
+                  {project.location}
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <Calendar className="h-3.5 w-3.5 text-accent shrink-0" strokeWidth={1.75} />
+                  {project.year}
+                </span>
+                {project.area && (
+                  <span className="flex items-center gap-1.5">
+                    <Maximize className="h-3.5 w-3.5 text-accent shrink-0" strokeWidth={1.75} />
+                    {project.area}
+                  </span>
+                )}
+              </div>
+
+              <p className="mt-6 text-sm leading-relaxed text-neutral-600 sm:text-[15px]">
+                {project.description}
+              </p>
+
+              {project.scope.length > 0 && (
+                <>
+                  <h3 className="mt-7 text-[11px] font-semibold uppercase tracking-[0.18em] text-accent">
+                    Services Provided
+                  </h3>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {project.scope.map((item) => (
+                      <span
+                        key={item}
+                        className="rounded-md bg-neutral-100 px-3 py-1.5 text-xs font-medium text-neutral-700"
+                      >
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              <div className="mt-8 border-t border-neutral-100 pt-6">
+                <p className="text-xs text-neutral-500">
+                  Interested in similar work for your project?
+                </p>
+                <Link
+                  href="/contact"
+                  className="mt-3 inline-flex items-center gap-2 rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold uppercase tracking-wider text-white transition-colors hover:bg-accent-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+                >
+                  Get a Quote
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }
 
 export default function ProjectsPage() {
   const [activeTab, setActiveTab] = useState<ProjectType>('commercial');
   const [activeSector, setActiveSector] = useState<CommercialSector | 'all'>('all');
+  const [activeProject, setActiveProject] = useState<Project | null>(null);
 
   const filteredProjects = useMemo(() => {
     let projects = PROJECTS.filter((p) => p.type === activeTab);
@@ -388,10 +465,24 @@ export default function ProjectsPage() {
             </p>
           </motion.div>
 
-          <ProjectsGrid
-            projects={filteredProjects}
-            tabKey={`${activeTab}-${activeSector}`}
-          />
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={`${activeTab}-${activeSector}`}
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
+              className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+            >
+              {filteredProjects.map((project) => (
+                <ProjectCard
+                  key={project.id}
+                  project={project}
+                  onOpen={setActiveProject}
+                />
+              ))}
+            </motion.div>
+          </AnimatePresence>
 
           {filteredProjects.length === 0 && (
             <motion.div
@@ -408,6 +499,8 @@ export default function ProjectsPage() {
           )}
         </Container>
       </section>
+
+      <ProjectDetailModal project={activeProject} onClose={() => setActiveProject(null)} />
 
       <ContactCTA />
     </>
