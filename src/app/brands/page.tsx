@@ -1,14 +1,13 @@
 'use client';
 
-import { useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
 import Link from 'next/link';
-import { Container } from '@/components/ui/Container';
+import { motion } from 'framer-motion';
 import { PageHero } from '@/components/ui/PageHero';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { Section } from '@/components/ui/Section';
 import { StatBlock } from '@/components/ui/StatBlock';
 import { ContactCTA } from '@/components/sections';
+import { fadeUp, stagger } from '@/lib/motion';
 import {
   BRANDS,
   TOTAL_BRAND_COUNT,
@@ -18,7 +17,7 @@ import {
   type VentureSlug,
 } from '@/data/brands';
 import { VENTURES } from '@/data/ventures';
-import { ArrowRight, MapPin, Calendar, Sparkles } from 'lucide-react';
+import { ArrowRight, MapPin, Calendar, Sparkles, Factory } from 'lucide-react';
 
 const VENTURE_ORDER: VentureSlug[] = [
   'bath-n-room',
@@ -33,51 +32,21 @@ const VENTURE_TAGLINES: Record<VentureSlug, string> = {
   'baba-muktinath': 'Roofing, ceilings, doors, hardware, and waterproofing systems',
   '4r-technologies': 'Sustainable water management, treatment plants, and pool solutions',
   techwood: 'Modular office furniture and flooring for corporate and education sectors',
-  'prime-ceramics': 'In-house tile manufacturing — Prime Tiles, made in Nepal with European technology',
+  'prime-ceramics':
+    'In-house tile manufacturing — Prime Tiles, made in Nepal with European technology',
 };
 
 const COUNTRY_COUNT = new Set(BRANDS.map((b) => b.country.split(' ')[0])).size;
 
-const fadeInUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: (delay: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, delay, ease: [0.25, 0.46, 0.45, 0.94] },
-  }),
-};
-
-const staggerContainer = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.05 } },
-};
-
-function AnimatedSection({ children, className }: { children: React.ReactNode; className?: string }) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
-
-  return (
-    <motion.div
-      ref={ref}
-      initial="hidden"
-      animate={isInView ? 'visible' : 'hidden'}
-      variants={staggerContainer}
-      className={className}
-    >
-      {children}
-    </motion.div>
-  );
-}
-
 function BrandCard({ brand }: { brand: BrandEntry }) {
   return (
     <motion.div
-      variants={fadeInUp}
+      variants={fadeUp}
       custom={0}
-      className="group relative h-full rounded-xl border border-neutral-border bg-white p-5 transition-all hover:border-accent/40 hover:shadow-card-hover"
+      className="group relative h-full rounded-xl border border-neutral-border bg-white p-5 transition-all hover:-translate-y-0.5 hover:border-accent/40 hover:shadow-card-hover"
     >
       <div className="flex items-start justify-between gap-3">
-        <h4 className="font-display text-base font-bold text-neutral-charcoal group-hover:text-accent transition-colors leading-tight">
+        <h4 className="font-display text-base font-bold leading-tight text-neutral-charcoal transition-colors group-hover:text-accent">
           {brand.name}
         </h4>
         {brand.founded && (
@@ -91,7 +60,7 @@ function BrandCard({ brand }: { brand: BrandEntry }) {
         <span>{brand.country}</span>
       </div>
       {brand.segments.length > 0 && (
-        <p className="mt-3 text-xs text-neutral-600 leading-relaxed line-clamp-2">
+        <p className="mt-3 line-clamp-2 text-xs leading-relaxed text-neutral-600">
           {brand.segments.slice(0, 2).join(' • ')}
           {brand.segments.length > 2 && ` +${brand.segments.length - 2}`}
         </p>
@@ -104,17 +73,32 @@ function BrandCard({ brand }: { brand: BrandEntry }) {
 function VentureSection({ ventureSlug }: { ventureSlug: VentureSlug }) {
   const venture = VENTURES.find((v) => v.slug === ventureSlug);
   const brands = getBrandsByVenture(ventureSlug);
+  const isManufacturing = ventureSlug === 'prime-ceramics';
 
   return (
-    <AnimatedSection className="rounded-2xl border border-neutral-border bg-white p-6 shadow-card lg:p-10">
+    <motion.div
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: '-100px' }}
+      variants={stagger}
+      className="rounded-2xl border border-neutral-border bg-white p-6 shadow-card lg:p-10"
+    >
       {/* Venture Header */}
-      <motion.div variants={fadeInUp} custom={0} className="mb-8">
+      <motion.div variants={fadeUp} custom={0} className="mb-8">
         <div className="flex flex-wrap items-baseline justify-between gap-4">
           <div>
-            <h3 className="text-2xl font-bold text-neutral-charcoal sm:text-3xl">
-              {VENTURE_LABELS[ventureSlug]}
-            </h3>
-            <p className="mt-2 max-w-2xl text-sm text-neutral-600 leading-relaxed">
+            <div className="flex items-center gap-3">
+              <h3 className="font-display text-2xl font-bold leading-tight tracking-tight text-neutral-charcoal sm:text-3xl">
+                {VENTURE_LABELS[ventureSlug]}
+              </h3>
+              {isManufacturing && (
+                <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-amber-700">
+                  <Factory className="h-3 w-3" strokeWidth={1.75} />
+                  In-house
+                </span>
+              )}
+            </div>
+            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-neutral-600">
               {VENTURE_TAGLINES[ventureSlug]}
             </p>
           </div>
@@ -131,7 +115,7 @@ function VentureSection({ ventureSlug }: { ventureSlug: VentureSlug }) {
             </div>
             <Link
               href={`/ventures#${ventureSlug}`}
-              className="inline-flex items-center gap-1 font-semibold text-accent hover:text-accent-700 transition-colors"
+              className="inline-flex items-center gap-1 font-semibold uppercase tracking-wider text-accent transition-colors hover:text-accent-700"
             >
               View venture
               <ArrowRight className="h-3 w-3" />
@@ -146,7 +130,7 @@ function VentureSection({ ventureSlug }: { ventureSlug: VentureSlug }) {
           <BrandCard key={brand.slug} brand={brand} />
         ))}
       </div>
-    </AnimatedSection>
+    </motion.div>
   );
 }
 
@@ -194,7 +178,6 @@ export default function BrandsPage() {
         </div>
       </Section>
 
-      {/* Partnership CTA */}
       <ContactCTA />
     </>
   );

@@ -1,12 +1,11 @@
 'use client';
 
-import { useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { motion, useInView } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Container } from '@/components/ui/Container';
 import { PageHero } from '@/components/ui/PageHero';
-import { KickerLabel } from '@/components/ui/KickerLabel';
+import { Section } from '@/components/ui/Section';
 import { ContactCTA } from '@/components/sections';
 import { VENTURES } from '@/data/ventures';
 import { getBrandsByVenture, type VentureSlug } from '@/data/brands';
@@ -41,10 +40,8 @@ function isDistributingVenture(slug: string): slug is VentureSlug {
 }
 
 function VentureSection({ venture, index }: { venture: Venture; index: number }) {
-  const ref = useRef<HTMLElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
-  const isEven = index % 2 === 0;
   const Icon = VENTURE_ICONS[venture.slug] ?? Layers;
+  const isEven = index % 2 === 0;
 
   const brandCount = isDistributingVenture(venture.slug)
     ? getBrandsByVenture(venture.slug).length
@@ -54,137 +51,132 @@ function VentureSection({ venture, index }: { venture: Venture; index: number })
   const isJointVenture = venture.slug === 'prime-ceramics';
 
   return (
-    <section
-      ref={ref}
-      id={venture.slug}
-      className={`scroll-mt-24 py-20 lg:py-28 ${isEven ? 'bg-white' : 'bg-neutral-off-white'}`}
-    >
-      <Container>
-        <motion.div
-          initial="hidden"
-          animate={isInView ? 'visible' : 'hidden'}
-          className="grid items-start gap-12 lg:grid-cols-12 lg:gap-16"
-        >
-          {/* Left — Identity */}
-          <motion.div variants={fadeUp} custom={0} className="lg:col-span-4">
-            <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-accent-50 text-accent">
-              <Icon className="h-7 w-7" strokeWidth={1.5} />
-            </div>
-            <div className="mt-6 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-accent">
-              <Calendar className="h-3 w-3" strokeWidth={1.75} />
-              Founded {venture.founded}
-            </div>
-            <h2 className="mt-3 font-display text-3xl font-bold leading-[1.1] tracking-tight text-neutral-charcoal sm:text-4xl lg:text-5xl">
-              {venture.shortName}
-            </h2>
-            {venture.tagline && (
-              <p className="mt-4 text-base font-medium leading-snug text-accent sm:text-lg">
-                {venture.tagline}
-              </p>
-            )}
-            <p className="mt-5 text-sm leading-relaxed text-neutral-600 sm:text-base">
-              {venture.description}
+    <Section variant={isEven ? 'light' : 'soft'} id={venture.slug}>
+      <motion.div
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: '-100px' }}
+        className="grid items-start gap-12 lg:grid-cols-12 lg:gap-16"
+      >
+        {/* Identity column */}
+        <motion.div variants={fadeUp} custom={0} className="lg:col-span-5">
+          <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-accent-50 text-accent">
+            <Icon className="h-7 w-7" strokeWidth={1.5} />
+          </div>
+          <div className="mt-6 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-accent">
+            <Calendar className="h-3 w-3" strokeWidth={1.75} />
+            Founded {venture.founded}
+          </div>
+          <h2 className="mt-3 font-display text-3xl font-bold leading-[1.1] tracking-tight text-neutral-charcoal sm:text-4xl lg:text-5xl">
+            {venture.shortName}
+          </h2>
+          {venture.tagline && (
+            <p className="mt-4 text-base font-semibold leading-snug text-accent sm:text-lg">
+              {venture.tagline}
             </p>
+          )}
+          <p className="mt-5 text-sm leading-relaxed text-neutral-600 sm:text-base">
+            {venture.description}
+          </p>
 
-            {/* Cross-links */}
-            <div className="mt-7 flex flex-wrap gap-3">
-              {brandCount > 0 && (
-                <Link
-                  href="/brands"
-                  className="inline-flex items-center gap-2 rounded-lg border border-neutral-200 bg-white px-4 py-2 text-sm transition-colors hover:border-accent/40 hover:bg-accent-50"
-                >
-                  <Sparkles className="h-3.5 w-3.5 text-accent" strokeWidth={1.75} />
-                  <span className="font-semibold text-neutral-700">
-                    {brandCount} brand partners
+          {/* Cross-links */}
+          <div className="mt-7 flex flex-wrap gap-3">
+            {brandCount > 0 && (
+              <Link
+                href="/brands"
+                className="inline-flex items-center gap-2 rounded-lg border border-neutral-200 bg-white px-4 py-2 text-sm transition-colors hover:border-accent/40 hover:bg-accent-50"
+              >
+                <Sparkles className="h-3.5 w-3.5 text-accent" strokeWidth={1.75} />
+                <span className="font-semibold text-neutral-700">
+                  {brandCount} brand partners
+                </span>
+                <ArrowRight className="h-3 w-3 text-neutral-400" />
+              </Link>
+            )}
+            {isContractingVenture && (
+              <Link
+                href="/contracting"
+                className="inline-flex items-center gap-2 rounded-lg bg-accent px-4 py-2 text-sm font-semibold uppercase tracking-wider text-white transition-colors hover:bg-accent-700"
+              >
+                Contracting Services
+                <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
+            )}
+            {isJointVenture && (
+              <span className="inline-flex items-center gap-2 rounded-lg border border-amber-200 bg-amber-50 px-4 py-2 text-sm">
+                <span className="h-1.5 w-1.5 rounded-full bg-amber-500" />
+                <span className="font-semibold text-amber-700">
+                  JV with Fortune Ventures
+                </span>
+              </span>
+            )}
+          </div>
+        </motion.div>
+
+        {/* Products column */}
+        <motion.div variants={fadeUp} custom={0.1} className="lg:col-span-7">
+          <div className="rounded-2xl border border-neutral-border bg-white p-6 shadow-card lg:p-8">
+            {venture.products.length > 0 ? (
+              <>
+                <div className="mb-5 flex items-baseline justify-between">
+                  <h3 className="text-[11px] font-semibold uppercase tracking-[0.22em] text-accent">
+                    Product Range
+                  </h3>
+                  <span className="text-xs text-neutral-400">
+                    {venture.products.length} categories
                   </span>
-                  <ArrowRight className="h-3 w-3 text-neutral-400" />
-                </Link>
-              )}
-              {isContractingVenture && (
+                </div>
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                  {venture.products.map((product) => (
+                    <div
+                      key={product.name}
+                      className="group/tile overflow-hidden rounded-lg border border-neutral-200 bg-white transition-shadow hover:shadow-card"
+                    >
+                      <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-brand-50 to-neutral-100">
+                        {product.image ? (
+                          <Image
+                            src={product.image}
+                            alt={product.name}
+                            fill
+                            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 200px"
+                            className="object-cover transition-transform duration-500 group-hover/tile:scale-105"
+                          />
+                        ) : (
+                          <div className="flex h-full w-full items-center justify-center text-brand-300">
+                            <CheckCircle2 className="h-8 w-8" strokeWidth={1.25} />
+                          </div>
+                        )}
+                      </div>
+                      <p className="px-2.5 py-2 text-[11px] font-semibold leading-tight text-neutral-700">
+                        {product.name}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </>
+            ) : (
+              <div className="py-10 text-center">
+                <Boxes className="mx-auto h-12 w-12 text-brand-200" strokeWidth={1.2} />
+                <h3 className="mt-4 font-display text-base font-bold text-neutral-charcoal">
+                  Service Venture — Contracting Only
+                </h3>
+                <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-neutral-500">
+                  {venture.shortName} delivers end-to-end interior contracting using
+                  products supplied by sister ventures and authorised partner brands.
+                </p>
                 <Link
                   href="/contracting"
-                  className="inline-flex items-center gap-2 rounded-lg bg-accent px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-accent-700"
+                  className="mt-5 inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-accent transition-colors hover:text-accent-700"
                 >
-                  Contracting Services
+                  See contracting services
                   <ArrowRight className="h-3.5 w-3.5" />
                 </Link>
-              )}
-              {isJointVenture && (
-                <span className="inline-flex items-center gap-2 rounded-lg border border-amber-200 bg-amber-50 px-4 py-2 text-sm">
-                  <span className="h-1.5 w-1.5 rounded-full bg-amber-500" />
-                  <span className="font-semibold text-amber-700">
-                    JV with Fortune Ventures
-                  </span>
-                </span>
-              )}
-            </div>
-          </motion.div>
-
-          {/* Right — Products grid OR contracting message */}
-          <motion.div variants={fadeUp} custom={0.1} className="lg:col-span-8">
-            <div className="rounded-2xl border border-neutral-border bg-white p-6 shadow-card lg:p-8">
-              {venture.products.length > 0 ? (
-                <>
-                  <div className="flex items-baseline justify-between mb-5">
-                    <h3 className="text-sm font-semibold uppercase tracking-wider text-neutral-500">
-                      Product Range
-                    </h3>
-                    <span className="text-xs text-neutral-400">
-                      {venture.products.length} categories
-                    </span>
-                  </div>
-                  <div className="grid gap-3 grid-cols-2 sm:grid-cols-3">
-                    {venture.products.map((product) => (
-                      <div
-                        key={product.name}
-                        className="group/tile overflow-hidden rounded-lg border border-neutral-200 bg-white transition-shadow hover:shadow-card"
-                      >
-                        <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-brand-50 to-neutral-100">
-                          {product.image ? (
-                            <Image
-                              src={product.image}
-                              alt={product.name}
-                              fill
-                              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 200px"
-                              className="object-cover transition-transform duration-500 group-hover/tile:scale-105"
-                            />
-                          ) : (
-                            <div className="flex h-full w-full items-center justify-center text-brand-300">
-                              <CheckCircle2 className="h-8 w-8" strokeWidth={1.25} />
-                            </div>
-                          )}
-                        </div>
-                        <p className="px-2.5 py-2 text-[11px] font-medium leading-tight text-neutral-700">
-                          {product.name}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </>
-              ) : (
-                <div className="text-center py-10">
-                  <Boxes className="mx-auto h-12 w-12 text-brand-200" strokeWidth={1.2} />
-                  <h3 className="mt-4 text-base font-semibold text-neutral-charcoal">
-                    Service Venture — Contracting Only
-                  </h3>
-                  <p className="mt-2 text-sm text-neutral-500 max-w-md mx-auto">
-                    {venture.shortName} delivers end-to-end interior contracting using
-                    products supplied by sister ventures and authorised partner brands.
-                  </p>
-                  <Link
-                    href="/contracting"
-                    className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-accent hover:text-accent-700"
-                  >
-                    See contracting services
-                    <ArrowRight className="h-3.5 w-3.5" />
-                  </Link>
-                </div>
-              )}
-            </div>
-          </motion.div>
+              </div>
+            )}
+          </div>
         </motion.div>
-      </Container>
-    </section>
+      </motion.div>
+    </Section>
   );
 }
 
@@ -231,7 +223,6 @@ export default function VenturesPage() {
         <VentureSection key={venture.slug} venture={venture} index={index} />
       ))}
 
-      {/* CTA */}
       <ContactCTA />
     </>
   );
