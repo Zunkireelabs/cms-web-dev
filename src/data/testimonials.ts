@@ -137,6 +137,7 @@ export const TESTIMONIALS: Testimonial[] = [
   },
   {
     id: 'hilltake',
+    scanImage: '/images/testimonials/hilltake.jpg',
     client: 'Hilltake Health & Home Pvt. Ltd.',
     clientType: 'hotel',
     date: '2021-08-16',
