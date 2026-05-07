@@ -64,8 +64,9 @@ const STORY_META = [
   { label: 'Founded', value: '2002' },
   { label: 'Head Office', value: 'Kathmandu' },
   { label: 'Ventures', value: '6' },
-  { label: 'Sectors', value: 'Hospital · Education · Airport · Office · Hotel · Residence' },
 ];
+
+const STORY_SECTORS = ['Hospital', 'Education', 'Airport', 'Office', 'Hotel', 'Residence'];
 
 const MISSION_POINTS = [
   'Provide competitive excellence through high-quality construction products and services across every venture.',
@@ -324,15 +325,16 @@ export default function AboutPage() {
         </motion.div>
       </Section>
 
-      {/* Story — meta-grid pattern */}
+      {/* Story — magazine-style with framed photo */}
       <Section variant="light">
-        <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+        <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: '-80px' }}
             variants={fadeUp}
             custom={0}
+            className="lg:col-span-6"
           >
             <KickerLabel>Our Story</KickerLabel>
             <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-neutral-charcoal sm:text-4xl lg:text-5xl">
@@ -345,36 +347,57 @@ export default function AboutPage() {
               professionalism, and customer satisfaction across the construction sector.
             </p>
 
-            <dl className="mt-8 grid grid-cols-2 gap-x-6 gap-y-5">
+            {/* Tight 3-col meta strip */}
+            <dl className="mt-8 grid grid-cols-3 gap-4 rounded-xl border border-neutral-200 bg-neutral-50 p-5">
               {STORY_META.map((item) => (
-                <div key={item.label}>
-                  <dt className="text-[11px] font-semibold uppercase tracking-[0.18em] text-accent">
+                <div key={item.label} className="border-l-2 border-accent/40 pl-4">
+                  <dt className="text-[10px] font-semibold uppercase tracking-[0.18em] text-accent">
                     {item.label}
                   </dt>
-                  <dd className="mt-1 font-display text-xl font-bold leading-tight text-neutral-charcoal">
+                  <dd className="mt-1 font-display text-2xl font-bold leading-none text-neutral-charcoal tabular-nums">
                     {item.value}
                   </dd>
                 </div>
               ))}
             </dl>
 
+            {/* Sectors as inline pill chips */}
+            <div className="mt-5">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-accent">
+                Sectors served
+              </p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {STORY_SECTORS.map((sector) => (
+                  <span
+                    key={sector}
+                    className="inline-block rounded-full border border-neutral-200 bg-white px-3 py-1 text-xs font-semibold text-neutral-700"
+                  >
+                    {sector}
+                  </span>
+                ))}
+              </div>
+            </div>
+
             <p className="mt-8 text-base leading-relaxed text-neutral-600 sm:text-lg">
-              Today, the group spans six associated ventures — Bath N Room, Baba Muktinath
+              The group spans six associated ventures — Bath N Room, Baba Muktinath
               Fabricators, 4R Technologies, Cubic Meter, Techwood, and Prime Ceramics —
-              serving hospitals, education, airports, offices, hotels, and residential
-              projects across the country.
+              delivering integrated solutions across the country.
             </p>
           </motion.div>
 
+          {/* Photo with offset accent rectangle, top caption, and floating badge */}
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: '-80px' }}
             variants={fadeUp}
             custom={0.1}
-            className="relative"
+            className="relative lg:col-span-6"
           >
-            <div className="relative aspect-[4/5] overflow-hidden rounded-2xl">
+            {/* Offset accent rectangle peeking from behind */}
+            <div className="absolute -right-3 -top-3 hidden h-full w-full rounded-2xl border-2 border-accent/30 lg:block" />
+
+            <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-neutral-100 shadow-2xl">
               <Image
                 src="/images/projects/nrb-thapathali.jpg"
                 alt="Nepal Rastra Bank — Thapathali — flagship CMS Group project"
@@ -382,25 +405,35 @@ export default function AboutPage() {
                 sizes="(max-width: 1024px) 100vw, 600px"
                 className="object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-neutral-charcoal/85 via-neutral-charcoal/30 to-transparent" />
-              <div className="absolute bottom-0 left-0 right-0 p-6 lg:p-8">
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
+
+              {/* Top caption — visible immediately on first paint */}
+              <div className="absolute inset-x-0 top-0 bg-gradient-to-b from-neutral-charcoal/90 via-neutral-charcoal/40 to-transparent p-6 lg:p-7">
+                <span className="inline-flex items-center gap-2 rounded-full bg-accent px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow-sm">
                   Featured Project
-                </p>
-                <p className="mt-2 font-display text-xl font-bold text-white lg:text-2xl">
+                </span>
+                <p className="mt-3 font-display text-lg font-bold leading-tight text-white lg:text-xl">
                   Nepal Rastra Bank — Thapathali
                 </p>
-                <p className="mt-1 text-sm text-white/70">
-                  1.5 lakh sq.ft BKB parquet flooring, Armstrong ceiling, Dormakaba hardware
+              </div>
+
+              {/* Bottom scope strip */}
+              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-neutral-charcoal/90 via-neutral-charcoal/40 to-transparent p-6 lg:p-7">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-accent">
+                  Scope
+                </p>
+                <p className="mt-1.5 text-sm leading-relaxed text-white/85">
+                  1.5 lakh sq.ft BKB parquet flooring · Armstrong ceiling · Dormakaba
+                  hardware
                 </p>
               </div>
             </div>
-            {/* Floating mini-stat overlapping photo bottom-right */}
-            <div className="absolute -bottom-5 -right-3 hidden rounded-xl border border-neutral-200 bg-white px-5 py-4 shadow-card lg:block">
-              <p className="font-display text-3xl font-bold leading-none tracking-tight text-accent tabular-nums">
+
+            {/* Floating "Years Strong" stat card */}
+            <div className="absolute -bottom-6 -left-4 z-10 rounded-2xl border border-neutral-200 bg-white px-6 py-5 shadow-xl lg:-left-6">
+              <p className="font-display text-4xl font-bold leading-none tracking-tight text-accent tabular-nums">
                 {YEARS_IN_BUSINESS}+
               </p>
-              <p className="mt-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-neutral-500">
+              <p className="mt-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-neutral-500">
                 Years Strong
               </p>
             </div>
