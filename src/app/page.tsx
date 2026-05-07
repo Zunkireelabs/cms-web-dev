@@ -3,11 +3,9 @@ import { ArrowRight } from 'lucide-react';
 import { Section, SectionHeader } from '@/components/ui';
 import {
   AboutUs,
-  CareersCTA,
   ChairmanMessage,
   ContactCTA,
   Hero,
-  Highlights,
   ImpactMetrics,
   ProductsServices,
   ProjectMap,
@@ -17,30 +15,32 @@ import {
 export default function HomePage() {
   return (
     <>
-      {/* Hero — untouched */}
+      {/* 1. Identity — cinematic hero */}
       <Hero />
 
-      {/* Identity: who we are */}
+      {/* 2. Story — who we are */}
       <AboutUs />
 
-      {/* Proof: anchor stats */}
+      {/* 3. Proof — animated counters (dark reset) */}
       <ImpactMetrics />
 
-      {/* Structure: six ventures */}
+      {/* 4. Substance — six ventures */}
       <Ventures />
 
-      {/* Offerings: 12 product domains */}
+      {/* 5. Substance — twelve product domains */}
       <ProductsServices />
 
-      {/* Voice: chairman's message */}
+      {/* 6. Voice — chairman's message */}
       <ChairmanMessage />
 
-      {/* Execution: project overview + Nepal map (map locked) */}
-      <Section variant="light" id="projects-overview">
+      {/* 7. Execution — project map */}
+      <Section variant="soft" id="projects-overview">
         <SectionHeader
           kicker="Project Overview"
-          title="500+ Projects Delivered Across Nepal"
+          title="500+ projects delivered across Nepal."
           lead="Hospitals, hotels, airports, offices, education, and residential — six sectors, one trusted partner. Hover or tap a marker to view the project list."
+          align="center"
+          className="mx-auto"
         />
 
         <div className="mt-12">
@@ -58,11 +58,7 @@ export default function HomePage() {
         </div>
       </Section>
 
-      {/* Recent activity */}
-      <Highlights />
-
-      {/* Engage */}
-      <CareersCTA />
+      {/* 8. Conversion — single combined CTA (careers folded in) */}
       <ContactCTA />
     </>
   );
