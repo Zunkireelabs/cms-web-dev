@@ -74,10 +74,10 @@ function BrandCard({ brand }: { brand: BrandEntry }) {
     <motion.div
       variants={fadeInUp}
       custom={0}
-      className="group relative h-full rounded-xl border border-neutral-border bg-white p-5 transition-all hover:border-brand-300 hover:shadow-card-hover"
+      className="group relative h-full rounded-xl border border-neutral-border bg-white p-5 transition-all hover:border-accent/40 hover:shadow-card-hover"
     >
       <div className="flex items-start justify-between gap-3">
-        <h4 className="text-base font-semibold text-neutral-charcoal group-hover:text-brand-700 transition-colors leading-tight">
+        <h4 className="font-display text-base font-bold text-neutral-charcoal group-hover:text-accent transition-colors leading-tight">
           {brand.name}
         </h4>
         {brand.founded && (
@@ -87,7 +87,7 @@ function BrandCard({ brand }: { brand: BrandEntry }) {
         )}
       </div>
       <div className="mt-2 flex items-center gap-1.5 text-xs text-neutral-500">
-        <MapPin className="h-3 w-3 text-brand-600" strokeWidth={1.5} />
+        <MapPin className="h-3 w-3 text-accent" strokeWidth={1.5} />
         <span>{brand.country}</span>
       </div>
       {brand.segments.length > 0 && (
@@ -96,7 +96,7 @@ function BrandCard({ brand }: { brand: BrandEntry }) {
           {brand.segments.length > 2 && ` +${brand.segments.length - 2}`}
         </p>
       )}
-      <div className="absolute bottom-0 left-0 h-0.5 w-0 bg-brand-600 transition-all duration-300 group-hover:w-full" />
+      <div className="absolute bottom-0 left-0 h-0.5 w-0 bg-accent transition-all duration-300 group-hover:w-full" />
     </motion.div>
   );
 }
@@ -121,17 +121,17 @@ function VentureSection({ ventureSlug }: { ventureSlug: VentureSlug }) {
           <div className="flex items-center gap-4 text-xs text-neutral-500">
             {venture?.founded && (
               <div className="flex items-center gap-1.5">
-                <Calendar className="h-3.5 w-3.5 text-brand-600" strokeWidth={1.5} />
+                <Calendar className="h-3.5 w-3.5 text-accent" strokeWidth={1.5} />
                 <span>Since {venture.founded}</span>
               </div>
             )}
             <div className="flex items-center gap-1.5">
-              <Sparkles className="h-3.5 w-3.5 text-brand-600" strokeWidth={1.5} />
+              <Sparkles className="h-3.5 w-3.5 text-accent" strokeWidth={1.5} />
               <span className="font-semibold text-neutral-700">{brands.length} brands</span>
             </div>
             <Link
               href={`/ventures#${ventureSlug}`}
-              className="inline-flex items-center gap-1 font-semibold text-brand-600 hover:text-brand-700 transition-colors"
+              className="inline-flex items-center gap-1 font-semibold text-accent hover:text-accent-700 transition-colors"
             >
               View venture
               <ArrowRight className="h-3 w-3" />

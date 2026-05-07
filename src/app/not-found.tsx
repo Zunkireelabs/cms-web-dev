@@ -6,7 +6,7 @@ export default function NotFound() {
     <section className="flex min-h-[60vh] items-center py-20">
       <Container>
         <div className="mx-auto max-w-md text-center">
-          <p className="text-7xl font-bold text-brand-600">404</p>
+          <p className="font-display text-7xl font-bold text-accent">404</p>
           <h1 className="mt-4 text-2xl font-bold text-neutral-charcoal">
             Page Not Found
           </h1>

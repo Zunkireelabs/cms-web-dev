@@ -173,7 +173,7 @@ function VentureSection({ venture, index }: { venture: Venture; index: number })
                   </p>
                   <Link
                     href="/contracting"
-                    className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-brand-600 hover:text-brand-700"
+                    className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-accent hover:text-accent-700"
                   >
                     See contracting services
                     <ArrowRight className="h-3.5 w-3.5" />

@@ -89,7 +89,7 @@ export function Footer() {
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex h-10 w-10 items-center justify-center rounded-lg bg-neutral-600/20 text-neutral-400 transition-colors hover:bg-brand-600 hover:text-white"
+                    className="flex h-10 w-10 items-center justify-center rounded-lg bg-neutral-600/20 text-neutral-400 transition-colors hover:bg-accent hover:text-white"
                     aria-label={`Follow us on ${social.name}`}
                   >
                     <social.icon className="h-5 w-5" />

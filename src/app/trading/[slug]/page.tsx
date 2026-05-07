@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     title: `${domain.title} | Trading`,
     description: domain.description,
     openGraph: {
-      title: `${domain.title} | CMS Trading & Contracting`,
+      title: `${domain.title} | CMS Group`,
       description: domain.description,
     },
   };
