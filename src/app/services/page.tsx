@@ -1,17 +1,15 @@
 'use client';
 
-import { useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Container } from '@/components/ui/Container';
 import { PageHero } from '@/components/ui/PageHero';
+import { Section } from '@/components/ui/Section';
 import { ContactCTA } from '@/components/sections';
 import { fadeUp } from '@/lib/motion';
 import { SECTORS } from '@/data/sectors';
 import { CheckCircle2 } from 'lucide-react';
 
 function SectorSection({ sector, index }: { sector: (typeof SECTORS)[number]; index: number }) {
-  const ref = useRef<HTMLElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
   const isEven = index % 2 === 0;
 
   // Split the long PDF description into a bullet list of services
@@ -23,55 +21,53 @@ function SectorSection({ sector, index }: { sector: (typeof SECTORS)[number]; in
     .filter((s) => s.length > 0 && s.length < 60);
 
   return (
-    <section
-      ref={ref}
-      id={sector.slug}
-      className={`scroll-mt-24 py-20 lg:py-28 ${isEven ? 'bg-white' : 'bg-neutral-off-white'}`}
-    >
-      <Container>
-        <motion.div
-          initial="hidden"
-          animate={isInView ? 'visible' : 'hidden'}
-          className="grid items-start gap-12 lg:grid-cols-12 lg:gap-16"
-        >
-          {/* Header column */}
-          <motion.div variants={fadeUp} custom={0} className="lg:col-span-4">
-            <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-accent-50 text-accent">
-              <sector.icon className="h-7 w-7" strokeWidth={1.5} />
-            </div>
-            <span className="mt-6 inline-block text-[11px] font-semibold uppercase tracking-[0.22em] text-accent">
-              Sector {String(index + 1).padStart(2, '0')}
-            </span>
-            <h2 className="mt-3 font-display text-3xl font-bold leading-[1.1] tracking-tight text-neutral-charcoal sm:text-4xl lg:text-5xl">
-              {sector.name}
-            </h2>
-            <p className="mt-5 text-sm leading-relaxed text-neutral-600 sm:text-base">
-              {sector.summary}
-            </p>
-          </motion.div>
-
-          {/* Services column */}
-          <motion.div variants={fadeUp} custom={0.1} className="lg:col-span-8">
-            <div className="rounded-2xl border border-neutral-border bg-white p-6 shadow-card lg:p-8">
-              <h3 className="text-sm font-semibold uppercase tracking-wider text-neutral-500">
-                What we typically supply &amp; install
-              </h3>
-              <ul className="mt-5 grid gap-2.5 sm:grid-cols-2">
-                {items.map((item) => (
-                  <li
-                    key={item}
-                    className="flex items-start gap-2 text-sm text-neutral-700 leading-relaxed"
-                  >
-                    <CheckCircle2 className="h-4 w-4 shrink-0 mt-0.5 text-accent" strokeWidth={1.75} />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </motion.div>
+    <Section variant={isEven ? 'light' : 'soft'} id={sector.slug}>
+      <motion.div
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: '-100px' }}
+        className="grid items-start gap-12 lg:grid-cols-12 lg:gap-16"
+      >
+        {/* Header column */}
+        <motion.div variants={fadeUp} custom={0} className="lg:col-span-4">
+          <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-accent-50 text-accent">
+            <sector.icon className="h-7 w-7" strokeWidth={1.5} />
+          </div>
+          <span className="mt-6 inline-block text-[11px] font-semibold uppercase tracking-[0.22em] text-accent">
+            Sector {String(index + 1).padStart(2, '0')}
+          </span>
+          <h2 className="mt-3 font-display text-3xl font-bold leading-[1.1] tracking-tight text-neutral-charcoal sm:text-4xl lg:text-5xl">
+            {sector.name}
+          </h2>
+          <p className="mt-5 text-sm leading-relaxed text-neutral-600 sm:text-base">
+            {sector.summary}
+          </p>
         </motion.div>
-      </Container>
-    </section>
+
+        {/* Services column */}
+        <motion.div variants={fadeUp} custom={0.1} className="lg:col-span-8">
+          <div className="rounded-2xl border border-neutral-border bg-white p-6 shadow-card lg:p-8">
+            <h3 className="text-[11px] font-semibold uppercase tracking-[0.22em] text-accent">
+              What we typically supply &amp; install
+            </h3>
+            <ul className="mt-5 grid gap-2.5 sm:grid-cols-2">
+              {items.map((item) => (
+                <li
+                  key={item}
+                  className="flex items-start gap-2 text-sm leading-relaxed text-neutral-700"
+                >
+                  <CheckCircle2
+                    className="mt-0.5 h-4 w-4 shrink-0 text-accent"
+                    strokeWidth={1.75}
+                  />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </motion.div>
+      </motion.div>
+    </Section>
   );
 }
 

@@ -47,11 +47,13 @@ export default function ContractingPage() {
         subtitle="Through Cubic Meter Pvt. Ltd. — our dedicated interior contracting venture — we translate client visions into tangible spaces. Material supply, installation, and on-site execution under one accountable partner."
         image="/images/projects/dusit-thani.jpg"
         imageAlt="Cubic Meter contracting projects"
+        primaryCta={{ label: 'View Services', href: '#services' }}
+        secondaryCta={{ label: 'Trading Division', href: '/trading' }}
         size="tall"
       />
 
       {/* What We Do */}
-      <Section variant="light">
+      <Section variant="light" id="services">
         <SectionHeader
           kicker="What We Do"
           title="Contracting services, scaled to fit."
@@ -81,7 +83,7 @@ export default function ContractingPage() {
       </Section>
 
       {/* Sectors */}
-      <Section variant="soft">
+      <Section variant="soft" id="sectors">
         <SectionHeader
           kicker="Sectors"
           title="Six sectors we serve."
