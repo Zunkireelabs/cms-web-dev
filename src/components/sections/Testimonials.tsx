@@ -75,8 +75,11 @@ const TESTIMONIAL_PHOTO_OVERRIDE: Record<string, string> = {
   'kedia-construction': '/images/projects/country-villa.jpg',
 };
 
-function getTestimonialPhoto(t: Testimonial): string {
-  return TESTIMONIAL_PHOTO_OVERRIDE[t.id] ?? CLIENT_TYPE_PHOTO[t.clientType];
+// Use the actual signed reference letter scan when available; fall back to project photo
+function getTestimonialPhoto(t: Testimonial): { src: string; isLetter: boolean } {
+  if (t.scanImage) return { src: t.scanImage, isLetter: true };
+  const fallback = TESTIMONIAL_PHOTO_OVERRIDE[t.id] ?? CLIENT_TYPE_PHOTO[t.clientType];
+  return { src: fallback, isLetter: false };
 }
 
 function formatDate(iso: string): string {
@@ -87,35 +90,50 @@ function formatDate(iso: string): string {
 
 function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
   const Icon = CLIENT_TYPE_ICONS[testimonial.clientType];
-  const photo = getTestimonialPhoto(testimonial);
+  const { src: photoSrc, isLetter } = getTestimonialPhoto(testimonial);
 
   return (
     <article className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
-      {/* Photo header */}
-      <div className="relative aspect-[16/10] overflow-hidden bg-neutral-100">
+      {/* Visual header — actual letter scan (portrait) or project photo (wide) */}
+      <div
+        className={`relative overflow-hidden bg-neutral-100 ${
+          isLetter ? 'aspect-[4/5]' : 'aspect-[16/10]'
+        }`}
+      >
         <Image
-          src={photo}
-          alt={`${testimonial.client} — ${testimonial.project ?? testimonial.subject}`}
+          src={photoSrc}
+          alt={`${testimonial.client} — ${
+            isLetter ? 'signed reference letter' : testimonial.project ?? testimonial.subject
+          }`}
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+          className={
+            isLetter
+              ? 'object-contain p-3'
+              : 'object-cover transition-transform duration-500 group-hover:scale-[1.04]'
+          }
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-neutral-charcoal/85 via-neutral-charcoal/30 to-transparent" />
+
+        {/* For project photos: gradient overlay + project badge. For letters: clean overlay-free presentation. */}
+        {!isLetter && (
+          <>
+            <div className="absolute inset-0 bg-gradient-to-t from-neutral-charcoal/85 via-neutral-charcoal/30 to-transparent" />
+            <div className="absolute bottom-4 left-4 right-4">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-accent">
+                {CLIENT_TYPE_LABELS[testimonial.clientType]}
+              </p>
+              {testimonial.project && (
+                <p className="mt-1 truncate font-display text-base font-bold leading-tight text-white">
+                  {testimonial.project}
+                </p>
+              )}
+            </div>
+          </>
+        )}
 
         <span className="absolute top-4 left-4 inline-flex items-center gap-1.5 rounded-full bg-accent px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-white shadow-sm">
           Signed Reference
         </span>
-
-        <div className="absolute bottom-4 left-4 right-4">
-          <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-accent">
-            {CLIENT_TYPE_LABELS[testimonial.clientType]}
-          </p>
-          {testimonial.project && (
-            <p className="mt-1 truncate font-display text-base font-bold leading-tight text-white">
-              {testimonial.project}
-            </p>
-          )}
-        </div>
       </div>
 
       <div className="relative flex flex-1 flex-col p-6 lg:p-7">
