@@ -1,15 +1,18 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
+import { motion, useInView, useSpring, useTransform } from 'framer-motion';
 import { PageHero } from '@/components/ui/PageHero';
 import { Section } from '@/components/ui/Section';
 import { SectionHeader } from '@/components/ui/SectionHeader';
-import { StatBlock } from '@/components/ui/StatBlock';
 import { KickerLabel } from '@/components/ui/KickerLabel';
 import { ContactCTA, Testimonials } from '@/components/sections';
-import { CERTIFICATIONS, CERTIFICATIONS_COUNT } from '@/data/certifications';
+import {
+  CERTIFICATIONS,
+  CERTIFICATIONS_COUNT,
+  type Certification,
+} from '@/data/certifications';
 import { CHAIRMAN, DIRECTORS } from '@/data/leadership';
 import { fadeUp, stagger } from '@/lib/motion';
 import {
@@ -25,16 +28,36 @@ import {
   MapPin,
   Calendar,
   ChevronDown,
+  Sparkles,
+  Bath,
+  Wrench,
+  Recycle,
+  Boxes,
+  Armchair,
+  Factory,
+  Building2,
+  Globe,
+  Layers,
+  Quote,
+  type LucideIcon,
 } from 'lucide-react';
+type CertificationItem = Certification;
 
 const FOUNDED_YEAR = 2002;
 const YEARS_IN_BUSINESS = new Date().getFullYear() - FOUNDED_YEAR;
 
-const COMPANY_STATS = [
-  { label: 'Years of Experience', value: `${YEARS_IN_BUSINESS}+` },
-  { label: 'Projects Delivered', value: '500+' },
-  { label: 'Global Brand Partners', value: '50+' },
-  { label: 'Sectors Served', value: '6' },
+const COMPANY_STATS: { value: number; suffix: string; label: string; icon: LucideIcon }[] = [
+  { value: YEARS_IN_BUSINESS, suffix: '+', label: 'Years of Experience', icon: Calendar },
+  { value: 500, suffix: '+', label: 'Projects Delivered', icon: Building2 },
+  { value: 50, suffix: '+', label: 'Global Brand Partners', icon: Globe },
+  { value: 6, suffix: '', label: 'Sectors Served', icon: Layers },
+];
+
+const TRUST_PILLARS = [
+  'Since 2002',
+  '6 Ventures',
+  '50+ Global Brands',
+  '500+ Projects',
 ];
 
 const STORY_META = [
@@ -62,88 +85,176 @@ const CORE_VALUES = [
     title: 'Integrity',
     description:
       'Honesty, integrity, and moral behaviour are the cornerstone of our commercial operations — incorporated into every facet of how the organisation operates.',
+    practice: 'Single source-of-truth pricing across all six ventures',
   },
   {
     icon: Award,
     title: 'Excellence',
     description:
       'Competitive excellence through high-quality products and services, maintaining worldwide quality standards across every venture in the group.',
+    practice: 'ISO-aligned quality control on every brand we distribute',
   },
   {
     icon: Users,
     title: 'Customer Satisfaction',
     description:
       'Customer satisfaction is our top priority — we exceed expectations, cultivate long-term partnerships, and constantly improve services for clients at every level.',
+    practice: 'Dedicated account manager assigned to every active project',
   },
   {
     icon: TrendingUp,
     title: 'Innovation',
     description:
       'We foster growth through creativity and innovation, continuously seeking new ideas, technologies, and techniques that drive progress and add client value.',
+    practice: 'Annual factory visits with international brand partners',
   },
   {
     icon: Handshake,
     title: 'Trust & Partnership',
     description:
       'Strong, long-lasting partnerships are the keystone of our business. We earn trust by keeping commitments and exceeding expectations.',
+    practice: '55+ brand partnerships maintained over two decades',
   },
   {
     icon: CheckCircle,
     title: 'Sustainability',
     description:
       'We actively engage in sourcing materials from sustainable and eco-friendly sources, aligning operations with responsible practices and contributing to a greener future.',
+    practice: 'Eco-friendly material sourcing across all six ventures',
   },
 ];
 
-const MILESTONES: { year: string; title: string; description: string }[] = [
+const MILESTONES: {
+  year: string;
+  title: string;
+  description: string;
+  icon: LucideIcon;
+}[] = [
   {
     year: '2002',
     title: 'Kantipur — CMS Group founded',
     description: 'Italian Marble & Granite trading firm — the founding venture.',
+    icon: Sparkles,
   },
   {
     year: '2003',
     title: 'Bath N Room Trade Concern Pvt. Ltd.',
     description: 'One-stop solution for building finishing products in the Nepalese market.',
+    icon: Bath,
   },
   {
     year: '2010',
     title: 'Baba Muktinath Fabricators Pvt. Ltd.',
     description: 'Leading dealer, distributor and fabricator for world-class building systems.',
+    icon: Wrench,
   },
   {
     year: '2015',
     title: '4R Technologies Pvt. Ltd.',
     description: 'Associated with world-renowned brands to provide a wide range of green products.',
+    icon: Recycle,
   },
   {
     year: '2018',
     title: 'Cubic Meter Pvt. Ltd.',
     description:
       'Interior finishing and contracting venture serving hotels, hospitals, and corporate offices.',
+    icon: Boxes,
   },
   {
     year: '2019',
     title: 'Techwood Pvt. Ltd.',
     description: 'Quality modular furniture solutions for corporate offices and schools.',
+    icon: Armchair,
   },
   {
     year: '2021',
     title: 'Prime Ceramics Pvt. Ltd.',
     description:
       'Ceramic tile manufacturing in Nepal — joint venture with Fortune Ventures Pvt. Ltd.',
+    icon: Factory,
   },
 ];
 
+const CHAIRMAN_QUOTE =
+  'We endeavour to meet the different needs of our esteemed clientele by emphasising integration and complete solutions — setting new standards in the Nepalese market.';
+
+const DIRECTOR_EXPERTISE: Record<string, string[]> = {
+  'Mr. Prashant Agarwal': ['Group Strategy', 'Sustainability', 'Expansion'],
+  'Ms. Rima Lamichhane': ['Client Relations', 'Service Quality', 'Partnerships'],
+  'Mr. Sandeep Goenka': ['Product Strategy', 'Innovation', 'Sustainability'],
+  'Mr. Sumit Agarwal': ['Technology', 'Construction Concepts', 'Global Partners'],
+  'Mr. Sanjeev Goyal': ['Two-Decade Tenure', 'Materials & Services', 'Strategic Growth'],
+  'Mr. Kumud Nepal': ['Product Curation', 'Hotels & Hospitals', 'One-Stop Solutions'],
+  'Mr. Ram Dahal': ['Techwood Operations', 'Modular Furniture', 'Customer Trust'],
+};
+
 const CERTS_PREVIEW_COUNT = 6;
+
+type CertGroupKey = 'distributor' | 'channel' | 'authorisation';
+
+function getCertGroup(cert: CertificationItem): CertGroupKey {
+  const t = cert.type.toLowerCase();
+  if (t.includes('distribut')) return 'distributor';
+  if (t.includes('channel') || t.includes('dealer')) return 'channel';
+  return 'authorisation';
+}
+
+const CERT_GROUP_META: Record<CertGroupKey, { label: string; description: string }> = {
+  distributor: {
+    label: 'Distributorships',
+    description: 'Authorised distributors with exclusive territory rights.',
+  },
+  channel: {
+    label: 'Channel Partners & Dealerships',
+    description: 'Authorised channel partners and dealer network certifications.',
+  },
+  authorisation: {
+    label: 'Authorisations & Letters',
+    description: 'Letters of authority, partnership certificates, and project authorisations.',
+  },
+};
+
+const CERT_GROUP_ORDER: CertGroupKey[] = ['distributor', 'channel', 'authorisation'];
+
+function AnimatedCounter({ value, suffix }: { value: number; suffix: string }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const isInView = useInView(ref, { once: true, margin: '-50px' });
+  const [hasAnimated, setHasAnimated] = useState(false);
+
+  const spring = useSpring(0, { stiffness: 50, damping: 30 });
+  const display = useTransform(spring, (current) => Math.floor(current).toLocaleString());
+
+  useEffect(() => {
+    if (isInView && !hasAnimated) {
+      spring.set(value);
+      setHasAnimated(true);
+    }
+  }, [isInView, hasAnimated, spring, value]);
+
+  return (
+    <span ref={ref} className="tabular-nums">
+      <motion.span>{display}</motion.span>
+      {suffix}
+    </span>
+  );
+}
 
 export default function AboutPage() {
   const [showAllCerts, setShowAllCerts] = useState(false);
-  const visibleCerts = showAllCerts
-    ? CERTIFICATIONS
-    : CERTIFICATIONS.slice(0, CERTS_PREVIEW_COUNT);
-  const hiddenCertsCount = CERTIFICATIONS.length - CERTS_PREVIEW_COUNT;
 
+  // Group certifications
+  const certsByGroup = CERTIFICATIONS.reduce<Record<CertGroupKey, CertificationItem[]>>(
+    (acc, cert) => {
+      const group = getCertGroup(cert);
+      acc[group].push(cert);
+      return acc;
+    },
+    { distributor: [], channel: [], authorisation: [] },
+  );
+
+  const visibleCertCount = showAllCerts ? CERTIFICATIONS.length : CERTS_PREVIEW_COUNT;
+  let runningCount = 0;
   const chairmanBioParas = CHAIRMAN.bio.split('\n\n');
 
   return (
@@ -157,7 +268,23 @@ export default function AboutPage() {
         size="tall"
       />
 
-      {/* Stats anchor — now with kicker context */}
+      {/* Trust strip directly below hero */}
+      <section className="border-b border-neutral-200 bg-white py-5 lg:py-6">
+        <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-center gap-x-6 gap-y-3 px-4 sm:gap-x-10">
+          {TRUST_PILLARS.map((pillar, idx) => (
+            <div key={pillar} className="flex items-center gap-3 sm:gap-6">
+              <span className="text-[11px] font-bold uppercase tracking-[0.22em] text-neutral-charcoal sm:text-xs">
+                {pillar}
+              </span>
+              {idx < TRUST_PILLARS.length - 1 && (
+                <span className="hidden h-3 w-px bg-accent/50 sm:inline-block" />
+              )}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Stats anchor — animated counters with icons */}
       <Section variant="soft" compact>
         <div className="mx-auto max-w-3xl text-center">
           <div className="flex justify-center">
@@ -169,13 +296,32 @@ export default function AboutPage() {
           </p>
         </div>
 
-        <div className="mt-12 grid grid-cols-2 gap-x-6 gap-y-12 lg:grid-cols-4 lg:gap-12">
-          {COMPANY_STATS.map((stat) => (
-            <div key={stat.label} className="border-l border-accent/40 pl-5 lg:pl-6">
-              <StatBlock value={stat.value} label={stat.label} size="md" />
-            </div>
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-80px' }}
+          variants={stagger}
+          className="mt-12 grid grid-cols-2 gap-x-6 gap-y-12 lg:grid-cols-4 lg:gap-12"
+        >
+          {COMPANY_STATS.map((stat, idx) => (
+            <motion.div
+              key={stat.label}
+              variants={fadeUp}
+              custom={idx * 0.06}
+              className="border-l border-accent/40 pl-5 lg:pl-6"
+            >
+              <div className="mb-4 flex h-9 w-9 items-center justify-center rounded-lg bg-accent-50 text-accent">
+                <stat.icon className="h-4 w-4" strokeWidth={1.75} />
+              </div>
+              <div className="font-display text-4xl font-bold leading-none tracking-tight text-neutral-charcoal tabular-nums sm:text-5xl lg:text-6xl">
+                <AnimatedCounter value={stat.value} suffix={stat.suffix} />
+              </div>
+              <div className="mt-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-accent sm:text-xs">
+                {stat.label}
+              </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </Section>
 
       {/* Story — meta-grid pattern */}
@@ -199,7 +345,6 @@ export default function AboutPage() {
               professionalism, and customer satisfaction across the construction sector.
             </p>
 
-            {/* Meta grid — breaks the wall of text */}
             <dl className="mt-8 grid grid-cols-2 gap-x-6 gap-y-5">
               {STORY_META.map((item) => (
                 <div key={item.label}>
@@ -227,25 +372,36 @@ export default function AboutPage() {
             viewport={{ once: true, margin: '-80px' }}
             variants={fadeUp}
             custom={0.1}
-            className="relative aspect-[4/5] overflow-hidden rounded-2xl"
+            className="relative"
           >
-            <Image
-              src="/images/projects/nrb-thapathali.jpg"
-              alt="Nepal Rastra Bank — Thapathali — flagship CMS Group project"
-              fill
-              sizes="(max-width: 1024px) 100vw, 600px"
-              className="object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-neutral-charcoal/85 via-neutral-charcoal/30 to-transparent" />
-            <div className="absolute bottom-0 left-0 right-0 p-6 lg:p-8">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
-                Featured Project
+            <div className="relative aspect-[4/5] overflow-hidden rounded-2xl">
+              <Image
+                src="/images/projects/nrb-thapathali.jpg"
+                alt="Nepal Rastra Bank — Thapathali — flagship CMS Group project"
+                fill
+                sizes="(max-width: 1024px) 100vw, 600px"
+                className="object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-neutral-charcoal/85 via-neutral-charcoal/30 to-transparent" />
+              <div className="absolute bottom-0 left-0 right-0 p-6 lg:p-8">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
+                  Featured Project
+                </p>
+                <p className="mt-2 font-display text-xl font-bold text-white lg:text-2xl">
+                  Nepal Rastra Bank — Thapathali
+                </p>
+                <p className="mt-1 text-sm text-white/70">
+                  1.5 lakh sq.ft BKB parquet flooring, Armstrong ceiling, Dormakaba hardware
+                </p>
+              </div>
+            </div>
+            {/* Floating mini-stat overlapping photo bottom-right */}
+            <div className="absolute -bottom-5 -right-3 hidden rounded-xl border border-neutral-200 bg-white px-5 py-4 shadow-card lg:block">
+              <p className="font-display text-3xl font-bold leading-none tracking-tight text-accent tabular-nums">
+                {YEARS_IN_BUSINESS}+
               </p>
-              <p className="mt-2 font-display text-xl font-bold text-white lg:text-2xl">
-                Nepal Rastra Bank — Thapathali
-              </p>
-              <p className="mt-1 text-sm text-white/70">
-                1.5 lakh sq.ft BKB parquet flooring, Armstrong ceiling, Dormakaba hardware
+              <p className="mt-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-neutral-500">
+                Years Strong
               </p>
             </div>
           </motion.div>
@@ -269,51 +425,63 @@ export default function AboutPage() {
           variants={stagger}
           className="mt-14 grid gap-6 lg:grid-cols-2"
         >
+          {/* Mission */}
           <motion.div
             variants={fadeUp}
             custom={0}
-            className="rounded-2xl border border-neutral-200 bg-white p-8 lg:p-10"
+            className="relative overflow-hidden rounded-2xl border border-neutral-200 bg-white p-8 lg:p-10"
           >
-            <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-accent text-white">
-              <Target className="h-7 w-7" strokeWidth={1.75} />
+            <div className="absolute right-0 top-0 h-40 w-40 rounded-full bg-gradient-to-br from-accent-50 to-transparent opacity-70" />
+            <div className="relative">
+              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-accent text-white">
+                <Target className="h-7 w-7" strokeWidth={1.75} />
+              </div>
+              <h3 className="mt-6 font-display text-2xl font-bold leading-tight text-neutral-charcoal">
+                Our Mission
+              </h3>
+              <ul className="mt-5 space-y-4">
+                {MISSION_POINTS.map((point, idx) => (
+                  <li key={point} className="flex gap-3">
+                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent-50 font-display text-[10px] font-bold tabular-nums text-accent">
+                      {String(idx + 1).padStart(2, '0')}
+                    </span>
+                    <span className="leading-relaxed text-neutral-600">{point}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
-            <h3 className="mt-6 font-display text-2xl font-bold leading-tight text-neutral-charcoal">
-              Our Mission
-            </h3>
-            <ul className="mt-5 space-y-4 text-neutral-600 leading-relaxed">
-              {MISSION_POINTS.map((point) => (
-                <li key={point} className="flex gap-3">
-                  <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent" />
-                  <span>{point}</span>
-                </li>
-              ))}
-            </ul>
           </motion.div>
 
+          {/* Vision */}
           <motion.div
             variants={fadeUp}
             custom={0.1}
-            className="rounded-2xl border border-neutral-200 bg-white p-8 lg:p-10"
+            className="relative overflow-hidden rounded-2xl border border-neutral-200 bg-white p-8 lg:p-10"
           >
-            <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-accent text-white">
-              <Eye className="h-7 w-7" strokeWidth={1.75} />
+            <div className="absolute right-0 top-0 h-40 w-40 rounded-full bg-gradient-to-br from-accent-50 to-transparent opacity-70" />
+            <div className="relative">
+              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-accent text-white">
+                <Eye className="h-7 w-7" strokeWidth={1.75} />
+              </div>
+              <h3 className="mt-6 font-display text-2xl font-bold leading-tight text-neutral-charcoal">
+                Our Vision
+              </h3>
+              <ul className="mt-5 space-y-4">
+                {VISION_POINTS.map((point, idx) => (
+                  <li key={point} className="flex gap-3">
+                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent-50 font-display text-[10px] font-bold tabular-nums text-accent">
+                      {String(idx + 1).padStart(2, '0')}
+                    </span>
+                    <span className="leading-relaxed text-neutral-600">{point}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
-            <h3 className="mt-6 font-display text-2xl font-bold leading-tight text-neutral-charcoal">
-              Our Vision
-            </h3>
-            <ul className="mt-5 space-y-4 text-neutral-600 leading-relaxed">
-              {VISION_POINTS.map((point) => (
-                <li key={point} className="flex gap-3">
-                  <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent" />
-                  <span>{point}</span>
-                </li>
-              ))}
-            </ul>
           </motion.div>
         </motion.div>
       </Section>
 
-      {/* Core Values — editorial 01-06 numerals */}
+      {/* Core Values — prominent numerals + hover "in practice" reveal */}
       <Section variant="light">
         <SectionHeader
           kicker="What Drives Us"
@@ -338,7 +506,7 @@ export default function AboutPage() {
               className="group relative overflow-hidden rounded-xl border border-neutral-200 bg-white p-7 transition-all hover:-translate-y-1 hover:shadow-lg"
             >
               <div className="flex items-start justify-between">
-                <span className="font-display text-3xl font-bold leading-none text-accent/30 tabular-nums">
+                <span className="font-display text-5xl font-bold leading-none text-accent/60 tabular-nums">
                   {String(index + 1).padStart(2, '0')}
                 </span>
                 <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-accent-50 text-accent transition-colors group-hover:bg-accent group-hover:text-white">
@@ -351,13 +519,19 @@ export default function AboutPage() {
               <p className="mt-3 text-sm leading-relaxed text-neutral-600">
                 {value.description}
               </p>
+              <div className="mt-5 flex items-start gap-2 border-t border-neutral-100 pt-4 text-[11px]">
+                <span className="font-semibold uppercase tracking-[0.18em] text-accent">
+                  In practice
+                </span>
+                <span className="text-neutral-500">{value.practice}</span>
+              </div>
               <div className="absolute bottom-0 left-0 h-0.5 w-0 bg-accent transition-all duration-300 group-hover:w-full" />
             </motion.div>
           ))}
         </motion.div>
       </Section>
 
-      {/* Milestones — DARK reset, with year-watermarks on empty side */}
+      {/* Milestones — DARK reset, with year-watermarks + per-milestone icons */}
       <Section variant="dark">
         <SectionHeader
           kicker="Our Journey"
@@ -374,6 +548,7 @@ export default function AboutPage() {
           <div className="space-y-12 lg:space-y-16">
             {MILESTONES.map((milestone, index) => {
               const isLeft = index % 2 === 0;
+              const Icon = milestone.icon;
               return (
                 <motion.div
                   key={milestone.year}
@@ -393,10 +568,19 @@ export default function AboutPage() {
                         isLeft ? 'lg:ml-auto' : 'lg:mr-auto'
                       }`}
                     >
-                      <span className="font-display text-3xl font-bold tracking-tight text-accent tabular-nums">
-                        {milestone.year}
-                      </span>
-                      <h3 className="mt-2 font-display text-lg font-bold leading-tight text-white">
+                      <div
+                        className={`flex items-center gap-3 ${
+                          isLeft ? 'lg:flex-row-reverse' : ''
+                        }`}
+                      >
+                        <span className="font-display text-3xl font-bold tracking-tight text-accent tabular-nums">
+                          {milestone.year}
+                        </span>
+                        <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent/15 text-accent">
+                          <Icon className="h-4 w-4" strokeWidth={1.75} />
+                        </span>
+                      </div>
+                      <h3 className="mt-3 font-display text-lg font-bold leading-tight text-white">
                         {milestone.title}
                       </h3>
                       <p className="mt-2 text-sm leading-relaxed text-white/70">
@@ -425,7 +609,7 @@ export default function AboutPage() {
         </div>
       </Section>
 
-      {/* Leadership — Chairman hero + 3-col directors */}
+      {/* Leadership — Chairman hero + 3-col directors with expertise chips */}
       <Section variant="light" id="leadership">
         <SectionHeader
           kicker="Leadership"
@@ -435,7 +619,7 @@ export default function AboutPage() {
           className="mx-auto"
         />
 
-        {/* Tier 1 — Chairman hero */}
+        {/* Tier 1 — Chairman hero with pull-quote */}
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -471,17 +655,33 @@ export default function AboutPage() {
               <h3 className="mt-3 font-display text-2xl font-bold leading-tight tracking-tight text-neutral-charcoal sm:text-3xl lg:text-4xl">
                 {CHAIRMAN.name}
               </h3>
-              <p className="mt-6 leading-relaxed text-neutral-600">
-                {chairmanBioParas[0]}
-              </p>
-              {chairmanBioParas[1] && (
-                <p className="mt-4 leading-relaxed text-neutral-600">{chairmanBioParas[1]}</p>
-              )}
+
+              {/* Expertise chips */}
+              <div className="mt-5 flex flex-wrap gap-2">
+                {(DIRECTOR_EXPERTISE[CHAIRMAN.name] ?? []).map((tag) => (
+                  <span
+                    key={tag}
+                    className="inline-flex items-center gap-1 rounded-full border border-accent/20 bg-accent-50 px-3 py-1 text-[11px] font-semibold text-accent"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+
+              <p className="mt-6 leading-relaxed text-neutral-600">{chairmanBioParas[0]}</p>
+
+              {/* Pull-quote */}
+              <div className="mt-7 rounded-xl border-l-2 border-accent bg-accent-50/50 px-5 py-4">
+                <Quote className="h-5 w-5 text-accent/60" strokeWidth={1.5} />
+                <blockquote className="mt-2 font-display text-base font-semibold leading-snug text-neutral-charcoal sm:text-lg">
+                  {CHAIRMAN_QUOTE}
+                </blockquote>
+              </div>
             </div>
           </div>
         </motion.div>
 
-        {/* Tier 2 — Directors grid */}
+        {/* Tier 2 — Directors grid with expertise chips */}
         <motion.div
           initial="hidden"
           whileInView="visible"
@@ -517,7 +717,22 @@ export default function AboutPage() {
               <p className="mt-1 text-xs font-semibold uppercase tracking-wider text-accent">
                 {member.title} · {member.company}
               </p>
-              <p className="mt-3 text-sm leading-relaxed text-neutral-600 line-clamp-4">
+
+              {/* Expertise chips */}
+              {DIRECTOR_EXPERTISE[member.name] && (
+                <div className="mt-3 flex flex-wrap gap-1.5">
+                  {DIRECTOR_EXPERTISE[member.name].slice(0, 3).map((tag) => (
+                    <span
+                      key={tag}
+                      className="inline-block rounded-full bg-neutral-100 px-2.5 py-0.5 text-[10px] font-semibold text-neutral-600"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+
+              <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-neutral-600">
                 {member.summary ?? member.bio.split('.')[0] + '.'}
               </p>
             </motion.div>
@@ -525,7 +740,7 @@ export default function AboutPage() {
         </motion.div>
       </Section>
 
-      {/* Associations — Show 6 + toggle */}
+      {/* Associations — Grouped by certification type */}
       <Section variant="soft" id="associations">
         <SectionHeader
           kicker="Our Associations"
@@ -535,60 +750,93 @@ export default function AboutPage() {
           className="mx-auto"
         />
 
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-80px' }}
-          variants={stagger}
-          className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
-        >
-          {visibleCerts.map((cert, index) => (
-            <motion.div
-              key={cert.id}
-              variants={fadeUp}
-              custom={index * 0.03}
-              className="group relative rounded-xl border border-neutral-200 bg-white p-6 transition-all hover:-translate-y-1 hover:shadow-lg"
-            >
-              <div className="flex items-start justify-between gap-3">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-accent-50 text-accent">
-                  <ScrollText className="h-5 w-5" strokeWidth={1.5} />
-                </div>
-                {cert.country && (
-                  <span className="inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider text-neutral-400">
-                    <MapPin className="h-3 w-3" strokeWidth={1.5} />
-                    {cert.country}
-                  </span>
-                )}
-              </div>
-              <h3 className="mt-4 font-display text-lg font-bold leading-tight text-neutral-charcoal">
-                {cert.brand}
-              </h3>
-              <p className="mt-1 text-xs font-semibold uppercase tracking-wider text-accent">
-                {cert.type}
-              </p>
-              <p className="mt-3 text-sm leading-relaxed text-neutral-600 line-clamp-3">
-                {cert.scope}
-              </p>
-              <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-neutral-100 pt-4">
-                <span className="inline-flex items-center gap-1 text-[11px] text-neutral-500">
-                  <CheckCircle className="h-3 w-3 text-accent" strokeWidth={1.5} />
-                  {cert.holder}
-                </span>
-                {(cert.validFrom || cert.validUntil || cert.issued) && (
-                  <span className="inline-flex items-center gap-1 text-[11px] text-neutral-400">
-                    <Calendar className="h-3 w-3" strokeWidth={1.5} />
-                    {cert.validUntil
-                      ? `Valid till ${cert.validUntil}`
-                      : cert.issued ?? cert.validFrom}
-                  </span>
-                )}
-              </div>
-              <div className="absolute bottom-0 left-0 h-0.5 w-0 bg-accent transition-all duration-300 group-hover:w-full" />
-            </motion.div>
-          ))}
-        </motion.div>
+        <div className="mt-14 space-y-12">
+          {CERT_GROUP_ORDER.map((groupKey) => {
+            const groupCerts = certsByGroup[groupKey];
+            if (groupCerts.length === 0) return null;
 
-        {!showAllCerts && hiddenCertsCount > 0 && (
+            // Slice based on running cap
+            const remaining = visibleCertCount - runningCount;
+            if (remaining <= 0) return null;
+            const visibleInGroup = showAllCerts
+              ? groupCerts
+              : groupCerts.slice(0, remaining);
+            runningCount += visibleInGroup.length;
+
+            const meta = CERT_GROUP_META[groupKey];
+
+            return (
+              <div key={groupKey}>
+                <div className="mb-6 flex flex-wrap items-baseline justify-between gap-3 border-b border-neutral-200 pb-4">
+                  <div>
+                    <h3 className="font-display text-xl font-bold leading-tight text-neutral-charcoal sm:text-2xl">
+                      {meta.label}
+                    </h3>
+                    <p className="mt-1 text-sm text-neutral-500">{meta.description}</p>
+                  </div>
+                  <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-accent">
+                    {groupCerts.length} {groupCerts.length === 1 ? 'partner' : 'partners'}
+                  </span>
+                </div>
+
+                <motion.div
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, margin: '-80px' }}
+                  variants={stagger}
+                  className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
+                >
+                  {visibleInGroup.map((cert, index) => (
+                    <motion.div
+                      key={cert.id}
+                      variants={fadeUp}
+                      custom={index * 0.03}
+                      className="group relative rounded-xl border border-neutral-200 bg-white p-6 transition-all hover:-translate-y-1 hover:shadow-lg"
+                    >
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-accent-50 text-accent">
+                          <ScrollText className="h-5 w-5" strokeWidth={1.5} />
+                        </div>
+                        {cert.country && (
+                          <span className="inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider text-neutral-400">
+                            <MapPin className="h-3 w-3" strokeWidth={1.5} />
+                            {cert.country}
+                          </span>
+                        )}
+                      </div>
+                      <h4 className="mt-4 font-display text-lg font-bold leading-tight text-neutral-charcoal">
+                        {cert.brand}
+                      </h4>
+                      <p className="mt-1 text-xs font-semibold uppercase tracking-wider text-accent">
+                        {cert.type}
+                      </p>
+                      <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-neutral-600">
+                        {cert.scope}
+                      </p>
+                      <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-neutral-100 pt-4">
+                        <span className="inline-flex items-center gap-1 text-[11px] text-neutral-500">
+                          <CheckCircle className="h-3 w-3 text-accent" strokeWidth={1.5} />
+                          {cert.holder}
+                        </span>
+                        {(cert.validFrom || cert.validUntil || cert.issued) && (
+                          <span className="inline-flex items-center gap-1 text-[11px] text-neutral-400">
+                            <Calendar className="h-3 w-3" strokeWidth={1.5} />
+                            {cert.validUntil
+                              ? `Valid till ${cert.validUntil}`
+                              : cert.issued ?? cert.validFrom}
+                          </span>
+                        )}
+                      </div>
+                      <div className="absolute bottom-0 left-0 h-0.5 w-0 bg-accent transition-all duration-300 group-hover:w-full" />
+                    </motion.div>
+                  ))}
+                </motion.div>
+              </div>
+            );
+          })}
+        </div>
+
+        {!showAllCerts && CERTIFICATIONS_COUNT > CERTS_PREVIEW_COUNT && (
           <div className="mt-12 text-center">
             <button
               type="button"
