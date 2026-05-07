@@ -2,7 +2,13 @@
 
 import { useState, useMemo } from 'react';
 import Image from 'next/image';
-import { motion, AnimatePresence } from 'framer-motion';
+import {
+  motion,
+  AnimatePresence,
+  useMotionValue,
+  useSpring,
+  useTransform,
+} from 'framer-motion';
 import { Container } from '@/components/ui/Container';
 import { PageHero } from '@/components/ui/PageHero';
 import { Section } from '@/components/ui/Section';
@@ -50,14 +56,115 @@ const itemVariants = {
   exit: { opacity: 0, y: -20, scale: 0.95, transition: { duration: 0.2 } },
 };
 
-function ProjectCard({ project }: { project: Project }) {
+function getProjectImageSrc(project: Project): string {
   const imageKey = project.sector || project.type;
-  const imageSrc = project.image ?? SECTOR_IMAGES[imageKey] ?? SECTOR_IMAGES.office;
+  return project.image ?? SECTOR_IMAGES[imageKey] ?? SECTOR_IMAGES.office;
+}
+
+function ProjectsGrid({ projects, tabKey }: { projects: Project[]; tabKey: string }) {
+  const [activeId, setActiveId] = useState<string | null>(null);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const springX = useSpring(mouseX, { stiffness: 320, damping: 28, mass: 0.45 });
+  const springY = useSpring(mouseY, { stiffness: 320, damping: 28, mass: 0.45 });
+  const offsetX = useTransform(springX, (v) => v + 24);
+  const offsetY = useTransform(springY, (v) => v + 24);
+
+  const activeProject = projects.find((p) => p.id === activeId) ?? null;
+
+  return (
+    <div
+      onPointerMove={(e) => {
+        if (e.pointerType === 'mouse') {
+          mouseX.set(e.clientX);
+          mouseY.set(e.clientY);
+        }
+      }}
+      onPointerLeave={() => setActiveId(null)}
+      className="relative"
+    >
+      <AnimatePresence>
+        {activeProject && (
+          <motion.div
+            key={activeProject.id}
+            initial={{ opacity: 0, scale: 0.85 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.85 }}
+            transition={{ duration: 0.18, ease: [0.25, 0.46, 0.45, 0.94] }}
+            style={{
+              x: offsetX,
+              y: offsetY,
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              pointerEvents: 'none',
+              zIndex: 60,
+              transformOrigin: 'top left',
+            }}
+            className="hidden h-56 w-72 overflow-hidden rounded-xl shadow-2xl ring-1 ring-black/10 lg:block"
+            aria-hidden
+          >
+            <Image
+              src={getProjectImageSrc(activeProject)}
+              alt=""
+              fill
+              sizes="288px"
+              className="object-cover"
+            />
+            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-neutral-charcoal/95 via-neutral-charcoal/40 to-transparent p-4">
+              {activeProject.sector && (
+                <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-accent">
+                  {activeProject.sector} · {activeProject.year}
+                </div>
+              )}
+              <div className="mt-1 font-display text-sm font-bold leading-tight text-white">
+                {activeProject.title}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={tabKey}
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          exit="hidden"
+          className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+        >
+          {projects.map((project) => (
+            <ProjectCard
+              key={project.id}
+              project={project}
+              onPointerEnter={() => setActiveId(project.id)}
+              onPointerLeave={() => setActiveId(null)}
+            />
+          ))}
+        </motion.div>
+      </AnimatePresence>
+    </div>
+  );
+}
+
+function ProjectCard({
+  project,
+  onPointerEnter,
+  onPointerLeave,
+}: {
+  project: Project;
+  onPointerEnter?: () => void;
+  onPointerLeave?: () => void;
+}) {
+  const imageSrc = getProjectImageSrc(project);
 
   return (
     <motion.div
       variants={itemVariants}
       layout
+      onPointerEnter={onPointerEnter}
+      onPointerLeave={onPointerLeave}
       className="group relative flex flex-col overflow-hidden rounded-xl border border-neutral-200 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
     >
       <div className="relative aspect-[16/10] overflow-hidden bg-neutral-100">
@@ -281,20 +388,10 @@ export default function ProjectsPage() {
             </p>
           </motion.div>
 
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={`${activeTab}-${activeSector}`}
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
-              exit="hidden"
-              className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
-            >
-              {filteredProjects.map((project) => (
-                <ProjectCard key={project.id} project={project} />
-              ))}
-            </motion.div>
-          </AnimatePresence>
+          <ProjectsGrid
+            projects={filteredProjects}
+            tabKey={`${activeTab}-${activeSector}`}
+          />
 
           {filteredProjects.length === 0 && (
             <motion.div
