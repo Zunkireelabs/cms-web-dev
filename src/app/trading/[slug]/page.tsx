@@ -13,7 +13,8 @@ import {
   type ProductDomain,
 } from '@/data/products';
 import { PROJECTS, type Project } from '@/data/projects';
-import { Building2, ExternalLink, Eye, FileDown } from 'lucide-react';
+import Link from 'next/link';
+import { ArrowLeft, Building2, ExternalLink, Eye, FileDown, Sparkles } from 'lucide-react';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -189,11 +190,32 @@ export default async function TradingSlugPage({ params }: PageProps) {
           lead="Authentic products with full manufacturer warranty, technical support, and after-sales service — sourced through CMS Group's authorised distribution channels."
         />
 
-        <div className="mt-12 space-y-8">
-          {domain.brands.map((brand) => (
-            <PartnerCard key={brand.name} brand={brand} />
-          ))}
-        </div>
+        {partnerCount > 0 ? (
+          <div className="mt-12 space-y-8">
+            {domain.brands.map((brand) => (
+              <PartnerCard key={brand.name} brand={brand} />
+            ))}
+          </div>
+        ) : (
+          <div className="mt-12 rounded-2xl border border-dashed border-neutral-300 bg-white px-8 py-12 text-center lg:py-16">
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-accent-50 text-accent">
+              <Sparkles className="h-6 w-6" strokeWidth={1.5} />
+            </div>
+            <h3 className="mt-5 font-display text-xl font-bold text-neutral-charcoal">
+              Brand partners coming soon
+            </h3>
+            <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-neutral-600">
+              We&apos;re finalising authorised distribution arrangements for this domain.
+              Reach out to discuss specific product requirements.
+            </p>
+            <Link
+              href="/contact"
+              className="mt-6 inline-flex items-center gap-2 rounded-lg bg-accent px-6 py-3 text-sm font-semibold uppercase tracking-wider text-white transition-colors hover:bg-accent-700"
+            >
+              Get in touch
+            </Link>
+          </div>
+        )}
       </Section>
 
       {/* Related Projects */}
@@ -219,6 +241,16 @@ export default async function TradingSlugPage({ params }: PageProps) {
                 aspect="video"
               />
             ))}
+          </div>
+
+          <div className="mt-12 text-center">
+            <Link
+              href="/trading"
+              className="inline-flex items-center gap-2 rounded-lg border border-neutral-300 px-6 py-3 text-sm font-semibold uppercase tracking-wider text-neutral-charcoal transition-colors hover:border-accent/40 hover:bg-accent-50 hover:text-accent"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              All Trading Domains
+            </Link>
           </div>
         </Section>
       )}

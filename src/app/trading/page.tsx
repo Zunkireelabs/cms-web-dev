@@ -21,9 +21,11 @@ export default function TradingPage() {
       <PageHero
         kicker="Trading Division"
         title="Premium building materials, distributed in Nepal."
-        subtitle={`${TOTAL_BRAND_COUNT}+ authorised partner brands across ${PRODUCT_DOMAINS.length} specialised domains — sanitary, roofing, ceilings, hardware, flooring, tiles, and more — supplied through Bath N Room, Baba Muktinath, and our specialised ventures.`}
+        subtitle={`${TOTAL_BRAND_COUNT}+ authorised partner brands across ${PRODUCT_DOMAINS.length} specialised domains — sanitary, roofing, ceilings, hardware, flooring, tiles, and more.`}
         image="/images/products/sanitaryware-hero.png"
         imageAlt="CMS Group Trading — premium building materials"
+        primaryCta={{ label: 'Explore Domains', href: '#domains' }}
+        secondaryCta={{ label: 'Contracting Division', href: '/contracting' }}
         size="tall"
       />
 
@@ -43,7 +45,7 @@ export default function TradingPage() {
       </Section>
 
       {/* Domains Grid */}
-      <Section variant="light">
+      <Section variant="light" id="domains">
         <SectionHeader
           kicker="Specialised Domains"
           title="Twelve product domains, one trusted source."

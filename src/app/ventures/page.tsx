@@ -16,11 +16,18 @@ import {
   Bath,
   Boxes,
   Calendar,
-  CheckCircle2,
+  DoorClosed,
+  Droplets,
+  Grid2x2,
   Grid3x3,
+  Home,
   Layers,
+  Mountain,
   Recycle,
+  ShowerHead,
   Sparkles,
+  Square,
+  TreePine,
   Wrench,
   type LucideIcon,
 } from 'lucide-react';
@@ -37,6 +44,27 @@ const VENTURE_ICONS: Record<string, LucideIcon> = {
 
 function isDistributingVenture(slug: string): slug is VentureSlug {
   return ['bath-n-room', 'baba-muktinath', '4r-technologies', 'techwood'].includes(slug);
+}
+
+function getProductIcon(name: string, ventureSlug: string): LucideIcon {
+  const n = name.toLowerCase();
+  if (n.includes('mosaic')) return Grid2x2;
+  if (n.includes('tile')) return Grid3x3;
+  if (/marble|granite|stone/.test(n)) return Mountain;
+  if (/wood|parquet|laminat/.test(n)) return TreePine;
+  if (/shower|sanitary|whirlpool|bathtub|jacuzzi|sauna/.test(n)) return ShowerHead;
+  if (/toilet|cubicle|partition|door/.test(n)) return DoorClosed;
+  if (/window|glass/.test(n)) return Square;
+  if (/ceiling|roof|façade|facade/.test(n)) return Home;
+  if (n.includes('floor')) return Layers;
+  if (/drain|flush|pipe|sewage|effluent|fountain|pool|filter|treatment|water/.test(n)) return Droplets;
+  if (/furniture|workstation|table|chair|carpet|desk/.test(n)) return Armchair;
+  if (/fitting|fixture|sink|chimney|hub|sensor|valve|mixer/.test(n)) return Wrench;
+  if (ventureSlug === 'prime-ceramics') return Grid3x3;
+  if (ventureSlug === 'techwood') return Armchair;
+  if (ventureSlug === '4r-technologies') return Recycle;
+  if (ventureSlug === 'bath-n-room') return Bath;
+  return Boxes;
 }
 
 function VentureSection({ venture, index }: { venture: Venture; index: number }) {
@@ -127,31 +155,51 @@ function VentureSection({ venture, index }: { venture: Venture; index: number })
                   </span>
                 </div>
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                  {venture.products.map((product) => (
-                    <div
-                      key={product.name}
-                      className="group/tile overflow-hidden rounded-lg border border-neutral-200 bg-white transition-shadow hover:shadow-card"
-                    >
-                      <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-brand-50 to-neutral-100">
-                        {product.image ? (
-                          <Image
-                            src={product.image}
-                            alt={product.name}
-                            fill
-                            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 200px"
-                            className="object-cover transition-transform duration-500 group-hover/tile:scale-105"
-                          />
-                        ) : (
-                          <div className="flex h-full w-full items-center justify-center text-brand-300">
-                            <CheckCircle2 className="h-8 w-8" strokeWidth={1.25} />
-                          </div>
-                        )}
+                  {venture.products.map((product) => {
+                    const ProductIcon = product.image
+                      ? null
+                      : getProductIcon(product.name, venture.slug);
+                    return (
+                      <div
+                        key={product.name}
+                        className="group/tile overflow-hidden rounded-lg border border-neutral-200 bg-white transition-shadow hover:shadow-card"
+                      >
+                        <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-brand-50 to-neutral-100">
+                          {product.image ? (
+                            <Image
+                              src={product.image}
+                              alt={product.name}
+                              fill
+                              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 200px"
+                              className="object-cover transition-transform duration-500 group-hover/tile:scale-105"
+                            />
+                          ) : (
+                            <>
+                              <div
+                                aria-hidden
+                                className="absolute inset-0 opacity-60"
+                                style={{
+                                  backgroundImage:
+                                    'radial-gradient(circle at 30% 25%, rgba(255,255,255,0.75), transparent 55%), radial-gradient(circle at 80% 85%, rgba(0,0,0,0.05), transparent 60%)',
+                                }}
+                              />
+                              <div className="relative flex h-full w-full items-center justify-center transition-transform duration-500 group-hover/tile:scale-110">
+                                {ProductIcon && (
+                                  <ProductIcon
+                                    className="h-11 w-11 text-accent/45"
+                                    strokeWidth={1.2}
+                                  />
+                                )}
+                              </div>
+                            </>
+                          )}
+                        </div>
+                        <p className="px-2.5 py-2 text-[11px] font-semibold leading-tight text-neutral-700">
+                          {product.name}
+                        </p>
                       </div>
-                      <p className="px-2.5 py-2 text-[11px] font-semibold leading-tight text-neutral-700">
-                        {product.name}
-                      </p>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </>
             ) : (

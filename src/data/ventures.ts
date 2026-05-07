@@ -10,12 +10,12 @@ export const VENTURES: Venture[] = [
     description:
       'Bath N Room Trade was founded in 2003 with a single vision: to be the one-stop solution for building finishing items in the Nepalese market. We specialize in a wide variety of imported tiles, sanitary wares, bath fittings, kitchen sinks, hubs, chimneys, whirlpool solutions (steams, sauna, bathtub & jacuzzi), pipes and fittings, stone, marble and granite, doors and parquet, as well as prefabricated swimming pool solutions and other various construction finishing products. Our core focus is to bring elegance to every living space.',
     products: [
-      { name: 'Indoor Tiles', image: '/images/ventures/bath-n-room/indoor-tiles.jpg' },
-      { name: 'Mosaic Tiles', image: '/images/ventures/bath-n-room/mosaic-tiles.jpg' },
-      { name: 'Sanitary Wares', image: '/images/ventures/bath-n-room/sanitary-wares.jpg' },
-      { name: 'Pre-post Flush & Drainage System', image: '/images/ventures/bath-n-room/pre-post-flush.jpg' },
-      { name: 'Marble & Granite', image: '/images/ventures/bath-n-room/marble-granite.jpg' },
-      { name: 'Toilet Cubicle & Partition', image: '/images/ventures/bath-n-room/toilet-cubicle.jpg' },
+      { name: 'Indoor Tiles' },
+      { name: 'Mosaic Tiles' },
+      { name: 'Sanitary Wares' },
+      { name: 'Pre-post Flush & Drainage System' },
+      { name: 'Marble & Granite' },
+      { name: 'Toilet Cubicle & Partition' },
       { name: 'CPVC – PVC Pipes & Fitting' },
       { name: 'Bathroom Sensor System' },
       { name: 'Kitchen Sinks & Sink Mixer' },
