@@ -1,9 +1,10 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import Link from 'next/link';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Container } from '@/components/ui/Container';
+import { PageHero } from '@/components/ui/PageHero';
 import { ContactCTA } from '@/components/sections';
 import { cn } from '@/lib/utils';
 import {
@@ -13,8 +14,7 @@ import {
   type ProjectType,
   type CommercialSector,
 } from '@/data/projects';
-import Image from 'next/image';
-import { MapPin, Calendar, Maximize, Building2, Home } from 'lucide-react';
+import { MapPin, Maximize, Building2, Home } from 'lucide-react';
 
 const SECTOR_IMAGES: Record<string, string> = {
   office: '/images/projects/office.jpg',
@@ -34,12 +34,7 @@ const TABS: { value: ProjectType; label: string; icon: React.ReactNode }[] = [
 
 const containerVariants = {
   hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.05,
-    },
-  },
+  visible: { opacity: 1, transition: { staggerChildren: 0.05 } },
 };
 
 const itemVariants = {
@@ -48,20 +43,9 @@ const itemVariants = {
     opacity: 1,
     y: 0,
     scale: 1,
-    transition: {
-      type: 'spring',
-      stiffness: 300,
-      damping: 24,
-    },
+    transition: { type: 'spring', stiffness: 300, damping: 24 },
   },
-  exit: {
-    opacity: 0,
-    y: -20,
-    scale: 0.95,
-    transition: {
-      duration: 0.2,
-    },
-  },
+  exit: { opacity: 0, y: -20, scale: 0.95, transition: { duration: 0.2 } },
 };
 
 function ProjectCard({ project }: { project: Project }) {
@@ -72,91 +56,76 @@ function ProjectCard({ project }: { project: Project }) {
     <motion.div
       variants={itemVariants}
       layout
-      className="group relative overflow-hidden rounded-2xl border border-neutral-border bg-white shadow-card transition-shadow duration-300 hover:shadow-card-hover"
+      className="group relative flex flex-col overflow-hidden rounded-xl border border-neutral-200 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
     >
-      {/* Project Image */}
-      <div className="relative h-48 overflow-hidden bg-gradient-to-br from-brand-100 to-brand-50">
+      <div className="relative aspect-[16/10] overflow-hidden bg-neutral-100">
         <Image
           src={imageSrc}
           alt={project.title}
           fill
-          className="object-cover transition-transform duration-500 group-hover:scale-110"
+          className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
 
-        {/* Featured Badge */}
         {project.featured && (
-          <div className="absolute left-4 top-4">
-            <span className="rounded-full bg-brand-600 px-3 py-1 text-xs font-semibold text-white">
-              Featured
-            </span>
-          </div>
-        )}
-
-        {/* Year Badge */}
-        <div className="absolute right-4 top-4">
-          <span className="rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-neutral-charcoal backdrop-blur-sm">
-            {project.year}
+          <span className="absolute top-4 left-4 inline-block rounded-full bg-accent px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-white shadow-sm">
+            Featured
           </span>
-        </div>
-
-        {/* Hover Overlay */}
-        <div className="absolute inset-0 bg-brand-900/80 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-          <div className="flex h-full flex-col items-center justify-center p-4 text-center">
-            <p className="text-sm text-white/90">{project.description}</p>
-          </div>
-        </div>
+        )}
+        <span className="absolute top-4 right-4 inline-block rounded-full bg-neutral-charcoal/80 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white backdrop-blur-sm">
+          {project.year}
+        </span>
       </div>
 
-      {/* Content */}
-      <div className="p-6">
-        {/* Sector Tag */}
+      <div className="flex flex-1 flex-col p-6">
         {project.sector && (
-          <span className="inline-block rounded-full bg-brand-50 px-2.5 py-0.5 text-xs font-medium capitalize text-brand-700">
+          <span className="inline-block w-fit rounded-full bg-accent-50 px-2.5 py-0.5 text-[11px] font-semibold capitalize text-accent">
             {project.sector}
           </span>
         )}
 
-        <h3 className="mt-3 text-lg font-semibold text-neutral-charcoal transition-colors group-hover:text-brand-600">
+        <h3 className="mt-3 font-display text-lg font-bold leading-tight text-neutral-charcoal transition-colors group-hover:text-accent sm:text-xl">
           {project.title}
         </h3>
+        <p className="mt-1 text-sm font-medium text-neutral-500">{project.client}</p>
 
-        <p className="mt-1 text-sm text-neutral-600">{project.client}</p>
-
-        {/* Meta Info */}
-        <div className="mt-4 flex flex-wrap gap-4 text-sm text-neutral-400">
-          <div className="flex items-center gap-1.5">
-            <MapPin className="h-3.5 w-3.5" />
-            <span>{project.location}</span>
-          </div>
+        <div className="mt-4 flex flex-wrap gap-x-4 gap-y-1.5 text-xs text-neutral-500">
+          <span className="flex items-center gap-1.5">
+            <MapPin className="h-3 w-3 text-accent shrink-0" strokeWidth={1.75} />
+            {project.location}
+          </span>
           {project.area && (
-            <div className="flex items-center gap-1.5">
-              <Maximize className="h-3.5 w-3.5" />
-              <span>{project.area}</span>
-            </div>
+            <span className="flex items-center gap-1.5">
+              <Maximize className="h-3 w-3 text-accent shrink-0" strokeWidth={1.75} />
+              {project.area}
+            </span>
           )}
         </div>
 
-        {/* Scope Tags */}
-        <div className="mt-4 flex flex-wrap gap-1.5">
-          {project.scope.slice(0, 3).map((item) => (
-            <span
-              key={item}
-              className="rounded bg-neutral-surface px-2 py-0.5 text-xs text-neutral-600"
-            >
-              {item}
-            </span>
-          ))}
-          {project.scope.length > 3 && (
-            <span className="rounded bg-neutral-surface px-2 py-0.5 text-xs text-neutral-400">
-              +{project.scope.length - 3}
-            </span>
-          )}
-        </div>
+        <p className="mt-4 line-clamp-3 flex-1 text-sm leading-relaxed text-neutral-600">
+          {project.description}
+        </p>
+
+        {project.scope.length > 0 && (
+          <div className="mt-5 flex flex-wrap gap-1.5">
+            {project.scope.slice(0, 3).map((item) => (
+              <span
+                key={item}
+                className="rounded bg-neutral-100 px-2 py-0.5 text-[11px] text-neutral-600"
+              >
+                {item}
+              </span>
+            ))}
+            {project.scope.length > 3 && (
+              <span className="rounded bg-neutral-100 px-2 py-0.5 text-[11px] text-neutral-400">
+                +{project.scope.length - 3}
+              </span>
+            )}
+          </div>
+        )}
       </div>
 
-      {/* Bottom accent */}
-      <div className="absolute bottom-0 left-0 h-1 w-0 bg-brand-600 transition-all duration-300 group-hover:w-full" />
+      <div className="absolute bottom-0 left-0 h-0.5 w-0 bg-accent transition-all duration-300 group-hover:w-full" />
     </motion.div>
   );
 }
@@ -167,11 +136,9 @@ export default function ProjectsPage() {
 
   const filteredProjects = useMemo(() => {
     let projects = PROJECTS.filter((p) => p.type === activeTab);
-
     if (activeTab === 'commercial' && activeSector !== 'all') {
       projects = projects.filter((p) => p.sector === activeSector);
     }
-
     return projects;
   }, [activeTab, activeSector]);
 
@@ -182,73 +149,39 @@ export default function ProjectsPage() {
 
   return (
     <>
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-neutral-charcoal via-neutral-800 to-brand-900 py-20 lg:py-28">
-        <div className="absolute inset-0 opacity-10">
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage: `radial-gradient(circle at 1px 1px, white 1px, transparent 0)`,
-              backgroundSize: '32px 32px',
-            }}
-          />
-        </div>
-
-        <Container className="relative">
-          <div className="mx-auto max-w-3xl text-center">
-            <motion.span
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="inline-block rounded-full bg-white/10 px-4 py-1.5 text-sm font-medium text-white backdrop-blur-sm"
-            >
-              Our Portfolio
-            </motion.span>
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="mt-4 text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl"
-            >
-              Featured Projects
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="mt-6 text-xl text-neutral-300"
-            >
-              Explore our diverse portfolio of commercial and residential projects
-              delivered across Nepal.
-            </motion.p>
-          </div>
-        </Container>
-      </section>
+      <PageHero
+        kicker="Our Portfolio"
+        title="Featured projects across Nepal."
+        subtitle={`${PROJECTS.length}+ commercial and residential projects delivered through CMS Group ventures — from Tiger Palace Resort and Bir Hospital to NRB headquarters and ICIMOD's green campus.`}
+        image="/images/projects/tiger-palace.jpg"
+        imageAlt="CMS Group featured projects"
+        size="tall"
+      />
 
       {/* Tabs & Filters */}
-      <section className="sticky top-16 z-30 border-b border-neutral-border bg-white/95 backdrop-blur-md lg:top-20">
+      <section className="sticky top-16 z-30 border-y border-neutral-200 bg-white/95 backdrop-blur-md lg:top-20">
         <Container>
           <div className="flex flex-col gap-4 py-4 sm:flex-row sm:items-center sm:justify-between">
-            {/* Tabs */}
             <div className="flex gap-2">
               {TABS.map((tab) => (
                 <button
                   key={tab.value}
                   onClick={() => handleTabChange(tab.value)}
                   className={cn(
-                    'relative flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium transition-all',
+                    'relative flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition-all',
                     activeTab === tab.value
-                      ? 'bg-brand-600 text-white'
-                      : 'bg-neutral-surface text-neutral-600 hover:bg-neutral-200'
+                      ? 'bg-accent text-white'
+                      : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200',
                   )}
                 >
                   {tab.icon}
                   {tab.label}
                   <span
                     className={cn(
-                      'ml-1 rounded-full px-2 py-0.5 text-xs',
+                      'ml-1 rounded-full px-2 py-0.5 text-[11px]',
                       activeTab === tab.value
                         ? 'bg-white/20 text-white'
-                        : 'bg-neutral-200 text-neutral-500'
+                        : 'bg-white text-neutral-500',
                     )}
                   >
                     {PROJECTS.filter((p) => p.type === tab.value).length}
@@ -257,7 +190,6 @@ export default function ProjectsPage() {
               ))}
             </div>
 
-            {/* Sector Filters (Commercial only) */}
             <AnimatePresence mode="wait">
               {activeTab === 'commercial' && (
                 <motion.div
@@ -271,15 +203,15 @@ export default function ProjectsPage() {
                     className={cn(
                       'rounded-full px-3 py-1.5 text-sm font-medium transition-all',
                       activeSector === 'all'
-                        ? 'bg-brand-100 text-brand-700'
-                        : 'bg-neutral-surface text-neutral-600 hover:bg-neutral-200'
+                        ? 'bg-accent-50 text-accent'
+                        : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200',
                     )}
                   >
                     All Sectors
                   </button>
                   {COMMERCIAL_SECTORS.map((sector) => {
                     const count = PROJECTS.filter(
-                      (p) => p.type === 'commercial' && p.sector === sector.value
+                      (p) => p.type === 'commercial' && p.sector === sector.value,
                     ).length;
                     return (
                       <button
@@ -288,8 +220,8 @@ export default function ProjectsPage() {
                         className={cn(
                           'rounded-full px-3 py-1.5 text-sm font-medium transition-all',
                           activeSector === sector.value
-                            ? 'bg-brand-100 text-brand-700'
-                            : 'bg-neutral-surface text-neutral-600 hover:bg-neutral-200'
+                            ? 'bg-accent-50 text-accent'
+                            : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200',
                         )}
                       >
                         {sector.label}
@@ -305,15 +237,14 @@ export default function ProjectsPage() {
       </section>
 
       {/* Projects Grid */}
-      <section className="py-12 lg:py-16">
+      <section className="py-12 lg:py-16 bg-neutral-off-white">
         <Container>
-          {/* Results Count */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             className="mb-8 flex items-center justify-between"
           >
-            <p className="text-neutral-600">
+            <p className="text-sm text-neutral-600">
               Showing{' '}
               <span className="font-semibold text-neutral-charcoal">
                 {filteredProjects.length}
@@ -323,15 +254,12 @@ export default function ProjectsPage() {
                 <span>
                   {' '}
                   in{' '}
-                  <span className="font-semibold capitalize text-brand-600">
-                    {activeSector}
-                  </span>
+                  <span className="font-semibold capitalize text-accent">{activeSector}</span>
                 </span>
               )}
             </p>
           </motion.div>
 
-          {/* Grid */}
           <AnimatePresence mode="wait">
             <motion.div
               key={`${activeTab}-${activeSector}`}
@@ -347,7 +275,6 @@ export default function ProjectsPage() {
             </motion.div>
           </AnimatePresence>
 
-          {/* Empty State */}
           {filteredProjects.length === 0 && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -355,18 +282,15 @@ export default function ProjectsPage() {
               className="py-20 text-center"
             >
               <Building2 className="mx-auto h-16 w-16 text-neutral-300" />
-              <h3 className="mt-4 text-lg font-semibold text-neutral-charcoal">
+              <h3 className="mt-4 font-display text-lg font-bold text-neutral-charcoal">
                 No projects found
               </h3>
-              <p className="mt-2 text-neutral-600">
-                Try selecting a different sector or tab.
-              </p>
+              <p className="mt-2 text-neutral-600">Try selecting a different sector or tab.</p>
             </motion.div>
           )}
         </Container>
       </section>
 
-      {/* CTA Section */}
       <ContactCTA />
     </>
   );
