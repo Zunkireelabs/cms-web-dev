@@ -1,10 +1,14 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
-import { Container } from '@/components/ui/Container';
+import { PageHero } from '@/components/ui/PageHero';
+import { Section } from '@/components/ui/Section';
+import { SectionHeader } from '@/components/ui/SectionHeader';
+import { StatBlock } from '@/components/ui/StatBlock';
+import { ContentCard } from '@/components/ui/ContentCard';
 import { ContactCTA } from '@/components/sections';
 import { PRODUCT_DOMAINS } from '@/data/products';
-import { TOTAL_BRAND_COUNT } from '@/data/brands';
-import { ArrowRight } from 'lucide-react';
+import { BRANDS, TOTAL_BRAND_COUNT } from '@/data/brands';
+
+const COUNTRY_COUNT = new Set(BRANDS.map((b) => b.country.split(' ')[0])).size;
 
 export const metadata: Metadata = {
   title: 'Trading Division',
@@ -14,90 +18,62 @@ export const metadata: Metadata = {
 export default function TradingPage() {
   return (
     <>
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-brand-900 via-brand-800 to-neutral-charcoal py-20 lg:py-28">
-        <div className="absolute inset-0 opacity-10">
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage: `radial-gradient(circle at 1px 1px, white 1px, transparent 0)`,
-              backgroundSize: '32px 32px',
-            }}
-          />
-        </div>
+      <PageHero
+        kicker="Trading Division"
+        title="Premium building materials, distributed in Nepal."
+        subtitle={`${TOTAL_BRAND_COUNT}+ authorised partner brands across ${PRODUCT_DOMAINS.length} specialised domains — sanitary, roofing, ceilings, hardware, flooring, tiles, and more — supplied through Bath N Room, Baba Muktinath, and our specialised ventures.`}
+        image="/images/products/sanitaryware-hero.png"
+        imageAlt="CMS Group Trading — premium building materials"
+        size="tall"
+      />
 
-        <Container className="relative">
-          <div className="mx-auto max-w-3xl text-center">
-            <span className="inline-block rounded-full bg-white/10 px-4 py-1.5 text-sm font-medium text-white backdrop-blur-sm">
-              Trading Division
-            </span>
-            <h1 className="mt-4 text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
-              Premium Building Materials
-            </h1>
-            <p className="mt-6 text-xl text-brand-100 leading-relaxed">
-              {TOTAL_BRAND_COUNT}+ global brand partners across {PRODUCT_DOMAINS.length} specialized
-              domains, distributed in Nepal through our{' '}
-              <Link href="/brands" className="font-semibold text-white underline-offset-4 hover:underline">
-                Bath N Room
-              </Link>{' '}
-              and{' '}
-              <Link href="/brands" className="font-semibold text-white underline-offset-4 hover:underline">
-                Baba Muktinath
-              </Link>{' '}
-              ventures.
-            </p>
+      {/* Stat anchor */}
+      <Section variant="soft" compact>
+        <div className="grid grid-cols-3 gap-x-6 gap-y-12 sm:gap-12">
+          <div className="border-l border-accent/40 pl-5 lg:pl-6">
+            <StatBlock value={`${TOTAL_BRAND_COUNT}+`} label="Brand Partners" size="md" />
           </div>
-        </Container>
-      </section>
+          <div className="border-l border-accent/40 pl-5 lg:pl-6">
+            <StatBlock value={`${PRODUCT_DOMAINS.length}`} label="Product Domains" size="md" />
+          </div>
+          <div className="border-l border-accent/40 pl-5 lg:pl-6">
+            <StatBlock value={`${COUNTRY_COUNT}+`} label="Countries of Origin" size="md" />
+          </div>
+        </div>
+      </Section>
 
       {/* Domains Grid */}
-      <section className="py-20 lg:py-28">
-        <Container>
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {PRODUCT_DOMAINS.map((domain, index) => (
-              <Link
-                key={domain.slug}
-                href={`/trading/${domain.slug}`}
-                className="group relative overflow-hidden rounded-2xl border border-neutral-border bg-white p-8 shadow-card transition-all duration-300 hover:shadow-card-hover"
-              >
-                {/* Background gradient on hover */}
-                <div className="absolute inset-0 bg-gradient-to-br from-brand-50 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+      <Section variant="light">
+        <SectionHeader
+          kicker="Specialised Domains"
+          title="Twelve product domains, one trusted source."
+          lead="Each domain is anchored by world-leading manufacturers — chosen for engineering pedigree, design fidelity, and proven reliability across the projects we deliver."
+          align="center"
+          className="mx-auto"
+        />
 
-                <div className="relative">
-                  {/* Domain number */}
-                  <span className="text-5xl font-bold text-neutral-100 transition-colors group-hover:text-brand-100">
-                    {String(index + 1).padStart(2, '0')}
-                  </span>
+        <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {PRODUCT_DOMAINS.map((domain) => (
+            <ContentCard
+              key={domain.slug}
+              href={`/trading/${domain.slug}`}
+              image={domain.image}
+              imageAlt={domain.title}
+              title={domain.title}
+              description={domain.description}
+              subtitle={
+                domain.brands.length === 0
+                  ? 'Coming soon'
+                  : domain.brands.length === 1
+                    ? '1 brand partner'
+                    : `${domain.brands.length} brand partners`
+              }
+              aspect="video"
+            />
+          ))}
+        </div>
+      </Section>
 
-                  {/* Domain title */}
-                  <h2 className="mt-4 text-2xl font-bold text-neutral-charcoal transition-colors group-hover:text-brand-700">
-                    {domain.title}
-                  </h2>
-
-                  {/* Description */}
-                  <p className="mt-2 line-clamp-2 text-neutral-600">{domain.description}</p>
-
-                  {/* Brands count */}
-                  <p className="mt-4 text-sm text-neutral-400">
-                    {domain.brands.length} {domain.brands.length === 1 ? 'Brand Partner' : 'Brand Partners'}
-                  </p>
-
-                  {/* Arrow */}
-                  <div className="mt-6 flex items-center gap-2 font-semibold text-brand-600">
-                    <span>Explore</span>
-                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                  </div>
-                </div>
-
-                {/* Bottom accent */}
-                <div className="absolute bottom-0 left-0 h-1 w-0 bg-brand-600 transition-all duration-300 group-hover:w-full" />
-              </Link>
-            ))}
-          </div>
-        </Container>
-      </section>
-
-      {/* CTA Section */}
       <ContactCTA />
     </>
   );
