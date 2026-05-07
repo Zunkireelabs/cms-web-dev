@@ -1,20 +1,29 @@
 'use client';
 
-import { useRef } from 'react';
+import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import Link from 'next/link';
+import {
+  ArrowUpRight,
+  Award,
+  Globe2,
+  MapPin,
+  Search,
+  Sparkles,
+  X,
+} from 'lucide-react';
 import { Container } from '@/components/ui/Container';
 import { ContactCTA } from '@/components/sections';
-import Link from 'next/link';
 import {
   BRANDS,
   TOTAL_BRAND_COUNT,
   VENTURE_LABELS,
-  getBrandsByVenture,
   type BrandEntry,
   type VentureSlug,
 } from '@/data/brands';
-import { VENTURES } from '@/data/ventures';
-import { ArrowRight, Globe2, MapPin, Calendar, Sparkles } from 'lucide-react';
+
+const CURRENT_YEAR = 2026;
 
 const VENTURE_ORDER: VentureSlug[] = [
   'bath-n-room',
@@ -24,236 +33,601 @@ const VENTURE_ORDER: VentureSlug[] = [
 ];
 
 const VENTURE_TAGLINES: Record<VentureSlug, string> = {
-  'bath-n-room': 'Sanitary fixtures, flooring, and bathroom solutions from global leaders',
-  'baba-muktinath': 'Roofing, ceilings, doors, hardware, and waterproofing systems',
-  '4r-technologies': 'Sustainable water management, treatment plants, and pool solutions',
-  techwood: 'Modular office furniture and flooring for corporate and education sectors',
+  'bath-n-room':
+    'Sanitary fixtures, flooring, and bathroom solutions from global leaders.',
+  'baba-muktinath':
+    'Roofing, ceilings, doors, hardware, and waterproofing systems.',
+  '4r-technologies':
+    'Sustainable water management, treatment plants, and pool solutions.',
+  techwood:
+    'Modular office furniture and flooring for corporate and education sectors.',
 };
 
-const COUNTRY_COUNT = new Set(BRANDS.map((b) => b.country.split(' ')[0])).size;
-
-const fadeInUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: (delay: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, delay, ease: [0.25, 0.46, 0.45, 0.94] },
-  }),
+const VENTURE_PILL_STYLES: Record<VentureSlug, string> = {
+  'bath-n-room': 'bg-blue-50 text-blue-700 ring-blue-100',
+  'baba-muktinath': 'bg-emerald-50 text-emerald-700 ring-emerald-100',
+  '4r-technologies': 'bg-cyan-50 text-cyan-700 ring-cyan-100',
+  techwood: 'bg-amber-50 text-amber-700 ring-amber-100',
 };
 
-const staggerContainer = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.05 } },
+const COUNTRY_FLAGS: Record<string, string> = {
+  USA: '🇺🇸',
+  Germany: '🇩🇪',
+  Japan: '🇯🇵',
+  India: '🇮🇳',
+  UAE: '🇦🇪',
+  China: '🇨🇳',
+  France: '🇫🇷',
+  Italy: '🇮🇹',
+  Netherlands: '🇳🇱',
+  Turkey: '🇹🇷',
+  Canada: '🇨🇦',
+  Ireland: '🇮🇪',
+  Thailand: '🇹🇭',
+  Sweden: '🇸🇪',
+  Australia: '🇦🇺',
+  Malaysia: '🇲🇾',
+  Brazil: '🇧🇷',
 };
 
-function AnimatedSection({ children, className }: { children: React.ReactNode; className?: string }) {
-  const ref = useRef(null);
+function flagFor(country: string): string {
+  if (COUNTRY_FLAGS[country]) return COUNTRY_FLAGS[country];
+  // Compound countries like "Germany — India"
+  const parts = country.split(/\s*[—–-]\s*/);
+  if (parts.length > 1) {
+    return parts
+      .map((p) => COUNTRY_FLAGS[p.trim()] ?? '')
+      .filter(Boolean)
+      .join(' ');
+  }
+  return '';
+}
+
+const COUNTRIES = Array.from(new Set(BRANDS.map((b) => b.country))).sort();
+const COUNTRY_COUNT = new Set(BRANDS.flatMap((b) => b.country.split(/\s*[—–-]\s*/)))
+  .size;
+
+const HERITAGE_COUNT = BRANDS.filter(
+  (b) => b.founded && CURRENT_YEAR - b.founded >= 50,
+).length;
+
+type VentureFilter = 'all' | VentureSlug;
+
+const VENTURE_FILTERS: { slug: VentureFilter; label: string; short: string }[] = [
+  { slug: 'all', label: 'All ventures', short: 'All' },
+  { slug: 'bath-n-room', label: 'Bath N Room', short: 'Bath N Room' },
+  { slug: 'baba-muktinath', label: 'Baba Muktinath', short: 'Baba Muktinath' },
+  { slug: '4r-technologies', label: '4R Technologies', short: '4R Tech' },
+  { slug: 'techwood', label: 'Techwood', short: 'Techwood' },
+];
+
+export default function BrandsPage() {
+  return (
+    <Suspense fallback={<PageSkeleton />}>
+      <BrandsPageInner />
+    </Suspense>
+  );
+}
+
+function PageSkeleton() {
+  return (
+    <section className="relative py-20 lg:py-28 bg-gradient-to-b from-white via-neutral-50/40 to-white">
+      <Container>
+        <div className="h-10 w-72 bg-neutral-100 rounded-md animate-pulse" />
+      </Container>
+    </section>
+  );
+}
+
+function BrandsPageInner() {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const initialVenture = (searchParams.get('venture') as VentureFilter) || 'all';
+  const initialCountry = searchParams.get('country') || 'all';
+  const initialSearch = searchParams.get('q') || '';
+
+  const [venture, setVenture] = useState<VentureFilter>(
+    VENTURE_FILTERS.some((v) => v.slug === initialVenture) ? initialVenture : 'all',
+  );
+  const [country, setCountry] = useState<string>(
+    initialCountry === 'all' || COUNTRIES.includes(initialCountry)
+      ? initialCountry
+      : 'all',
+  );
+  const [search, setSearch] = useState(initialSearch);
+
+  // URL sync
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (venture !== 'all') params.set('venture', venture);
+    if (country !== 'all') params.set('country', country);
+    if (search.trim()) params.set('q', search.trim());
+    const qs = params.toString();
+    const url = qs ? `${pathname}?${qs}` : pathname;
+    router.replace(url, { scroll: false });
+  }, [venture, country, search, pathname, router]);
+
+  const filtered = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    return BRANDS.filter((b) => {
+      if (venture !== 'all' && b.venture !== venture) return false;
+      if (country !== 'all' && b.country !== country) return false;
+      if (q) {
+        const hay = `${b.name} ${b.country} ${b.segments.join(' ')}`.toLowerCase();
+        if (!hay.includes(q)) return false;
+      }
+      return true;
+    });
+  }, [venture, country, search]);
+
+  const grouped = useMemo(() => {
+    const groups = new Map<VentureSlug, BrandEntry[]>();
+    for (const slug of VENTURE_ORDER) groups.set(slug, []);
+    for (const b of filtered) groups.get(b.venture)?.push(b);
+    return groups;
+  }, [filtered]);
+
+  const hasActiveFilter =
+    venture !== 'all' || country !== 'all' || search.trim().length > 0;
+
+  const clearAll = () => {
+    setVenture('all');
+    setCountry('all');
+    setSearch('');
+  };
+
+  return (
+    <>
+      <Hero />
+      <FilterBar
+        venture={venture}
+        setVenture={setVenture}
+        country={country}
+        setCountry={setCountry}
+        search={search}
+        setSearch={setSearch}
+        resultCount={filtered.length}
+        hasActiveFilter={hasActiveFilter}
+        clearAll={clearAll}
+      />
+      <BrandsExplorer
+        venture={venture}
+        filtered={filtered}
+        grouped={grouped}
+        hasActiveFilter={hasActiveFilter}
+        clearAll={clearAll}
+      />
+      <ContactCTA />
+    </>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/* Hero                                                                       */
+/* -------------------------------------------------------------------------- */
+
+function Hero() {
+  const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
+
+  const stats = [
+    { value: `${TOTAL_BRAND_COUNT}+`, label: 'Brand partners' },
+    { value: '4', label: 'Distributing ventures' },
+    { value: `${COUNTRY_COUNT}+`, label: 'Countries of origin' },
+    { value: `${HERITAGE_COUNT}`, label: '50+ year legacy' },
+  ];
+
+  return (
+    <section
+      ref={ref}
+      className="relative overflow-hidden bg-gradient-to-b from-white via-neutral-50/40 to-white pt-20 pb-16 lg:pt-28 lg:pb-20"
+    >
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-[0.05]"
+        style={{
+          backgroundImage:
+            'radial-gradient(circle at 1px 1px, rgb(0 0 0) 1px, transparent 0)',
+          backgroundSize: '32px 32px',
+        }}
+      />
+      <Container className="relative">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.6 }}
+          className="max-w-3xl"
+        >
+          <div className="flex items-center gap-3 mb-5">
+            <span className="h-[3px] w-12 bg-accent" />
+            <span className="text-xs font-semibold uppercase tracking-[0.25em] text-accent">
+              Global Brand Partners
+            </span>
+          </div>
+          <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-medium text-neutral-900 tracking-tight leading-[1.05]">
+            <span className="text-accent">{TOTAL_BRAND_COUNT}+</span> world-class
+            brands.
+            <br className="hidden sm:block" /> One trusted partner in Nepal.
+          </h1>
+          <p className="mt-6 max-w-2xl text-base sm:text-lg text-neutral-600 leading-relaxed">
+            Authorized distribution, joint ventures, and exclusive partnerships
+            across four CMS Group ventures &mdash; powering construction projects
+            from sanitaryware in 1817 to ceramic-tile manufacturing today.
+          </p>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="mt-12 grid grid-cols-2 sm:grid-cols-4 divide-x divide-neutral-200 rounded-2xl border border-neutral-200 bg-white"
+        >
+          {stats.map((stat) => (
+            <div key={stat.label} className="px-4 py-5 sm:px-6 sm:py-6">
+              <div className="font-display text-2xl sm:text-3xl font-semibold text-neutral-900 tabular-nums">
+                {stat.value}
+              </div>
+              <div className="mt-1 text-xs font-medium uppercase tracking-wider text-neutral-500">
+                {stat.label}
+              </div>
+            </div>
+          ))}
+        </motion.div>
+      </Container>
+    </section>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/* Filter Bar                                                                 */
+/* -------------------------------------------------------------------------- */
+
+interface FilterBarProps {
+  venture: VentureFilter;
+  setVenture: (v: VentureFilter) => void;
+  country: string;
+  setCountry: (c: string) => void;
+  search: string;
+  setSearch: (s: string) => void;
+  resultCount: number;
+  hasActiveFilter: boolean;
+  clearAll: () => void;
+}
+
+function FilterBar({
+  venture,
+  setVenture,
+  country,
+  setCountry,
+  search,
+  setSearch,
+  resultCount,
+  hasActiveFilter,
+  clearAll,
+}: FilterBarProps) {
+  return (
+    <div className="sticky top-0 z-30 border-y border-neutral-200 bg-white/85 backdrop-blur-md supports-[backdrop-filter]:bg-white/70">
+      <Container>
+        <div className="flex flex-col gap-3 py-4 lg:flex-row lg:items-center lg:gap-4">
+          {/* Search */}
+          <div className="relative flex-1 lg:max-w-sm">
+            <Search
+              className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400"
+              strokeWidth={1.75}
+            />
+            <input
+              type="search"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search brands, segments, or countries…"
+              aria-label="Search brands"
+              className="h-10 w-full rounded-lg border border-neutral-200 bg-white pl-9 pr-9 text-sm text-neutral-900 placeholder:text-neutral-400 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20"
+            />
+            {search && (
+              <button
+                type="button"
+                onClick={() => setSearch('')}
+                aria-label="Clear search"
+                className="absolute right-2 top-1/2 -translate-y-1/2 rounded-md p-1 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-600"
+              >
+                <X className="h-3.5 w-3.5" />
+              </button>
+            )}
+          </div>
+
+          {/* Venture chips */}
+          <div className="flex flex-1 items-center gap-1.5 overflow-x-auto scrollbar-hide -mx-1 px-1">
+            {VENTURE_FILTERS.map((v) => {
+              const active = venture === v.slug;
+              return (
+                <button
+                  key={v.slug}
+                  type="button"
+                  onClick={() => setVenture(v.slug)}
+                  className={`shrink-0 rounded-full px-3.5 py-1.5 text-xs font-semibold transition-all ${
+                    active
+                      ? 'bg-neutral-900 text-white shadow-sm'
+                      : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200 hover:text-neutral-900'
+                  }`}
+                >
+                  {v.short}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Country select */}
+          <div className="flex items-center gap-2 shrink-0">
+            <select
+              value={country}
+              onChange={(e) => setCountry(e.target.value)}
+              aria-label="Filter by country"
+              className="h-10 rounded-lg border border-neutral-200 bg-white px-3 pr-8 text-sm text-neutral-700 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20"
+            >
+              <option value="all">All countries</option>
+              {COUNTRIES.map((c) => (
+                <option key={c} value={c}>
+                  {c}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        {/* Result count + clear */}
+        <div className="flex items-center justify-between gap-3 pb-3 text-xs text-neutral-500">
+          <span className="tabular-nums">
+            <span className="font-semibold text-neutral-900">{resultCount}</span>
+            {' of '}
+            <span className="tabular-nums">{TOTAL_BRAND_COUNT}</span> brands
+            {hasActiveFilter && ' matching filters'}
+          </span>
+          {hasActiveFilter && (
+            <button
+              type="button"
+              onClick={clearAll}
+              className="inline-flex items-center gap-1 font-semibold text-accent hover:text-accent/80"
+            >
+              <X className="h-3 w-3" />
+              Clear all
+            </button>
+          )}
+        </div>
+      </Container>
+    </div>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/* Explorer (grouped vs flat)                                                 */
+/* -------------------------------------------------------------------------- */
+
+interface ExplorerProps {
+  venture: VentureFilter;
+  filtered: BrandEntry[];
+  grouped: Map<VentureSlug, BrandEntry[]>;
+  hasActiveFilter: boolean;
+  clearAll: () => void;
+}
+
+function BrandsExplorer({
+  venture,
+  filtered,
+  grouped,
+  hasActiveFilter,
+  clearAll,
+}: ExplorerProps) {
+  return (
+    <section className="bg-neutral-50/40 py-14 lg:py-20">
+      <Container>
+        {filtered.length === 0 ? (
+          <EmptyState clearAll={clearAll} />
+        ) : venture === 'all' ? (
+          <div className="space-y-14 lg:space-y-20">
+            {VENTURE_ORDER.map((slug) => {
+              const brands = grouped.get(slug) ?? [];
+              if (brands.length === 0) return null;
+              return <VentureSection key={slug} ventureSlug={slug} brands={brands} />;
+            })}
+          </div>
+        ) : (
+          <FlatGrid brands={filtered} />
+        )}
+
+        {hasActiveFilter && filtered.length > 0 && (
+          <div className="mt-14 text-center">
+            <button
+              type="button"
+              onClick={clearAll}
+              className="inline-flex items-center gap-2 rounded-full border border-neutral-200 bg-white px-5 py-2 text-sm font-semibold text-neutral-700 hover:border-accent hover:text-accent"
+            >
+              <X className="h-3.5 w-3.5" />
+              Clear filters &amp; see all {TOTAL_BRAND_COUNT}
+            </button>
+          </div>
+        )}
+      </Container>
+    </section>
+  );
+}
+
+function EmptyState({ clearAll }: { clearAll: () => void }) {
+  return (
+    <div className="mx-auto max-w-md text-center py-16">
+      <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-neutral-100">
+        <Search className="h-5 w-5 text-neutral-400" strokeWidth={1.5} />
+      </div>
+      <h3 className="font-display text-xl font-semibold text-neutral-900">
+        No brands match those filters
+      </h3>
+      <p className="mt-2 text-sm text-neutral-500">
+        Try a different search term, broaden the country, or pick another venture.
+      </p>
+      <button
+        type="button"
+        onClick={clearAll}
+        className="mt-6 inline-flex items-center gap-2 rounded-full bg-neutral-900 px-5 py-2 text-sm font-semibold text-white hover:bg-neutral-800"
+      >
+        <X className="h-3.5 w-3.5" />
+        Clear filters
+      </button>
+    </div>
+  );
+}
+
+function VentureSection({
+  ventureSlug,
+  brands,
+}: {
+  ventureSlug: VentureSlug;
+  brands: BrandEntry[];
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, margin: '-80px' });
 
   return (
     <motion.div
       ref={ref}
-      initial="hidden"
-      animate={isInView ? 'visible' : 'hidden'}
-      variants={staggerContainer}
-      className={className}
+      initial={{ opacity: 0, y: 24 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+      transition={{ duration: 0.5 }}
     >
-      {children}
+      <div className="mb-6 flex flex-wrap items-end justify-between gap-4 border-b border-neutral-200 pb-5">
+        <div>
+          <span
+            className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider ring-1 ring-inset ${VENTURE_PILL_STYLES[ventureSlug]}`}
+          >
+            {brands.length} {brands.length === 1 ? 'brand' : 'brands'}
+          </span>
+          <h2 className="mt-2 font-display text-2xl sm:text-3xl font-semibold text-neutral-900 tracking-tight">
+            {VENTURE_LABELS[ventureSlug]}
+          </h2>
+          <p className="mt-1.5 max-w-2xl text-sm text-neutral-500">
+            {VENTURE_TAGLINES[ventureSlug]}
+          </p>
+        </div>
+        <Link
+          href={`/ventures#${ventureSlug}`}
+          className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-accent hover:text-accent/80"
+        >
+          View venture
+          <ArrowUpRight className="h-3.5 w-3.5" />
+        </Link>
+      </div>
+
+      <FlatGrid brands={brands} compact />
     </motion.div>
   );
 }
 
-function BrandCard({ brand }: { brand: BrandEntry }) {
+function FlatGrid({
+  brands,
+  compact = false,
+}: {
+  brands: BrandEntry[];
+  compact?: boolean;
+}) {
+  return (
+    <div
+      className={`grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ${
+        compact ? '' : 'lg:gap-5'
+      }`}
+    >
+      {brands.map((b, i) => (
+        <BrandCard key={b.slug} brand={b} index={i} />
+      ))}
+    </div>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/* Brand Card                                                                 */
+/* -------------------------------------------------------------------------- */
+
+function BrandCard({ brand, index }: { brand: BrandEntry; index: number }) {
+  const isHeritage = brand.founded && CURRENT_YEAR - brand.founded >= 50;
+  const isCentury = brand.founded && CURRENT_YEAR - brand.founded >= 100;
+  const flag = flagFor(brand.country);
+  const extraSegs = brand.segments.length - 1;
+
   return (
     <motion.div
-      variants={fadeInUp}
-      custom={0}
-      className="group relative h-full rounded-xl border border-neutral-border bg-white p-5 transition-all hover:border-brand-300 hover:shadow-card-hover"
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.35, delay: Math.min(index * 0.03, 0.3) }}
     >
-      <div className="flex items-start justify-between gap-3">
-        <h4 className="text-base font-semibold text-neutral-charcoal group-hover:text-brand-700 transition-colors leading-tight">
-          {brand.name}
-        </h4>
-        {brand.founded && (
-          <span className="shrink-0 text-[10px] font-semibold uppercase tracking-wider text-neutral-400">
-            Est. {brand.founded}
+      <Link
+        href={`/ventures#${brand.venture}`}
+        className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white p-5 transition-all duration-300 hover:-translate-y-1 hover:border-accent/40 hover:shadow-[0_12px_40px_-12px_rgba(0,0,0,0.12)]"
+      >
+        {/* Top accent stripe on hover */}
+        <span className="absolute inset-x-0 top-0 h-[2px] bg-accent scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100" />
+
+        {/* Top row: venture pill + heritage / est */}
+        <div className="mb-4 flex items-start justify-between gap-2">
+          <span
+            className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider ring-1 ring-inset ${VENTURE_PILL_STYLES[brand.venture]}`}
+          >
+            {VENTURE_LABELS[brand.venture]}
           </span>
-        )}
-      </div>
-      <div className="mt-2 flex items-center gap-1.5 text-xs text-neutral-500">
-        <MapPin className="h-3 w-3 text-brand-600" strokeWidth={1.5} />
-        <span>{brand.country}</span>
-      </div>
-      {brand.segments.length > 0 && (
-        <p className="mt-3 text-xs text-neutral-600 leading-relaxed line-clamp-2">
-          {brand.segments.slice(0, 2).join(' • ')}
-          {brand.segments.length > 2 && ` +${brand.segments.length - 2}`}
-        </p>
-      )}
-      <div className="absolute bottom-0 left-0 h-0.5 w-0 bg-brand-600 transition-all duration-300 group-hover:w-full" />
-    </motion.div>
-  );
-}
+          {isCentury ? (
+            <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-accent/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-accent">
+              <Award className="h-3 w-3" strokeWidth={2} />
+              {CURRENT_YEAR - (brand.founded ?? 0)} yrs
+            </span>
+          ) : isHeritage ? (
+            <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-accent/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-accent">
+              <Sparkles className="h-3 w-3" strokeWidth={2} />
+              Heritage
+            </span>
+          ) : brand.founded ? (
+            <span className="shrink-0 text-[10px] font-semibold uppercase tracking-wider text-neutral-400 tabular-nums">
+              Est. {brand.founded}
+            </span>
+          ) : null}
+        </div>
 
-function VentureSection({ ventureSlug }: { ventureSlug: VentureSlug }) {
-  const venture = VENTURES.find((v) => v.slug === ventureSlug);
-  const brands = getBrandsByVenture(ventureSlug);
+        {/* Brand name */}
+        <h3 className="font-display text-lg font-semibold text-neutral-900 leading-tight tracking-tight transition-colors group-hover:text-accent">
+          {brand.name}
+        </h3>
 
-  return (
-    <AnimatedSection className="rounded-2xl border border-neutral-border bg-white p-6 shadow-card lg:p-10">
-      {/* Venture Header */}
-      <motion.div variants={fadeInUp} custom={0} className="mb-8">
-        <div className="flex flex-wrap items-baseline justify-between gap-4">
-          <div>
-            <h3 className="text-2xl font-bold text-neutral-charcoal sm:text-3xl">
-              {VENTURE_LABELS[ventureSlug]}
-            </h3>
-            <p className="mt-2 max-w-2xl text-sm text-neutral-600 leading-relaxed">
-              {VENTURE_TAGLINES[ventureSlug]}
-            </p>
-          </div>
-          <div className="flex items-center gap-4 text-xs text-neutral-500">
-            {venture?.founded && (
-              <div className="flex items-center gap-1.5">
-                <Calendar className="h-3.5 w-3.5 text-brand-600" strokeWidth={1.5} />
-                <span>Since {venture.founded}</span>
-              </div>
+        {/* Country with flag */}
+        <div className="mt-2 flex items-center gap-1.5 text-xs text-neutral-600">
+          {flag ? (
+            <span className="text-base leading-none" aria-hidden>
+              {flag}
+            </span>
+          ) : (
+            <MapPin className="h-3 w-3 text-neutral-400" strokeWidth={1.5} />
+          )}
+          <span>{brand.country}</span>
+        </div>
+
+        {/* Segments */}
+        {brand.segments.length > 0 && (
+          <p className="mt-3 text-xs text-neutral-500 leading-relaxed line-clamp-2">
+            {brand.segments[0]}
+            {extraSegs > 0 && (
+              <span className="font-medium text-neutral-700"> +{extraSegs} more</span>
             )}
-            <div className="flex items-center gap-1.5">
-              <Sparkles className="h-3.5 w-3.5 text-brand-600" strokeWidth={1.5} />
-              <span className="font-semibold text-neutral-700">{brands.length} brands</span>
-            </div>
-            <Link
-              href={`/ventures#${ventureSlug}`}
-              className="inline-flex items-center gap-1 font-semibold text-brand-600 hover:text-brand-700 transition-colors"
-            >
-              View venture
-              <ArrowRight className="h-3 w-3" />
-            </Link>
-          </div>
+          </p>
+        )}
+
+        {/* Footer */}
+        <div className="mt-auto flex items-center justify-between border-t border-neutral-100 pt-4">
+          <span className="inline-flex items-center gap-1 text-[11px] font-medium text-neutral-400">
+            <Globe2 className="h-3 w-3" strokeWidth={1.75} />
+            Authorized partner
+          </span>
+          <span className="inline-flex items-center gap-0.5 text-[11px] font-semibold uppercase tracking-wider text-accent">
+            View
+            <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          </span>
         </div>
-      </motion.div>
-
-      {/* Brand Grid */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {brands.map((brand) => (
-          <BrandCard key={brand.slug} brand={brand} />
-        ))}
-      </div>
-    </AnimatedSection>
-  );
-}
-
-export default function BrandsPage() {
-  return (
-    <>
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-neutral-charcoal via-neutral-800 to-brand-900 py-20 lg:py-32">
-        <div className="absolute inset-0 opacity-10">
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage: `radial-gradient(circle at 1px 1px, white 1px, transparent 0)`,
-              backgroundSize: '32px 32px',
-            }}
-          />
-        </div>
-
-        <Container className="relative">
-          <div className="mx-auto max-w-3xl text-center">
-            <motion.span
-              variants={fadeInUp}
-              initial="hidden"
-              animate="visible"
-              custom={0}
-              className="inline-block rounded-full bg-white/10 px-4 py-1.5 text-sm font-medium text-white backdrop-blur-sm"
-            >
-              Our Partners
-            </motion.span>
-            <motion.h1
-              variants={fadeInUp}
-              initial="hidden"
-              animate="visible"
-              custom={0.1}
-              className="mt-4 text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl"
-            >
-              Global Brand Partners
-            </motion.h1>
-            <motion.p
-              variants={fadeInUp}
-              initial="hidden"
-              animate="visible"
-              custom={0.2}
-              className="mt-6 text-xl text-neutral-300 leading-relaxed"
-            >
-              {TOTAL_BRAND_COUNT}+ world-renowned brands across four CMS Group ventures —
-              authorized distribution, joint ventures, and exclusive partnerships powering
-              construction projects across Nepal.
-            </motion.p>
-
-            {/* Stat strip */}
-            <motion.div
-              variants={fadeInUp}
-              initial="hidden"
-              animate="visible"
-              custom={0.3}
-              className="mt-10 flex flex-wrap justify-center gap-8 sm:gap-12"
-            >
-              <div className="text-center">
-                <div className="text-3xl font-bold text-white sm:text-4xl">{TOTAL_BRAND_COUNT}+</div>
-                <div className="mt-1 text-xs uppercase tracking-wider text-neutral-400">
-                  Brand Partners
-                </div>
-              </div>
-              <div className="hidden h-12 w-px bg-white/20 sm:block" />
-              <div className="text-center">
-                <div className="text-3xl font-bold text-white sm:text-4xl">4</div>
-                <div className="mt-1 text-xs uppercase tracking-wider text-neutral-400">
-                  Distributing Ventures
-                </div>
-              </div>
-              <div className="hidden h-12 w-px bg-white/20 sm:block" />
-              <div className="text-center">
-                <div className="text-3xl font-bold text-white sm:text-4xl">{COUNTRY_COUNT}+</div>
-                <div className="mt-1 text-xs uppercase tracking-wider text-neutral-400">
-                  Countries of Origin
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </Container>
-      </section>
-
-      {/* Brands Grouped by Venture */}
-      <section className="py-20 lg:py-28 bg-neutral-off-white">
-        <Container>
-          <AnimatedSection>
-            <motion.div variants={fadeInUp} custom={0} className="mx-auto max-w-2xl text-center mb-16">
-              <span className="inline-flex items-center gap-2 rounded-full bg-brand-100 px-4 py-1.5 text-sm font-semibold text-brand-700">
-                <Globe2 className="h-3.5 w-3.5" />
-                Organized by Venture
-              </span>
-              <h2 className="mt-4 text-3xl font-bold tracking-tight text-neutral-charcoal sm:text-4xl">
-                Quality Products from Industry Leaders
-              </h2>
-              <p className="mt-4 text-neutral-600">
-                Each CMS Group venture maintains exclusive partnerships with manufacturers
-                in its specialized domain — ensuring authentic products with full warranty
-                and after-sales support.
-              </p>
-            </motion.div>
-          </AnimatedSection>
-
-          <div className="space-y-10">
-            {VENTURE_ORDER.map((ventureSlug) => (
-              <VentureSection key={ventureSlug} ventureSlug={ventureSlug} />
-            ))}
-          </div>
-        </Container>
-      </section>
-
-      {/* Partnership CTA */}
-      <ContactCTA />
-    </>
+      </Link>
+    </motion.div>
   );
 }
