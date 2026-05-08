@@ -70,6 +70,7 @@ export const BRANDS: BrandEntry[] = [
     venture: 'bath-n-room',
     tradingDomains: ['sanitaryware'],
     website: 'https://www.americanstandard-us.com',
+    logoUrl: '/images/brands/american-standard.png',
   },
   {
     name: 'Grohe',
@@ -80,6 +81,7 @@ export const BRANDS: BrandEntry[] = [
     venture: 'bath-n-room',
     tradingDomains: ['sanitaryware'],
     website: 'https://www.grohe.com',
+    logoUrl: '/images/brands/grohe.png',
   },
   {
     name: 'Duravit',
@@ -90,6 +92,7 @@ export const BRANDS: BrandEntry[] = [
     venture: 'bath-n-room',
     tradingDomains: ['sanitaryware'],
     website: 'https://www.duravit.com',
+    logoUrl: '/images/brands/duravit.png',
   },
   {
     name: 'RAK Ceramics',
@@ -100,6 +103,7 @@ export const BRANDS: BrandEntry[] = [
     venture: 'bath-n-room',
     tradingDomains: ['sanitaryware'],
     website: 'https://www.rakceramics.com',
+    logoUrl: '/images/brands/rak.png',
   },
   {
     name: 'Acquaviva',
@@ -109,6 +113,7 @@ export const BRANDS: BrandEntry[] = [
     segments: ['Sanitary Fixtures'],
     venture: 'bath-n-room',
     tradingDomains: ['sanitaryware'],
+    logoUrl: '/images/brands/acquaviva.png',
   },
   {
     name: 'Viega',
@@ -119,6 +124,7 @@ export const BRANDS: BrandEntry[] = [
     venture: 'bath-n-room',
     tradingDomains: ['sanitaryware'],
     website: 'https://www.viega.com',
+    logoUrl: '/images/brands/viega.png',
   },
   {
     name: 'Schell',
@@ -129,6 +135,7 @@ export const BRANDS: BrandEntry[] = [
     venture: 'bath-n-room',
     tradingDomains: ['sanitaryware'],
     website: 'https://www.schell.eu',
+    logoUrl: '/images/brands/schell.png',
   },
   {
     name: 'VRH',
@@ -157,6 +164,7 @@ export const BRANDS: BrandEntry[] = [
     segments: ['Sanitary Fixtures'],
     venture: 'bath-n-room',
     tradingDomains: ['sanitaryware'],
+    logoUrl: '/images/brands/plato.png',
   },
   {
     name: 'Huida',
@@ -167,6 +175,7 @@ export const BRANDS: BrandEntry[] = [
     venture: 'bath-n-room',
     tradingDomains: ['sanitaryware'],
     website: 'https://www.huida.com',
+    logoUrl: '/images/brands/huida.png',
   },
   {
     name: 'Essel',
@@ -176,6 +185,7 @@ export const BRANDS: BrandEntry[] = [
     segments: ['Sanitary Fixtures'],
     venture: 'bath-n-room',
     tradingDomains: ['sanitaryware'],
+    logoUrl: '/images/brands/essel.png',
   },
 
   // Bath n Room — Flooring
@@ -187,6 +197,7 @@ export const BRANDS: BrandEntry[] = [
     segments: ['Flooring'],
     venture: 'bath-n-room',
     website: 'https://www.somanyceramics.com',
+    logoUrl: '/images/brands/somany.png',
   },
   {
     name: 'Nitco',
@@ -196,6 +207,7 @@ export const BRANDS: BrandEntry[] = [
     segments: ['Flooring'],
     venture: 'bath-n-room',
     website: 'https://www.nitco.in',
+    logoUrl: '/images/brands/nitco.png',
   },
   {
     name: 'Ardey Endura',
@@ -204,6 +216,7 @@ export const BRANDS: BrandEntry[] = [
     founded: 1949,
     segments: ['Flooring'],
     venture: 'bath-n-room',
+    logoUrl: '/images/brands/ardey-endura.png',
   },
   {
     name: 'Ecoflex',
@@ -238,6 +251,7 @@ export const BRANDS: BrandEntry[] = [
     founded: 1987,
     segments: ['Flooring'],
     venture: 'bath-n-room',
+    logoUrl: '/images/brands/piccolo.png',
   },
 
   // Baba Muktinath — Roofing
@@ -250,6 +264,7 @@ export const BRANDS: BrandEntry[] = [
     venture: 'baba-muktinath',
     tradingDomains: ['roofing'],
     website: 'https://www.iko.com',
+    logoUrl: '/images/brands/iko.png',
   },
   {
     name: 'Kalzip',
@@ -260,6 +275,7 @@ export const BRANDS: BrandEntry[] = [
     venture: 'baba-muktinath',
     tradingDomains: ['roofing'],
     website: 'https://www.kalzip.com',
+    logoUrl: '/images/brands/kalzip.png',
   },
   {
     name: 'Kingspan',
@@ -280,6 +296,7 @@ export const BRANDS: BrandEntry[] = [
     venture: 'baba-muktinath',
     tradingDomains: ['roofing'],
     website: 'https://www.scgbuildingmaterials.com',
+    logoUrl: '/images/brands/scg.png',
   },
   {
     name: 'First Corp',
@@ -300,6 +317,7 @@ export const BRANDS: BrandEntry[] = [
     venture: 'baba-muktinath',
     tradingDomains: ['ceiling-systems'],
     website: 'https://www.armstrongceilings.com',
+    logoUrl: '/images/brands/armstrong.png',
   },
   {
     name: 'Hunter Douglas',
@@ -310,6 +328,7 @@ export const BRANDS: BrandEntry[] = [
     venture: 'baba-muktinath',
     tradingDomains: ['ceiling-systems', 'facade-solutions'],
     website: 'https://www.hunterdouglasarchitectural.eu',
+    logoUrl: '/images/brands/hunter-douglas.png',
   },
   {
     name: 'Rucca',
@@ -319,6 +338,7 @@ export const BRANDS: BrandEntry[] = [
     segments: ['False Ceiling and Wall Panel', 'Wall Cladding'],
     venture: 'baba-muktinath',
     tradingDomains: ['ceiling-systems', 'facade-solutions'],
+    logoUrl: '/images/brands/rucca.png',
   },
   {
     name: 'Eurolux',
@@ -328,6 +348,7 @@ export const BRANDS: BrandEntry[] = [
     segments: ['Stretch Ceiling'],
     venture: 'baba-muktinath',
     tradingDomains: ['ceiling-systems'],
+    logoUrl: '/images/brands/eurolux.png',
   },
 
   // Baba Muktinath — Doors, Windows, Coatings, Hardware
@@ -340,6 +361,7 @@ export const BRANDS: BrandEntry[] = [
     venture: 'baba-muktinath',
     tradingDomains: ['aluminum-doors-windows'],
     website: 'https://www.tostem.co.jp',
+    logoUrl: '/images/brands/tostem.png',
   },
   {
     name: 'Navair',
@@ -349,6 +371,7 @@ export const BRANDS: BrandEntry[] = [
     segments: ['Wooden / Acoustic / Metal Fire Doors'],
     venture: 'baba-muktinath',
     tradingDomains: ['door-hardware'],
+    logoUrl: '/images/brands/navair.png',
   },
   {
     name: 'Sumai',
@@ -368,6 +391,7 @@ export const BRANDS: BrandEntry[] = [
     venture: 'baba-muktinath',
     tradingDomains: ['wood-glass-metal-coating'],
     website: 'https://www.icaspa.com',
+    logoUrl: '/images/brands/ica.png',
   },
   {
     name: 'Zolon',
@@ -378,6 +402,7 @@ export const BRANDS: BrandEntry[] = [
     venture: 'baba-muktinath',
     tradingDomains: ['architectural-railings'],
     website: 'https://zolon.in',
+    logoUrl: '/images/brands/zolon.png',
   },
   {
     name: 'Dormakaba',
@@ -396,6 +421,7 @@ export const BRANDS: BrandEntry[] = [
     venture: 'baba-muktinath',
     tradingDomains: ['door-hardware', 'aluminum-doors-windows'],
     website: 'https://www.dormakaba.com',
+    logoUrl: '/images/brands/dormakaba.png',
   },
   {
     name: 'Gunnebo',
@@ -405,6 +431,7 @@ export const BRANDS: BrandEntry[] = [
     segments: ['Security Products'],
     venture: 'baba-muktinath',
     website: 'https://www.gunnebo.com',
+    logoUrl: '/images/brands/gunnebo.png',
   },
   {
     name: 'Wöhr',
@@ -414,6 +441,7 @@ export const BRANDS: BrandEntry[] = [
     segments: ['Parking Solution'],
     venture: 'baba-muktinath',
     website: 'https://www.woehr.de',
+    logoUrl: '/images/brands/wohr.png',
   },
   {
     name: 'Stylam',
@@ -422,6 +450,7 @@ export const BRANDS: BrandEntry[] = [
     founded: 1991,
     segments: ['Toilet Cubicles'],
     venture: 'baba-muktinath',
+    logoUrl: '/images/brands/stylam.png',
   },
 
   // Baba Muktinath — Waterproofing & Specialty
@@ -434,6 +463,7 @@ export const BRANDS: BrandEntry[] = [
     venture: 'baba-muktinath',
     tradingDomains: ['waterproofing'],
     website: 'https://www.schomburg.com',
+    logoUrl: '/images/brands/schomburg.png',
   },
   {
     name: 'Shalimar Tar Products',
@@ -461,6 +491,7 @@ export const BRANDS: BrandEntry[] = [
     founded: 1948,
     segments: ['Expansion Joints, Acrovyn, Louvers, Entrance Flooring'],
     venture: 'baba-muktinath',
+    logoUrl: '/images/brands/construction-specialities.png',
   },
   {
     name: 'Unitile',
@@ -485,6 +516,7 @@ export const BRANDS: BrandEntry[] = [
     founded: 1992,
     segments: ['Geotextiles & Non-Woven Insulations'],
     venture: 'baba-muktinath',
+    logoUrl: '/images/brands/nowofill.png',
   },
   {
     name: 'SICO',
@@ -512,6 +544,7 @@ export const BRANDS: BrandEntry[] = [
     venture: 'techwood',
     tradingDomains: ['flooring'],
     website: 'https://commercial.tarkett.com',
+    logoUrl: '/images/brands/tarkett.png',
   },
   {
     name: 'Unitile (Flooring)',
@@ -527,6 +560,7 @@ export const BRANDS: BrandEntry[] = [
     founded: 1994,
     segments: ['Flooring'],
     venture: 'techwood',
+    logoUrl: '/images/brands/bkb.png',
   },
   {
     name: 'Welspun',
@@ -536,6 +570,7 @@ export const BRANDS: BrandEntry[] = [
     segments: ['Flooring'],
     venture: 'techwood',
     tradingDomains: ['flooring'],
+    logoUrl: '/images/brands/welspun.png',
   },
   {
     name: 'Brazilian Wood',
