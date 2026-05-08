@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { PageHero } from '@/components/ui/PageHero';
@@ -17,7 +18,15 @@ import {
   type VentureSlug,
 } from '@/data/brands';
 import { VENTURES } from '@/data/ventures';
-import { ArrowRight, MapPin, Calendar, Sparkles, Factory } from 'lucide-react';
+import {
+  ArrowRight,
+  Building2,
+  Calendar,
+  ExternalLink,
+  Factory,
+  MapPin,
+  Sparkles,
+} from 'lucide-react';
 
 const VENTURE_ORDER: VentureSlug[] = [
   'bath-n-room',
@@ -39,33 +48,74 @@ const VENTURE_TAGLINES: Record<VentureSlug, string> = {
 const COUNTRY_COUNT = new Set(BRANDS.map((b) => b.country.split(' ')[0])).size;
 
 function BrandCard({ brand }: { brand: BrandEntry }) {
+  const hasWebsite = Boolean(brand.website);
+  const Wrapper = hasWebsite ? 'a' : 'div';
+  const wrapperProps = hasWebsite
+    ? {
+        href: brand.website,
+        target: '_blank',
+        rel: 'noopener noreferrer',
+        'aria-label': `Visit ${brand.name} website`,
+      }
+    : {};
+
   return (
-    <motion.div
-      variants={fadeUp}
-      custom={0}
-      className="group relative h-full rounded-xl border border-neutral-border bg-white p-5 transition-all hover:-translate-y-0.5 hover:border-accent/40 hover:shadow-card-hover"
-    >
-      <div className="flex items-start justify-between gap-3">
-        <h4 className="font-display text-base font-bold leading-tight text-neutral-charcoal transition-colors group-hover:text-accent">
-          {brand.name}
-        </h4>
-        {brand.founded && (
-          <span className="shrink-0 text-[10px] font-semibold uppercase tracking-wider text-neutral-400">
-            Est. {brand.founded}
-          </span>
-        )}
-      </div>
-      <div className="mt-2 flex items-center gap-1.5 text-xs text-neutral-500">
-        <MapPin className="h-3 w-3 text-accent" strokeWidth={1.5} />
-        <span>{brand.country}</span>
-      </div>
-      {brand.segments.length > 0 && (
-        <p className="mt-3 line-clamp-2 text-xs leading-relaxed text-neutral-600">
-          {brand.segments.slice(0, 2).join(' • ')}
-          {brand.segments.length > 2 && ` +${brand.segments.length - 2}`}
-        </p>
-      )}
-      <div className="absolute bottom-0 left-0 h-0.5 w-0 bg-accent transition-all duration-300 group-hover:w-full" />
+    <motion.div variants={fadeUp} custom={0} className="h-full">
+      <Wrapper
+        {...wrapperProps}
+        className="group relative flex h-full flex-col overflow-hidden rounded-xl border border-neutral-border bg-white transition-all hover:-translate-y-0.5 hover:border-accent/40 hover:shadow-card-hover"
+      >
+        {/* Logo plate */}
+        <div className="relative flex h-24 items-center justify-center border-b border-neutral-100 bg-neutral-off-white px-4 py-3">
+          {brand.logoUrl ? (
+            <Image
+              src={brand.logoUrl}
+              alt={`${brand.name} logo`}
+              fill
+              sizes="(max-width: 640px) 50vw, (max-width: 1280px) 33vw, 220px"
+              className="object-contain p-3 transition-transform duration-500 group-hover:scale-[1.04]"
+            />
+          ) : (
+            <div className="flex flex-col items-center gap-1 text-neutral-300">
+              <Building2 className="h-6 w-6" strokeWidth={1.25} />
+              <span className="text-[9px] font-medium uppercase tracking-[0.16em]">
+                {brand.name.split(' ')[0]}
+              </span>
+            </div>
+          )}
+          {hasWebsite && (
+            <span className="absolute right-2 top-2 inline-flex h-6 w-6 items-center justify-center rounded-full bg-white text-neutral-400 opacity-0 shadow-sm transition-opacity duration-200 group-hover:opacity-100">
+              <ExternalLink className="h-3 w-3" strokeWidth={2} />
+            </span>
+          )}
+        </div>
+
+        {/* Body */}
+        <div className="flex flex-1 flex-col p-4">
+          <div className="flex items-start justify-between gap-3">
+            <h4 className="font-display text-[15px] font-bold leading-tight text-neutral-charcoal transition-colors group-hover:text-accent">
+              {brand.name}
+            </h4>
+            {brand.founded && (
+              <span className="shrink-0 text-[10px] font-semibold uppercase tracking-wider text-neutral-400">
+                Est. {brand.founded}
+              </span>
+            )}
+          </div>
+          <div className="mt-1.5 flex items-center gap-1.5 text-xs text-neutral-500">
+            <MapPin className="h-3 w-3 text-accent" strokeWidth={1.5} />
+            <span>{brand.country}</span>
+          </div>
+          {brand.segments.length > 0 && (
+            <p className="mt-2.5 line-clamp-2 text-xs leading-relaxed text-neutral-600">
+              {brand.segments.slice(0, 2).join(' • ')}
+              {brand.segments.length > 2 && ` +${brand.segments.length - 2}`}
+            </p>
+          )}
+        </div>
+
+        <div className="absolute bottom-0 left-0 h-0.5 w-0 bg-accent transition-all duration-300 group-hover:w-full" />
+      </Wrapper>
     </motion.div>
   );
 }
@@ -77,11 +127,12 @@ function VentureSection({ ventureSlug }: { ventureSlug: VentureSlug }) {
 
   return (
     <motion.div
+      id={ventureSlug}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: '-100px' }}
       variants={stagger}
-      className="rounded-2xl border border-neutral-border bg-white p-6 shadow-card lg:p-10"
+      className="venture-anchor scroll-mt-28 rounded-2xl border border-neutral-border bg-white p-6 shadow-card lg:p-10"
     >
       {/* Venture Header */}
       <motion.div variants={fadeUp} custom={0} className="mb-8">

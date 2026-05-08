@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Container } from '@/components/ui/Container';
 import { PageHero } from '@/components/ui/PageHero';
@@ -23,8 +22,11 @@ import {
   Droplets,
   Grid2x2,
   Grid3x3,
+  Hammer,
+  HardHat,
   Home,
   Layers,
+  Leaf,
   Mountain,
   Recycle,
   ShowerHead,
@@ -48,6 +50,12 @@ const VENTURE_ICONS: Record<string, LucideIcon> = {
 function isDistributingVenture(slug: string): slug is VentureSlug {
   return ['bath-n-room', 'baba-muktinath', '4r-technologies', 'techwood'].includes(slug);
 }
+
+const CUBIC_METER_CAPABILITIES: { name: string; icon: LucideIcon }[] = [
+  { name: 'Interior Contracting & Fit-Out', icon: Hammer },
+  { name: 'Project Execution & Management', icon: HardHat },
+  { name: 'Renovation & Sustainable Solutions', icon: Leaf },
+];
 
 function getProductIcon(name: string, ventureSlug: string): LucideIcon {
   const n = name.toLowerCase();
@@ -92,7 +100,7 @@ function ProductRow({
   ventureSlug: string;
   index: number;
 }) {
-  const ProductIcon = product.image ? null : getProductIcon(product.name, ventureSlug);
+  const ProductIcon = getProductIcon(product.name, ventureSlug);
   return (
     <motion.li
       variants={fadeUp}
@@ -103,29 +111,40 @@ function ProductRow({
         aria-hidden
         className="absolute left-0 top-2 bottom-2 w-[3px] origin-center scale-y-0 rounded-r-sm bg-accent transition-transform duration-200 group-hover:scale-y-100"
       />
-      {product.image ? (
-        <div className="relative h-11 w-11 flex-shrink-0 overflow-hidden rounded-xl border border-neutral-200 sm:h-12 sm:w-12">
-          <Image
-            src={product.image}
-            alt={product.name}
-            fill
-            sizes="48px"
-            className="object-cover"
-          />
-        </div>
-      ) : (
-        <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-accent-50 to-neutral-100 text-accent sm:h-12 sm:w-12">
-          {ProductIcon && <ProductIcon className="h-5 w-5" strokeWidth={1.5} />}
-        </div>
-      )}
+      <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-accent-50 to-neutral-100 text-accent sm:h-12 sm:w-12">
+        <ProductIcon className="h-5 w-5" strokeWidth={1.5} />
+      </div>
       <p className="min-w-0 flex-1 text-[14px] font-semibold leading-snug text-neutral-charcoal sm:text-[15px]">
         {product.name}
       </p>
-      <ArrowRight
+    </motion.li>
+  );
+}
+
+function ServiceRow({
+  capability,
+  index,
+}: {
+  capability: { name: string; icon: LucideIcon };
+  index: number;
+}) {
+  const Icon = capability.icon;
+  return (
+    <motion.li
+      variants={fadeUp}
+      custom={Math.min(index * 0.03, 0.36)}
+      className="group relative flex items-center gap-3 border-b border-neutral-100 px-5 py-3.5 transition-colors last:border-0 hover:bg-accent-50/70 sm:gap-4 sm:px-6 sm:py-4"
+    >
+      <span
         aria-hidden
-        className="h-4 w-4 flex-shrink-0 text-accent opacity-0 transition-all duration-200 group-hover:translate-x-0.5 group-hover:opacity-100"
-        strokeWidth={2}
+        className="absolute left-0 top-2 bottom-2 w-[3px] origin-center scale-y-0 rounded-r-sm bg-accent transition-transform duration-200 group-hover:scale-y-100"
       />
+      <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-accent-50 to-neutral-100 text-accent sm:h-12 sm:w-12">
+        <Icon className="h-5 w-5" strokeWidth={1.5} />
+      </div>
+      <p className="min-w-0 flex-1 text-[14px] font-semibold leading-snug text-neutral-charcoal sm:text-[15px]">
+        {capability.name}
+      </p>
     </motion.li>
   );
 }
@@ -177,11 +196,18 @@ function VentureSection({ venture, index }: { venture: Venture; index: number })
           <dl
             className={cn(
               'mt-6 grid gap-2.5',
-              hasProducts && brandCount > 0 ? 'grid-cols-3' : hasProducts || brandCount > 0 ? 'grid-cols-2' : 'grid-cols-1',
+              (hasProducts || isContractingVenture) && brandCount > 0
+                ? 'grid-cols-3'
+                : hasProducts || isContractingVenture || brandCount > 0
+                ? 'grid-cols-2'
+                : 'grid-cols-1',
             )}
           >
             <Kpi value={venture.founded} label="Founded" />
             {hasProducts && <Kpi value={venture.products.length} label="Categories" />}
+            {isContractingVenture && (
+              <Kpi value={CUBIC_METER_CAPABILITIES.length} label="Capabilities" />
+            )}
             {brandCount > 0 && <Kpi value={brandCount} label="Brands" />}
           </dl>
 
@@ -210,7 +236,7 @@ function VentureSection({ venture, index }: { venture: Venture; index: number })
           <div className="mt-7 flex flex-wrap gap-2.5">
             {brandCount > 0 && (
               <Link
-                href="/brands"
+                href={`/brands#${venture.slug}`}
                 className="inline-flex items-center gap-2 rounded-lg border border-neutral-200 bg-white px-4 py-2 text-sm transition-colors hover:border-accent/40 hover:bg-accent-50"
               >
                 <Sparkles className="h-3.5 w-3.5 text-accent" strokeWidth={1.75} />
@@ -262,25 +288,43 @@ function VentureSection({ venture, index }: { venture: Venture; index: number })
                   ))}
                 </motion.ul>
               </>
+            ) : isContractingVenture ? (
+              <>
+                <div className="flex items-baseline justify-between border-b border-neutral-100 px-5 py-4 sm:px-6 sm:py-5">
+                  <h3 className="text-[11px] font-semibold uppercase tracking-[0.22em] text-accent">
+                    Service Capabilities
+                  </h3>
+                  <span className="text-xs font-medium text-neutral-400">
+                    {CUBIC_METER_CAPABILITIES.length} pillars
+                  </span>
+                </div>
+                <motion.ul variants={stagger} initial="hidden" whileInView="visible" viewport={inViewOptions}>
+                  {CUBIC_METER_CAPABILITIES.map((capability, i) => (
+                    <ServiceRow key={capability.name} capability={capability} index={i} />
+                  ))}
+                </motion.ul>
+                <div className="border-t border-neutral-100 bg-neutral-off-white/60 px-5 py-4 sm:px-6">
+                  <Link
+                    href="/contracting"
+                    className="group inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-accent transition-colors hover:text-accent-700"
+                  >
+                    See full contracting services
+                    <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
+                  </Link>
+                </div>
+              </>
             ) : (
               <div className="px-6 py-14 text-center sm:px-8">
                 <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-accent-50 text-accent">
                   <Boxes className="h-7 w-7" strokeWidth={1.4} />
                 </div>
                 <h3 className="mt-5 font-display text-lg font-bold text-neutral-charcoal">
-                  Service Venture — Contracting Only
+                  Service Venture
                 </h3>
                 <p className="mx-auto mt-2.5 max-w-md text-sm leading-relaxed text-neutral-500">
-                  {venture.shortName} delivers end-to-end interior contracting using products
-                  supplied by sister ventures and authorised partner brands.
+                  {venture.shortName} delivers end-to-end services through sister ventures and
+                  authorised partner brands.
                 </p>
-                <Link
-                  href="/contracting"
-                  className="mt-6 inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-accent transition-colors hover:text-accent-700"
-                >
-                  See contracting services
-                  <ArrowRight className="h-3.5 w-3.5" />
-                </Link>
               </div>
             )}
           </div>

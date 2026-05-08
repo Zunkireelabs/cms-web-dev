@@ -51,4 +51,28 @@
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
+
+  /* Anchor-target flash: when a .venture-anchor element matches the URL hash,
+     pulse a soft accent ring once so the user knows why they landed here. */
+  .venture-anchor:target {
+    animation: anchor-flash 1800ms ease-out 1;
+  }
+
+  @keyframes anchor-flash {
+    0% {
+      box-shadow: 0 0 0 0 rgb(212 175 55 / 0);
+    }
+    20% {
+      box-shadow: 0 0 0 4px rgb(212 175 55 / 0.45);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgb(212 175 55 / 0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .venture-anchor:target {
+      animation: none;
+    }
+  }
 }
