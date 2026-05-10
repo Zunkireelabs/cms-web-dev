@@ -107,6 +107,7 @@ export const PROJECTS: Project[] = [
       'Higher education campus. Supplied and installed 30,000 sq.ft of Tarkett vinyl flooring along with Armstrong false ceiling.',
     scope: ['Tarkett Vinyl Flooring', 'Armstrong False Ceiling'],
     area: '30,000 sq.ft',
+    image: '/images/projects/kmc.jpg',
   },
   {
     id: 'ullens-school',
@@ -119,6 +120,7 @@ export const PROJECTS: Project[] = [
     description:
       'International K-12 school campus. Supplied windows and false ceiling systems for academic blocks.',
     scope: ['Dormakaba Windows & Hardware', 'Armstrong False Ceiling'],
+    image: '/images/projects/ullens-school.jpg',
   },
 
   // Hospitality
@@ -194,6 +196,7 @@ export const PROJECTS: Project[] = [
       'Central bank annex building. Installed 86,000 sq.ft of BKB parquet flooring with Armstrong ceiling and Dormakaba hardware.',
     scope: ['BKB Parquet Flooring', 'Armstrong Ceiling', 'Dormakaba Hardware'],
     area: '86,000 sq.ft',
+    image: '/images/projects/nrb-baluwatar.jpg',
   },
   {
     id: 'dept-of-road',
@@ -206,6 +209,7 @@ export const PROJECTS: Project[] = [
     description:
       'Federal road infrastructure agency headquarters. Supplied false ceiling, windows, doors, furniture, tiles, and sewage treatment plant.',
     scope: ['Armstrong Ceiling', 'Dormakaba Hardware', 'Spacewood Furniture', 'RAK Tiles', 'STP System'],
+    image: '/images/projects/dept-of-road.jpg',
   },
   {
     id: 'attorney-general',
@@ -292,6 +296,7 @@ export const PROJECTS: Project[] = [
       'Industrial brewery facility. Installed 950 KLD effluent treatment plant for brewery wastewater compliance.',
     scope: ['Effluent Treatment Plant — 950 KLD capacity'],
     area: '950 KLD ETP',
+    image: '/images/projects/cg-brewery.jpg',
   },
   {
     id: 'lumbini-convention',
@@ -319,6 +324,7 @@ export const PROJECTS: Project[] = [
       'Premium residential colony. Supplied 9,000 sq.ft of IKO Earthtone Cedar asphalt roofing shingles.',
     scope: ['IKO Earthtone Cedar Asphalt Shingles'],
     area: '9,000 sq.ft',
+    image: '/images/projects/kcl-colony.jpg',
   },
   {
     id: 'green-hill-city',
