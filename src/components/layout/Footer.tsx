@@ -206,15 +206,6 @@ export function Footer() {
                 </a>
               </p>
             </div>
-            {/* Row 2 on mobile: privacy links */}
-            <div className="flex justify-center gap-6 md:justify-end">
-              <Link href="/privacy" className="transition-colors hover:text-white">
-                Privacy Policy
-              </Link>
-              <Link href="/terms" className="transition-colors hover:text-white">
-                Terms of Service
-              </Link>
-            </div>
           </div>
         </Container>
       </div>

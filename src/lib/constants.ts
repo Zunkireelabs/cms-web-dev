@@ -48,7 +48,7 @@ export const SERVICES: Service[] = SECTORS.map((sector) => ({
 export const FOOTER_LINKS = {
   company: [
     { label: 'About Us', href: '/about' },
-    { label: 'Our Team', href: '/about#team' },
+    { label: 'Our Team', href: '/about#leadership' },
     { label: 'Careers', href: '/career' },
     { label: 'Newsroom', href: '/newsroom' },
   ],
