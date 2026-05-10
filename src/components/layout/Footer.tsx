@@ -75,7 +75,7 @@ export function Footer() {
                 className="inline-flex items-center gap-2"
                 aria-label={`${SITE_CONFIG.name} - Home`}
               >
-                <Logo />
+                <Logo variant="white" />
                 <span className="text-xl font-bold">{SITE_CONFIG.shortName}</span>
               </Link>
               <p className="mt-4 max-w-sm leading-relaxed text-neutral-400">
@@ -98,7 +98,7 @@ export function Footer() {
               </div>
             </div>
 
-            <div className="grid gap-8 sm:grid-cols-3 lg:col-span-8">
+            <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:col-span-8">
               <div>
                 <h3 className="text-sm font-semibold uppercase tracking-wider text-white">
                   Company
@@ -181,21 +181,37 @@ export function Footer() {
 
       <div className="py-6">
         <Container>
-          <div className="flex flex-col items-center justify-between gap-4 text-sm text-neutral-400 md:flex-row">
-            <p>
-              &copy; {currentYear} {SITE_CONFIG.name}. All rights reserved.
-            </p>
-            <div className="flex gap-6">
-              <Link
-                href="/privacy"
-                className="transition-colors hover:text-white"
-              >
+          <div className="flex flex-col gap-3 text-sm text-neutral-400 md:flex-row md:items-center md:justify-between">
+            {/* Row 1 on mobile: copyright + developed by side by side */}
+            <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 md:justify-start">
+              <p>&copy; {currentYear} {SITE_CONFIG.name}. All rights reserved.</p>
+              <span className="hidden md:inline text-neutral-600">|</span>
+              <p className="flex items-center gap-1.5">
+                Developed by
+                <a
+                  href="https://zunkireelabs.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 font-semibold text-red-500 transition-colors hover:text-red-400"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/images/logo/zunkireelabs-icon.png"
+                    alt="Zunkireelabs"
+                    width={18}
+                    height={18}
+                    className="rounded-full"
+                  />
+                  zunkireelabs
+                </a>
+              </p>
+            </div>
+            {/* Row 2 on mobile: privacy links */}
+            <div className="flex justify-center gap-6 md:justify-end">
+              <Link href="/privacy" className="transition-colors hover:text-white">
                 Privacy Policy
               </Link>
-              <Link
-                href="/terms"
-                className="transition-colors hover:text-white"
-              >
+              <Link href="/terms" className="transition-colors hover:text-white">
                 Terms of Service
               </Link>
             </div>

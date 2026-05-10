@@ -20,10 +20,8 @@ export function Logo({ className, variant = 'dark' }: LogoProps) {
         alt="CMS Logo"
         width={120}
         height={40}
-        className={cn(
-          'h-10 w-auto object-contain transition-all duration-300',
-          variant === 'white' && 'brightness-0 invert'
-        )}
+        className="h-10 w-auto object-contain transition-all duration-300"
+        style={variant === 'white' ? { filter: 'invert(1)' } : undefined}
         priority
       />
     </div>

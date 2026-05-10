@@ -31,14 +31,14 @@ export function ChairmanMessage() {
             {/* Thin accent corner detail */}
             <div className="absolute -left-2 -top-2 z-10 h-8 w-8 rounded-tl-lg border-l-2 border-t-2 border-accent" />
 
-            <div className="relative aspect-[3/4] overflow-hidden rounded-2xl bg-gradient-to-br from-accent-50 to-neutral-100 ring-1 ring-neutral-charcoal/5">
+            <div className="relative aspect-[4/5] sm:aspect-[3/4] overflow-hidden rounded-2xl bg-white ring-1 ring-neutral-charcoal/5">
               {CHAIRMAN.photo ? (
                 <Image
                   src={CHAIRMAN.photo}
                   alt={CHAIRMAN.name}
                   fill
                   sizes="(max-width: 1024px) 80vw, 320px"
-                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                  className="object-contain object-top transition-transform duration-700 ease-out group-hover:scale-[1.03]"
                 />
               ) : (
                 <div className="flex h-full w-full items-center justify-center">

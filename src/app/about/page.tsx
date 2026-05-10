@@ -652,91 +652,128 @@ export default function AboutPage() {
           className="mx-auto"
         />
 
-        {/* Tier 1 — Chairman hero with pull-quote */}
+        {/* Tier 1 — Chairman hero */}
         <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-100px' }}
           variants={fadeUp}
           custom={0}
-          className="mt-16 overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-card"
+          className="mt-16 overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-card-hover"
         >
           <div className="grid lg:grid-cols-5">
-            <div className="relative aspect-[4/5] lg:col-span-2 lg:aspect-auto">
-              {CHAIRMAN.photo ? (
-                <Image
-                  src={CHAIRMAN.photo}
-                  alt={CHAIRMAN.name}
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 40vw"
-                  className="object-cover"
-                />
-              ) : (
-                <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-accent-50 to-neutral-100">
-                  <Users className="h-16 w-16 text-accent/40" strokeWidth={1.25} />
-                </div>
-              )}
-              <span className="absolute top-5 left-5 inline-block rounded-full bg-accent px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-white shadow-sm">
-                Chairman
-              </span>
+
+            {/* Photo column — clean white so cutout portrait blends seamlessly */}
+            <div className="relative lg:col-span-2 bg-white border-b border-neutral-100 lg:border-b-0 lg:border-r lg:border-neutral-200">
+
+              {/* Accent top bar */}
+              <div className="absolute top-0 left-0 right-0 h-1 bg-accent z-10" />
+
+              {/* Portrait — sits at bottom of column */}
+              <div className="relative aspect-[3/4] lg:aspect-auto lg:absolute lg:inset-0 flex items-end justify-center overflow-hidden">
+                {CHAIRMAN.photo ? (
+                  <Image
+                    src={CHAIRMAN.photo}
+                    alt={CHAIRMAN.name}
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 40vw"
+                    className="object-contain object-bottom"
+                  />
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center">
+                    <Users className="h-16 w-16 text-accent/40" strokeWidth={1.25} />
+                  </div>
+                )}
+                {/* Bottom fade so portrait blends into the card */}
+                <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-white to-transparent" />
+              </div>
+
+              {/* Chairman badge — bottom of column */}
+              <div className="absolute bottom-5 left-0 right-0 z-20 flex justify-center">
+                <span className="inline-block rounded-full bg-accent px-4 py-1.5 text-[11px] font-bold uppercase tracking-wider text-white shadow-md">
+                  Chairman · CMS Group
+                </span>
+              </div>
             </div>
 
-            <div className="flex flex-col justify-center p-8 lg:col-span-3 lg:p-12">
+            {/* Content column */}
+            <div className="flex flex-col gap-0 p-8 lg:col-span-3 lg:p-12 lg:pt-10 lg:pb-10">
+
               <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-accent">
                 {CHAIRMAN.title} · {CHAIRMAN.company}
               </p>
-              <h3 className="mt-3 font-display text-2xl font-bold leading-tight tracking-tight text-neutral-charcoal sm:text-3xl lg:text-4xl">
+              <h3 className="mt-2 font-display text-2xl font-bold leading-tight tracking-tight text-neutral-charcoal sm:text-3xl lg:text-4xl">
                 {CHAIRMAN.name}
               </h3>
 
+              {/* Credential strip */}
+              <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-1.5 text-xs text-neutral-500">
+                <span className="flex items-center gap-1.5">
+                  <span className="h-1.5 w-1.5 rounded-full bg-accent shrink-0" />
+                  Founded CMS Group, 2002
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <span className="h-1.5 w-1.5 rounded-full bg-accent shrink-0" />
+                  {new Date().getFullYear() - 2002}+ Years of Leadership
+                </span>
+              </div>
+
               {/* Expertise chips */}
-              <div className="mt-5 flex flex-wrap gap-2">
+              <div className="mt-4 flex flex-wrap gap-2">
                 {(DIRECTOR_EXPERTISE[CHAIRMAN.name] ?? []).map((tag) => (
                   <span
                     key={tag}
-                    className="inline-flex items-center gap-1 rounded-full border border-accent/20 bg-accent-50 px-3 py-1 text-[11px] font-semibold text-accent"
+                    className="inline-flex items-center rounded-full border border-accent/20 bg-accent-50 px-3 py-1 text-[11px] font-semibold text-accent"
                   >
                     {tag}
                   </span>
                 ))}
               </div>
 
-              <p className="mt-6 leading-relaxed text-neutral-600">{chairmanBioParas[0]}</p>
+              {/* Bio */}
+              <p className="mt-5 text-sm leading-relaxed text-neutral-600 sm:text-base">
+                {chairmanBioParas[0]}
+              </p>
+
+              {/* Divider */}
+              <div className="mt-6 h-px w-12 bg-accent/40" />
 
               {/* Pull-quote */}
-              <div className="mt-7 rounded-xl border-l-2 border-accent bg-accent-50/50 px-5 py-4">
-                <Quote className="h-5 w-5 text-accent/60" strokeWidth={1.5} />
-                <blockquote className="mt-2 font-display text-base font-semibold leading-snug text-neutral-charcoal sm:text-lg">
-                  {CHAIRMAN_QUOTE}
+              <div className="mt-5 relative">
+                <Quote className="absolute -top-2 -left-1 h-8 w-8 text-accent/15" strokeWidth={1} />
+                <blockquote className="pl-4 border-l-2 border-accent font-display text-base font-bold leading-snug tracking-tight text-neutral-charcoal sm:text-lg lg:text-xl">
+                  &ldquo;{CHAIRMAN_QUOTE}&rdquo;
                 </blockquote>
               </div>
+
             </div>
           </div>
         </motion.div>
 
-        {/* Tier 2 — Directors grid with expertise chips */}
+        {/* Tier 2 — Directors grid */}
         <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-80px' }}
           variants={stagger}
-          className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+          className="mt-12 grid gap-6 grid-cols-2 lg:grid-cols-3"
         >
           {DIRECTORS.map((member, index) => (
             <motion.div
               key={member.name}
               variants={fadeUp}
               custom={index * 0.04}
-              className="group"
+              className="group overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-card-hover"
             >
-              <div className="relative aspect-[4/5] overflow-hidden rounded-xl bg-neutral-100">
+              {/* Photo */}
+              <div className="relative aspect-[3/4] overflow-hidden bg-neutral-100">
                 {member.photo ? (
                   <Image
                     src={member.photo}
                     alt={member.name}
                     fill
-                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 30vw"
-                    className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.04]"
                   />
                 ) : (
                   <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-accent-50 to-neutral-100">
@@ -744,30 +781,37 @@ export default function AboutPage() {
                   </div>
                 )}
               </div>
-              <h4 className="mt-5 font-display text-base font-bold text-neutral-charcoal">
-                {member.name}
-              </h4>
-              <p className="mt-1 text-xs font-semibold uppercase tracking-wider text-accent">
-                {member.title} · {member.company}
-              </p>
 
-              {/* Expertise chips */}
-              {DIRECTOR_EXPERTISE[member.name] && (
-                <div className="mt-3 flex flex-wrap gap-1.5">
-                  {DIRECTOR_EXPERTISE[member.name].slice(0, 3).map((tag) => (
-                    <span
-                      key={tag}
-                      className="inline-block rounded-full bg-neutral-100 px-2.5 py-0.5 text-[10px] font-semibold text-neutral-600"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              )}
+              {/* Card body */}
+              <div className="p-5">
+                <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-accent">
+                  {member.title} · {member.company}
+                </p>
+                <h4 className="mt-1.5 font-display text-lg font-bold leading-tight text-neutral-charcoal">
+                  {member.name}
+                </h4>
 
-              <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-neutral-600">
-                {member.summary ?? member.bio.split('.')[0] + '.'}
-              </p>
+                {/* Expertise chips */}
+                {DIRECTOR_EXPERTISE[member.name] && (
+                  <div className="mt-3 flex flex-wrap gap-1.5">
+                    {DIRECTOR_EXPERTISE[member.name].slice(0, 3).map((tag) => (
+                      <span
+                        key={tag}
+                        className="inline-block rounded-full border border-accent/20 bg-accent-50 px-2.5 py-0.5 text-[10px] font-semibold text-accent"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
+
+                <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-neutral-600">
+                  {member.summary ?? member.bio.split('.')[0] + '.'}
+                </p>
+              </div>
+
+              {/* Accent bottom bar on hover */}
+              <div className="h-0.5 w-0 bg-accent transition-all duration-300 group-hover:w-full" />
             </motion.div>
           ))}
         </motion.div>
