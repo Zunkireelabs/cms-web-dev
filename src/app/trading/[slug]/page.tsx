@@ -168,6 +168,7 @@ export default async function TradingSlugPage({ params }: PageProps) {
         subtitle={domain.description}
         image={domain.image}
         imageAlt={domain.title}
+        imagePosition={domain.imagePosition}
         size="compact"
         breadcrumbs={[
           { label: 'Home', href: '/' },

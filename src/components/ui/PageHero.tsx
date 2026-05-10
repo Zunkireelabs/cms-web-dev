@@ -31,6 +31,8 @@ interface PageHeroProps {
   breadcrumbs?: BreadcrumbItem[];
   /** "tall" for landing pages, "compact" for slug/detail pages */
   size?: 'tall' | 'compact';
+  /** CSS object-position for the background image */
+  imagePosition?: 'object-center' | 'object-top' | 'object-bottom';
   className?: string;
 }
 
@@ -44,6 +46,7 @@ export function PageHero({
   secondaryCta,
   breadcrumbs,
   size = 'tall',
+  imagePosition = 'object-center',
   className,
 }: PageHeroProps) {
   const heightClasses =
@@ -68,7 +71,7 @@ export function PageHero({
             fill
             priority
             sizes="100vw"
-            className="object-cover opacity-90"
+            className={`object-cover opacity-90 ${imagePosition}`}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-neutral-charcoal/95 via-neutral-charcoal/60 to-neutral-charcoal/40" />
           <div className="absolute inset-0 bg-gradient-to-r from-neutral-charcoal/80 via-neutral-charcoal/30 to-transparent" />

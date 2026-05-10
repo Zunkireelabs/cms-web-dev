@@ -17,6 +17,7 @@ export interface ProductDomain {
   title: string;
   description: string;
   image: string;
+  imagePosition?: 'object-center' | 'object-top' | 'object-bottom';
   brands: Brand[];
   projectKeywords?: string[];
 }
@@ -49,6 +50,7 @@ interface ProductDomainMeta {
   title: string;
   description: string;
   image: string;
+  imagePosition?: 'object-center' | 'object-top' | 'object-bottom';
   projectKeywords?: string[];
 }
 
@@ -78,6 +80,7 @@ const PRODUCT_DOMAIN_META: ProductDomainMeta[] = [
     description:
       'Commercial and acoustic ceiling solutions including metal, mineral fiber, wood, and stretch ceilings — engineered for offices, hotels, hospitals, and airports.',
     image: '/images/products/ceiling.jpg',
+    imagePosition: 'object-top',
     projectKeywords: ['Ceiling', 'Armstrong'],
   },
   {
@@ -114,6 +117,7 @@ const PRODUCT_DOMAIN_META: ProductDomainMeta[] = [
     description:
       'Zolon is a modern architectural solutions brand known for premium railing systems, glass fittings, and hardware used in residential and commercial spaces. Originating from Rajkot, Zolon focuses on combining durability, safety, and sleek contemporary design using stainless steel and glass. Now available in Nepal, Zolon brings internationally styled railing solutions — from balcony and stair railings to façade systems — to local projects.',
     image: '/images/products/railings.jpg',
+    imagePosition: 'object-top',
     projectKeywords: ['Railing', 'Zolon', 'Handrail', 'Balustrade'],
   },
   {
@@ -141,6 +145,7 @@ const PRODUCT_DOMAIN_META: ProductDomainMeta[] = [
     description:
       'Premium sanitary ware solutions designed for durability, hygiene, and modern aesthetics — ideal for hotels, hospitals, residential, and commercial spaces. Our range combines high-quality materials with innovative designs to ensure reliability, easy maintenance, and a refined finish that enhances both functionality and overall space appeal.',
     image: '/images/products/sanitaryware.jpg',
+    imagePosition: 'object-top',
     projectKeywords: ['Sanitary', 'Grohe', 'Duravit', 'American Standard', 'Bathroom', 'CP Fitting'],
   },
   {
@@ -165,6 +170,7 @@ const PRODUCT_DOMAIN_META: ProductDomainMeta[] = [
 
 export const PRODUCT_DOMAINS: ProductDomain[] = PRODUCT_DOMAIN_META.map((meta) => ({
   ...meta,
+  imagePosition: meta.imagePosition,
   brands: getBrandsByTradingDomain(meta.slug).map(entryToBrand),
 }));
 
