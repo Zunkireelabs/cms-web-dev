@@ -207,6 +207,15 @@ export function MobileMenu({ onClose }: MobileMenuProps) {
             })}
           </div>
 
+          <motion.div variants={itemVariants} className="mt-8">
+            <Link
+              href="/contact"
+              onClick={onClose}
+              className="flex w-full items-center justify-center rounded-lg bg-accent px-6 py-3.5 text-base font-medium text-white transition-colors hover:bg-accent-700"
+            >
+              Get a Quote
+            </Link>
+          </motion.div>
 
           <motion.div
             variants={itemVariants}

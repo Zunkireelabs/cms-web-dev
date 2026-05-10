@@ -36,7 +36,6 @@ export const NAV_ITEMS: NavItem[] = [
   { label: 'Brands', href: '/brands' },
   { label: 'Projects', href: '/projects' },
   { label: 'Career', href: '/career' },
-  { label: 'Contact', href: '/contact' },
 ];
 
 export const SERVICES: Service[] = SECTORS.map((sector) => ({
