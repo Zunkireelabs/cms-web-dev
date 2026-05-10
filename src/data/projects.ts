@@ -107,7 +107,6 @@ export const PROJECTS: Project[] = [
       'Higher education campus. Supplied and installed 30,000 sq.ft of Tarkett vinyl flooring along with Armstrong false ceiling.',
     scope: ['Tarkett Vinyl Flooring', 'Armstrong False Ceiling'],
     area: '30,000 sq.ft',
-    image: '/images/projects/kmc.jpg',
   },
   {
     id: 'ullens-school',
@@ -120,7 +119,6 @@ export const PROJECTS: Project[] = [
     description:
       'International K-12 school campus. Supplied windows and false ceiling systems for academic blocks.',
     scope: ['Dormakaba Windows & Hardware', 'Armstrong False Ceiling'],
-    image: '/images/projects/ullens-school.jpg',
   },
 
   // Hospitality
