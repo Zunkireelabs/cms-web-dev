@@ -192,7 +192,7 @@ export function Footer() {
                   href="https://zunkireelabs.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 font-semibold text-red-500 transition-colors hover:text-red-400"
+                  className="flex items-center gap-1.5 font-semibold text-white transition-colors hover:text-neutral-300"
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
