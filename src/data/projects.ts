@@ -119,6 +119,7 @@ export const PROJECTS: Project[] = [
     description:
       'International K-12 school campus. Supplied windows and false ceiling systems for academic blocks.',
     scope: ['Dormakaba Windows & Hardware', 'Armstrong False Ceiling'],
+    image: '/images/projects/ullens-school.jpg',
   },
 
   // Hospitality
