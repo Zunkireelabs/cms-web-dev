@@ -197,24 +197,6 @@ export function Header() {
               })}
             </div>
 
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.3 }}
-              className="hidden lg:block"
-            >
-              <Link
-                href="/contact"
-                className={cn(
-                  'inline-flex items-center justify-center rounded-lg px-6 py-2.5 text-base font-medium transition-all',
-                  isSolid
-                    ? 'bg-accent text-white hover:bg-accent-700'
-                    : 'border-2 border-white/60 text-white hover:bg-white/10'
-                )}
-              >
-                Get a Quote
-              </Link>
-            </motion.div>
 
             <button
               type="button"
