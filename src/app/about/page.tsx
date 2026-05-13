@@ -128,50 +128,47 @@ const MILESTONES: {
   title: string;
   description: string;
   icon: LucideIcon;
+  brands: string[];
 }[] = [
   {
     year: '2002',
-    title: 'Kantipur — CMS Group founded',
-    description: 'Italian Marble & Granite trading firm — the founding venture.',
+    title: 'T&C Division Established',
+    description:
+      'CMS Group founded as a construction trade firm. Trading & Contracting Division commences operations in Nepal.',
     icon: Sparkles,
+    brands: [],
   },
   {
     year: '2003',
-    title: 'Bath N Room Trade Concern Pvt. Ltd.',
-    description: 'One-stop solution for building finishing products in the Nepalese market.',
+    title: 'First Brand Collaborations',
+    description:
+      'Bath N Room Trade Concern established — first authorised partnerships with global sanitaryware and bathroom solution leaders.',
     icon: Bath,
+    brands: ['American Standard', 'Grohe'],
   },
   {
     year: '2010',
-    title: 'Baba Muktinath Fabricators Pvt. Ltd.',
-    description: 'Leading dealer, distributor and fabricator for world-class building systems.',
+    title: 'Major Brand Expansion',
+    description:
+      'Baba Muktinath Fabricators established — onboarding world-class roofing, ceiling, facade, hardware, and waterproofing brands.',
     icon: Wrench,
+    brands: ['IKO', 'Kalzip', 'Armstrong', 'Hunter Douglas', 'Tostem', 'Dormakaba', 'ICA', 'Zolon', 'Navair', 'Schomburg'],
   },
   {
     year: '2015',
-    title: '4R Technologies Pvt. Ltd.',
-    description: 'Associated with world-renowned brands to provide a wide range of green products.',
-    icon: Recycle,
-  },
-  {
-    year: '2018',
-    title: 'Cubic Meter Pvt. Ltd.',
+    title: 'Sustainability & Water Management',
     description:
-      'Interior finishing and contracting venture serving hotels, hospitals, and corporate offices.',
-    icon: Boxes,
+      '4R Technologies established — expanding into ecologically friendly wastewater management and treatment solutions.',
+    icon: Recycle,
+    brands: ['Sintex'],
   },
   {
     year: '2019',
-    title: 'Techwood Pvt. Ltd.',
-    description: 'Quality modular furniture solutions for corporate offices and schools.',
-    icon: Armchair,
-  },
-  {
-    year: '2021',
-    title: 'Prime Ceramics Pvt. Ltd.',
+    title: 'Flooring & Furniture Portfolio',
     description:
-      'Ceramic tile manufacturing in Nepal — joint venture with Fortune Ventures Pvt. Ltd.',
-    icon: Factory,
+      'Techwood established — adding premium flooring and modular office furniture brands to the T&C Division portfolio.',
+    icon: Armchair,
+    brands: ['AGT', 'Tarkett', 'Argil', 'KLK', 'Welspun', 'SOS'],
   },
 ];
 
@@ -567,7 +564,7 @@ export default function AboutPage() {
         <SectionHeader
           kicker="Our Journey"
           title="Key milestones."
-          lead="From a single Italian marble trading firm in 2002 to six specialised ventures today."
+          lead="From our establishment in 2002 to 19 global brand partnerships — a year-wise record of every brand collaboration."
           align="center"
           inverted
           className="mx-auto"
@@ -617,6 +614,18 @@ export default function AboutPage() {
                       <p className="mt-2 text-sm leading-relaxed text-white/70">
                         {milestone.description}
                       </p>
+                      {milestone.brands.length > 0 && (
+                        <div className="mt-4 flex flex-wrap gap-1.5">
+                          {milestone.brands.map((brand) => (
+                            <span
+                              key={brand}
+                              className="inline-block rounded-full bg-accent/20 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-accent"
+                            >
+                              {brand}
+                            </span>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   </div>
 
