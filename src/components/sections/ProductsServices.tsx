@@ -37,7 +37,7 @@ const PRODUCTS: Product[] = [
   { title: 'Ceiling Systems', icon: Layers, image: '/images/products/ceiling.jpg', link: '/trading/ceiling-systems' },
   { title: 'Aluminium Doors & Windows', icon: Building2, image: '/images/products/aluminum-dw.jpg', link: '/trading/aluminum-doors-windows' },
   { title: 'Wood & Glass Coating', icon: PaintBucket, image: '/images/products/wood-glass.jpg', link: '/trading/wood-glass-metal-coating' },
-  { title: 'Access Control Solutions', icon: Lock, image: '/images/products/door-hardware.jpg', link: '/trading/door-hardware' },
+  { title: 'Door Hardware & Accessories', icon: Lock, image: '/images/products/door-hardware.jpg', link: '/trading/door-hardware' },
   { title: 'Architectural Railings', icon: Fence, image: '/images/products/railings.jpg', link: '/trading/architectural-railings' },
   { title: 'Waterproofing Systems', icon: Droplets, image: '/images/products/waterproofing.jpg', link: '/trading/waterproofing' },
   { title: 'Wastewater Management', icon: Trash2, image: '/images/products/wastewater.jpg', link: '/trading/wastewater-management' },
@@ -97,13 +97,13 @@ export function ProductsServices() {
         <div className="max-w-2xl">
           <KickerLabel>Products & Services</KickerLabel>
           <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-neutral-charcoal sm:text-4xl lg:text-5xl">
-            Twelve specialised domains.
+            Thirteen specialised domains.
             <br />
             50+ global brand partners.
           </h2>
           <p className="mt-5 text-base leading-relaxed text-neutral-600 sm:text-lg">
             Integrated building solutions distributed in Nepal — from roofing and facades to
-            sanitaryware, tiles, and access control.
+            sanitaryware, flooring, and door hardware.
           </p>
         </div>
         <span className="text-sm font-semibold uppercase tracking-wider text-neutral-400">

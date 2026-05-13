@@ -104,7 +104,7 @@ const PRODUCT_DOMAIN_META: ProductDomainMeta[] = [
   {
     id: 'hardware',
     slug: 'door-hardware',
-    title: 'Access Control Solutions',
+    title: 'Door Hardware & Accessories',
     description:
       'A complete range of solutions including door hardware, access control systems, movable walls, glass partitions, and digital security — designed to enhance functionality, safety, and modern aesthetics. Ideal for residential, commercial, and institutional spaces, providing seamless integration of security, flexibility, and contemporary design.',
     image: '/images/products/door-hardware.jpg',
