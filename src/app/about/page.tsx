@@ -7,7 +7,7 @@ import { PageHero } from '@/components/ui/PageHero';
 import { Section } from '@/components/ui/Section';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { KickerLabel } from '@/components/ui/KickerLabel';
-import { ContactCTA, Testimonials } from '@/components/sections';
+import { ContactCTA } from '@/components/sections';
 import {
   CERTIFICATIONS,
   CERTIFICATIONS_COUNT,
@@ -69,15 +69,13 @@ const STORY_META = [
 const STORY_SECTORS = ['Hospital', 'Education', 'Airport', 'Office', 'Hotel', 'Residence'];
 
 const MISSION_POINTS = [
-  'Provide competitive excellence through high-quality construction products and services across every venture.',
-  'Deliver on time and at competitive prices for clients at every level — from individual residences to nation-scale infrastructure.',
-  'Cultivate long-term partnerships with clients, suppliers, and stakeholders through reliability and integrated solutions.',
+  'To deliver end-to-end trading and contracting solutions by combining globally recognized products with precise project execution.',
+  'To uphold the highest standards of quality, safety, and integrity in every stage of our operations.',
+  'To build long-term partnerships with clients, suppliers, and stakeholders through reliability and performance.',
 ];
 
 const VISION_POINTS = [
-  "Be Nepal's leading one-stop solution provider for all building & construction materials.",
-  'Deliver best-in-class materials and comprehensive integrated solutions, going beyond customer expectations.',
-  'Earn long-term client trust as a partner in building, not just a supplier.',
+  'To be a trusted and preferred trading and contracting partner, recognized for delivering integrated building solutions with technical excellence, global brand partnerships, and sustainable value across every project we undertake.',
 ];
 
 const CORE_VALUES = [
@@ -936,8 +934,6 @@ export default function AboutPage() {
           </p>
         </div>
       </Section>
-
-      <Testimonials />
 
       <ContactCTA />
     </>

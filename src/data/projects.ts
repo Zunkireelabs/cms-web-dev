@@ -5,9 +5,7 @@ export type CommercialSector =
   | 'education'
   | 'airports'
   | 'office'
-  | 'hospitality'
-  | 'government'
-  | 'infrastructure';
+  | 'hospitality';
 
 export interface Project {
   id: string;
@@ -25,13 +23,11 @@ export interface Project {
 }
 
 export const COMMERCIAL_SECTORS: { value: CommercialSector; label: string }[] = [
-  { value: 'healthcare', label: 'Healthcare' },
+  { value: 'healthcare', label: 'Health Care' },
   { value: 'education', label: 'Education' },
-  { value: 'airports', label: 'Airports' },
-  { value: 'office', label: 'Office' },
+  { value: 'airports', label: 'Airport' },
+  { value: 'office', label: 'Office Space' },
   { value: 'hospitality', label: 'Hospitality' },
-  { value: 'government', label: 'Government' },
-  { value: 'infrastructure', label: 'Infrastructure' },
 ];
 
 export const PROJECTS: Project[] = [
@@ -175,7 +171,7 @@ export const PROJECTS: Project[] = [
     location: 'Thapathali, Kathmandu',
     year: 2021,
     type: 'commercial',
-    sector: 'government',
+    sector: 'office',
     description:
       "Central bank's main office. Installed 1.5 lakh sq.ft of BKB parquet flooring and Armstrong ceiling systems.",
     scope: ['BKB Parquet Flooring', 'Armstrong Ceiling', 'Dormakaba Hardware'],
@@ -190,7 +186,7 @@ export const PROJECTS: Project[] = [
     location: 'Baluwatar, Kathmandu',
     year: 2022,
     type: 'commercial',
-    sector: 'government',
+    sector: 'office',
     description:
       'Central bank annex building. Installed 86,000 sq.ft of BKB parquet flooring with Armstrong ceiling and Dormakaba hardware.',
     scope: ['BKB Parquet Flooring', 'Armstrong Ceiling', 'Dormakaba Hardware'],
@@ -204,7 +200,7 @@ export const PROJECTS: Project[] = [
     location: 'Kathmandu',
     year: 2020,
     type: 'commercial',
-    sector: 'government',
+    sector: 'office',
     description:
       'Federal road infrastructure agency headquarters. Supplied false ceiling, windows, doors, furniture, tiles, and sewage treatment plant.',
     scope: ['Armstrong Ceiling', 'Dormakaba Hardware', 'Spacewood Furniture', 'RAK Tiles', 'STP System'],
@@ -217,7 +213,7 @@ export const PROJECTS: Project[] = [
     location: 'Putalisadak, Kathmandu',
     year: 2021,
     type: 'commercial',
-    sector: 'government',
+    sector: 'office',
     description:
       "Federal legal authority's office complex. Supplied 1.5 lakh sq.ft of Armstrong ceiling along with sanitaryware, tiles, and hardware.",
     scope: ['Armstrong Ceiling (1.5 lakh sq.ft)', 'Duravit / Grohe Sanitaryware', 'SCG', 'Dormakaba Hardware'],
@@ -231,7 +227,7 @@ export const PROJECTS: Project[] = [
     location: 'Satdobato, Lalitpur',
     year: 2019,
     type: 'commercial',
-    sector: 'government',
+    sector: 'office',
     description:
       "Regional intergovernmental knowledge centre's head office. Installed Dormakaba acoustic movable wall partition for flexible workspace zones.",
     scope: ['Dormakaba Acoustic Movable Wall Partition'],
@@ -290,7 +286,7 @@ export const PROJECTS: Project[] = [
     location: 'Nawalparasi',
     year: 2019,
     type: 'commercial',
-    sector: 'infrastructure',
+    sector: 'office',
     description:
       'Industrial brewery facility. Installed 950 KLD effluent treatment plant for brewery wastewater compliance.',
     scope: ['Effluent Treatment Plant — 950 KLD capacity'],
@@ -304,11 +300,148 @@ export const PROJECTS: Project[] = [
     location: 'Lumbini',
     year: 2023,
     type: 'commercial',
-    sector: 'infrastructure',
+    sector: 'hospitality',
     description:
       'International convention center at the birthplace of Buddha. Supplied roofing, ceiling systems, and Dormakaba automatic sensor doors.',
     scope: ['Roofing Systems', 'Ceiling Systems', 'Dormakaba Automatic Sensor Doors'],
     image: '/images/projects/lumbini-convention.jpg',
+  },
+
+  // Airports (additional)
+  {
+    id: 'nepalgunj-airport',
+    title: 'Nepalgunj Airport',
+    client: 'Civil Aviation Authority of Nepal',
+    location: 'Nepalgunj, Banke',
+    year: 2021,
+    type: 'commercial',
+    sector: 'airports',
+    description:
+      'Regional airport serving the mid-western development region. Supplied flooring, ceiling systems, and interior fit-out for terminal expansion.',
+    scope: ['Tarkett Vinyl Flooring', 'Armstrong Ceiling', 'Dormakaba Hardware'],
+    image: '/images/projects/nepalgunj-airport.jpg',
+  },
+  {
+    id: 'biratnagar-airport',
+    title: 'Biratnagar Airport',
+    client: 'Civil Aviation Authority of Nepal',
+    location: 'Biratnagar, Morang',
+    year: 2022,
+    type: 'commercial',
+    sector: 'airports',
+    description:
+      "Eastern Nepal's major international airport. Supplied interior fit-out for terminal development including flooring, ceiling, and hardware systems.",
+    scope: ['Tarkett Vinyl Flooring', 'Armstrong Ceiling', 'Dormakaba Hardware'],
+    image: '/images/projects/biratnagar-airport.jpg',
+  },
+
+  // Office (additional)
+  {
+    id: 'kumari-bank-naxal',
+    title: 'Kumari Bank — Naxal',
+    client: 'Kumari Bank Limited',
+    location: 'Naxal, Kathmandu',
+    year: 2021,
+    type: 'commercial',
+    sector: 'office',
+    description:
+      'Major private sector bank corporate office. Supplied interior fit-out solutions including false ceiling, flooring, and hardware systems.',
+    scope: ['Armstrong Ceiling', 'Tarkett Flooring', 'Dormakaba Hardware'],
+    image: '/images/projects/kumari-bank-naxal.jpg',
+  },
+  {
+    id: 'parliament',
+    title: 'Federal Parliament of Nepal',
+    client: 'Government of Nepal',
+    location: 'New Baneshwor, Kathmandu',
+    year: 2020,
+    type: 'commercial',
+    sector: 'office',
+    description:
+      "Nepal's federal legislative complex. Supplied premium interior fit-out solutions including acoustic ceiling systems, parquet flooring, and hardware.",
+    scope: ['Armstrong Acoustic Ceiling', 'BKB Parquet Flooring', 'Dormakaba Hardware'],
+    image: '/images/projects/parliament.jpg',
+  },
+  {
+    id: 'indian-embassy',
+    title: 'Indian Embassy',
+    client: 'Embassy of India',
+    location: 'Lainchaur, Kathmandu',
+    year: 2020,
+    type: 'commercial',
+    sector: 'office',
+    description:
+      "One of the largest diplomatic missions in Nepal. Supplied interior solutions including ceiling systems, premium flooring, and door hardware for the embassy complex.",
+    scope: ['Armstrong Ceiling', 'BKB Parquet Flooring', 'Dormakaba Hardware'],
+    image: '/images/projects/indian-embassy.jpg',
+  },
+  {
+    id: 'un-head-office',
+    title: 'UN House Nepal',
+    client: 'United Nations Nepal',
+    location: 'Pulchowk, Lalitpur',
+    year: 2020,
+    type: 'commercial',
+    sector: 'office',
+    description:
+      'The United Nations Country Office for Nepal. Supplied comprehensive interior fit-out solutions including acoustic ceiling systems, vinyl flooring, and hardware.',
+    scope: ['Armstrong Acoustic Ceiling', 'Tarkett Vinyl Flooring', 'Dormakaba Hardware'],
+    image: '/images/projects/un-head-office.jpg',
+  },
+  {
+    id: 'manakama-cable-car',
+    title: 'Manakama Cable Car',
+    client: 'Manakama Darshan Pvt. Ltd.',
+    location: 'Gorkha, Gandaki Province',
+    year: 2019,
+    type: 'commercial',
+    sector: 'office',
+    description:
+      "Nepal's iconic cable car connecting Kurintar to the Manakama temple. Supplied building materials and fit-out solutions for the terminal stations.",
+    scope: ['Armstrong Ceiling', 'Dormakaba Hardware', 'Flooring Systems'],
+    image: '/images/projects/manakama-cable-car.jpg',
+  },
+
+  // Hospitality (additional)
+  {
+    id: 'bhangeri-durbar-resort',
+    title: 'Bhangeri Durbar Resort',
+    client: 'Bhangeri Durbar Resort',
+    location: 'Bhangeri, Dhading',
+    year: 2021,
+    type: 'commercial',
+    sector: 'hospitality',
+    description:
+      'Luxury heritage-style resort nestled in the hills outside Kathmandu. Supplied roofing, flooring, and sanitaryware solutions for the resort complex.',
+    scope: ['IKO Roofing Shingles', 'BKB Parquet Flooring', 'Grohe Sanitaryware'],
+    image: '/images/projects/bhangeri-durbar-resort.jpg',
+  },
+  {
+    id: 'fewa-prince-residency',
+    title: 'Fewa Prince Residency',
+    client: 'Fewa Prince Residency',
+    location: 'Lakeside, Pokhara',
+    year: 2021,
+    type: 'commercial',
+    sector: 'hospitality',
+    description:
+      'Boutique hotel along the shores of Fewa Lake in Pokhara. Supplied engineered wood flooring, ceiling systems, and sanitaryware for the hotel.',
+    scope: ['AGT Engineered Wood Flooring', 'Armstrong Ceiling', 'American Standard Sanitaryware'],
+    image: '/images/projects/fewa-prince-residency.jpg',
+  },
+
+  // Residential
+  {
+    id: 'cg-villa',
+    title: 'CG Villa',
+    client: 'Chaudhary Group',
+    location: 'Kathmandu',
+    year: 2020,
+    type: 'residential',
+    description:
+      'Premium residential villa development by Chaudhary Group. Supplied luxury sanitaryware, flooring, and interior finish solutions.',
+    scope: ['Grohe Sanitaryware', 'Duravit Sanitaryware', 'BKB Parquet Flooring'],
+    image: '/images/projects/cg-villa.jpg',
   },
 
   // Residential

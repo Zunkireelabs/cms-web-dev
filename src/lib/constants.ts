@@ -31,11 +31,10 @@ export const SITE_CONFIG: SiteConfig = {
 export const NAV_ITEMS: NavItem[] = [
   { label: 'Home', href: '/' },
   { label: 'About', href: '/about' },
-  { label: 'Ventures', href: '/ventures' },
   { label: 'Products & Services', href: '/trading' },
-  { label: 'Brands', href: '/brands' },
-  { label: 'Projects', href: '/projects' },
-  { label: 'Career', href: '/career' },
+  { label: 'Our Brands', href: '/brands' },
+  { label: 'Our Projects', href: '/projects' },
+  { label: 'Build a Career', href: '/career' },
 ];
 
 export const SERVICES: Service[] = SECTORS.map((sector) => ({

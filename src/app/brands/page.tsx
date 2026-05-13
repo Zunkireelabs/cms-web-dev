@@ -106,10 +106,9 @@ function BrandCard({ brand }: { brand: BrandEntry }) {
             <MapPin className="h-3 w-3 text-accent" strokeWidth={1.5} />
             <span>{brand.country}</span>
           </div>
-          {brand.segments.length > 0 && (
-            <p className="mt-2.5 line-clamp-2 text-xs leading-relaxed text-neutral-600">
-              {brand.segments.slice(0, 2).join(' • ')}
-              {brand.segments.length > 2 && ` +${brand.segments.length - 2}`}
+          {brand.description && (
+            <p className="mt-2.5 line-clamp-3 text-xs leading-relaxed text-neutral-600">
+              {brand.description}
             </p>
           )}
         </div>

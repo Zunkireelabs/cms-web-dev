@@ -9,7 +9,6 @@ import {
   ImpactMetrics,
   ProductsServices,
   ProjectMap,
-  Ventures,
 } from '@/components/sections';
 
 export default function HomePage() {
@@ -24,10 +23,7 @@ export default function HomePage() {
       {/* 3. Proof — animated counters (dark reset) */}
       <ImpactMetrics />
 
-      {/* 4. Substance — six ventures */}
-      <Ventures />
-
-      {/* 5. Substance — twelve product domains */}
+      {/* 4. Substance — twelve product domains */}
       <ProductsServices />
 
       {/* 6. Voice — chairman's message */}

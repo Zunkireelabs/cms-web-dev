@@ -30,12 +30,10 @@ import {
 
 const SECTOR_IMAGES: Record<string, string> = {
   office: '/images/projects/office.jpg',
-  government: '/images/projects/government.jpg',
   hospitality: '/images/projects/hospitality.jpg',
   airports: '/images/projects/airport.jpg',
   healthcare: '/images/projects/healthcare.jpg',
   education: '/images/projects/education.jpg',
-  infrastructure: '/images/projects/infrastructure.jpg',
   residential: '/images/projects/residential.jpg',
 };
 

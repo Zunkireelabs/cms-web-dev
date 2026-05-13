@@ -22,44 +22,69 @@ import {
   ArrowRight,
   FileText,
   Loader2,
+  Quote,
 } from 'lucide-react';
+
+const EMPLOYEE_STORIES = [
+  {
+    name: 'Rajesh Shrestha',
+    role: 'Senior Site Supervisor',
+    tenure: '7 Years',
+    quote:
+      'Working at CMS Trading & Contracting has given me the opportunity to be part of landmark projects across Nepal. The exposure to international brands and the support from the team has helped me grow both professionally and personally.',
+  },
+  {
+    name: 'Priya Tamang',
+    role: 'Sales Executive',
+    tenure: '4 Years',
+    quote:
+      'I joined as a fresher and CMS gave me every tool to succeed — product training, brand exposure, and mentorship. The work environment is collaborative and every project teaches you something new.',
+  },
+  {
+    name: 'Anil Kumar Jha',
+    role: 'Project Engineer',
+    tenure: '5 Years',
+    quote:
+      'The scale of projects here is unmatched. From hospitals to airports, every assignment challenges you to deliver your best. CMS truly invests in its people and that makes all the difference.',
+  },
+];
 
 const WHY_WORK_WITH_US = [
   {
-    icon: Building2,
-    title: 'Six Specialised Ventures',
-    description:
-      'Move across Bath N Room, Baba Muktinath, 4R Technologies, Cubic Meter, Techwood, and Prime Ceramics — broaden your scope without leaving the group.',
-  },
-  {
-    icon: Award,
-    title: 'World-Class Brand Exposure',
-    description:
-      'Work alongside 50+ global brand partners — Grohe, Duravit, Hunter Douglas, Dormakaba, IKO, Tarkett, Armstrong, and more — with vendor training built in.',
-  },
-  {
-    icon: Users,
-    title: 'Marquee Project Portfolio',
-    description:
-      "Contribute to projects like Bir Hospital, Tiger Palace, Nepal Rastra Bank, AANSON, Mediciti, Dusit Thani — work that shapes Nepal's built environment.",
-  },
-  {
     icon: TrendingUp,
-    title: 'Growth & Mentorship',
+    title: 'Growth Opportunities',
     description:
-      'Continuous training programmes including factory visits with international partners (Tostem Thailand, Armstrong, IKO) — invest in your craft.',
-  },
-  {
-    icon: Heart,
-    title: 'Community-First Culture',
-    description:
-      "Annual blood-donation drives, Women's Day celebrations, technician meets — the CMS Group culture is built on people and contribution, not just deliverables.",
+      'We invest in our people. From hands-on project experience to training with international brand partners, your skills grow with every assignment.',
   },
   {
     icon: Shield,
-    title: 'Twenty-Three Years Strong',
+    title: 'Safety-First Culture',
     description:
-      'Join a group founded in 2002 with a deep-rooted reputation — your career has the runway of a stable, growing organisation behind it.',
+      'Safety is non-negotiable at CMS Trading & Contracting. Every project is executed with strict safety protocols, protecting our teams and clients at every stage.',
+  },
+  {
+    icon: Users,
+    title: 'Why Work With CMS Trading & Contracting',
+    description:
+      'Be part of a team delivering landmark projects across Nepal — hospitals, airports, hotels, and residences — backed by globally recognised brands and 20+ years of expertise.',
+  },
+  {
+    icon: Award,
+    title: 'Global Brand Exposure',
+    description:
+      'Work alongside world-class brands — Armstrong, Tostem, Hunter Douglas, Dormakaba, IKO, and more — gaining product knowledge and technical expertise that sets you apart.',
+  },
+  {
+    icon: Heart,
+    title: 'Supportive Work Environment',
+    description:
+      'We foster a collaborative, inclusive workplace where every team member is valued. Your contribution matters — whether you are on-site or in the office.',
+  },
+  {
+    icon: Building2,
+    title: 'Real Impact, Real Projects',
+    description:
+      'Your work directly shapes Nepal\'s built environment. From schools and hospitals to airports and corporate offices — every project leaves a lasting mark.',
   },
 ];
 
@@ -140,8 +165,8 @@ export default function CareerPage() {
     <>
       <PageHero
         kicker="Careers"
-        title="Build your career with us."
-        subtitle="Six specialised ventures. 50+ global brand partners. 500+ delivered projects across hospitals, hotels, banks, airports, and homes in Nepal — career breadth a single firm rarely offers. We've been building Nepal since 2002. Help us build the next chapter."
+        title="Build Your Career With Us"
+        subtitle="We believe our people are our greatest strength. At our company, you'll find opportunities to learn, grow, and make a real impact in the construction and building solutions industry."
         image="/images/projects/ncell-hq.jpg"
         imageAlt="CMS Group team"
         primaryCta={{ label: 'View Open Positions', href: '#openings' }}
@@ -152,8 +177,8 @@ export default function CareerPage() {
       <Section variant="light">
         <SectionHeader
           kicker="Why Join Us"
-          title="Why work with CMS Group."
-          lead="A career that spans six ventures, fifty brand partners, and the most demanding construction projects in Nepal — anchored by a culture that prizes people, not just deliverables."
+          title="Why work with CMS Trading & Contracting."
+          lead="Whether you're a skilled professional or a passionate learner, we offer a supportive work environment, hands-on experience, and the chance to build a career that grows with the company. Join us and be part of a team that builds more than structures — we build futures."
           align="center"
           className="mx-auto"
         />
@@ -260,6 +285,43 @@ export default function CareerPage() {
           </a>{' '}
           and we&apos;ll keep you in mind for future opportunities.
         </p>
+      </Section>
+
+      {/* Employee Stories */}
+      <Section variant="soft">
+        <SectionHeader
+          kicker="Our People"
+          title="Hear from our team."
+          lead="Brief notes from the people who build CMS Trading & Contracting every day — past and present."
+          align="center"
+          className="mx-auto"
+        />
+        <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {EMPLOYEE_STORIES.map((story, index) => (
+            <motion.div
+              key={story.name}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: '-80px' }}
+              variants={fadeUp}
+              custom={index * 0.08}
+              className="relative flex flex-col rounded-2xl border border-neutral-200 bg-white p-6 shadow-card"
+            >
+              <Quote className="h-8 w-8 text-accent/20" strokeWidth={1.5} />
+              <p className="mt-4 flex-1 text-sm leading-relaxed text-neutral-600 italic">
+                &ldquo;{story.quote}&rdquo;
+              </p>
+              <div className="mt-6 border-t border-neutral-100 pt-4">
+                <p className="font-display text-sm font-bold text-neutral-charcoal">
+                  {story.name}
+                </p>
+                <p className="mt-0.5 text-xs text-accent font-semibold">{story.role}</p>
+                <p className="mt-0.5 text-xs text-neutral-400">{story.tenure} with CMS</p>
+              </div>
+              <div className="absolute bottom-0 left-0 h-0.5 w-0 rounded-b-2xl bg-accent transition-all duration-300 group-hover:w-full" />
+            </motion.div>
+          ))}
+        </div>
       </Section>
 
       {/* Apply / Upload CV */}

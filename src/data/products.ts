@@ -149,15 +149,6 @@ const PRODUCT_DOMAIN_META: ProductDomainMeta[] = [
     projectKeywords: ['Sanitary', 'Grohe', 'Duravit', 'American Standard', 'Bathroom', 'CP Fitting'],
   },
   {
-    id: 'tiles',
-    slug: 'tiles',
-    title: 'Tiles',
-    description:
-      'A wide range of premium tiles featuring diverse design patterns, from transitional to modern styles, with every type of finish and texture. Crafted to suit residential and commercial spaces, our tile collection combines durability with elegant aesthetics — featuring our in-house Prime Tiles brand, manufactured in Nepal using cutting-edge European technology.',
-    image: '/images/products/tiles-hero.png',
-    projectKeywords: ['Tile', 'RAK', 'Prime'],
-  },
-  {
     id: 'flooring',
     slug: 'flooring',
     title: 'Flooring',
@@ -165,6 +156,24 @@ const PRODUCT_DOMAIN_META: ProductDomainMeta[] = [
       'A wide range of premium flooring options including wooden flooring, parquet, vinyl, engineered hardwood, and other modern finishes. Designed for durability and style, our flooring solutions enhance both residential and commercial spaces — featuring AGT, KLK Hardwood, and Tarkett with a perfect blend of elegance, comfort, and long-lasting performance.',
     image: '/images/products/flooring-hero.png',
     projectKeywords: ['Flooring', 'Tarkett', 'BKB', 'Welspun', 'Parquet', 'Vinyl', 'SPC'],
+  },
+  {
+    id: 'fire-rated-doors',
+    slug: 'fire-rated-doors',
+    title: 'Fire Rated Doors',
+    description:
+      'High-performance fire rated doors engineered to contain fire and smoke, protecting lives and property across commercial, industrial, and residential projects. Navair fire rated doors meet international safety standards and are available in steel, wooden, acoustic, and glass variants — suitable for emergency exits, stairwells, corridors, and shaft openings.',
+    image: '/images/products/door-hardware.jpg',
+    projectKeywords: ['Fire Door', 'Navair', 'Fire Rated', 'Emergency Exit'],
+  },
+  {
+    id: 'office-furnitures',
+    slug: 'office-furnitures',
+    title: 'Office Furnitures',
+    description:
+      'Premium office furniture solutions designed for modern workspaces — from executive offices to open-plan environments. SOS office furniture combines ergonomic design, durability, and contemporary aesthetics to create productive and visually refined work environments for commercial and institutional projects.',
+    image: '/images/products/ceiling.jpg',
+    projectKeywords: ['Office Furniture', 'SOS', 'Furniture', 'Workstation'],
   },
 ];
 

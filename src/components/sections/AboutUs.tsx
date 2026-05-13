@@ -45,11 +45,11 @@ export function AboutUs() {
             custom={0.16}
             className="mt-6 text-base leading-relaxed text-neutral-700 sm:text-lg"
           >
-            The Trading & Contracting Division of CMS Group is a specialised business unit
-            delivering integrated solutions across building and infrastructure domains.
-            Strong capabilities in both trading and contract execution support projects from
-            material supply through to on-site implementation — consistency, quality, and
-            reliability at every stage.
+            The Trading & Contracting Division of CMS Group is a specialized business unit delivering
+            integrated solutions across facets of building and infrastructure domains. With strong
+            capabilities in both trading and contract execution, we support projects from material supply
+            through to on-site implementation, ensuring consistency, quality, and reliability at every
+            stage.
           </motion.p>
 
           {/* Inline stat strip */}
@@ -82,19 +82,18 @@ export function AboutUs() {
                   className="overflow-hidden"
                 >
                   <p className="text-sm leading-relaxed text-neutral-600">
-                    Operating across roofing systems, facade solutions, ceilings, aluminium
-                    doors and windows, wood and glass coating, access control, architectural
-                    railings, waterproofing, wastewater management, sanitaryware, tiles, and
-                    flooring — with reputed international brands and globally recognised
-                    manufacturers, supplying high-quality products that meet international
-                    standards and project specifications.
+                    Our division operates across key sectors including roofing systems, facade solutions,
+                    ceilings, aluminum doors and windows, wood and glass coating, door hardware,
+                    architectural railings, office furnitures, waterproofing systems, wastewater management
+                    solutions, and sanitaryware. We work with reputed international brands and globally
+                    recognized manufacturers, enabling us to supply high-quality, compliant products that meet
+                    international standards and project specifications.
                   </p>
                   <p className="mt-3 text-sm leading-relaxed text-neutral-600">
-                    Backed by the corporate strength and governance of CMS Group, we combine
-                    established global supplier partnerships with experienced technical and
-                    project teams. Operations are driven by structured processes,
-                    safety-focused execution, and stringent quality control, delivering
-                    dependable outcomes across commercial, residential, industrial, and
+                    Backed by the corporate strength and governance of CMS Group, we combine established
+                    global supplier partnerships with experienced technical and project teams. Our operations
+                    are driven by structured processes, safety-focused execution, and stringent quality control,
+                    allowing us to deliver dependable outcomes across commercial, residential, industrial, and
                     infrastructure projects.
                   </p>
                 </motion.div>

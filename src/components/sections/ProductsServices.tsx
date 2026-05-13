@@ -11,12 +11,13 @@ import {
   Droplets,
   Fence,
   Footprints,
-  Grid3x3,
   Home,
   Layers,
   Lock,
   type LucideIcon,
   PaintBucket,
+  ShieldAlert,
+  Sofa,
   Trash2,
 } from 'lucide-react';
 import { Section } from '@/components/ui/Section';
@@ -41,8 +42,9 @@ const PRODUCTS: Product[] = [
   { title: 'Waterproofing Systems', icon: Droplets, image: '/images/products/waterproofing.jpg', link: '/trading/waterproofing' },
   { title: 'Wastewater Management', icon: Trash2, image: '/images/products/wastewater.jpg', link: '/trading/wastewater-management' },
   { title: 'Sanitaryware', icon: Bath, image: '/images/products/sanitaryware.jpg', link: '/trading/sanitaryware' },
-  { title: 'Tiles', icon: Grid3x3, image: '/images/products/sanitaryware.jpg', link: '/trading/tiles' },
   { title: 'Flooring', icon: Footprints, image: '/images/products/wood-glass.jpg', link: '/trading/flooring' },
+  { title: 'Fire Rated Doors', icon: ShieldAlert, image: '/images/products/door-hardware.jpg', link: '/trading/fire-rated-doors' },
+  { title: 'Office Furnitures', icon: Sofa, image: '/images/products/ceiling.jpg', link: '/trading/office-furnitures' },
 ];
 
 function ProductCard({ product, index }: { product: Product; index: number }) {
@@ -105,7 +107,7 @@ export function ProductsServices() {
           </p>
         </div>
         <span className="text-sm font-semibold uppercase tracking-wider text-neutral-400">
-          12 Domains
+          13 Domains
         </span>
       </motion.div>
 

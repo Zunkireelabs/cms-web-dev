@@ -10,7 +10,7 @@ import { PRODUCT_DOMAINS, CONTRACTING_SERVICES } from '@/data/products';
 import { Container } from '@/components/ui/Container';
 import { Logo } from '@/components/ui/Logo';
 import { MobileMenu } from './MobileMenu';
-import { ChevronDown, Home, Building, DoorOpen, PaintBucket, Lock, Fence, Droplets, Trash2, Bath, Armchair, Layers, Building2, ClipboardCheck, Leaf, ArrowRight } from 'lucide-react';
+import { ChevronDown, Home, Building, DoorOpen, PaintBucket, Lock, Fence, Droplets, Trash2, Bath, Armchair, Layers, Building2, ClipboardCheck, Leaf, ArrowRight, ShieldAlert, Sofa } from 'lucide-react';
 
 const DOMAIN_ICONS: Record<string, React.ReactNode> = {
   roofing: <Home className="h-4 w-4" />,
@@ -24,6 +24,8 @@ const DOMAIN_ICONS: Record<string, React.ReactNode> = {
   wastewater: <Trash2 className="h-4 w-4" />,
   sanitaryware: <Bath className="h-4 w-4" />,
   furniture: <Armchair className="h-4 w-4" />,
+  'fire-rated-doors': <ShieldAlert className="h-4 w-4" />,
+  'office-furnitures': <Sofa className="h-4 w-4" />,
 };
 
 const SERVICE_ICONS: Record<string, React.ReactNode> = {
