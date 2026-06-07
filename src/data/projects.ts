@@ -5,7 +5,8 @@ export type CommercialSector =
   | 'education'
   | 'airports'
   | 'office'
-  | 'hospitality';
+  | 'hospitality'
+  | 'industrial';
 
 export interface Project {
   id: string;
@@ -28,6 +29,7 @@ export const COMMERCIAL_SECTORS: { value: CommercialSector; label: string }[] = 
   { value: 'airports', label: 'Airport' },
   { value: 'office', label: 'Office Space' },
   { value: 'hospitality', label: 'Hospitality' },
+  { value: 'industrial', label: 'Industrial' },
 ];
 
 export const PROJECTS: Project[] = [
@@ -286,7 +288,7 @@ export const PROJECTS: Project[] = [
     location: 'Nawalparasi',
     year: 2019,
     type: 'commercial',
-    sector: 'office',
+    sector: 'industrial',
     description:
       'Industrial brewery facility. Installed 950 KLD effluent treatment plant for brewery wastewater compliance.',
     scope: ['Effluent Treatment Plant — 950 KLD capacity'],

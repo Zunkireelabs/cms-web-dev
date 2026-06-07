@@ -111,9 +111,9 @@ function ProjectCard({
       </div>
 
       <div className="flex flex-1 flex-col p-6">
-        {project.sector && (
+        {(project.sector || project.type === 'residential') && (
           <span className="inline-block w-fit rounded-full bg-accent-50 px-2.5 py-0.5 text-[11px] font-semibold capitalize text-accent">
-            {project.sector}
+            {project.sector ?? 'Residential'}
           </span>
         )}
 
@@ -240,9 +240,9 @@ function ProjectDetailModal({
                 <X className="h-4 w-4" strokeWidth={2} />
               </button>
 
-              {project.sector && (
+              {(project.sector || project.type === 'residential') && (
                 <span className="inline-block w-fit rounded-full bg-accent-50 px-3 py-1 text-[11px] font-semibold capitalize text-accent">
-                  {project.sector}
+                  {project.sector ?? 'Residential'}
                 </span>
               )}
 
