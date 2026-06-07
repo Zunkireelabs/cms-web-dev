@@ -236,7 +236,7 @@ export default async function TradingSlugPage({ params }: PageProps) {
                 imageAlt={project.title}
                 title={project.title}
                 description={project.description}
-                badge={project.sector}
+                badge={project.sector ?? (project.type === 'residential' ? 'Residential' : undefined)}
                 meta={String(project.year)}
                 location={project.location}
                 aspect="video"
