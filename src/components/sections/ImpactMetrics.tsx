@@ -16,17 +16,11 @@ interface Metric {
 
 const METRICS: Metric[] = [
   { id: 'projects', value: 500, suffix: '+', label: 'Projects Delivered' },
-  { id: 'years', value: 23, suffix: '+', label: 'Years of Excellence' },
+  { id: 'years', value: 24, suffix: '+', label: 'Years of Excellence' },
   { id: 'sectors', value: 6, suffix: '', label: 'Sectors Served' },
   { id: 'partners', value: 50, suffix: '+', label: 'Global Brand Partners' },
 ];
 
-const DOMAIN_METRICS: Metric[] = [
-  { id: 'ceiling', value: 200000, suffix: '+ sq.ft', label: 'False Ceiling Installed' },
-  { id: 'roofing', value: 300000, suffix: '+ sq.ft', label: 'Roofing Installed' },
-  { id: 'aluminium', value: 90000, suffix: '+ sq.ft', label: 'Aluminium Doors & Windows' },
-  { id: 'flooring', value: 250000, suffix: '+ sq.ft', label: 'Flooring Installed' },
-];
 
 function AnimatedCounter({ value, suffix }: { value: number; suffix: string }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -103,31 +97,6 @@ export function ImpactMetrics() {
               </div>
             </motion.div>
           ))}
-        </div>
-
-        {/* Domain sq.ft metrics */}
-        <div className="mt-16 border-t border-white/10 pt-12">
-          <p className="mb-8 text-xs font-semibold uppercase tracking-[0.18em] text-white/40">
-            Proven Track Record — Area Installed
-          </p>
-          <div className="grid grid-cols-2 gap-y-10 lg:grid-cols-4 lg:gap-12">
-            {DOMAIN_METRICS.map((metric, index) => (
-              <motion.div
-                key={metric.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                transition={{ duration: 0.6, delay: 0.4 + index * 0.08 }}
-                className="border-l border-white/15 pl-5 lg:pl-6"
-              >
-                <div className="font-display text-3xl font-bold leading-none tracking-tight text-white sm:text-4xl lg:text-5xl">
-                  <AnimatedCounter value={metric.value} suffix={metric.suffix} />
-                </div>
-                <div className="mt-3 text-xs font-semibold uppercase tracking-[0.18em] text-accent sm:text-sm">
-                  {metric.label}
-                </div>
-              </motion.div>
-            ))}
-          </div>
         </div>
 
         {/* Footer links */}

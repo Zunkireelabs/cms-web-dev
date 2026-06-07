@@ -336,30 +336,13 @@ export default function ProjectsPage() {
       <PageHero
         kicker="Our Portfolio"
         title="Featured projects across Nepal."
-        subtitle={`${PROJECTS.length}+ commercial and residential projects delivered through CMS Group ventures — from Tiger Palace Resort and Bir Hospital to NRB headquarters and ICIMOD's green campus.`}
+        subtitle="Commercial and residential projects delivered through CMS Group ventures — from Tiger Palace Resort and Bir Hospital to NRB headquarters and ICIMOD's green campus."
         image="/images/projects/tiger-palace.jpg"
         imageAlt="CMS Group featured projects"
         size="tall"
       />
 
-      {/* Stat anchor */}
-      <Section variant="soft" compact>
-        <div className="grid grid-cols-3 gap-x-6 gap-y-12 sm:gap-12">
-          <div className="border-l border-accent/40 pl-5 lg:pl-6">
-            <StatBlock value={`${PROJECTS.length}+`} label="Projects Delivered" size="md" />
-          </div>
-          <div className="border-l border-accent/40 pl-5 lg:pl-6">
-            <StatBlock
-              value={`${COMMERCIAL_SECTORS.length}`}
-              label="Commercial Sectors"
-              size="md"
-            />
-          </div>
-          <div className="border-l border-accent/40 pl-5 lg:pl-6">
-            <StatBlock value="23+" label="Years of Delivery" size="md" />
-          </div>
-        </div>
-      </Section>
+      {/* Stat anchor — hidden */}
 
       {/* Tabs & Filters */}
       <section className="sticky top-16 z-30 border-y border-neutral-200 bg-white/95 backdrop-blur-md lg:top-20">
@@ -379,16 +362,6 @@ export default function ProjectsPage() {
                 >
                   {tab.icon}
                   {tab.label}
-                  <span
-                    className={cn(
-                      'ml-1 rounded-full px-2 py-0.5 text-[11px]',
-                      activeTab === tab.value
-                        ? 'bg-white/20 text-white'
-                        : 'bg-white text-neutral-500',
-                    )}
-                  >
-                    {PROJECTS.filter((p) => p.type === tab.value).length}
-                  </span>
                 </button>
               ))}
             </div>
@@ -428,7 +401,6 @@ export default function ProjectsPage() {
                         )}
                       >
                         {sector.label}
-                        <span className="ml-1 text-xs opacity-60">({count})</span>
                       </button>
                     );
                   })}
@@ -442,26 +414,6 @@ export default function ProjectsPage() {
       {/* Projects Grid */}
       <section className="py-12 lg:py-16 bg-neutral-off-white">
         <Container>
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="mb-8 flex items-center justify-between"
-          >
-            <p className="text-sm text-neutral-600">
-              Showing{' '}
-              <span className="font-semibold text-neutral-charcoal">
-                {filteredProjects.length}
-              </span>{' '}
-              {filteredProjects.length === 1 ? 'project' : 'projects'}
-              {activeSector !== 'all' && (
-                <span>
-                  {' '}
-                  in{' '}
-                  <span className="font-semibold capitalize text-accent">{activeSector}</span>
-                </span>
-              )}
-            </p>
-          </motion.div>
 
           <AnimatePresence mode="wait">
             <motion.div

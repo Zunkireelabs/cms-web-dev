@@ -31,6 +31,7 @@ export const BRANDS: BrandEntry[] = [
     venture: '4r-technologies',
     tradingDomains: ['wastewater-management'],
     website: 'https://www.sintexonline.com',
+    logoUrl: '/images/brands/sintex.png',
   },
 
   // Bath n Room — Sanitaryware
@@ -62,6 +63,18 @@ export const BRANDS: BrandEntry[] = [
   },
 
   // Baba Muktinath — Roofing
+  {
+    name: 'Gerard Stone Coated Roofing',
+    slug: 'gerard',
+    country: 'New Zealand',
+    founded: 1957,
+    segments: ['Stone Coated Metal Roofing'],
+    description:
+      'Gerard is a New Zealand manufacturer of premium stone-coated steel roofing tiles — combining the beauty of traditional roof tiles with the strength and longevity of steel, trusted for residential and commercial buildings worldwide.',
+    venture: 'baba-muktinath',
+    tradingDomains: ['roofing'],
+    website: 'https://www.gerard.com',
+  },
   {
     name: 'IKO',
     slug: 'iko',
@@ -104,6 +117,19 @@ export const BRANDS: BrandEntry[] = [
     logoUrl: '/images/brands/armstrong.png',
   },
   {
+    name: 'Rucca Wood',
+    slug: 'rucca-wood',
+    country: 'China',
+    founded: 2016,
+    segments: ['WPC Ceiling Panels', 'PVC Wall Panels', 'WPC Decking & Cladding'],
+    description:
+      'Rucca Wood is a Chinese specialist in wood-plastic composite building materials — producing waterproof, flame-retardant ceiling panels, wall panels, and decking with a 20–30 year service life and full eco-certifications.',
+    venture: 'baba-muktinath',
+    tradingDomains: ['ceiling-systems'],
+    website: 'https://www.ruccawood.com/product/ceiling-panels-design/',
+    logoUrl: '/images/brands/rucca-wood.webp',
+  },
+  {
     name: 'Hunter Douglas',
     slug: 'hunter-douglas',
     country: 'Germany',
@@ -112,9 +138,34 @@ export const BRANDS: BrandEntry[] = [
     description:
       'A global innovator in architectural products, Hunter Douglas delivers high-performance ceiling systems, facade solutions, and solar shading trusted on landmark commercial and residential projects worldwide.',
     venture: 'baba-muktinath',
-    tradingDomains: ['ceiling-systems', 'facade-solutions'],
+    tradingDomains: ['facade-solutions', 'ceiling-systems'],
     website: 'https://www.hunterdouglas.com',
     logoUrl: '/images/brands/hunter-douglas.png',
+  },
+  {
+    name: 'NedZink',
+    slug: 'nedzink',
+    country: 'Netherlands',
+    founded: 1895,
+    segments: ['Titanium Zinc Facade Cladding', 'Metal Roofing', 'Rainwater Systems'],
+    description:
+      'A Dutch pioneer in rolled titanium zinc, NedZink supplies premium zinc cladding, roofing, and rainwater systems to architectural projects worldwide — valued for exceptional longevity, sustainability, and full recyclability.',
+    venture: 'baba-muktinath',
+    tradingDomains: ['facade-solutions'],
+    website: 'https://www.nedzink.com/en/',
+    logoUrl: '/images/brands/nedzink.svg',
+  },
+  {
+    name: 'Greenlam Clads',
+    slug: 'greenlam-clads',
+    country: 'India',
+    segments: ['Exterior Facade Cladding', 'Interior Wall Cladding', 'High-Pressure Compact Laminates'],
+    description:
+      'Greenlam Clads delivers high-performance exterior and interior cladding panels featuring advanced UV resistance, fire retardancy, and 10–12 year warranties — engineered for demanding modern architectural facades.',
+    venture: 'baba-muktinath',
+    tradingDomains: ['facade-solutions'],
+    website: 'https://greenlamclads.com/',
+    logoUrl: '/images/brands/greenlam-clads.svg',
   },
 
   // Baba Muktinath — Doors, Windows, Coatings, Hardware
@@ -145,13 +196,13 @@ export const BRANDS: BrandEntry[] = [
     logoUrl: '/images/brands/navair.png',
   },
   {
-    name: 'ICA',
+    name: 'ICA Pidilite',
     slug: 'ica',
     country: 'Italy',
     founded: 1971,
     segments: ['Wood Coating'],
     description:
-      'An Italian leader in surface finishing, ICA brings over 50 years of expertise in wood, glass, and metal coating systems — delivering durable, high-quality finishes for residential and commercial applications.',
+      'An Italian leader in surface finishing, ICA Pidilite brings over 50 years of expertise in wood, glass, and metal coating systems — delivering durable, high-quality finishes for residential and commercial applications.',
     venture: 'baba-muktinath',
     tradingDomains: ['wood-glass-metal-coating'],
     website: 'https://www.icapidilite.com',
@@ -162,7 +213,7 @@ export const BRANDS: BrandEntry[] = [
     slug: 'zolon',
     country: 'India',
     founded: 2015,
-    segments: ['Glass Railing'],
+    segments: ['Glass Railing', 'Stainless Steel Railing Systems'],
     description:
       'Zolon offers premium stainless steel and glass railing systems that combine structural safety with contemporary aesthetics — ideal for balconies, staircases, and facade applications.',
     venture: 'baba-muktinath',
@@ -187,7 +238,7 @@ export const BRANDS: BrandEntry[] = [
     description:
       'A global leader in access and security solutions, Dormakaba provides digital locks, movable walls, automatic doors, and architectural hardware — trusted across hotels, hospitals, offices, and institutions worldwide.',
     venture: 'baba-muktinath',
-    tradingDomains: ['door-hardware', 'aluminum-doors-windows'],
+    tradingDomains: ['door-hardware'],
     website: 'https://www.dormakabagroup.com/en',
     logoUrl: '/images/brands/dormakaba.png',
   },
@@ -244,6 +295,7 @@ export const BRANDS: BrandEntry[] = [
     venture: 'techwood',
     tradingDomains: ['flooring'],
     website: 'https://wideplankflooring.com/our-floors/',
+    logoUrl: '/images/brands/argil.png',
   },
   {
     name: 'KLK Hardwood Flooring',
@@ -255,6 +307,7 @@ export const BRANDS: BrandEntry[] = [
     venture: 'techwood',
     tradingDomains: ['flooring'],
     website: 'https://klkflooring.com',
+    logoUrl: '/images/brands/klk-hardwood.svg',
   },
   {
     name: 'Welspun',
@@ -279,7 +332,71 @@ export const BRANDS: BrandEntry[] = [
     venture: 'techwood',
     tradingDomains: ['office-furnitures'],
     website: 'https://www.sosoffice.in/products/',
+    logoUrl: '/images/brands/sos.png',
   },
+  // Prime Ceramics — Tiles
+  {
+    name: 'Prime Tiles',
+    slug: 'prime-tiles',
+    country: 'Nepal',
+    segments: ['Tiles & Ceramics'],
+    description:
+      'Prime Tiles offers a wide range of premium tiles featuring diverse design patterns, from transitional to modern styles, with every type of finish and texture. Their collection combines durability with elegant aesthetics to enhance any interior or exterior.',
+    venture: 'prime-ceramics',
+    tradingDomains: ['tiles'],
+    website: 'https://primeceramics.com.np/',
+    logoUrl: '/images/brands/prime-tiles.png',
+  },
+];
+
+export type TradingDomainSlug =
+  | 'roofing'
+  | 'facade-solutions'
+  | 'ceiling-systems'
+  | 'aluminum-doors-windows'
+  | 'wood-glass-metal-coating'
+  | 'door-hardware'
+  | 'architectural-railings'
+  | 'waterproofing'
+  | 'wastewater-management'
+  | 'sanitaryware'
+  | 'office-furnitures'
+  | 'flooring'
+  | 'tiles'
+  | 'fire-rated-doors';
+
+export const DOMAIN_LABELS: Record<TradingDomainSlug, string> = {
+  'roofing': 'Roofing Systems',
+  'facade-solutions': 'Facade Solutions',
+  'ceiling-systems': 'Ceiling Systems',
+  'aluminum-doors-windows': 'Aluminium Doors & Windows',
+  'wood-glass-metal-coating': 'Wood, Glass & Metal Coating',
+  'door-hardware': 'Access Control Solutions',
+  'architectural-railings': 'Architectural Railings',
+  'waterproofing': 'Waterproofing Systems',
+  'wastewater-management': 'Wastewater Management',
+  'sanitaryware': 'Sanitaryware & Bathroom Solutions',
+  'office-furnitures': 'Office Furnitures',
+  'flooring': 'Flooring',
+  'tiles': 'Tiles',
+  'fire-rated-doors': 'Fire Rated Doors',
+};
+
+export const DOMAIN_ORDER: TradingDomainSlug[] = [
+  'roofing',
+  'facade-solutions',
+  'ceiling-systems',
+  'aluminum-doors-windows',
+  'wood-glass-metal-coating',
+  'door-hardware',
+  'architectural-railings',
+  'waterproofing',
+  'wastewater-management',
+  'sanitaryware',
+  'office-furnitures',
+  'flooring',
+  'tiles',
+  'fire-rated-doors',
 ];
 
 export const VENTURE_LABELS: Record<VentureSlug, string> = {

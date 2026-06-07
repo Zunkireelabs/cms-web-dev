@@ -12,7 +12,7 @@ const COUNTRY_COUNT = new Set(BRANDS.map((b) => b.country.split(' ')[0])).size;
 
 export const metadata: Metadata = {
   title: 'Trading Division',
-  description: `CMS Group Trading — premium building materials from ${TOTAL_BRAND_COUNT}+ global brand partners across ${PRODUCT_DOMAINS.length} specialized domains, distributed in Nepal through Bath N Room and Baba Muktinath Fabricators.`,
+  description: `CMS Group Trading — premium building materials from ${TOTAL_BRAND_COUNT}+ global brand partners across ${PRODUCT_DOMAINS.length} specialized domains, distributed in Nepal through Bath N Room, Baba Muktinath Fabricators, 4R Technologies, Techwood, and Prime Ceramics.`,
 };
 
 export default function TradingPage() {
@@ -48,7 +48,7 @@ export default function TradingPage() {
       <Section variant="light" id="domains">
         <SectionHeader
           kicker="Specialised Domains"
-          title="Twelve product domains, one trusted source."
+          title="Fourteen product domains, one trusted source."
           lead="Each domain is anchored by world-leading manufacturers — chosen for engineering pedigree, design fidelity, and proven reliability across the projects we deliver."
           align="center"
           className="mx-auto"

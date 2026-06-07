@@ -3,6 +3,8 @@ import Image from 'next/image';
 import { ArrowUpRight, MapPin } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
+const BLUR_PLACEHOLDER = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/wAAECAACAAMBIgACEQEDEQH/xAAFAAEAAAAAAAAAAAAAAAAAAAAA/8QAFBABAAAAAAAAAAAAAAAAAAAAAP/EABQBAQAAAAAAAAAAAAAAAAAAAAD/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCwABf/2Q==';
+
 interface ContentCardProps {
   title: string;
   description?: string;
@@ -56,6 +58,8 @@ function CardInner({
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+            placeholder="blur"
+            blurDataURL={BLUR_PLACEHOLDER}
           />
         )}
         {!image && (

@@ -52,23 +52,6 @@ export function AboutUs() {
             stage.
           </motion.p>
 
-          {/* Inline stat strip */}
-          <motion.div
-            variants={fadeUp}
-            custom={0.22}
-            className="my-7 flex items-center gap-8 border-y border-neutral-200 py-5 sm:gap-12"
-          >
-            {STATS.map((stat) => (
-              <div key={stat.label}>
-                <span className="block font-display text-2xl font-bold leading-none tracking-tight text-accent tabular-nums sm:text-3xl">
-                  {stat.value}
-                </span>
-                <span className="mt-1.5 block text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-500">
-                  {stat.label}
-                </span>
-              </div>
-            ))}
-          </motion.div>
 
           {/* Expandable details */}
           <motion.div variants={fadeUp} custom={0.28}>

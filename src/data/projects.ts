@@ -392,8 +392,8 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 'manakama-cable-car',
-    title: 'Manakama Cable Car',
-    client: 'Manakama Darshan Pvt. Ltd.',
+    title: 'Manakamana Cable Car',
+    client: 'Manakamana Darshan Pvt. Ltd.',
     location: 'Gorkha, Gandaki Province',
     year: 2019,
     type: 'commercial',

@@ -32,19 +32,19 @@ interface Product {
 }
 
 const PRODUCTS: Product[] = [
-  { title: 'Roofing Systems', icon: Home, image: '/images/products/roofing-new.jpg', link: '/trading/roofing' },
-  { title: 'Facade Solutions', icon: Building, image: '/images/products/facade-new.jpg', link: '/trading/facade-solutions' },
-  { title: 'Ceiling Systems', icon: Layers, image: '/images/products/ceiling.jpg', link: '/trading/ceiling-systems' },
-  { title: 'Aluminium Doors & Windows', icon: Building2, image: '/images/products/aluminum-dw.jpg', link: '/trading/aluminum-doors-windows' },
-  { title: 'Wood & Glass Coating', icon: PaintBucket, image: '/images/products/wood-glass.jpg', link: '/trading/wood-glass-metal-coating' },
-  { title: 'Door Hardware & Accessories', icon: Lock, image: '/images/products/door-hardware.jpg', link: '/trading/door-hardware' },
-  { title: 'Architectural Railings', icon: Fence, image: '/images/products/railings.jpg', link: '/trading/architectural-railings' },
-  { title: 'Waterproofing Systems', icon: Droplets, image: '/images/products/waterproofing.jpg', link: '/trading/waterproofing' },
-  { title: 'Wastewater Management', icon: Trash2, image: '/images/products/wastewater.jpg', link: '/trading/wastewater-management' },
-  { title: 'Sanitaryware', icon: Bath, image: '/images/products/sanitaryware.jpg', link: '/trading/sanitaryware' },
-  { title: 'Flooring', icon: Footprints, image: '/images/products/wood-glass.jpg', link: '/trading/flooring' },
-  { title: 'Fire Rated Doors', icon: ShieldAlert, image: '/images/products/door-hardware.jpg', link: '/trading/fire-rated-doors' },
-  { title: 'Office Furnitures', icon: Sofa, image: '/images/products/ceiling.jpg', link: '/trading/office-furnitures' },
+  { title: 'Roofing Systems', icon: Home, image: 'https://www.iko.com/na/wp-content/uploads/2024/05/RGB-0186_IKO_NRDC_SHGL_HOME_FRGY_DJI_0186.webp', link: '/trading/roofing' },
+  { title: 'Facade Solutions', icon: Building, image: 'https://www.hunterdouglasgroup.com/wp-content/uploads/2015/01/architecture-thumb-320x321-copy-320x321.jpg', link: '/trading/facade-solutions' },
+  { title: 'Ceiling Systems', icon: Layers, image: 'https://ap.hunterdouglas.asia/cms/imgs/approduct/wood-ceiling.jpg', link: '/trading/ceiling-systems' },
+  { title: 'Aluminium Doors & Windows', icon: Building2, image: 'https://image-apac.archify.com/catalog/supplier_updates/l/52_6yagx6g7.jpg', link: '/trading/aluminum-doors-windows' },
+  { title: 'Wood & Glass Coating', icon: PaintBucket, image: 'https://i.pinimg.com/1200x/d7/05/d9/d705d9c2fbc5645f050e05b3424cb0d6.jpg', link: '/trading/wood-glass-metal-coating' },
+  { title: 'Door Hardware & Accessories', icon: Lock, image: 'https://dormakaba-res.cloudinary.com/image/upload/t_prod-category-teasers/f_auto,q_auto/v1745406094/dormakaba-prod/1674040054-rt-plus-lh--2--jpgedit.jpg', link: '/trading/door-hardware' },
+  { title: 'Architectural Railings', icon: Fence, image: 'https://betterhomeapp.com/cdn/shop/files/GLRA0002-Zolon-Glass-Staircase-Balcony-Railing-Better-Home-2_grande.jpg?v=1713608644', link: '/trading/architectural-railings' },
+  { title: 'Waterproofing Systems', icon: Droplets, image: '/images/products/product-waterproofing.jpg', link: '/trading/waterproofing' },
+  { title: 'Wastewater Management', icon: Trash2, image: '/images/products/product-wastewater.jpg', link: '/trading/wastewater-management' },
+  { title: 'Sanitaryware', icon: Bath, image: 'https://danubetoilet.com/wp-content/uploads/2024/10/What-Is-Sanitary-Ware.png', link: '/trading/sanitaryware' },
+  { title: 'Flooring', icon: Footprints, image: '/images/products/product-flooring.jpg', link: '/trading/flooring' },
+  { title: 'Fire Rated Doors', icon: ShieldAlert, image: 'https://images.jdmagicbox.com/quickquotes/images_main/rectangular-wooden-modular-office-furniture-2220097149-f7jqlnv5.jpg', link: '/trading/fire-rated-doors' },
+  { title: 'Office Furnitures', icon: Sofa, image: '/images/products/product-office-furniture.jpg', link: '/trading/office-furnitures' },
 ];
 
 function ProductCard({ product, index }: { product: Product; index: number }) {
@@ -99,16 +99,13 @@ export function ProductsServices() {
           <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-neutral-charcoal sm:text-4xl lg:text-5xl">
             Thirteen specialised domains.
             <br />
-            50+ global brand partners.
+            Global brand partners.
           </h2>
           <p className="mt-5 text-base leading-relaxed text-neutral-600 sm:text-lg">
             Integrated building solutions distributed in Nepal — from roofing and facades to
             sanitaryware, flooring, and door hardware.
           </p>
         </div>
-        <span className="text-sm font-semibold uppercase tracking-wider text-neutral-400">
-          13 Domains
-        </span>
       </motion.div>
 
       <motion.div

@@ -127,7 +127,7 @@ function PartnerCard({ brand }: { brand: Brand }) {
         </div>
 
         {/* Logo box */}
-        <div className="hidden lg:flex h-32 w-48 shrink-0 items-center justify-center rounded-xl border border-neutral-200 bg-neutral-off-white p-4">
+        <div className="hidden lg:flex h-32 w-48 shrink-0 items-center justify-center rounded-xl bg-white p-4">
           {brand.logo ? (
             <Image
               src={brand.logo}
@@ -184,9 +184,7 @@ export default async function TradingSlugPage({ params }: PageProps) {
           title={
             partnerCount === 0
               ? 'Brand partners coming soon.'
-              : partnerCount === 1
-                ? 'Our exclusive partner for this domain.'
-                : `${partnerCount} world-leading brands in ${domain.title.toLowerCase()}.`
+              : `World-leading brands in ${domain.title.toLowerCase()}.`
           }
           lead="Authentic products with full manufacturer warranty, technical support, and after-sales service — sourced through CMS Group's authorised distribution channels."
         />

@@ -108,6 +108,7 @@ export const EVENTS: CMSEvent[] = [
   },
   {
     id: 'structural-engineer-meet-2022',
+    image: '/images/events/structural-engineer-meet-2022.jpg',
     title: 'Structural Engineers Meet',
     month: 'Nov',
     year: 2022,
@@ -128,6 +129,7 @@ export const EVENTS: CMSEvent[] = [
   },
   {
     id: 'fabricators-meet-2022',
+    image: '/images/events/fabricators-meet-2022.jpg',
     title: "Fabricators' Meet",
     month: 'Nov',
     year: 2022,
@@ -138,6 +140,7 @@ export const EVENTS: CMSEvent[] = [
   },
   {
     id: 'plumbers-meet-2022',
+    image: '/images/events/plumbers-meet-2022.jpg',
     title: "Plumbers' Meet — October",
     month: 'Oct',
     year: 2022,
@@ -159,6 +162,7 @@ export const EVENTS: CMSEvent[] = [
   },
   {
     id: 'public-works-presentation-2022',
+    image: '/images/events/public-works-presentation-2022.jpg',
     title: 'Public Works Department Presentation',
     month: 'Aug',
     year: 2022,
@@ -179,6 +183,7 @@ export const EVENTS: CMSEvent[] = [
   },
   {
     id: 'marketing-vision-quest-2022',
+    image: '/images/events/marketing-vision-quest-2022.jpg',
     title: 'Marketing Meet & Vision Quest',
     month: 'Jul',
     year: 2022,
@@ -211,6 +216,7 @@ export const EVENTS: CMSEvent[] = [
   },
   {
     id: 'blood-donation-2022',
+    image: '/images/events/blood-donation-2022.jpg',
     title: 'Blood Donation Campaign',
     month: 'Jun',
     year: 2022,
@@ -242,6 +248,7 @@ export const EVENTS: CMSEvent[] = [
   },
   {
     id: 'blood-donation-2019',
+    image: '/images/events/blood-donation-2019.jpg',
     title: 'Blood Donation Camp 2019',
     month: 'Dec',
     year: 2019,
@@ -252,6 +259,7 @@ export const EVENTS: CMSEvent[] = [
   },
   {
     id: 'buildcon-2019',
+    image: '/images/events/buildcon-2019.jpg',
     title: '5th Buildcon Exhibition',
     month: 'Feb',
     year: 2019,
@@ -262,6 +270,7 @@ export const EVENTS: CMSEvent[] = [
   },
   {
     id: 'blood-donation-2018',
+    image: '/images/events/blood-donation-2018.jpg',
     title: 'Blood Donation Camp 2018',
     month: 'Dec',
     year: 2018,
@@ -272,6 +281,7 @@ export const EVENTS: CMSEvent[] = [
   },
   {
     id: 'plumbers-meet-2018',
+    image: '/images/events/plumbers-meet-2018.jpg',
     title: "Plumbers' Meet",
     month: 'Aug',
     year: 2018,
@@ -293,6 +303,7 @@ export const EVENTS: CMSEvent[] = [
   },
   {
     id: 'armstrong-seminar-2017',
+    image: '/images/events/armstrong-seminar-2017.jpg',
     title: 'Armstrong Ceiling Solutions Seminar',
     month: 'Jun',
     year: 2017,

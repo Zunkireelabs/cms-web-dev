@@ -3,7 +3,6 @@ import { ArrowRight } from 'lucide-react';
 import { Section, SectionHeader } from '@/components/ui';
 import {
   AboutUs,
-  ChairmanMessage,
   ContactCTA,
   Hero,
   ImpactMetrics,
@@ -21,19 +20,16 @@ export default function HomePage() {
       <AboutUs />
 
       {/* 3. Proof — animated counters (dark reset) */}
-      <ImpactMetrics />
+      {/* <ImpactMetrics /> */}
 
-      {/* 4. Substance — twelve product domains */}
+      {/* 4. Substance — fourteen product domains */}
       <ProductsServices />
 
-      {/* 6. Voice — chairman's message */}
-      <ChairmanMessage />
-
-      {/* 7. Execution — project map */}
+      {/* 6. Execution — project map */}
       <Section variant="soft" id="projects-overview">
         <SectionHeader
           kicker="Project Overview"
-          title="500+ projects delivered across Nepal."
+          title="Projects delivered across Nepal."
           lead="Hospitals, hotels, airports, offices, education, and residential — six sectors, one trusted partner. Hover or tap a marker to view the project list."
           align="center"
           className="mx-auto"

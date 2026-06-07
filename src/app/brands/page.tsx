@@ -12,43 +12,22 @@ import { fadeUp, stagger } from '@/lib/motion';
 import {
   BRANDS,
   TOTAL_BRAND_COUNT,
-  VENTURE_LABELS,
-  getBrandsByVenture,
+  DOMAIN_LABELS,
+  DOMAIN_ORDER,
+  getBrandsByTradingDomain,
   type BrandEntry,
-  type VentureSlug,
+  type TradingDomainSlug,
 } from '@/data/brands';
-import { VENTURES } from '@/data/ventures';
 import {
-  ArrowRight,
   Building2,
-  Calendar,
   ExternalLink,
-  Factory,
   MapPin,
-  Sparkles,
 } from 'lucide-react';
-
-const VENTURE_ORDER: VentureSlug[] = [
-  'bath-n-room',
-  'baba-muktinath',
-  '4r-technologies',
-  'techwood',
-  'prime-ceramics',
-];
-
-const VENTURE_TAGLINES: Record<VentureSlug, string> = {
-  'bath-n-room': 'Sanitary fixtures, flooring, and bathroom solutions from global leaders',
-  'baba-muktinath': 'Roofing, ceilings, doors, hardware, and waterproofing systems',
-  '4r-technologies': 'Sustainable water management, treatment plants, and pool solutions',
-  techwood: 'Modular office furniture and flooring for corporate and education sectors',
-  'prime-ceramics':
-    'In-house tile manufacturing — Prime Tiles, made in Nepal with European technology',
-};
 
 const COUNTRY_COUNT = new Set(BRANDS.map((b) => b.country.split(' ')[0])).size;
 
 function BrandCard({ brand }: { brand: BrandEntry }) {
-  const hasWebsite = Boolean(brand.website);
+  const hasWebsite = Boolean(brand.website) && brand.website !== '#';
   const Wrapper = hasWebsite ? 'a' : 'div';
   const wrapperProps = hasWebsite
     ? {
@@ -119,56 +98,33 @@ function BrandCard({ brand }: { brand: BrandEntry }) {
   );
 }
 
-function VentureSection({ ventureSlug }: { ventureSlug: VentureSlug }) {
-  const venture = VENTURES.find((v) => v.slug === ventureSlug);
-  const brands = getBrandsByVenture(ventureSlug);
-  const isManufacturing = ventureSlug === 'prime-ceramics';
+function DomainSection({ domainSlug }: { domainSlug: TradingDomainSlug }) {
+  const brands = getBrandsByTradingDomain(domainSlug);
+  if (brands.length === 0) return null;
 
   return (
     <motion.div
-      id={ventureSlug}
+      id={domainSlug}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: '-100px' }}
       variants={stagger}
-      className="venture-anchor scroll-mt-28 rounded-2xl border border-neutral-border bg-white p-6 shadow-card lg:p-10"
+      className="scroll-mt-28 rounded-2xl border border-neutral-border bg-white p-6 shadow-card lg:p-10"
     >
-      {/* Venture Header */}
+      {/* Domain Header */}
       <motion.div variants={fadeUp} custom={0} className="mb-8">
         <div className="flex flex-wrap items-baseline justify-between gap-4">
           <div>
-            <div className="flex items-center gap-3">
-              <h3 className="font-display text-2xl font-bold leading-tight tracking-tight text-neutral-charcoal sm:text-3xl">
-                {VENTURE_LABELS[ventureSlug]}
-              </h3>
-              {isManufacturing && (
-                <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-amber-700">
-                  <Factory className="h-3 w-3" strokeWidth={1.75} />
-                  In-house
-                </span>
-              )}
-            </div>
-            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-neutral-600">
-              {VENTURE_TAGLINES[ventureSlug]}
-            </p>
+            <h3 className="font-display text-2xl font-bold leading-tight tracking-tight text-neutral-charcoal sm:text-3xl">
+              {DOMAIN_LABELS[domainSlug]}
+            </h3>
           </div>
           <div className="flex items-center gap-4 text-xs text-neutral-500">
-            {venture?.founded && (
-              <div className="flex items-center gap-1.5">
-                <Calendar className="h-3.5 w-3.5 text-accent" strokeWidth={1.5} />
-                <span>Since {venture.founded}</span>
-              </div>
-            )}
-            <div className="flex items-center gap-1.5">
-              <Sparkles className="h-3.5 w-3.5 text-accent" strokeWidth={1.5} />
-              <span className="font-semibold text-neutral-700">{brands.length} brands</span>
-            </div>
             <Link
-              href={`/ventures#${ventureSlug}`}
+              href={`/trading/${domainSlug}`}
               className="inline-flex items-center gap-1 font-semibold uppercase tracking-wider text-accent transition-colors hover:text-accent-700"
             >
-              View venture
-              <ArrowRight className="h-3 w-3" />
+              View domain →
             </Link>
           </div>
         </div>
@@ -190,40 +146,27 @@ export default function BrandsPage() {
       <PageHero
         kicker="Brand Partners"
         title="World-renowned brands, distributed in Nepal."
-        subtitle={`${TOTAL_BRAND_COUNT}+ authorised partner brands across five CMS Group ventures — Grohe, Duravit, Hunter Douglas, Dormakaba, IKO, Tarkett, Armstrong, and more.`}
+        subtitle="Authorised partner brands across fourteen trading domains — Grohe, Hunter Douglas, Dormakaba, IKO, Tarkett, Armstrong, and more."
         image="/images/projects/tiger-palace.jpg"
-        imageAlt="Tiger Palace Resort — featuring Grohe, Duravit, Viega"
+        imageAlt="Tiger Palace Resort — featuring Grohe, American Standard, Dormakaba"
         size="tall"
       />
 
-      {/* Stat anchor */}
-      <Section variant="soft" compact>
-        <div className="grid grid-cols-3 gap-x-6 gap-y-12 sm:gap-12">
-          <div className="border-l border-accent/40 pl-5 lg:pl-6">
-            <StatBlock value={`${TOTAL_BRAND_COUNT}+`} label="Brand Partners" size="md" />
-          </div>
-          <div className="border-l border-accent/40 pl-5 lg:pl-6">
-            <StatBlock value="5" label="Distributing Ventures" size="md" />
-          </div>
-          <div className="border-l border-accent/40 pl-5 lg:pl-6">
-            <StatBlock value={`${COUNTRY_COUNT}+`} label="Countries of Origin" size="md" />
-          </div>
-        </div>
-      </Section>
+      {/* Stat anchor — hidden */}
 
-      {/* Brands Grouped by Venture */}
+      {/* Brands Grouped by Trading Domain */}
       <Section variant="light">
         <SectionHeader
-          kicker="Organised by Venture"
+          kicker="Organised by Domain"
           title="Quality products from industry leaders."
-          lead="Each CMS Group venture maintains exclusive partnerships with manufacturers in its specialised domain — authentic products with full manufacturer warranty and after-sales support."
+          lead="Each trading domain is served by exclusive partnerships with global manufacturers — authentic products with full manufacturer warranty and after-sales support."
           align="center"
           className="mx-auto"
         />
 
         <div className="mt-14 space-y-10">
-          {VENTURE_ORDER.map((ventureSlug) => (
-            <VentureSection key={ventureSlug} ventureSlug={ventureSlug} />
+          {DOMAIN_ORDER.map((domainSlug) => (
+            <DomainSection key={domainSlug} domainSlug={domainSlug} />
           ))}
         </div>
       </Section>

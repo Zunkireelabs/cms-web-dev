@@ -9,6 +9,8 @@ import { Container } from './Container';
 import { KickerLabel } from './KickerLabel';
 import { cn } from '@/lib/utils';
 
+const BLUR_PLACEHOLDER = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/wAAECAACAAMBIgACEQEDEQH/xAAFAAEAAAAAAAAAAAAAAAAAAAAA/8QAFBABAAAAAAAAAAAAAAAAAAAAAP/EABQBAQAAAAAAAAAAAAAAAAAAAAD/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCwABf/2Q==';
+
 interface CTAProps {
   label: string;
   href: string;
@@ -72,6 +74,8 @@ export function PageHero({
             priority
             sizes="100vw"
             className={`object-cover opacity-90 ${imagePosition}`}
+            placeholder="blur"
+            blurDataURL={BLUR_PLACEHOLDER}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-neutral-charcoal/95 via-neutral-charcoal/60 to-neutral-charcoal/40" />
           <div className="absolute inset-0 bg-gradient-to-r from-neutral-charcoal/80 via-neutral-charcoal/30 to-transparent" />

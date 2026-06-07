@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-import { motion, useInView, useSpring, useTransform } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { PageHero } from '@/components/ui/PageHero';
 import { Section } from '@/components/ui/Section';
 import { SectionHeader } from '@/components/ui/SectionHeader';
@@ -13,7 +13,6 @@ import {
   CERTIFICATIONS_COUNT,
   type Certification,
 } from '@/data/certifications';
-import { CHAIRMAN, DIRECTORS } from '@/data/leadership';
 import { fadeUp, stagger } from '@/lib/motion';
 import {
   Target,
@@ -24,24 +23,24 @@ import {
   Handshake,
   CheckCircle,
   TrendingUp,
-  ScrollText,
   MapPin,
   Calendar,
-  ChevronDown,
   Sparkles,
   Bath,
   Wrench,
   Recycle,
   Boxes,
   Armchair,
-  Factory,
   Building2,
   Globe,
   Layers,
-  Quote,
+  X,
+  ChevronLeft,
+  ChevronRight,
   type LucideIcon,
 } from 'lucide-react';
-type CertificationItem = Certification;
+import { useSpring, useTransform } from 'framer-motion';
+import { useInView } from 'framer-motion';
 
 const FOUNDED_YEAR = 2002;
 const YEARS_IN_BUSINESS = new Date().getFullYear() - FOUNDED_YEAR;
@@ -55,18 +54,17 @@ const COMPANY_STATS: { value: number; suffix: string; label: string; icon: Lucid
 
 const TRUST_PILLARS = [
   'Since 2002',
-  '6 Ventures',
-  '50+ Global Brands',
-  '500+ Projects',
+  'Our Ventures',
+  'Global Brands',
+  'Projects Delivered',
 ];
 
 const STORY_META = [
   { label: 'Founded', value: '2002' },
   { label: 'Head Office', value: 'Kathmandu' },
-  { label: 'Ventures', value: '6' },
 ];
 
-const STORY_SECTORS = ['Hospital', 'Education', 'Airport', 'Office', 'Hotel', 'Residence'];
+const STORY_SECTORS = ['Hospitality', 'Education', 'Airport', 'Office', 'Hotel', 'Residence'];
 
 const MISSION_POINTS = [
   'To deliver end-to-end trading and contracting solutions by combining globally recognized products with precise project execution.',
@@ -172,47 +170,6 @@ const MILESTONES: {
   },
 ];
 
-const CHAIRMAN_QUOTE =
-  'We endeavour to meet the different needs of our esteemed clientele by emphasising integration and complete solutions — setting new standards in the Nepalese market.';
-
-const DIRECTOR_EXPERTISE: Record<string, string[]> = {
-  'Mr. Prashant Agarwal': ['Group Strategy', 'Sustainability', 'Expansion'],
-  'Ms. Rima Lamichhane': ['Client Relations', 'Service Quality', 'Partnerships'],
-  'Mr. Sandeep Goenka': ['Product Strategy', 'Innovation', 'Sustainability'],
-  'Mr. Sumit Agarwal': ['Technology', 'Construction Concepts', 'Global Partners'],
-  'Mr. Sanjeev Goyal': ['Two-Decade Tenure', 'Materials & Services', 'Strategic Growth'],
-  'Mr. Kumud Nepal': ['Product Curation', 'Hotels & Hospitals', 'One-Stop Solutions'],
-  'Mr. Ram Dahal': ['Techwood Operations', 'Modular Furniture', 'Customer Trust'],
-};
-
-const CERTS_PREVIEW_COUNT = 6;
-
-type CertGroupKey = 'distributor' | 'channel' | 'authorisation';
-
-function getCertGroup(cert: CertificationItem): CertGroupKey {
-  const t = cert.type.toLowerCase();
-  if (t.includes('distribut')) return 'distributor';
-  if (t.includes('channel') || t.includes('dealer')) return 'channel';
-  return 'authorisation';
-}
-
-const CERT_GROUP_META: Record<CertGroupKey, { label: string; description: string }> = {
-  distributor: {
-    label: 'Distributorships',
-    description: 'Authorised distributors with exclusive territory rights.',
-  },
-  channel: {
-    label: 'Channel Partners & Dealerships',
-    description: 'Authorised channel partners and dealer network certifications.',
-  },
-  authorisation: {
-    label: 'Authorisations & Letters',
-    description: 'Letters of authority, partnership certificates, and project authorisations.',
-  },
-};
-
-const CERT_GROUP_ORDER: CertGroupKey[] = ['distributor', 'channel', 'authorisation'];
-
 function AnimatedCounter({ value, suffix }: { value: number; suffix: string }) {
   const ref = useRef<HTMLSpanElement>(null);
   const isInView = useInView(ref, { once: true, margin: '-50px' });
@@ -236,22 +193,293 @@ function AnimatedCounter({ value, suffix }: { value: number; suffix: string }) {
   );
 }
 
-export default function AboutPage() {
-  const [showAllCerts, setShowAllCerts] = useState(false);
+function CertCarousel({ onOpen }: { onOpen: (index: number) => void }) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
 
-  // Group certifications
-  const certsByGroup = CERTIFICATIONS.reduce<Record<CertGroupKey, CertificationItem[]>>(
-    (acc, cert) => {
-      const group = getCertGroup(cert);
-      acc[group].push(cert);
-      return acc;
-    },
-    { distributor: [], channel: [], authorisation: [] },
+  const scroll = (dir: 'left' | 'right') => {
+    if (!scrollRef.current) return;
+    const card = scrollRef.current.querySelector('[data-cert-card]') as HTMLElement | null;
+    const amount = card ? card.offsetWidth + 16 : 280;
+    scrollRef.current.scrollBy({ left: dir === 'left' ? -amount : amount, behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const handleScroll = () => {
+      const card = el.querySelector('[data-cert-card]') as HTMLElement | null;
+      const cardWidth = card ? card.offsetWidth + 16 : 280;
+      const index = Math.round(el.scrollLeft / cardWidth);
+      setActiveIndex(Math.min(index, CERTIFICATIONS.length - 1));
+    };
+    el.addEventListener('scroll', handleScroll, { passive: true });
+    return () => el.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  return (
+    <Section variant="soft" id="associations">
+      <div className="flex flex-wrap items-end justify-between gap-4 mb-10">
+        <div>
+          <SectionHeader
+            kicker="Our Associations"
+            title="Authorised distribution across our global brands."
+            lead="Every brand we represent is backed by a current dealership, channel-partner, or distributorship certificate."
+          />
+        </div>
+        <div className="flex items-center gap-2 shrink-0">
+          <button
+            onClick={() => scroll('left')}
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-neutral-200 bg-white text-neutral-600 shadow-sm transition-colors hover:border-accent/40 hover:text-accent"
+            aria-label="Previous"
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </button>
+          <button
+            onClick={() => scroll('right')}
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-neutral-200 bg-white text-neutral-600 shadow-sm transition-colors hover:border-accent/40 hover:text-accent"
+            aria-label="Next"
+          >
+            <ChevronRight className="h-4 w-4" />
+          </button>
+        </div>
+      </div>
+
+      {/* Horizontal scroll track */}
+      <div
+        ref={scrollRef}
+        className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory"
+        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+      >
+        {CERTIFICATIONS.map((cert, index) => (
+          <div
+            key={cert.id}
+            data-cert-card
+            onClick={() => onOpen(index)}
+            className="group shrink-0 w-60 cursor-pointer overflow-hidden rounded-xl border border-neutral-200 bg-white snap-start transition-all hover:-translate-y-1 hover:shadow-lg"
+          >
+            {/* Certificate image */}
+            <div className="relative h-44 overflow-hidden bg-neutral-100">
+              {cert.scanImage ? (
+                <>
+                  <Image
+                    src={cert.scanImage}
+                    alt={`${cert.brand} certificate`}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                    sizes="240px"
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/0 transition-colors duration-200 group-hover:bg-black/25">
+                    <span className="rounded-full bg-white/90 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-neutral-700 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                      View certificate
+                    </span>
+                  </div>
+                </>
+              ) : (
+                <div className="flex h-full w-full items-center justify-center">
+                  <Building2 className="h-10 w-10 text-neutral-300" strokeWidth={1} />
+                </div>
+              )}
+              {cert.country && (
+                <div className="absolute right-2 top-2 flex items-center gap-1 rounded-full bg-white/90 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wider text-neutral-600 shadow-sm">
+                  <MapPin className="h-2.5 w-2.5 text-accent" strokeWidth={1.5} />
+                  {cert.country}
+                </div>
+              )}
+            </div>
+
+            {/* Card body */}
+            <div className="p-4">
+              <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-accent">
+                {cert.type}
+              </p>
+              <h4 className="mt-0.5 font-display text-sm font-bold leading-tight text-neutral-charcoal transition-colors group-hover:text-accent">
+                {cert.brand}
+              </h4>
+              <p className="mt-1.5 line-clamp-2 text-[11px] leading-relaxed text-neutral-500">
+                {cert.scope}
+              </p>
+              <div className="mt-2.5 flex items-center gap-1 border-t border-neutral-100 pt-2.5 text-[10px] text-neutral-400">
+                <Calendar className="h-3 w-3 text-accent" strokeWidth={1.5} />
+                <span className="truncate">
+                  {cert.validUntil
+                    ? `Valid till ${cert.validUntil}`
+                    : cert.issued ?? cert.validFrom ?? ''}
+                </span>
+              </div>
+            </div>
+            <div className="h-0.5 w-0 bg-accent transition-all duration-300 group-hover:w-full" />
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-6 flex items-center justify-center gap-1.5">
+        {CERTIFICATIONS.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => {
+              const card = scrollRef.current?.querySelector('[data-cert-card]') as HTMLElement | null;
+              const cardWidth = card ? card.offsetWidth + 16 : 280;
+              scrollRef.current?.scrollTo({ left: i * cardWidth, behavior: 'smooth' });
+            }}
+            className={`h-1.5 rounded-full transition-all duration-300 ${
+              i === activeIndex ? 'w-4 bg-accent' : 'w-1.5 bg-neutral-300 hover:bg-neutral-400'
+            }`}
+            aria-label={`Go to ${CERTIFICATIONS[i].brand}`}
+          />
+        ))}
+      </div>
+    </Section>
   );
+}
 
-  const visibleCertCount = showAllCerts ? CERTIFICATIONS.length : CERTS_PREVIEW_COUNT;
-  let runningCount = 0;
-  const chairmanBioParas = CHAIRMAN.bio.split('\n\n');
+function CertLightbox({
+  certs,
+  index,
+  onClose,
+  onPrev,
+  onNext,
+}: {
+  certs: Certification[];
+  index: number;
+  onClose: () => void;
+  onPrev: () => void;
+  onNext: () => void;
+}) {
+  const cert = certs[index];
+
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+      if (e.key === 'ArrowLeft') onPrev();
+      if (e.key === 'ArrowRight') onNext();
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [onClose, onPrev, onNext]);
+
+  return (
+    <AnimatePresence>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        onClick={onClose}
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm"
+      >
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.95 }}
+          transition={{ duration: 0.2 }}
+          onClick={(e) => e.stopPropagation()}
+          className="relative flex w-full max-w-4xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl lg:flex-row"
+        >
+          {/* Close */}
+          <button
+            onClick={onClose}
+            className="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-black/60 text-white transition-colors hover:bg-black/80"
+          >
+            <X className="h-4 w-4" />
+          </button>
+
+          {/* Counter */}
+          <div className="absolute left-4 top-4 z-10 rounded-full bg-black/60 px-3 py-1 text-xs font-semibold text-white">
+            {index + 1} / {certs.length}
+          </div>
+
+          {/* Image */}
+          <div className="relative min-h-[260px] w-full bg-neutral-100 lg:w-1/2 lg:min-h-[480px]">
+            {cert.scanImage ? (
+              <Image
+                src={cert.scanImage}
+                alt={`${cert.brand} certificate`}
+                fill
+                className="object-contain p-4"
+              />
+            ) : (
+              <div className="flex h-full w-full items-center justify-center">
+                <Building2 className="h-16 w-16 text-neutral-300" strokeWidth={1} />
+              </div>
+            )}
+          </div>
+
+          {/* Details */}
+          <div className="flex flex-1 flex-col justify-center p-7 lg:p-10">
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-accent">
+              {cert.type}
+            </p>
+            <h3 className="mt-2 font-display text-2xl font-bold leading-tight text-neutral-charcoal lg:text-3xl">
+              {cert.brand}
+            </h3>
+            <p className="mt-4 text-sm leading-relaxed text-neutral-600">{cert.scope}</p>
+            <div className="mt-6 space-y-2 border-t border-neutral-100 pt-5">
+              <div className="flex items-center gap-2 text-xs text-neutral-500">
+                <MapPin className="h-3.5 w-3.5 text-accent" strokeWidth={1.5} />
+                <span>{cert.holder}</span>
+              </div>
+              {cert.country && (
+                <div className="flex items-center gap-2 text-xs text-neutral-500">
+                  <Globe className="h-3.5 w-3.5 text-accent" strokeWidth={1.5} />
+                  <span>{cert.country}</span>
+                </div>
+              )}
+              {(cert.validUntil || cert.issued) && (
+                <div className="flex items-center gap-2 text-xs text-neutral-500">
+                  <Calendar className="h-3.5 w-3.5 text-accent" strokeWidth={1.5} />
+                  <span>
+                    {cert.validUntil ? `Valid till ${cert.validUntil}` : cert.issued}
+                  </span>
+                </div>
+              )}
+            </div>
+
+            {/* Nav buttons */}
+            <div className="mt-8 flex items-center gap-3">
+              <button
+                onClick={onPrev}
+                disabled={index === 0}
+                className="flex items-center gap-1.5 rounded-lg border border-neutral-200 px-4 py-2 text-xs font-semibold text-neutral-600 transition-colors hover:border-accent/40 hover:text-accent disabled:pointer-events-none disabled:opacity-30"
+              >
+                <ChevronLeft className="h-3.5 w-3.5" />
+                {index > 0 ? certs[index - 1].brand : 'Previous'}
+              </button>
+              <button
+                onClick={onNext}
+                disabled={index === certs.length - 1}
+                className="flex items-center gap-1.5 rounded-lg border border-neutral-200 px-4 py-2 text-xs font-semibold text-neutral-600 transition-colors hover:border-accent/40 hover:text-accent disabled:pointer-events-none disabled:opacity-30"
+              >
+                {index < certs.length - 1 ? certs[index + 1].brand : 'Next'}
+                <ChevronRight className="h-3.5 w-3.5" />
+              </button>
+            </div>
+          </div>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
+  );
+}
+
+export default function AboutPage() {
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+
+  const openLightbox = useCallback((idx: number) => {
+    document.body.style.overflow = 'hidden';
+    setLightboxIndex(idx);
+  }, []);
+
+  const closeLightbox = useCallback(() => {
+    document.body.style.overflow = '';
+    setLightboxIndex(null);
+  }, []);
+
+  const prevCert = useCallback(() => {
+    setLightboxIndex((i) => (i !== null && i > 0 ? i - 1 : i));
+  }, []);
+
+  const nextCert = useCallback(() => {
+    setLightboxIndex((i) => (i !== null && i < CERTIFICATIONS.length - 1 ? i + 1 : i));
+  }, []);
 
   return (
     <>
@@ -264,7 +492,7 @@ export default function AboutPage() {
         size="tall"
       />
 
-      {/* Trust strip directly below hero */}
+      {/* Trust strip */}
       <section className="border-b border-neutral-200 bg-white py-5 lg:py-6">
         <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-center gap-x-6 gap-y-3 px-4 sm:gap-x-10">
           {TRUST_PILLARS.map((pillar, idx) => (
@@ -280,47 +508,10 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Stats anchor — animated counters with icons */}
-      <Section variant="soft" compact>
-        <div className="mx-auto max-w-3xl text-center">
-          <div className="flex justify-center">
-            <KickerLabel>By the numbers</KickerLabel>
-          </div>
-          <p className="mt-5 text-base leading-relaxed text-neutral-600 sm:text-lg">
-            Twenty-three years of compounding scale — across ventures, partners, projects,
-            and sectors served.
-          </p>
-        </div>
+      {/* Stats — hidden */}
+      {/* <Section variant="soft" compact>...</Section> */}
 
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-80px' }}
-          variants={stagger}
-          className="mt-12 grid grid-cols-2 gap-x-6 gap-y-12 lg:grid-cols-4 lg:gap-12"
-        >
-          {COMPANY_STATS.map((stat, idx) => (
-            <motion.div
-              key={stat.label}
-              variants={fadeUp}
-              custom={idx * 0.06}
-              className="border-l border-accent/40 pl-5 lg:pl-6"
-            >
-              <div className="mb-4 flex h-9 w-9 items-center justify-center rounded-lg bg-accent-50 text-accent">
-                <stat.icon className="h-4 w-4" strokeWidth={1.75} />
-              </div>
-              <div className="font-display text-4xl font-bold leading-none tracking-tight text-neutral-charcoal tabular-nums sm:text-5xl lg:text-6xl">
-                <AnimatedCounter value={stat.value} suffix={stat.suffix} />
-              </div>
-              <div className="mt-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-accent sm:text-xs">
-                {stat.label}
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
-      </Section>
-
-      {/* Story — magazine-style with framed photo */}
+      {/* Story */}
       <Section variant="light">
         <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
           <motion.div
@@ -342,8 +533,7 @@ export default function AboutPage() {
               professionalism, and customer satisfaction across the construction sector.
             </p>
 
-            {/* Tight 3-col meta strip */}
-            <dl className="mt-8 grid grid-cols-3 gap-4 rounded-xl border border-neutral-200 bg-neutral-50 p-5">
+            <dl className="mt-8 grid grid-cols-2 gap-4 rounded-xl border border-neutral-200 bg-neutral-50 p-5">
               {STORY_META.map((item) => (
                 <div key={item.label} className="border-l-2 border-accent/40 pl-4">
                   <dt className="text-[10px] font-semibold uppercase tracking-[0.18em] text-accent">
@@ -356,7 +546,6 @@ export default function AboutPage() {
               ))}
             </dl>
 
-            {/* Sectors as inline pill chips */}
             <div className="mt-5">
               <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-accent">
                 Sectors served
@@ -375,12 +564,11 @@ export default function AboutPage() {
 
             <p className="mt-8 text-base leading-relaxed text-neutral-600 sm:text-lg">
               The group spans six associated ventures — Bath N Room, Baba Muktinath
-              Fabricators, 4R Technologies, Cubic Meter, Techwood, and Prime Ceramics —
+              Fabricators, 4R Technologies, Techwood, Prime Ceramics, and Cubic Meter —
               delivering integrated solutions across the country.
             </p>
           </motion.div>
 
-          {/* Photo with offset accent rectangle, top caption, and floating badge */}
           <motion.div
             initial="hidden"
             whileInView="visible"
@@ -389,7 +577,6 @@ export default function AboutPage() {
             custom={0.1}
             className="relative lg:col-span-6"
           >
-            {/* Offset accent rectangle peeking from behind */}
             <div className="absolute -right-3 -top-3 hidden h-full w-full rounded-2xl border-2 border-accent/30 lg:block" />
 
             <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-neutral-100 shadow-2xl">
@@ -400,43 +587,13 @@ export default function AboutPage() {
                 sizes="(max-width: 1024px) 100vw, 600px"
                 className="object-cover"
               />
-
-              {/* Top caption — visible immediately on first paint */}
-              <div className="absolute inset-x-0 top-0 bg-gradient-to-b from-neutral-charcoal/90 via-neutral-charcoal/40 to-transparent p-6 lg:p-7">
-                <span className="inline-flex items-center gap-2 rounded-full bg-accent px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow-sm">
-                  Featured Project
-                </span>
-                <p className="mt-3 font-display text-lg font-bold leading-tight text-white lg:text-xl">
-                  Nepal Rastra Bank — Thapathali
-                </p>
-              </div>
-
-              {/* Bottom scope strip */}
-              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-neutral-charcoal/90 via-neutral-charcoal/40 to-transparent p-6 lg:p-7">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-accent">
-                  Scope
-                </p>
-                <p className="mt-1.5 text-sm leading-relaxed text-white/85">
-                  1.5 lakh sq.ft BKB parquet flooring · Armstrong ceiling · Dormakaba
-                  hardware
-                </p>
-              </div>
             </div>
 
-            {/* Floating "Years Strong" stat card */}
-            <div className="absolute -bottom-6 -left-4 z-10 rounded-2xl border border-neutral-200 bg-white px-6 py-5 shadow-xl lg:-left-6">
-              <p className="font-display text-4xl font-bold leading-none tracking-tight text-accent tabular-nums">
-                {YEARS_IN_BUSINESS}+
-              </p>
-              <p className="mt-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-neutral-500">
-                Years Strong
-              </p>
-            </div>
           </motion.div>
         </div>
       </Section>
 
-      {/* Mission & Vision — symmetric (both 3 bullets) */}
+      {/* Mission & Vision */}
       <Section variant="soft">
         <SectionHeader
           kicker="Direction"
@@ -453,7 +610,6 @@ export default function AboutPage() {
           variants={stagger}
           className="mt-14 grid gap-6 lg:grid-cols-2"
         >
-          {/* Mission */}
           <motion.div
             variants={fadeUp}
             custom={0}
@@ -480,7 +636,6 @@ export default function AboutPage() {
             </div>
           </motion.div>
 
-          {/* Vision */}
           <motion.div
             variants={fadeUp}
             custom={0.1}
@@ -509,7 +664,7 @@ export default function AboutPage() {
         </motion.div>
       </Section>
 
-      {/* Core Values — prominent numerals + hover "in practice" reveal */}
+      {/* Core Values */}
       <Section variant="light">
         <SectionHeader
           kicker="What Drives Us"
@@ -559,7 +714,7 @@ export default function AboutPage() {
         </motion.div>
       </Section>
 
-      {/* Milestones — DARK reset, with year-watermarks + per-milestone icons */}
+      {/* Milestones */}
       <Section variant="dark">
         <SectionHeader
           kicker="Our Journey"
@@ -589,7 +744,6 @@ export default function AboutPage() {
                     isLeft ? 'lg:flex-row' : 'lg:flex-row-reverse'
                   }`}
                 >
-                  {/* Card */}
                   <div className={`flex-1 ${isLeft ? 'lg:pr-14 lg:text-right' : 'lg:pl-14'}`}>
                     <div
                       className={`rounded-xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm lg:max-w-md ${
@@ -629,10 +783,8 @@ export default function AboutPage() {
                     </div>
                   </div>
 
-                  {/* Dot */}
                   <div className="absolute left-4 top-6 flex h-3 w-3 -translate-x-1/2 items-center justify-center rounded-full bg-accent ring-4 ring-neutral-charcoal lg:left-1/2 lg:top-auto" />
 
-                  {/* Year watermark on empty side (desktop only) */}
                   <div
                     className={`hidden flex-1 lg:flex ${
                       isLeft ? 'lg:pl-14' : 'lg:pr-14 lg:justify-end'
@@ -649,300 +801,20 @@ export default function AboutPage() {
         </div>
       </Section>
 
-      {/* Leadership — Chairman hero + 3-col directors with expertise chips */}
-      <Section variant="light" id="leadership">
-        <SectionHeader
-          kicker="Leadership"
-          title="The team steering CMS Group."
-          lead="Chairman and six directors steering the group across trading, contracting, and manufacturing."
-          align="center"
-          className="mx-auto"
+      {/* Associations — horizontal certificate carousel + lightbox */}
+      <CertCarousel onOpen={openLightbox} />
+
+
+      {/* Lightbox */}
+      {lightboxIndex !== null && (
+        <CertLightbox
+          certs={CERTIFICATIONS}
+          index={lightboxIndex}
+          onClose={closeLightbox}
+          onPrev={prevCert}
+          onNext={nextCert}
         />
-
-        {/* Tier 1 — Chairman hero */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-100px' }}
-          variants={fadeUp}
-          custom={0}
-          className="mt-16 overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-card-hover"
-        >
-          <div className="grid lg:grid-cols-5">
-
-            {/* Photo column — clean white so cutout portrait blends seamlessly */}
-            <div className="relative lg:col-span-2 bg-white border-b border-neutral-100 lg:border-b-0 lg:border-r lg:border-neutral-200">
-
-              {/* Accent top bar */}
-              <div className="absolute top-0 left-0 right-0 h-1 bg-accent z-10" />
-
-              {/* Portrait — sits at bottom of column */}
-              <div className="relative aspect-[3/4] lg:aspect-auto lg:absolute lg:inset-0 flex items-end justify-center overflow-hidden">
-                {CHAIRMAN.photo ? (
-                  <Image
-                    src={CHAIRMAN.photo}
-                    alt={CHAIRMAN.name}
-                    fill
-                    sizes="(max-width: 1024px) 100vw, 40vw"
-                    className="object-contain object-bottom"
-                  />
-                ) : (
-                  <div className="flex h-full w-full items-center justify-center">
-                    <Users className="h-16 w-16 text-accent/40" strokeWidth={1.25} />
-                  </div>
-                )}
-                {/* Bottom fade so portrait blends into the card */}
-                <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-white to-transparent" />
-              </div>
-
-              {/* Chairman badge — bottom of column */}
-              <div className="absolute bottom-5 left-0 right-0 z-20 flex justify-center">
-                <span className="inline-block rounded-full bg-accent px-4 py-1.5 text-[11px] font-bold uppercase tracking-wider text-white shadow-md">
-                  Chairman · CMS Group
-                </span>
-              </div>
-            </div>
-
-            {/* Content column */}
-            <div className="flex flex-col gap-0 p-8 lg:col-span-3 lg:p-12 lg:pt-10 lg:pb-10">
-
-              <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-accent">
-                {CHAIRMAN.title} · {CHAIRMAN.company}
-              </p>
-              <h3 className="mt-2 font-display text-2xl font-bold leading-tight tracking-tight text-neutral-charcoal sm:text-3xl lg:text-4xl">
-                {CHAIRMAN.name}
-              </h3>
-
-              {/* Credential strip */}
-              <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-1.5 text-xs text-neutral-500">
-                <span className="flex items-center gap-1.5">
-                  <span className="h-1.5 w-1.5 rounded-full bg-accent shrink-0" />
-                  Founded CMS Group, 2002
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <span className="h-1.5 w-1.5 rounded-full bg-accent shrink-0" />
-                  {new Date().getFullYear() - 2002}+ Years of Leadership
-                </span>
-              </div>
-
-              {/* Expertise chips */}
-              <div className="mt-4 flex flex-wrap gap-2">
-                {(DIRECTOR_EXPERTISE[CHAIRMAN.name] ?? []).map((tag) => (
-                  <span
-                    key={tag}
-                    className="inline-flex items-center rounded-full border border-accent/20 bg-accent-50 px-3 py-1 text-[11px] font-semibold text-accent"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-
-              {/* Bio */}
-              <p className="mt-5 text-sm leading-relaxed text-neutral-600 sm:text-base">
-                {chairmanBioParas[0]}
-              </p>
-
-              {/* Divider */}
-              <div className="mt-6 h-px w-12 bg-accent/40" />
-
-              {/* Pull-quote */}
-              <div className="mt-5 relative">
-                <Quote className="absolute -top-2 -left-1 h-8 w-8 text-accent/15" strokeWidth={1} />
-                <blockquote className="pl-4 border-l-2 border-accent font-display text-base font-bold leading-snug tracking-tight text-neutral-charcoal sm:text-lg lg:text-xl">
-                  &ldquo;{CHAIRMAN_QUOTE}&rdquo;
-                </blockquote>
-              </div>
-
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Tier 2 — Directors grid */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-80px' }}
-          variants={stagger}
-          className="mt-12 grid gap-6 grid-cols-2 lg:grid-cols-3"
-        >
-          {DIRECTORS.map((member, index) => (
-            <motion.div
-              key={member.name}
-              variants={fadeUp}
-              custom={index * 0.04}
-              className="group overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-card-hover"
-            >
-              {/* Photo */}
-              <div className="relative aspect-[3/4] overflow-hidden bg-neutral-100">
-                {member.photo ? (
-                  <Image
-                    src={member.photo}
-                    alt={member.name}
-                    fill
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.04]"
-                  />
-                ) : (
-                  <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-accent-50 to-neutral-100">
-                    <Users className="h-12 w-12 text-accent/40" strokeWidth={1.25} />
-                  </div>
-                )}
-              </div>
-
-              {/* Card body */}
-              <div className="p-5">
-                <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-accent">
-                  {member.title} · {member.company}
-                </p>
-                <h4 className="mt-1.5 font-display text-lg font-bold leading-tight text-neutral-charcoal">
-                  {member.name}
-                </h4>
-
-                {/* Expertise chips */}
-                {DIRECTOR_EXPERTISE[member.name] && (
-                  <div className="mt-3 flex flex-wrap gap-1.5">
-                    {DIRECTOR_EXPERTISE[member.name].slice(0, 3).map((tag) => (
-                      <span
-                        key={tag}
-                        className="inline-block rounded-full border border-accent/20 bg-accent-50 px-2.5 py-0.5 text-[10px] font-semibold text-accent"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                )}
-
-                <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-neutral-600">
-                  {member.summary ?? member.bio.split('.')[0] + '.'}
-                </p>
-              </div>
-
-              {/* Accent bottom bar on hover */}
-              <div className="h-0.5 w-0 bg-accent transition-all duration-300 group-hover:w-full" />
-            </motion.div>
-          ))}
-        </motion.div>
-      </Section>
-
-      {/* Associations — Grouped by certification type */}
-      <Section variant="soft" id="associations">
-        <SectionHeader
-          kicker="Our Associations"
-          title={`Authorised distribution across ${CERTIFICATIONS_COUNT} global brands.`}
-          lead="Every brand we represent is backed by a current dealership, channel-partner, or distributorship certificate — authentic products with full manufacturer warranty and after-sales support."
-          align="center"
-          className="mx-auto"
-        />
-
-        <div className="mt-14 space-y-12">
-          {CERT_GROUP_ORDER.map((groupKey) => {
-            const groupCerts = certsByGroup[groupKey];
-            if (groupCerts.length === 0) return null;
-
-            // Slice based on running cap
-            const remaining = visibleCertCount - runningCount;
-            if (remaining <= 0) return null;
-            const visibleInGroup = showAllCerts
-              ? groupCerts
-              : groupCerts.slice(0, remaining);
-            runningCount += visibleInGroup.length;
-
-            const meta = CERT_GROUP_META[groupKey];
-
-            return (
-              <div key={groupKey}>
-                <div className="mb-6 flex flex-wrap items-baseline justify-between gap-3 border-b border-neutral-200 pb-4">
-                  <div>
-                    <h3 className="font-display text-xl font-bold leading-tight text-neutral-charcoal sm:text-2xl">
-                      {meta.label}
-                    </h3>
-                    <p className="mt-1 text-sm text-neutral-500">{meta.description}</p>
-                  </div>
-                  <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-accent">
-                    {groupCerts.length} {groupCerts.length === 1 ? 'partner' : 'partners'}
-                  </span>
-                </div>
-
-                <motion.div
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, margin: '-80px' }}
-                  variants={stagger}
-                  className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
-                >
-                  {visibleInGroup.map((cert, index) => (
-                    <motion.div
-                      key={cert.id}
-                      variants={fadeUp}
-                      custom={index * 0.03}
-                      className="group relative rounded-xl border border-neutral-200 bg-white p-6 transition-all hover:-translate-y-1 hover:shadow-lg"
-                    >
-                      <div className="flex items-start justify-between gap-3">
-                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-accent-50 text-accent">
-                          <ScrollText className="h-5 w-5" strokeWidth={1.5} />
-                        </div>
-                        {cert.country && (
-                          <span className="inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wider text-neutral-400">
-                            <MapPin className="h-3 w-3" strokeWidth={1.5} />
-                            {cert.country}
-                          </span>
-                        )}
-                      </div>
-                      <h4 className="mt-4 font-display text-lg font-bold leading-tight text-neutral-charcoal">
-                        {cert.brand}
-                      </h4>
-                      <p className="mt-1 text-xs font-semibold uppercase tracking-wider text-accent">
-                        {cert.type}
-                      </p>
-                      <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-neutral-600">
-                        {cert.scope}
-                      </p>
-                      <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-neutral-100 pt-4">
-                        <span className="inline-flex items-center gap-1 text-[11px] text-neutral-500">
-                          <CheckCircle className="h-3 w-3 text-accent" strokeWidth={1.5} />
-                          {cert.holder}
-                        </span>
-                        {(cert.validFrom || cert.validUntil || cert.issued) && (
-                          <span className="inline-flex items-center gap-1 text-[11px] text-neutral-400">
-                            <Calendar className="h-3 w-3" strokeWidth={1.5} />
-                            {cert.validUntil
-                              ? `Valid till ${cert.validUntil}`
-                              : cert.issued ?? cert.validFrom}
-                          </span>
-                        )}
-                      </div>
-                      <div className="absolute bottom-0 left-0 h-0.5 w-0 bg-accent transition-all duration-300 group-hover:w-full" />
-                    </motion.div>
-                  ))}
-                </motion.div>
-              </div>
-            );
-          })}
-        </div>
-
-        {!showAllCerts && CERTIFICATIONS_COUNT > CERTS_PREVIEW_COUNT && (
-          <div className="mt-12 text-center">
-            <button
-              type="button"
-              onClick={() => setShowAllCerts(true)}
-              className="inline-flex items-center gap-2 rounded-lg border border-neutral-300 px-6 py-3 text-sm font-semibold uppercase tracking-wider text-neutral-charcoal transition-colors hover:border-accent/40 hover:bg-accent-50 hover:text-accent"
-            >
-              Show all {CERTIFICATIONS_COUNT} certifications
-              <ChevronDown className="h-4 w-4" />
-            </button>
-          </div>
-        )}
-
-        <div className="mt-12 text-center">
-          <p className="text-sm text-neutral-500">
-            Joint-Venture Manufacturing Partner with{' '}
-            <span className="font-semibold text-neutral-700">
-              Fortune Ventures Pvt. Ltd.
-            </span>{' '}
-            — Prime Ceramics tile manufacturing in Nepal.
-          </p>
-        </div>
-      </Section>
+      )}
 
       <ContactCTA />
     </>

@@ -210,9 +210,6 @@ export default function NewsroomPage() {
               }`}
             >
               All Events
-              <span className="ml-1.5 text-xs opacity-70">
-                ({EVENTS.filter((e) => !e.featured).length})
-              </span>
             </button>
             {categoryEntries.map(({ value, label }) => {
               const count = EVENTS.filter((e) => !e.featured && e.category === value).length;
@@ -228,7 +225,6 @@ export default function NewsroomPage() {
                   }`}
                 >
                   {label}
-                  <span className="ml-1.5 text-xs opacity-70">({count})</span>
                 </button>
               );
             })}

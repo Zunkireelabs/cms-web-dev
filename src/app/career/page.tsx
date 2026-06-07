@@ -90,36 +90,46 @@ const WHY_WORK_WITH_US = [
 
 const CURRENT_OPENINGS = [
   {
-    title: 'Sales Executive — Sanitaryware & Tiles',
-    department: 'Bath N Room',
+    title: 'Senior Marketing Manager',
     location: 'Kathmandu, Nepal',
     type: 'Full-time',
     description:
-      'Build client relationships across hospitality, residential, and institutional projects — distributing Grohe, Duravit, RAK, American Standard, and more.',
+      'Lead marketing strategy and brand development across CMS Group divisions — driving awareness, client engagement, and business growth through integrated campaigns.',
   },
   {
-    title: 'Site Supervisor — Interior Contracting',
-    department: 'Cubic Meter',
+    title: 'Site Supervisor',
     location: 'Kathmandu, Nepal',
     type: 'Full-time',
     description:
-      'Oversee on-site execution of interior fit-out projects from material delivery through commissioning, ensuring quality and timeline adherence.',
+      'Oversee on-site execution of construction and interior fit-out projects from material delivery through commissioning, ensuring quality and timeline adherence.',
   },
   {
-    title: 'Technical Specialist — Building Systems',
-    department: 'Baba Muktinath Fabricators',
+    title: 'Sales Executive',
     location: 'Kathmandu, Nepal',
     type: 'Full-time',
     description:
-      'Specify and support installation of roofing, ceilings, doors, hardware, and façade systems from international partners.',
+      'Build and manage client relationships across residential, commercial, and institutional projects — representing premium international brands and delivering tailored solutions.',
   },
   {
-    title: 'Project Engineer — Water & Wastewater',
-    department: '4R Technologies',
+    title: 'Marketing Executive',
     location: 'Kathmandu, Nepal',
     type: 'Full-time',
     description:
-      'Design and commission STP / ETP plants, water storage, and pool systems — Sintex, Pentair, Kingspan Rhino, Oase product lines.',
+      'Support marketing initiatives across digital and traditional channels — coordinating campaigns, events, and brand communications to strengthen CMS Group\'s market presence.',
+  },
+  {
+    title: 'Project Manager',
+    location: 'Kathmandu, Nepal',
+    type: 'Full-time',
+    description:
+      'Plan, coordinate, and deliver projects on time and within budget — managing cross-functional teams, contractors, and stakeholder communications from inception to handover.',
+  },
+  {
+    title: 'Admin Executive',
+    location: 'Kathmandu, Nepal',
+    type: 'Full-time',
+    description:
+      'Provide operational and administrative support across departments — managing documentation, scheduling, vendor coordination, and day-to-day office functions.',
   },
 ];
 
@@ -219,7 +229,7 @@ export default function CareerPage() {
         <SectionHeader
           kicker="Join Our Team"
           title="Roles we recruit for."
-          lead="Representative positions across our six ventures — submit your CV below and we'll match you to current openings."
+          lead="Representative positions across our teams — submit your CV below and we'll match you to current openings."
           align="center"
           className="mx-auto"
         />
@@ -245,9 +255,6 @@ export default function CareerPage() {
                       <h3 className="font-display text-lg font-bold leading-tight text-neutral-charcoal transition-colors group-hover:text-accent sm:text-xl">
                         {job.title}
                       </h3>
-                      <p className="mt-1 text-xs font-semibold uppercase tracking-[0.18em] text-accent">
-                        {job.department}
-                      </p>
                     </div>
                   </div>
                   <p className="mt-4 text-sm leading-relaxed text-neutral-600">
@@ -538,7 +545,6 @@ export default function CareerPage() {
         </div>
       </Section>
 
-      <ContactCTA />
     </>
   );
 }
