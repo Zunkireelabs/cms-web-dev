@@ -32,19 +32,19 @@ interface Product {
 }
 
 const PRODUCTS: Product[] = [
-  { title: 'Roofing Systems', icon: Home, image: 'https://www.iko.com/na/wp-content/uploads/2024/05/RGB-0186_IKO_NRDC_SHGL_HOME_FRGY_DJI_0186.webp', link: '/trading/roofing' },
-  { title: 'Facade Solutions', icon: Building, image: 'https://www.hunterdouglasgroup.com/wp-content/uploads/2015/01/architecture-thumb-320x321-copy-320x321.jpg', link: '/trading/facade-solutions' },
-  { title: 'Ceiling Systems', icon: Layers, image: 'https://ap.hunterdouglas.asia/cms/imgs/approduct/wood-ceiling.jpg', link: '/trading/ceiling-systems' },
-  { title: 'Aluminium Doors & Windows', icon: Building2, image: 'https://image-apac.archify.com/catalog/supplier_updates/l/52_6yagx6g7.jpg', link: '/trading/aluminum-doors-windows' },
-  { title: 'Wood & Glass Coating', icon: PaintBucket, image: 'https://i.pinimg.com/1200x/d7/05/d9/d705d9c2fbc5645f050e05b3424cb0d6.jpg', link: '/trading/wood-glass-metal-coating' },
-  { title: 'Door Hardware & Accessories', icon: Lock, image: 'https://dormakaba-res.cloudinary.com/image/upload/t_prod-category-teasers/f_auto,q_auto/v1745406094/dormakaba-prod/1674040054-rt-plus-lh--2--jpgedit.jpg', link: '/trading/door-hardware' },
-  { title: 'Architectural Railings', icon: Fence, image: 'https://betterhomeapp.com/cdn/shop/files/GLRA0002-Zolon-Glass-Staircase-Balcony-Railing-Better-Home-2_grande.jpg?v=1713608644', link: '/trading/architectural-railings' },
+  { title: 'Roofing Systems', icon: Home, image: '/images/products/product-roofing.jpg', link: '/trading/roofing' },
+  { title: 'Facade Solutions', icon: Building, image: '/images/products/product-facade-new.jpg', link: '/trading/facade-solutions' },
+  { title: 'Ceiling Systems', icon: Layers, image: '/images/products/product-ceiling-new.jpg', link: '/trading/ceiling-systems' },
+  { title: 'Aluminium Doors & Windows', icon: Building2, image: '/images/products/product-aluminium-new.jpg', link: '/trading/aluminum-doors-windows' },
+  { title: 'Wood & Glass Coating', icon: PaintBucket, image: '/images/products/product-coating-new.jpg', link: '/trading/wood-glass-metal-coating' },
+  { title: 'Door Hardware & Accessories', icon: Lock, image: '/images/products/product-door-hardware-new.jpg', link: '/trading/door-hardware' },
+  { title: 'Architectural Railings', icon: Fence, image: '/images/products/product-railings.jpg', link: '/trading/architectural-railings' },
   { title: 'Waterproofing Systems', icon: Droplets, image: '/images/products/product-waterproofing.jpg', link: '/trading/waterproofing' },
   { title: 'Wastewater Management', icon: Trash2, image: '/images/products/product-wastewater.jpg', link: '/trading/wastewater-management' },
-  { title: 'Sanitaryware', icon: Bath, image: 'https://danubetoilet.com/wp-content/uploads/2024/10/What-Is-Sanitary-Ware.png', link: '/trading/sanitaryware' },
+  { title: 'Sanitaryware', icon: Bath, image: '/images/products/product-sanitaryware.jpg', link: '/trading/sanitaryware' },
   { title: 'Flooring', icon: Footprints, image: '/images/products/flooring-new.jpg', link: '/trading/flooring' },
   { title: 'Fire Rated Doors', icon: ShieldAlert, image: '/images/products/fire-rated-doors-new.jpg', link: '/trading/fire-rated-doors' },
-  { title: 'Office Furnitures', icon: Sofa, image: 'https://images.jdmagicbox.com/quickquotes/images_main/rectangular-wooden-modular-office-furniture-2220097149-f7jqlnv5.jpg', link: '/trading/office-furnitures' },
+  { title: 'Office Furnitures', icon: Sofa, image: '/images/products/product-office-furniture-new.jpg', link: '/trading/office-furnitures' },
 ];
 
 function ProductCard({ product, index }: { product: Product; index: number }) {
