@@ -6,6 +6,7 @@ import { SectionHeader } from '@/components/ui/SectionHeader';
 import { ContentCard } from '@/components/ui/ContentCard';
 import { ContactCTA } from '@/components/sections';
 import { PROJECTS } from '@/data/projects';
+import { getProjectImageSrc } from '@/lib/project-image';
 import { SECTORS } from '@/data/sectors';
 import { ArrowRight, Hammer, HardHat, Leaf } from 'lucide-react';
 
@@ -135,7 +136,7 @@ export default function ContractingPage() {
           {FEATURED_PROJECTS.map((project) => (
             <ContentCard
               key={project.id}
-              image={project.image}
+              image={getProjectImageSrc(project)}
               imageAlt={project.title}
               title={project.title}
               description={project.description}

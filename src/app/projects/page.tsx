@@ -28,14 +28,7 @@ import {
   ArrowRight,
 } from 'lucide-react';
 
-const SECTOR_IMAGES: Record<string, string> = {
-  office: '/images/projects/office.jpg',
-  hospitality: '/images/projects/hospitality.jpg',
-  airports: '/images/projects/airport.jpg',
-  healthcare: '/images/projects/healthcare.jpg',
-  education: '/images/projects/education.jpg',
-  residential: '/images/projects/residential.jpg',
-};
+import { getProjectImageSrc } from '@/lib/project-image';
 
 const TABS: { value: ProjectType; label: string; icon: React.ReactNode }[] = [
   { value: 'commercial', label: 'Commercial', icon: <Building2 className="h-4 w-4" /> },
@@ -57,11 +50,6 @@ const itemVariants = {
   },
   exit: { opacity: 0, y: -20, scale: 0.95, transition: { duration: 0.2 } },
 };
-
-function getProjectImageSrc(project: Project): string {
-  const imageKey = project.sector || project.type;
-  return project.image ?? SECTOR_IMAGES[imageKey] ?? SECTOR_IMAGES.office;
-}
 
 function ProjectCard({
   project,
