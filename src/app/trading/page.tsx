@@ -25,7 +25,6 @@ export default function TradingPage() {
         image="/images/products/sanitaryware.jpg"
         imageAlt="CMS Group Trading — premium building materials"
         primaryCta={{ label: 'Explore Domains', href: '#domains' }}
-        secondaryCta={{ label: 'Contracting Division', href: '/contracting' }}
         size="tall"
       />
 

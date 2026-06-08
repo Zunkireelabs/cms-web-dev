@@ -97,9 +97,9 @@ export function ProductsServices() {
         <div className="max-w-2xl">
           <KickerLabel>Products & Services</KickerLabel>
           <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-neutral-charcoal sm:text-4xl lg:text-5xl">
-            Thirteen specialised domains.
+            Leading Building Solutions.
             <br />
-            Global brand partners.
+            Global Brand Partners
           </h2>
           <p className="mt-5 text-base leading-relaxed text-neutral-600 sm:text-lg">
             Integrated building solutions distributed in Nepal — from roofing and facades to
