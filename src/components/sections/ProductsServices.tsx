@@ -42,9 +42,9 @@ const PRODUCTS: Product[] = [
   { title: 'Waterproofing Systems', icon: Droplets, image: '/images/products/product-waterproofing.jpg', link: '/trading/waterproofing' },
   { title: 'Wastewater Management', icon: Trash2, image: '/images/products/product-wastewater.jpg', link: '/trading/wastewater-management' },
   { title: 'Sanitaryware', icon: Bath, image: 'https://danubetoilet.com/wp-content/uploads/2024/10/What-Is-Sanitary-Ware.png', link: '/trading/sanitaryware' },
-  { title: 'Flooring', icon: Footprints, image: '/images/products/product-flooring.jpg', link: '/trading/flooring' },
-  { title: 'Fire Rated Doors', icon: ShieldAlert, image: 'https://images.jdmagicbox.com/quickquotes/images_main/rectangular-wooden-modular-office-furniture-2220097149-f7jqlnv5.jpg', link: '/trading/fire-rated-doors' },
-  { title: 'Office Furnitures', icon: Sofa, image: '/images/products/product-office-furniture.jpg', link: '/trading/office-furnitures' },
+  { title: 'Flooring', icon: Footprints, image: '/images/products/flooring-new.jpg', link: '/trading/flooring' },
+  { title: 'Fire Rated Doors', icon: ShieldAlert, image: '/images/products/fire-rated-doors-new.jpg', link: '/trading/fire-rated-doors' },
+  { title: 'Office Furnitures', icon: Sofa, image: 'https://images.jdmagicbox.com/quickquotes/images_main/rectangular-wooden-modular-office-furniture-2220097149-f7jqlnv5.jpg', link: '/trading/office-furnitures' },
 ];
 
 function ProductCard({ product, index }: { product: Product; index: number }) {
