@@ -21,7 +21,6 @@ import {
 import {
   Building2,
   ExternalLink,
-  MapPin,
 } from 'lucide-react';
 
 const COUNTRY_COUNT = new Set(BRANDS.map((b) => b.country.split(' ')[0])).size;
@@ -75,15 +74,6 @@ function BrandCard({ brand }: { brand: BrandEntry }) {
             <h4 className="font-display text-[15px] font-bold leading-tight text-neutral-charcoal transition-colors group-hover:text-accent">
               {brand.name}
             </h4>
-            {brand.founded && (
-              <span className="shrink-0 text-[10px] font-semibold uppercase tracking-wider text-neutral-400">
-                Est. {brand.founded}
-              </span>
-            )}
-          </div>
-          <div className="mt-1.5 flex items-center gap-1.5 text-xs text-neutral-500">
-            <MapPin className="h-3 w-3 text-accent" strokeWidth={1.5} />
-            <span>{brand.country}</span>
           </div>
           {brand.description && (
             <p className="mt-2.5 line-clamp-3 text-xs leading-relaxed text-neutral-600">
