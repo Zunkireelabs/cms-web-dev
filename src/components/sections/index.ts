@@ -2,6 +2,7 @@ export { AboutUs } from './AboutUs';
 export { CareersCTA } from './CareersCTA';
 export { ChairmanMessage } from './ChairmanMessage';
 export { ContactCTA } from './ContactCTA';
+export { DomainMetricsStrip } from './DomainMetricsStrip';
 export { Hero } from './Hero';
 export { Highlights } from './Highlights';
 export { ImpactMetrics } from './ImpactMetrics';

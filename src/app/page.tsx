@@ -1,73 +1,56 @@
 import Link from 'next/link';
-import { Container } from '@/components/ui/Container';
+import { ArrowRight } from 'lucide-react';
+import { Section, SectionHeader } from '@/components/ui';
 import {
   AboutUs,
-  CareersCTA,
-  ChairmanMessage,
   ContactCTA,
   Hero,
-  Highlights,
   ImpactMetrics,
   ProductsServices,
   ProjectMap,
-  Ventures,
 } from '@/components/sections';
 
 export default function HomePage() {
   return (
     <>
-      {/* Hero Section */}
+      {/* 1. Identity — cinematic hero */}
       <Hero />
 
-      {/* CMS Highlights Section */}
-      <Highlights />
-
-      {/* About Us Section */}
+      {/* 2. Story — who we are */}
       <AboutUs />
 
-      {/* Chairman's Message Section */}
-      <ChairmanMessage />
+      {/* 3. Proof — animated counters (dark reset) */}
+      {/* <ImpactMetrics /> */}
 
-      {/* Products & Services Section */}
+      {/* 4. Substance — fourteen product domains */}
       <ProductsServices />
 
-      {/* Our Ventures Section */}
-      <Ventures />
+      {/* 6. Execution — project map */}
+      <Section variant="soft" id="projects-overview">
+        <SectionHeader
+          kicker="Project Overview"
+          title="Projects delivered across Nepal."
+          lead="Hospitals, hotels, airports, offices, education, and residential — six sectors, one trusted partner. Hover or tap a marker to view the project list."
+          align="center"
+          className="mx-auto"
+        />
 
-      {/* Impact Metrics Section */}
-      <ImpactMetrics />
-
-      {/* Project Overview Section */}
-      <section className="py-16 lg:py-20 bg-white border-t-[3px] border-accent">
-        <Container>
-          {/* Header */}
-          <div className="mb-8 lg:mb-10">
-            <div className="h-[3px] w-12 bg-accent mb-5" />
-            <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-medium text-neutral-900 tracking-tight">
-              Project Overview
-            </h2>
-            <p className="mt-2 text-neutral-500 text-base">
-              200+ projects delivered across Nepal — spanning hospitals, hotels, airports, offices, education, and residential sectors
-            </p>
-          </div>
-
+        <div className="mt-12">
           <ProjectMap />
+        </div>
 
-          <div className="mt-8 text-center">
-            <Link
-              href="/projects"
-              className="inline-flex items-center gap-2 rounded-lg px-8 py-3.5 bg-accent text-white font-semibold transition-colors hover:bg-accent-700 text-sm uppercase tracking-wider"
-            >
-              View All Projects
-            </Link>
-          </div>
-        </Container>
-      </section>
+        <div className="mt-10 text-center">
+          <Link
+            href="/projects"
+            className="inline-flex items-center gap-2 rounded-lg bg-accent px-8 py-3.5 text-sm font-semibold uppercase tracking-wider text-white transition-colors hover:bg-accent-700"
+          >
+            View All Projects
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
+      </Section>
 
-      {/* Careers CTA Section */}
-      <CareersCTA />
-
-      {/* Contact CTA Section */}
+      {/* 8. Conversion — single combined CTA (careers folded in) */}
       <ContactCTA />
     </>
   );

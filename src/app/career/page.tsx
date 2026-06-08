@@ -1,9 +1,12 @@
 'use client';
 
-import { useRef, useState } from 'react';
-import { motion, useInView } from 'framer-motion';
-import { Container } from '@/components/ui/Container';
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+import { PageHero } from '@/components/ui/PageHero';
+import { Section } from '@/components/ui/Section';
+import { SectionHeader } from '@/components/ui/SectionHeader';
 import { ContactCTA } from '@/components/sections';
+import { fadeUp } from '@/lib/motion';
 import {
   Shield,
   TrendingUp,
@@ -18,115 +21,120 @@ import {
   CheckCircle,
   ArrowRight,
   FileText,
+  Loader2,
+  Quote,
 } from 'lucide-react';
+
+const EMPLOYEE_STORIES = [
+  {
+    name: 'Rajesh Shrestha',
+    role: 'Senior Site Supervisor',
+    tenure: '7 Years',
+    quote:
+      'Working at CMS Trading & Contracting has given me the opportunity to be part of landmark projects across Nepal. The exposure to international brands and the support from the team has helped me grow both professionally and personally.',
+  },
+  {
+    name: 'Priya Tamang',
+    role: 'Sales Executive',
+    tenure: '4 Years',
+    quote:
+      'I joined as a fresher and CMS gave me every tool to succeed — product training, brand exposure, and mentorship. The work environment is collaborative and every project teaches you something new.',
+  },
+  {
+    name: 'Anil Kumar Jha',
+    role: 'Project Engineer',
+    tenure: '5 Years',
+    quote:
+      'The scale of projects here is unmatched. From hospitals to airports, every assignment challenges you to deliver your best. CMS truly invests in its people and that makes all the difference.',
+  },
+];
 
 const WHY_WORK_WITH_US = [
   {
-    icon: Building2,
-    title: 'Six Specialised Ventures',
-    description:
-      'Move across Bath N Room, Baba Muktinath, 4R Technologies, Cubic Meter, Techwood, and Prime Ceramics — broaden your scope without leaving the group.',
-  },
-  {
-    icon: Award,
-    title: 'World-Class Brand Exposure',
-    description:
-      'Work alongside 60+ global brand partners — Grohe, Duravit, Hunter Douglas, Dormakaba, IKO, Tarkett, Armstrong, and more — with vendor training built in.',
-  },
-  {
-    icon: Users,
-    title: 'Marquee Project Portfolio',
-    description:
-      'Contribute to projects like Bir Hospital, Tiger Palace, Nepal Rastra Bank, AANSON, Mediciti, Dusit Thani — work that shapes Nepal\'s built environment.',
-  },
-  {
     icon: TrendingUp,
-    title: 'Growth & Mentorship',
+    title: 'Growth Opportunities',
     description:
-      'Continuous training programmes including factory visits with international partners (Tostem Thailand, Armstrong, IKO) — invest in your craft.',
-  },
-  {
-    icon: Heart,
-    title: 'Community-First Culture',
-    description:
-      'Annual blood-donation drives, Women\'s Day celebrations, technician meets — the CMS Group culture is built on people and contribution, not just deliverables.',
+      'We invest in our people. From hands-on project experience to training with international brand partners, your skills grow with every assignment.',
   },
   {
     icon: Shield,
-    title: 'Twenty-Three Years Strong',
+    title: 'Safety-First Culture',
     description:
-      'Join a group founded in 2002 with a deep-rooted reputation — your career has the runway of a stable, growing organisation behind it.',
+      'Safety is non-negotiable at CMS Trading & Contracting. Every project is executed with strict safety protocols, protecting our teams and clients at every stage.',
+  },
+  {
+    icon: Users,
+    title: 'Why Work With CMS Trading & Contracting',
+    description:
+      'Be part of a team delivering landmark projects across Nepal — hospitals, airports, hotels, and residences — backed by globally recognised brands and 20+ years of expertise.',
+  },
+  {
+    icon: Award,
+    title: 'Global Brand Exposure',
+    description:
+      'Work alongside world-class brands — Armstrong, Tostem, Hunter Douglas, Dormakaba, IKO, and more — gaining product knowledge and technical expertise that sets you apart.',
+  },
+  {
+    icon: Heart,
+    title: 'Supportive Work Environment',
+    description:
+      'We foster a collaborative, inclusive workplace where every team member is valued. Your contribution matters — whether you are on-site or in the office.',
+  },
+  {
+    icon: Building2,
+    title: 'Real Impact, Real Projects',
+    description:
+      'Your work directly shapes Nepal\'s built environment. From schools and hospitals to airports and corporate offices — every project leaves a lasting mark.',
   },
 ];
 
 const CURRENT_OPENINGS = [
   {
-    title: 'Sales Executive — Sanitaryware & Tiles',
-    department: 'Bath N Room',
+    title: 'Senior Marketing Manager',
     location: 'Kathmandu, Nepal',
     type: 'Full-time',
     description:
-      'Build client relationships across hospitality, residential, and institutional projects — distributing Grohe, Duravit, RAK, American Standard, and more.',
+      'Lead marketing strategy and brand development across CMS Group divisions — driving awareness, client engagement, and business growth through integrated campaigns.',
   },
   {
-    title: 'Site Supervisor — Interior Contracting',
-    department: 'Cubic Meter',
+    title: 'Site Supervisor',
     location: 'Kathmandu, Nepal',
     type: 'Full-time',
     description:
-      'Oversee on-site execution of interior fit-out projects from material delivery through commissioning, ensuring quality and timeline adherence.',
+      'Oversee on-site execution of construction and interior fit-out projects from material delivery through commissioning, ensuring quality and timeline adherence.',
   },
   {
-    title: 'Technical Specialist — Building Systems',
-    department: 'Baba Muktinath Fabricators',
+    title: 'Sales Executive',
     location: 'Kathmandu, Nepal',
     type: 'Full-time',
     description:
-      'Specify and support installation of roofing, ceilings, doors, hardware, and façade systems from international partners.',
+      'Build and manage client relationships across residential, commercial, and institutional projects — representing premium international brands and delivering tailored solutions.',
   },
   {
-    title: 'Project Engineer — Water & Wastewater',
-    department: '4R Technologies',
+    title: 'Marketing Executive',
     location: 'Kathmandu, Nepal',
     type: 'Full-time',
     description:
-      'Design and commission STP / ETP plants, water storage, and pool systems — Sintex, Pentair, Kingspan Rhino, Oase product lines.',
+      'Support marketing initiatives across digital and traditional channels — coordinating campaigns, events, and brand communications to strengthen CMS Group\'s market presence.',
+  },
+  {
+    title: 'Project Manager',
+    location: 'Kathmandu, Nepal',
+    type: 'Full-time',
+    description:
+      'Plan, coordinate, and deliver projects on time and within budget — managing cross-functional teams, contractors, and stakeholder communications from inception to handover.',
+  },
+  {
+    title: 'Admin Executive',
+    location: 'Kathmandu, Nepal',
+    type: 'Full-time',
+    description:
+      'Provide operational and administrative support across departments — managing documentation, scheduling, vendor coordination, and day-to-day office functions.',
   },
 ];
 
-const fadeInUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: (delay: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, delay, ease: [0.25, 0.46, 0.45, 0.94] },
-  }),
-};
-
-const staggerContainer = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.1 },
-  },
-};
-
-function AnimatedSection({ children, className }: { children: React.ReactNode; className?: string }) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
-
-  return (
-    <motion.div
-      ref={ref}
-      initial="hidden"
-      animate={isInView ? 'visible' : 'hidden'}
-      variants={staggerContainer}
-      className={className}
-    >
-      {children}
-    </motion.div>
-  );
-}
+const inputBase =
+  'mt-1.5 block w-full rounded-lg border border-neutral-300 px-4 py-2.5 text-neutral-charcoal placeholder-neutral-400 transition-colors focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30';
 
 export default function CareerPage() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -146,7 +154,9 @@ export default function CareerPage() {
     }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
+  ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
@@ -154,7 +164,6 @@ export default function CareerPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    // Simulate form submission
     await new Promise((resolve) => setTimeout(resolve, 1500));
     setIsSubmitting(false);
     setSubmitSuccess(true);
@@ -164,445 +173,378 @@ export default function CareerPage() {
 
   return (
     <>
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-neutral-charcoal via-neutral-800 to-brand-900 py-20 lg:py-32">
-        <div className="absolute inset-0 opacity-10">
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage: `radial-gradient(circle at 1px 1px, white 1px, transparent 0)`,
-              backgroundSize: '32px 32px',
-            }}
-          />
-        </div>
+      <PageHero
+        kicker="Careers"
+        title="Build Your Career With Us"
+        subtitle="We believe our people are our greatest strength. At our company, you'll find opportunities to learn, grow, and make a real impact in the construction and building solutions industry."
+        image="/images/projects/ncell-hq.jpg"
+        imageAlt="CMS Group team"
+        primaryCta={{ label: 'View Open Positions', href: '#openings' }}
+        size="tall"
+      />
 
-        <Container className="relative">
-          <div className="mx-auto max-w-3xl text-center">
-            <motion.span
-              variants={fadeInUp}
-              initial="hidden"
-              animate="visible"
-              custom={0}
-              className="inline-block rounded-full bg-white/10 px-4 py-1.5 text-sm font-medium text-white backdrop-blur-sm"
-            >
-              Careers
-            </motion.span>
-            <motion.h1
-              variants={fadeInUp}
-              initial="hidden"
-              animate="visible"
-              custom={0.1}
-              className="mt-4 text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl"
-            >
-              Build Your Career With Us
-            </motion.h1>
-            <motion.p
-              variants={fadeInUp}
-              initial="hidden"
-              animate="visible"
-              custom={0.2}
-              className="mt-6 text-xl text-neutral-300 leading-relaxed"
-            >
-              Six specialised ventures. 60+ global brand partners. 200+ delivered projects
-              across hospitals, hotels, banks, airports, and homes in Nepal. Build a career
-              with the breadth a single firm rarely offers.
-            </motion.p>
-            <motion.p
-              variants={fadeInUp}
-              initial="hidden"
-              animate="visible"
-              custom={0.3}
-              className="mt-4 text-lg text-neutral-400"
-            >
-              From Bath N Room and Baba Muktinath Fabricators to Cubic Meter, 4R
-              Technologies, Techwood, and Prime Ceramics — find your fit within the
-              CMS Group family.
-            </motion.p>
-            <motion.p
-              variants={fadeInUp}
-              initial="hidden"
-              animate="visible"
-              custom={0.4}
-              className="mt-4 text-lg font-medium text-brand-300"
-            >
-              We&apos;ve been building Nepal since 2002. Help us build the next chapter.
-            </motion.p>
+      {/* Why Join Us */}
+      <Section variant="light">
+        <SectionHeader
+          kicker="Why Join Us"
+          title="Why work with CMS Trading & Contracting."
+          lead="Whether you're a skilled professional or a passionate learner, we offer a supportive work environment, hands-on experience, and the chance to build a career that grows with the company. Join us and be part of a team that builds more than structures — we build futures."
+          align="center"
+          className="mx-auto"
+        />
+
+        <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {WHY_WORK_WITH_US.map((item, index) => (
             <motion.div
-              variants={fadeInUp}
+              key={item.title}
               initial="hidden"
-              animate="visible"
-              custom={0.5}
-              className="mt-8"
+              whileInView="visible"
+              viewport={{ once: true, margin: '-80px' }}
+              variants={fadeUp}
+              custom={index * 0.05}
+              className="group relative overflow-hidden rounded-2xl border border-neutral-border bg-white p-7 shadow-card transition-all hover:-translate-y-1 hover:shadow-lg"
             >
-              <a
-                href="#openings"
-                className="inline-flex items-center gap-2 rounded-lg bg-brand-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-brand-700"
-              >
-                View Open Positions
-                <ArrowRight className="h-4 w-4" />
-              </a>
-            </motion.div>
-          </div>
-        </Container>
-      </section>
-
-      {/* Why Work With Us */}
-      <section className="py-20 lg:py-28">
-        <Container>
-          <AnimatedSection>
-            <motion.div variants={fadeInUp} custom={0} className="mx-auto max-w-2xl text-center">
-              <span className="inline-block rounded-full bg-brand-100 px-4 py-1.5 text-sm font-semibold text-brand-700">
-                Why Join Us
-              </span>
-              <h2 className="mt-4 text-3xl font-bold tracking-tight text-neutral-charcoal sm:text-4xl">
-                Why Work With CMS Group
-              </h2>
-              <p className="mt-4 text-neutral-600">
-                Discover what makes us a great place to build your career
-              </p>
-            </motion.div>
-          </AnimatedSection>
-
-          <AnimatedSection className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {WHY_WORK_WITH_US.map((item, index) => (
-              <motion.div
-                key={item.title}
-                variants={fadeInUp}
-                custom={index * 0.05}
-                className="group rounded-2xl border border-neutral-border bg-white p-6 shadow-card transition-all hover:shadow-card-hover"
-              >
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-50 text-brand-600 transition-colors group-hover:bg-brand-600 group-hover:text-white">
-                  <item.icon className="h-6 w-6" />
+              <div className="flex items-start justify-between">
+                <span className="font-display text-3xl font-bold leading-none text-accent/30 tabular-nums">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent-50 text-accent transition-colors group-hover:bg-accent group-hover:text-white">
+                  <item.icon className="h-6 w-6" strokeWidth={1.5} />
                 </div>
-                <h3 className="mt-4 text-lg font-semibold text-neutral-charcoal">
-                  {item.title}
-                </h3>
-                <p className="mt-2 text-sm text-neutral-600 leading-relaxed">
-                  {item.description}
-                </p>
-              </motion.div>
-            ))}
-          </AnimatedSection>
-        </Container>
-      </section>
+              </div>
+              <h3 className="mt-6 font-display text-lg font-bold leading-tight tracking-tight text-neutral-charcoal sm:text-xl">
+                {item.title}
+              </h3>
+              <p className="mt-3 text-sm leading-relaxed text-neutral-600">
+                {item.description}
+              </p>
+              <div className="absolute bottom-0 left-0 h-0.5 w-0 bg-accent transition-all duration-300 group-hover:w-full" />
+            </motion.div>
+          ))}
+        </div>
+      </Section>
 
       {/* Current Openings */}
-      <section id="openings" className="bg-neutral-off-white py-20 lg:py-28">
-        <Container>
-          <AnimatedSection>
-            <motion.div variants={fadeInUp} custom={0} className="mx-auto max-w-2xl text-center">
-              <span className="inline-block rounded-full bg-brand-100 px-4 py-1.5 text-sm font-semibold text-brand-700">
-                Join Our Team
-              </span>
-              <h2 className="mt-4 text-3xl font-bold tracking-tight text-neutral-charcoal sm:text-4xl">
-                Roles We Recruit For
-              </h2>
-              <p className="mt-4 text-neutral-600">
-                Representative positions across our six ventures — submit your CV below
-                and we&apos;ll match you to current openings.
-              </p>
-            </motion.div>
-          </AnimatedSection>
+      <Section variant="soft" id="openings">
+        <SectionHeader
+          kicker="Join Our Team"
+          title="Roles we recruit for."
+          lead="Representative positions across our teams — submit your CV below and we'll match you to current openings."
+          align="center"
+          className="mx-auto"
+        />
 
-          <AnimatedSection className="mt-12 space-y-4">
-            {CURRENT_OPENINGS.map((job, index) => (
-              <motion.div
-                key={job.title}
-                variants={fadeInUp}
-                custom={index * 0.1}
-                className="group rounded-2xl border border-neutral-border bg-white p-6 shadow-card transition-all hover:shadow-card-hover"
-              >
-                <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-50 text-brand-600">
-                        <Briefcase className="h-5 w-5" />
-                      </div>
-                      <div>
-                        <h3 className="text-lg font-semibold text-neutral-charcoal group-hover:text-brand-600 transition-colors">
-                          {job.title}
-                        </h3>
-                        <p className="text-sm text-neutral-500">{job.department}</p>
-                      </div>
+        <div className="mt-14 space-y-4">
+          {CURRENT_OPENINGS.map((job, index) => (
+            <motion.div
+              key={job.title}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: '-80px' }}
+              variants={fadeUp}
+              custom={index * 0.05}
+              className="group rounded-2xl border border-neutral-border bg-white p-6 shadow-card transition-all hover:-translate-y-0.5 hover:shadow-card-hover lg:p-8"
+            >
+              <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+                <div className="flex-1">
+                  <div className="flex items-start gap-4">
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-accent-50 text-accent">
+                      <Briefcase className="h-5 w-5" strokeWidth={1.75} />
                     </div>
-                    <p className="mt-3 text-neutral-600">{job.description}</p>
-                    <div className="mt-4 flex flex-wrap gap-3">
-                      <span className="inline-flex items-center gap-1.5 rounded-full bg-neutral-100 px-3 py-1 text-sm text-neutral-600">
-                        <MapPin className="h-3.5 w-3.5" />
-                        {job.location}
-                      </span>
-                      <span className="inline-flex items-center gap-1.5 rounded-full bg-neutral-100 px-3 py-1 text-sm text-neutral-600">
-                        <Clock className="h-3.5 w-3.5" />
-                        {job.type}
-                      </span>
+                    <div>
+                      <h3 className="font-display text-lg font-bold leading-tight text-neutral-charcoal transition-colors group-hover:text-accent sm:text-xl">
+                        {job.title}
+                      </h3>
                     </div>
                   </div>
-                  <div className="flex-shrink-0">
-                    <a
-                      href="#apply"
-                      className="inline-flex items-center gap-2 rounded-lg bg-brand-600 px-5 py-2.5 font-medium text-white transition-colors hover:bg-brand-700"
-                    >
-                      Apply Now
-                      <ArrowRight className="h-4 w-4" />
-                    </a>
+                  <p className="mt-4 text-sm leading-relaxed text-neutral-600">
+                    {job.description}
+                  </p>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-neutral-100 px-3 py-1 text-xs text-neutral-600">
+                      <MapPin className="h-3 w-3" />
+                      {job.location}
+                    </span>
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-neutral-100 px-3 py-1 text-xs text-neutral-600">
+                      <Clock className="h-3 w-3" />
+                      {job.type}
+                    </span>
                   </div>
                 </div>
-              </motion.div>
-            ))}
-          </AnimatedSection>
-
-          <AnimatedSection className="mt-8 text-center">
-            <motion.p variants={fadeInUp} custom={0.4} className="text-neutral-600">
-              Don&apos;t see a position that matches your skills?{' '}
-              <a href="#apply" className="font-semibold text-brand-600 hover:underline">
-                Submit your CV
-              </a>{' '}
-              and we&apos;ll keep you in mind for future opportunities.
-            </motion.p>
-          </AnimatedSection>
-        </Container>
-      </section>
-
-      {/* Upload CV Section */}
-      <section id="apply" className="py-20 lg:py-28">
-        <Container>
-          <div className="mx-auto max-w-3xl">
-            <AnimatedSection>
-              <motion.div variants={fadeInUp} custom={0} className="text-center">
-                <span className="inline-block rounded-full bg-brand-100 px-4 py-1.5 text-sm font-semibold text-brand-700">
-                  Apply Now
-                </span>
-                <h2 className="mt-4 text-3xl font-bold tracking-tight text-neutral-charcoal sm:text-4xl">
-                  Upload Your CV
-                </h2>
-                <p className="mt-4 text-neutral-600">
-                  Take the first step towards joining our team. Submit your application below.
-                </p>
-              </motion.div>
-            </AnimatedSection>
-
-            <AnimatedSection className="mt-12">
-              {submitSuccess ? (
-                <motion.div
-                  variants={fadeInUp}
-                  custom={0}
-                  className="rounded-2xl border border-green-200 bg-green-50 p-8 text-center"
-                >
-                  <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
-                    <CheckCircle className="h-8 w-8 text-green-600" />
-                  </div>
-                  <h3 className="mt-4 text-xl font-semibold text-green-800">
-                    Application Submitted Successfully!
-                  </h3>
-                  <p className="mt-2 text-green-700">
-                    Thank you for your interest in joining CMS Group.
-                    Our HR team will review your application and contact you soon.
-                  </p>
-                  <button
-                    onClick={() => setSubmitSuccess(false)}
-                    className="mt-6 inline-flex items-center gap-2 rounded-lg bg-green-600 px-5 py-2.5 font-medium text-white transition-colors hover:bg-green-700"
+                <div className="shrink-0">
+                  <a
+                    href="#apply"
+                    className="inline-flex items-center gap-2 rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold uppercase tracking-wider text-white transition-colors hover:bg-accent-700"
                   >
-                    Submit Another Application
-                  </button>
-                </motion.div>
-              ) : (
-                <motion.form
-                  variants={fadeInUp}
-                  custom={0.1}
-                  onSubmit={handleSubmit}
-                  className="rounded-2xl border border-neutral-border bg-white p-8 shadow-card"
+                    Apply Now
+                    <ArrowRight className="h-4 w-4" />
+                  </a>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        <p className="mt-10 text-center text-sm text-neutral-600">
+          Don&apos;t see a position that matches your skills?{' '}
+          <a href="#apply" className="font-semibold text-accent hover:underline">
+            Submit your CV
+          </a>{' '}
+          and we&apos;ll keep you in mind for future opportunities.
+        </p>
+      </Section>
+
+      {/* Employee Stories */}
+      <Section variant="soft">
+        <SectionHeader
+          kicker="Our People"
+          title="Hear from our team."
+          lead="Brief notes from the people who build CMS Trading & Contracting every day — past and present."
+          align="center"
+          className="mx-auto"
+        />
+        <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {EMPLOYEE_STORIES.map((story, index) => (
+            <motion.div
+              key={story.name}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: '-80px' }}
+              variants={fadeUp}
+              custom={index * 0.08}
+              className="relative flex flex-col rounded-2xl border border-neutral-200 bg-white p-6 shadow-card"
+            >
+              <Quote className="h-8 w-8 text-accent/20" strokeWidth={1.5} />
+              <p className="mt-4 flex-1 text-sm leading-relaxed text-neutral-600 italic">
+                &ldquo;{story.quote}&rdquo;
+              </p>
+              <div className="mt-6 border-t border-neutral-100 pt-4">
+                <p className="font-display text-sm font-bold text-neutral-charcoal">
+                  {story.name}
+                </p>
+                <p className="mt-0.5 text-xs text-accent font-semibold">{story.role}</p>
+                <p className="mt-0.5 text-xs text-neutral-400">{story.tenure} with CMS</p>
+              </div>
+              <div className="absolute bottom-0 left-0 h-0.5 w-0 rounded-b-2xl bg-accent transition-all duration-300 group-hover:w-full" />
+            </motion.div>
+          ))}
+        </div>
+      </Section>
+
+      {/* Apply / Upload CV */}
+      <Section variant="light" id="apply">
+        <div className="mx-auto max-w-3xl">
+          <SectionHeader
+            kicker="Apply Now"
+            title="Upload your CV."
+            lead="Take the first step towards joining our team. Submit your application below."
+            align="center"
+            className="mx-auto"
+          />
+
+          <div className="mt-12">
+            {submitSuccess ? (
+              <motion.div
+                initial="hidden"
+                animate="visible"
+                variants={fadeUp}
+                custom={0}
+                className="rounded-2xl border border-green-200 bg-green-50 p-10 text-center"
+              >
+                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
+                  <CheckCircle className="h-8 w-8 text-green-600" />
+                </div>
+                <h3 className="mt-5 font-display text-xl font-bold text-green-800">
+                  Application submitted successfully!
+                </h3>
+                <p className="mt-3 text-green-700">
+                  Thank you for your interest in joining CMS Group. Our HR team will review
+                  your application and contact you soon.
+                </p>
+                <button
+                  onClick={() => setSubmitSuccess(false)}
+                  className="mt-7 inline-flex items-center gap-2 rounded-lg bg-green-600 px-5 py-2.5 text-sm font-semibold uppercase tracking-wider text-white transition-colors hover:bg-green-700"
                 >
-                  <div className="grid gap-6 sm:grid-cols-2">
-                    {/* Full Name */}
-                    <div>
-                      <label htmlFor="name" className="block text-sm font-medium text-neutral-700">
-                        Full Name <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        id="name"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleInputChange}
-                        required
-                        className="mt-1.5 block w-full rounded-lg border border-neutral-300 px-4 py-2.5 text-neutral-900 placeholder-neutral-400 transition-colors focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20"
-                        placeholder="John Doe"
-                      />
-                    </div>
-
-                    {/* Email */}
-                    <div>
-                      <label htmlFor="email" className="block text-sm font-medium text-neutral-700">
-                        Email Address <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleInputChange}
-                        required
-                        className="mt-1.5 block w-full rounded-lg border border-neutral-300 px-4 py-2.5 text-neutral-900 placeholder-neutral-400 transition-colors focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20"
-                        placeholder="john@example.com"
-                      />
-                    </div>
-
-                    {/* Phone */}
-                    <div>
-                      <label htmlFor="phone" className="block text-sm font-medium text-neutral-700">
-                        Phone Number <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        type="tel"
-                        id="phone"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleInputChange}
-                        required
-                        className="mt-1.5 block w-full rounded-lg border border-neutral-300 px-4 py-2.5 text-neutral-900 placeholder-neutral-400 transition-colors focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20"
-                        placeholder="+977 98XXXXXXXX"
-                      />
-                    </div>
-
-                    {/* Position */}
-                    <div>
-                      <label htmlFor="position" className="block text-sm font-medium text-neutral-700">
-                        Position Applied For
-                      </label>
-                      <select
-                        id="position"
-                        name="position"
-                        value={formData.position}
-                        onChange={handleInputChange}
-                        className="mt-1.5 block w-full rounded-lg border border-neutral-300 px-4 py-2.5 text-neutral-900 transition-colors focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20"
-                      >
-                        <option value="">Select a position (optional)</option>
-                        {CURRENT_OPENINGS.map((job) => (
-                          <option key={job.title} value={job.title}>
-                            {job.title}
-                          </option>
-                        ))}
-                        <option value="Other">Other / General Application</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  {/* Message */}
-                  <div className="mt-6">
-                    <label htmlFor="message" className="block text-sm font-medium text-neutral-700">
-                      Cover Letter / Message
+                  Submit Another Application
+                </button>
+              </motion.div>
+            ) : (
+              <motion.form
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: '-80px' }}
+                variants={fadeUp}
+                custom={0.1}
+                onSubmit={handleSubmit}
+                className="rounded-2xl border border-neutral-border bg-white p-8 shadow-card lg:p-10"
+              >
+                <div className="grid gap-6 sm:grid-cols-2">
+                  <div>
+                    <label htmlFor="name" className="block text-sm font-semibold text-neutral-700">
+                      Full Name <span className="text-red-500">*</span>
                     </label>
-                    <textarea
-                      id="message"
-                      name="message"
-                      value={formData.message}
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      value={formData.name}
                       onChange={handleInputChange}
-                      rows={4}
-                      className="mt-1.5 block w-full rounded-lg border border-neutral-300 px-4 py-2.5 text-neutral-900 placeholder-neutral-400 transition-colors focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/20"
-                      placeholder="Tell us about yourself and why you'd like to join our team..."
+                      required
+                      className={inputBase}
+                      placeholder="John Doe"
                     />
                   </div>
 
-                  {/* File Upload */}
-                  <div className="mt-6">
-                    <label className="block text-sm font-medium text-neutral-700">
-                      Upload CV/Resume <span className="text-red-500">*</span>
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-semibold text-neutral-700">
+                      Email Address <span className="text-red-500">*</span>
                     </label>
-                    <div className="mt-1.5">
-                      <label
-                        htmlFor="cv-upload"
-                        className="flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-neutral-300 bg-neutral-50 p-8 transition-colors hover:border-brand-400 hover:bg-brand-50"
-                      >
-                        {selectedFile ? (
-                          <>
-                            <FileText className="h-10 w-10 text-brand-600" />
-                            <p className="mt-2 text-sm font-medium text-neutral-900">
-                              {selectedFile.name}
-                            </p>
-                            <p className="text-xs text-neutral-500">
-                              {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
-                            </p>
-                            <button
-                              type="button"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                setSelectedFile(null);
-                              }}
-                              className="mt-2 text-sm text-brand-600 hover:underline"
-                            >
-                              Choose a different file
-                            </button>
-                          </>
-                        ) : (
-                          <>
-                            <Upload className="h-10 w-10 text-neutral-400" />
-                            <p className="mt-2 text-sm text-neutral-600">
-                              <span className="font-semibold text-brand-600">Click to upload</span> or drag and drop
-                            </p>
-                            <p className="text-xs text-neutral-500">PDF, DOC, or DOCX (Max. 5MB)</p>
-                          </>
-                        )}
-                        <input
-                          id="cv-upload"
-                          type="file"
-                          accept=".pdf,.doc,.docx"
-                          onChange={handleFileChange}
-                          className="hidden"
-                          required={!selectedFile}
-                        />
-                      </label>
-                    </div>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      required
+                      className={inputBase}
+                      placeholder="john@example.com"
+                    />
                   </div>
 
-                  {/* Submit Button */}
-                  <div className="mt-8">
-                    <button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className="flex w-full items-center justify-center gap-2 rounded-lg bg-brand-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-brand-700 disabled:cursor-not-allowed disabled:opacity-70"
+                  <div>
+                    <label htmlFor="phone" className="block text-sm font-semibold text-neutral-700">
+                      Phone Number <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="tel"
+                      id="phone"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleInputChange}
+                      required
+                      className={inputBase}
+                      placeholder="+977 98XXXXXXXX"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="position" className="block text-sm font-semibold text-neutral-700">
+                      Position Applied For
+                    </label>
+                    <select
+                      id="position"
+                      name="position"
+                      value={formData.position}
+                      onChange={handleInputChange}
+                      className={inputBase}
                     >
-                      {isSubmitting ? (
+                      <option value="">Select a position (optional)</option>
+                      {CURRENT_OPENINGS.map((job) => (
+                        <option key={job.title} value={job.title}>
+                          {job.title}
+                        </option>
+                      ))}
+                      <option value="Other">Other / General Application</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="mt-6">
+                  <label htmlFor="message" className="block text-sm font-semibold text-neutral-700">
+                    Cover Letter / Message
+                  </label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    value={formData.message}
+                    onChange={handleInputChange}
+                    rows={4}
+                    className={inputBase}
+                    placeholder="Tell us about yourself and why you'd like to join our team..."
+                  />
+                </div>
+
+                <div className="mt-6">
+                  <label className="block text-sm font-semibold text-neutral-700">
+                    Upload CV/Resume <span className="text-red-500">*</span>
+                  </label>
+                  <div className="mt-1.5">
+                    <label
+                      htmlFor="cv-upload"
+                      className="flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-neutral-300 bg-neutral-off-white p-8 transition-colors hover:border-accent/40 hover:bg-accent-50"
+                    >
+                      {selectedFile ? (
                         <>
-                          <svg className="h-5 w-5 animate-spin\" viewBox="0 0 24 24">
-                            <circle
-                              className="opacity-25"
-                              cx="12"
-                              cy="12"
-                              r="10"
-                              stroke="currentColor"
-                              strokeWidth="4"
-                              fill="none"
-                            />
-                            <path
-                              className="opacity-75"
-                              fill="currentColor"
-                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                            />
-                          </svg>
-                          Submitting...
+                          <FileText className="h-10 w-10 text-accent" strokeWidth={1.5} />
+                          <p className="mt-2 text-sm font-semibold text-neutral-charcoal">
+                            {selectedFile.name}
+                          </p>
+                          <p className="text-xs text-neutral-500">
+                            {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
+                          </p>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              setSelectedFile(null);
+                            }}
+                            className="mt-2 text-sm font-semibold text-accent hover:underline"
+                          >
+                            Choose a different file
+                          </button>
                         </>
                       ) : (
                         <>
-                          Submit Application
-                          <ArrowRight className="h-4 w-4" />
+                          <Upload className="h-10 w-10 text-neutral-400" strokeWidth={1.5} />
+                          <p className="mt-3 text-sm text-neutral-600">
+                            <span className="font-semibold text-accent">Click to upload</span>{' '}
+                            or drag and drop
+                          </p>
+                          <p className="text-xs text-neutral-500">PDF, DOC, or DOCX (Max. 5MB)</p>
                         </>
                       )}
-                    </button>
+                      <input
+                        id="cv-upload"
+                        type="file"
+                        accept=".pdf,.doc,.docx"
+                        onChange={handleFileChange}
+                        className="hidden"
+                        required={!selectedFile}
+                      />
+                    </label>
                   </div>
+                </div>
 
-                  <p className="mt-4 text-center text-sm text-neutral-500">
-                    By submitting this form, you agree to our privacy policy and consent to
-                    being contacted about job opportunities.
-                  </p>
-                </motion.form>
-              )}
-            </AnimatedSection>
+                <div className="mt-8">
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="flex w-full items-center justify-center gap-2 rounded-lg bg-accent px-6 py-3.5 text-sm font-semibold uppercase tracking-wider text-white transition-colors hover:bg-accent-700 disabled:cursor-not-allowed disabled:opacity-70"
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="h-5 w-5 animate-spin" />
+                        Submitting...
+                      </>
+                    ) : (
+                      <>
+                        Submit Application
+                        <ArrowRight className="h-4 w-4" />
+                      </>
+                    )}
+                  </button>
+                </div>
+
+                <p className="mt-4 text-center text-xs text-neutral-500">
+                  By submitting this form, you agree to our privacy policy and consent to
+                  being contacted about job opportunities.
+                </p>
+              </motion.form>
+            )}
           </div>
-        </Container>
-      </section>
+        </div>
+      </Section>
 
-      {/* CTA Section */}
-      <ContactCTA />
     </>
   );
 }

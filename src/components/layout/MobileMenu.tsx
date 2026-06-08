@@ -115,8 +115,8 @@ export function MobileMenu({ onClose }: MobileMenuProps) {
                       className={cn(
                         'w-full flex items-center justify-between rounded-lg px-4 py-3 text-lg font-medium transition-colors',
                         isProductsActive(pathname)
-                          ? 'bg-brand-50 text-brand-700'
-                          : 'text-neutral-600 hover:bg-neutral-surface hover:text-brand-600'
+                          ? 'bg-accent-50 text-accent'
+                          : 'text-neutral-600 hover:bg-neutral-surface hover:text-accent'
                       )}
                     >
                       <span>{item.label}</span>
@@ -146,7 +146,7 @@ export function MobileMenu({ onClose }: MobileMenuProps) {
                                 key={domain.id}
                                 href={`/trading/${domain.slug}`}
                                 onClick={onClose}
-                                className="block rounded-lg px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-surface hover:text-brand-600 transition-colors"
+                                className="block rounded-lg px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-surface hover:text-accent transition-colors"
                               >
                                 {domain.title}
                               </Link>
@@ -154,7 +154,7 @@ export function MobileMenu({ onClose }: MobileMenuProps) {
                             <Link
                               href="/trading"
                               onClick={onClose}
-                              className="block rounded-lg px-4 py-2 text-sm font-medium text-brand-600 hover:bg-brand-50 transition-colors"
+                              className="block rounded-lg px-4 py-2 text-sm font-medium text-accent hover:bg-accent-50 transition-colors"
                             >
                               View All Trading →
                             </Link>
@@ -168,7 +168,7 @@ export function MobileMenu({ onClose }: MobileMenuProps) {
                                 key={service.id}
                                 href="/contracting"
                                 onClick={onClose}
-                                className="block rounded-lg px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-surface hover:text-brand-600 transition-colors"
+                                className="block rounded-lg px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-surface hover:text-accent transition-colors"
                               >
                                 {service.title}
                               </Link>
@@ -176,7 +176,7 @@ export function MobileMenu({ onClose }: MobileMenuProps) {
                             <Link
                               href="/contracting"
                               onClick={onClose}
-                              className="block rounded-lg px-4 py-2 text-sm font-medium text-brand-600 hover:bg-brand-50 transition-colors"
+                              className="block rounded-lg px-4 py-2 text-sm font-medium text-accent hover:bg-accent-50 transition-colors"
                             >
                               View All Contracting →
                             </Link>
@@ -196,8 +196,8 @@ export function MobileMenu({ onClose }: MobileMenuProps) {
                     className={cn(
                       'block rounded-lg px-4 py-3 text-lg font-medium transition-colors',
                       pathname === item.href
-                        ? 'bg-brand-50 text-brand-700'
-                        : 'text-neutral-600 hover:bg-neutral-surface hover:text-brand-600'
+                        ? 'bg-accent-50 text-accent'
+                        : 'text-neutral-600 hover:bg-neutral-surface hover:text-accent'
                     )}
                   >
                     {item.label}
@@ -211,7 +211,7 @@ export function MobileMenu({ onClose }: MobileMenuProps) {
             <Link
               href="/contact"
               onClick={onClose}
-              className="flex w-full items-center justify-center rounded-lg bg-brand-600 px-6 py-3.5 text-base font-medium text-white transition-colors hover:bg-brand-700"
+              className="flex w-full items-center justify-center rounded-lg bg-accent px-6 py-3.5 text-base font-medium text-white transition-colors hover:bg-accent-700"
             >
               Get a Quote
             </Link>
@@ -224,13 +224,13 @@ export function MobileMenu({ onClose }: MobileMenuProps) {
             <p className="text-sm text-neutral-400">Contact Us</p>
             <a
               href={`tel:${SITE_CONFIG.phone.replace(/\s/g, '')}`}
-              className="mt-2 block text-lg font-medium text-neutral-charcoal hover:text-brand-600"
+              className="mt-2 block text-lg font-medium text-neutral-charcoal hover:text-accent"
             >
               {SITE_CONFIG.phone}
             </a>
             <a
               href={`mailto:${SITE_CONFIG.email}`}
-              className="mt-1 block text-neutral-600 hover:text-brand-600"
+              className="mt-1 block text-neutral-600 hover:text-accent"
             >
               {SITE_CONFIG.email}
             </a>

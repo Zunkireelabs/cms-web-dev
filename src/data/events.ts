@@ -14,6 +14,7 @@ export interface CMSEvent {
   date: string;
   category: EventCategory;
   description: string;
+  image?: string;
   featured?: boolean;
 }
 
@@ -29,6 +30,7 @@ export const EVENT_CATEGORY_LABELS: Record<EventCategory, string> = {
 export const EVENTS: CMSEvent[] = [
   {
     id: 'prime-launch-2023',
+    image: '/images/events/prime-launch-2023.jpg',
     title: 'Prime Ceramics Launch Event',
     month: 'Jun',
     year: 2023,
@@ -40,6 +42,7 @@ export const EVENTS: CMSEvent[] = [
   },
   {
     id: 'prime-factory-2023',
+    image: '/images/events/prime-factory-2023.jpg',
     title: 'Prime Ceramics Factory Operational',
     month: 'Jun',
     year: 2023,
@@ -50,6 +53,7 @@ export const EVENTS: CMSEvent[] = [
   },
   {
     id: 'tostem-buildcon-2023',
+    image: '/images/events/tostem-buildcon-2023.jpg',
     title: 'Tostem at Buildcon Exhibition',
     month: 'Jun',
     year: 2023,
@@ -60,6 +64,7 @@ export const EVENTS: CMSEvent[] = [
   },
   {
     id: 'tostem-showroom-2023',
+    image: '/images/events/tostem-showroom-2023.jpg',
     title: 'TOSTEM Studio Showroom Opening',
     month: 'Jun',
     year: 2023,
@@ -70,6 +75,7 @@ export const EVENTS: CMSEvent[] = [
   },
   {
     id: 'blood-donation-2023',
+    image: '/images/events/blood-donation-2023.jpg',
     title: 'Blood Donation Camp 2023',
     month: 'Jun',
     year: 2023,
@@ -80,6 +86,7 @@ export const EVENTS: CMSEvent[] = [
   },
   {
     id: 'tostem-launch-lixil-2023',
+    image: '/images/events/tostem-launch-lixil-2023.jpg',
     title: 'LIXIL — TOSTEM Premium Product Launch',
     month: 'Apr',
     year: 2023,
@@ -90,6 +97,7 @@ export const EVENTS: CMSEvent[] = [
   },
   {
     id: 'ica-designers-meet-2023',
+    image: '/images/events/ica-designers-meet-2023.jpg',
     title: "ICA Designers' Meet",
     month: 'Dec',
     year: 2023,
@@ -100,6 +108,7 @@ export const EVENTS: CMSEvent[] = [
   },
   {
     id: 'structural-engineer-meet-2022',
+    image: '/images/events/structural-engineer-meet-2022.jpg',
     title: 'Structural Engineers Meet',
     month: 'Nov',
     year: 2022,
@@ -120,6 +129,7 @@ export const EVENTS: CMSEvent[] = [
   },
   {
     id: 'fabricators-meet-2022',
+    image: '/images/events/fabricators-meet-2022.jpg',
     title: "Fabricators' Meet",
     month: 'Nov',
     year: 2022,
@@ -130,6 +140,7 @@ export const EVENTS: CMSEvent[] = [
   },
   {
     id: 'plumbers-meet-2022',
+    image: '/images/events/plumbers-meet-2022.jpg',
     title: "Plumbers' Meet — October",
     month: 'Oct',
     year: 2022,
@@ -140,6 +151,7 @@ export const EVENTS: CMSEvent[] = [
   },
   {
     id: 'engineers-meet-2022',
+    image: '/images/events/engineers-meet-2022.jpg',
     title: "Engineer's Meet",
     month: 'Sep',
     year: 2022,
@@ -150,6 +162,7 @@ export const EVENTS: CMSEvent[] = [
   },
   {
     id: 'public-works-presentation-2022',
+    image: '/images/events/public-works-presentation-2022.jpg',
     title: 'Public Works Department Presentation',
     month: 'Aug',
     year: 2022,
@@ -170,6 +183,7 @@ export const EVENTS: CMSEvent[] = [
   },
   {
     id: 'marketing-vision-quest-2022',
+    image: '/images/events/marketing-vision-quest-2022.jpg',
     title: 'Marketing Meet & Vision Quest',
     month: 'Jul',
     year: 2022,
@@ -180,6 +194,7 @@ export const EVENTS: CMSEvent[] = [
   },
   {
     id: 'technician-meet-2022',
+    image: '/images/events/technician-meet-2022.jpg',
     title: "Technician's Meet",
     month: 'Jun',
     year: 2022,
@@ -190,6 +205,7 @@ export const EVENTS: CMSEvent[] = [
   },
   {
     id: 'annual-day-2022',
+    image: '/images/events/annual-day-2022.jpg',
     title: 'CMS Group Annual Day',
     month: 'Jun',
     year: 2022,
@@ -200,6 +216,7 @@ export const EVENTS: CMSEvent[] = [
   },
   {
     id: 'blood-donation-2022',
+    image: '/images/events/blood-donation-2022.jpg',
     title: 'Blood Donation Campaign',
     month: 'Jun',
     year: 2022,
@@ -220,6 +237,7 @@ export const EVENTS: CMSEvent[] = [
   },
   {
     id: 'christmas-new-year-2019',
+    image: '/images/events/christmas-new-year-2019.jpg',
     title: 'Christmas & New Year Celebration',
     month: 'Dec',
     year: 2019,
@@ -230,6 +248,7 @@ export const EVENTS: CMSEvent[] = [
   },
   {
     id: 'blood-donation-2019',
+    image: '/images/events/blood-donation-2019.jpg',
     title: 'Blood Donation Camp 2019',
     month: 'Dec',
     year: 2019,
@@ -240,6 +259,7 @@ export const EVENTS: CMSEvent[] = [
   },
   {
     id: 'buildcon-2019',
+    image: '/images/events/buildcon-2019.jpg',
     title: '5th Buildcon Exhibition',
     month: 'Feb',
     year: 2019,
@@ -250,6 +270,7 @@ export const EVENTS: CMSEvent[] = [
   },
   {
     id: 'blood-donation-2018',
+    image: '/images/events/blood-donation-2018.jpg',
     title: 'Blood Donation Camp 2018',
     month: 'Dec',
     year: 2018,
@@ -260,6 +281,7 @@ export const EVENTS: CMSEvent[] = [
   },
   {
     id: 'plumbers-meet-2018',
+    image: '/images/events/plumbers-meet-2018.jpg',
     title: "Plumbers' Meet",
     month: 'Aug',
     year: 2018,
@@ -270,6 +292,7 @@ export const EVENTS: CMSEvent[] = [
   },
   {
     id: 'iko-launch-2018',
+    image: '/images/events/iko-launch-2018.jpg',
     title: 'IKO Roofing Product Launch',
     month: 'Aug',
     year: 2018,
@@ -280,6 +303,7 @@ export const EVENTS: CMSEvent[] = [
   },
   {
     id: 'armstrong-seminar-2017',
+    image: '/images/events/armstrong-seminar-2017.jpg',
     title: 'Armstrong Ceiling Solutions Seminar',
     month: 'Jun',
     year: 2017,

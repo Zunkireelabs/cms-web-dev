@@ -10,7 +10,7 @@ import { PRODUCT_DOMAINS, CONTRACTING_SERVICES } from '@/data/products';
 import { Container } from '@/components/ui/Container';
 import { Logo } from '@/components/ui/Logo';
 import { MobileMenu } from './MobileMenu';
-import { ChevronDown, Home, Building, DoorOpen, PaintBucket, Lock, Fence, Droplets, Trash2, Bath, Armchair, Layers, Building2, ClipboardCheck, Leaf, ArrowRight } from 'lucide-react';
+import { ChevronDown, Home, Building, DoorOpen, PaintBucket, Lock, Fence, Droplets, Trash2, Bath, Armchair, Layers, Building2, ClipboardCheck, Leaf, ArrowRight, ShieldAlert, Sofa } from 'lucide-react';
 
 const DOMAIN_ICONS: Record<string, React.ReactNode> = {
   roofing: <Home className="h-4 w-4" />,
@@ -24,6 +24,8 @@ const DOMAIN_ICONS: Record<string, React.ReactNode> = {
   wastewater: <Trash2 className="h-4 w-4" />,
   sanitaryware: <Bath className="h-4 w-4" />,
   furniture: <Armchair className="h-4 w-4" />,
+  'fire-rated-doors': <ShieldAlert className="h-4 w-4" />,
+  'office-furnitures': <Sofa className="h-4 w-4" />,
 };
 
 const SERVICE_ICONS: Record<string, React.ReactNode> = {
@@ -124,8 +126,8 @@ export function Header() {
                           'relative px-4 py-2 text-base font-medium transition-colors flex items-center gap-1',
                           isSolid
                             ? isProductsActive(pathname)
-                              ? 'text-brand-600'
-                              : 'text-neutral-600 hover:text-brand-600'
+                              ? 'text-accent'
+                              : 'text-neutral-600 hover:text-accent'
                             : isProductsActive(pathname)
                               ? 'text-white'
                               : 'text-white/80 hover:text-white'
@@ -142,7 +144,7 @@ export function Header() {
                             layoutId="activeNav"
                             className={cn(
                               'absolute bottom-0 left-2 right-2 h-0.5',
-                              isSolid ? 'bg-brand-600' : 'bg-white'
+                              isSolid ? 'bg-accent' : 'bg-white'
                             )}
                             transition={{
                               type: 'spring',
@@ -169,8 +171,8 @@ export function Header() {
                         'relative px-4 py-2 text-base font-medium transition-colors',
                         isSolid
                           ? pathname === item.href
-                            ? 'text-brand-600'
-                            : 'text-neutral-600 hover:text-brand-600'
+                            ? 'text-accent'
+                            : 'text-neutral-600 hover:text-accent'
                           : pathname === item.href
                             ? 'text-white'
                             : 'text-white/80 hover:text-white'
@@ -182,7 +184,7 @@ export function Header() {
                           layoutId="activeNav"
                           className={cn(
                             'absolute bottom-0 left-2 right-2 h-0.5',
-                            isSolid ? 'bg-brand-600' : 'bg-white'
+                            isSolid ? 'bg-accent' : 'bg-white'
                           )}
                           transition={{
                             type: 'spring',
@@ -208,7 +210,7 @@ export function Header() {
                 className={cn(
                   'inline-flex items-center justify-center rounded-lg px-6 py-2.5 text-base font-medium transition-all',
                   isSolid
-                    ? 'bg-brand-600 text-white hover:bg-brand-700'
+                    ? 'bg-accent text-white hover:bg-accent-700'
                     : 'border-2 border-white/60 text-white hover:bg-white/10'
                 )}
               >
@@ -222,7 +224,7 @@ export function Header() {
               className={cn(
                 'relative z-10 flex h-10 w-10 items-center justify-center rounded-lg transition-colors lg:hidden',
                 isSolid
-                  ? 'text-neutral-600 hover:bg-neutral-surface hover:text-brand-600'
+                  ? 'text-neutral-600 hover:bg-neutral-surface hover:text-accent'
                   : 'text-white hover:bg-white/10'
               )}
               aria-expanded={isMobileMenuOpen}

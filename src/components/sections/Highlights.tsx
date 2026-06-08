@@ -17,13 +17,13 @@ interface HighlightItem {
 const HIGHLIGHTS: HighlightItem[] = [
   {
     id: 'global-brands',
-    label: '60+ Global Brands',
+    label: '50+ Global Brands',
     image: '/images/products/facade.jpg',
     link: '/brands',
   },
   {
     id: 'projects-delivered',
-    label: '200+ Projects Delivered',
+    label: '500+ Projects Delivered',
     image: '/images/hero/project-1.jpg',
     link: '/projects',
   },
@@ -104,14 +104,21 @@ export function Highlights() {
           <motion.div
             variants={fadeUp}
             custom={0}
-            className="flex flex-col justify-between rounded-xl p-7 sm:p-8 lg:p-10"
+            className="flex flex-col justify-between p-2 sm:p-4"
           >
             <div>
-              <h2 className="font-display text-2xl sm:text-3xl lg:text-[2rem] font-bold tracking-tight text-neutral-900 uppercase leading-tight">
-                Latest Highlights
+              <div className="inline-flex items-center gap-3">
+                <span className="h-px w-8 bg-accent" />
+                <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-accent">
+                  Latest Highlights
+                </span>
+              </div>
+              <h2 className="mt-5 font-display text-3xl font-bold tracking-tight leading-[1.1] text-neutral-charcoal sm:text-4xl">
+                Recent activity across the group.
               </h2>
-              <p className="mt-4 text-sm sm:text-base text-neutral-600 leading-relaxed">
-                Two decades of building Nepal — from hospitals and hotels to airports and offices, backed by 60+ global brand partners and six specialized ventures.
+              <p className="mt-5 text-sm leading-relaxed text-neutral-600 sm:text-base">
+                Brand partnerships, sector focus, contracting milestones — what&apos;s
+                been happening across CMS Group ventures lately.
               </p>
             </div>
             <div className="mt-6">

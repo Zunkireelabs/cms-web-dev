@@ -1,14 +1,20 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
-import Link from 'next/link';
-import { Container } from '@/components/ui/Container';
+import Image from 'next/image';
+import { PageHero } from '@/components/ui/PageHero';
+import { Section } from '@/components/ui/Section';
+import { SectionHeader } from '@/components/ui/SectionHeader';
+import { ContentCard } from '@/components/ui/ContentCard';
+import { ContactCTA } from '@/components/sections';
 import {
   getProductDomain,
   getAllProductSlugs,
   type Brand,
+  type ProductDomain,
 } from '@/data/products';
-import { ContactCTA } from '@/components/sections';
-import { ExternalLink, FileDown, ChevronRight } from 'lucide-react';
+import { PROJECTS, type Project } from '@/data/projects';
+import Link from 'next/link';
+import { ArrowLeft, Building2, ExternalLink, Eye, FileDown, Sparkles } from 'lucide-react';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -30,63 +36,115 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     title: `${domain.title} | Trading`,
     description: domain.description,
     openGraph: {
-      title: `${domain.title} | CMS Trading & Contracting`,
+      title: `${domain.title} | CMS Group`,
       description: domain.description,
     },
   };
 }
 
-function BrandCard({ brand }: { brand: Brand }) {
+function getRelatedProjects(domain: ProductDomain): Project[] {
+  if (!domain.projectKeywords || domain.projectKeywords.length === 0) return [];
+  const lowerKeywords = domain.projectKeywords.map((k) => k.toLowerCase());
+  return PROJECTS.filter((p) => {
+    const haystack = [p.description, ...p.scope, p.title].join(' ').toLowerCase();
+    return lowerKeywords.some((kw) => haystack.includes(kw));
+  }).slice(0, 6);
+}
+
+function PartnerCard({ brand }: { brand: Brand }) {
+  const hasBrochure = Boolean(brand.brochureUrl) && brand.brochureUrl !== '#';
+
   return (
-    <div className="group relative overflow-hidden rounded-2xl border border-neutral-border bg-white shadow-card transition-all duration-300 hover:shadow-card-hover">
-      <div className="p-8 lg:p-10">
-        {/* Brand Name */}
-        <h3 className="text-2xl font-bold text-neutral-charcoal lg:text-3xl">
-          {brand.name}
-        </h3>
+    <div className="group relative overflow-hidden rounded-2xl border border-neutral-border bg-white shadow-card transition-all duration-300 hover:-translate-y-0.5 hover:shadow-card-hover">
+      <div className="grid gap-8 p-8 lg:grid-cols-[1fr_auto] lg:p-10">
+        <div>
+          <h3 className="font-display text-2xl font-bold leading-tight tracking-tight text-neutral-charcoal lg:text-3xl">
+            {brand.name}
+          </h3>
+          <p className="mt-1 text-xs font-semibold uppercase tracking-[0.18em] text-neutral-400">
+            {brand.country}
+          </p>
+          <p className="mt-4 text-base font-semibold text-accent">{brand.specialty}</p>
+          <p className="mt-3 leading-relaxed text-neutral-600">{brand.description}</p>
 
-        {/* Country */}
-        <p className="mt-1 text-sm text-neutral-400">{brand.country}</p>
+          <div className="mt-7 flex flex-wrap gap-3">
+            {brand.catalogueUrl && (
+              <a
+                href={brand.catalogueUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-lg bg-accent px-6 py-3 text-sm font-semibold uppercase tracking-wider text-white transition-colors hover:bg-accent-700"
+              >
+                Visit Brand
+                <ExternalLink className="h-4 w-4" />
+              </a>
+            )}
 
-        {/* Specialty - bold niche highlight */}
-        <p className="mt-4 text-lg font-bold text-brand-700">
-          {brand.specialty}
-        </p>
+            {hasBrochure ? (
+              <>
+                <a
+                  href={brand.brochureUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-lg border border-neutral-300 px-6 py-3 text-sm font-semibold text-neutral-charcoal transition-colors hover:border-accent/40 hover:bg-accent-50 hover:text-accent"
+                >
+                  <Eye className="h-4 w-4" />
+                  View Brochure
+                </a>
+                <a
+                  href={brand.brochureUrl}
+                  download
+                  className="inline-flex items-center gap-2 rounded-lg border border-neutral-300 px-6 py-3 text-sm font-semibold text-neutral-charcoal transition-colors hover:border-accent/40 hover:bg-accent-50 hover:text-accent"
+                >
+                  <FileDown className="h-4 w-4" />
+                  Download Brochure
+                </a>
+              </>
+            ) : (
+              <>
+                <button
+                  disabled
+                  className="inline-flex items-center gap-2 rounded-lg border border-neutral-200 px-6 py-3 text-sm font-semibold text-neutral-400 cursor-not-allowed"
+                  title="Brochure coming soon"
+                >
+                  <Eye className="h-4 w-4" />
+                  View Brochure
+                  <span className="ml-1 rounded bg-neutral-100 px-1.5 py-0.5 text-[10px] font-medium uppercase">
+                    Soon
+                  </span>
+                </button>
+                <button
+                  disabled
+                  className="inline-flex items-center gap-2 rounded-lg border border-neutral-200 px-6 py-3 text-sm font-semibold text-neutral-400 cursor-not-allowed"
+                  title="Brochure coming soon"
+                >
+                  <FileDown className="h-4 w-4" />
+                  Download Brochure
+                </button>
+              </>
+            )}
+          </div>
+        </div>
 
-        {/* Description */}
-        <p className="mt-3 text-neutral-600 leading-relaxed">
-          {brand.description}
-        </p>
-
-        {/* Action Buttons */}
-        <div className="mt-8 flex flex-wrap gap-3">
-          {brand.catalogueUrl && (
-            <a
-              href={brand.catalogueUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-lg bg-brand-700 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-800"
-            >
-              Visit Brand
-              <ExternalLink className="h-4 w-4" />
-            </a>
+        {/* Logo box */}
+        <div className="hidden lg:flex h-32 w-48 shrink-0 items-center justify-center rounded-xl bg-white p-4">
+          {brand.logo ? (
+            <Image
+              src={brand.logo}
+              alt={`${brand.name} logo`}
+              width={160}
+              height={80}
+              className="max-h-full max-w-full object-contain"
+            />
+          ) : (
+            <div className="flex flex-col items-center gap-1 text-neutral-300">
+              <Building2 className="h-7 w-7" strokeWidth={1.25} />
+              <span className="text-[10px] uppercase tracking-wider font-medium">Logo</span>
+            </div>
           )}
-          <button
-            disabled
-            className="inline-flex items-center gap-2 rounded-lg border-2 border-neutral-200 px-6 py-3 text-sm font-semibold text-neutral-400 cursor-not-allowed"
-            title="Brochure coming soon"
-          >
-            <FileDown className="h-4 w-4" />
-            Download Brochure
-            <span className="ml-1 rounded bg-neutral-100 px-1.5 py-0.5 text-[10px] font-medium uppercase">
-              Coming Soon
-            </span>
-          </button>
         </div>
       </div>
-
-      {/* Bottom accent */}
-      <div className="absolute bottom-0 left-0 h-1 w-0 bg-brand-600 transition-all duration-300 group-hover:w-full" />
+      <div className="absolute bottom-0 left-0 h-0.5 w-0 bg-accent transition-all duration-300 group-hover:w-full" />
     </div>
   );
 }
@@ -99,69 +157,103 @@ export default async function TradingSlugPage({ params }: PageProps) {
     notFound();
   }
 
+  const relatedProjects = getRelatedProjects(domain);
+  const partnerCount = domain.brands.length;
+
   return (
     <>
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-brand-900 via-brand-800 to-neutral-charcoal py-20 lg:py-28">
-        <div className="absolute inset-0 opacity-10">
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage: `radial-gradient(circle at 1px 1px, white 1px, transparent 0)`,
-              backgroundSize: '32px 32px',
-            }}
-          />
-        </div>
+      <PageHero
+        kicker="Trading Domain"
+        title={domain.title}
+        subtitle={domain.description}
+        image={domain.image}
+        imageAlt={domain.title}
+        imagePosition={domain.imagePosition}
+        size="compact"
+        breadcrumbs={[
+          { label: 'Home', href: '/' },
+          { label: 'Trading', href: '/trading' },
+          { label: domain.title },
+        ]}
+      />
 
-        <Container className="relative">
-          {/* Breadcrumb */}
-          <nav className="mb-8 flex items-center gap-2 text-sm text-brand-200">
-            <Link href="/" className="hover:text-white transition-colors">
-              Home
-            </Link>
-            <ChevronRight className="h-4 w-4" />
-            <Link href="/trading" className="hover:text-white transition-colors">
-              Trading
-            </Link>
-            <ChevronRight className="h-4 w-4" />
-            <span className="text-white">{domain.title}</span>
-          </nav>
+      {/* Brand Partners */}
+      <Section variant="soft">
+        <SectionHeader
+          kicker="Brand Partners"
+          title={
+            partnerCount === 0
+              ? 'Brand partners coming soon.'
+              : `World-leading brands in ${domain.title.toLowerCase()}.`
+          }
+          lead="Authentic products with full manufacturer warranty, technical support, and after-sales service — sourced through CMS Group's authorised distribution channels."
+        />
 
-          <div className="max-w-3xl">
-            <span className="inline-block rounded-full bg-white/10 px-4 py-1.5 text-sm font-medium text-white backdrop-blur-sm">
-              Trading Division
-            </span>
-            <h1 className="mt-4 text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
-              {domain.title}
-            </h1>
-            <p className="mt-6 text-xl text-brand-100">{domain.description}</p>
-          </div>
-        </Container>
-      </section>
-
-      {/* Brands Section */}
-      <section className="py-16 lg:py-24 bg-neutral-off-white">
-        <Container>
-          <div className="mb-12">
-            <h2 className="text-2xl font-bold text-neutral-charcoal sm:text-3xl">
-              Our Brand Partners
-            </h2>
-            <p className="mt-2 text-neutral-600">
-              {domain.brands.length === 1
-                ? 'Our exclusive partner for this domain'
-                : `${domain.brands.length} world-leading brands in ${domain.title.toLowerCase()}`}
-            </p>
-          </div>
-
-          <div className="space-y-8">
+        {partnerCount > 0 ? (
+          <div className="mt-12 space-y-8">
             {domain.brands.map((brand) => (
-              <BrandCard key={brand.name} brand={brand} />
+              <PartnerCard key={brand.name} brand={brand} />
             ))}
           </div>
-        </Container>
-      </section>
+        ) : (
+          <div className="mt-12 rounded-2xl border border-dashed border-neutral-300 bg-white px-8 py-12 text-center lg:py-16">
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-accent-50 text-accent">
+              <Sparkles className="h-6 w-6" strokeWidth={1.5} />
+            </div>
+            <h3 className="mt-5 font-display text-xl font-bold text-neutral-charcoal">
+              Brand partners coming soon
+            </h3>
+            <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-neutral-600">
+              We&apos;re finalising authorised distribution arrangements for this domain.
+              Reach out to discuss specific product requirements.
+            </p>
+            <Link
+              href="/contact"
+              className="mt-6 inline-flex items-center gap-2 rounded-lg bg-accent px-6 py-3 text-sm font-semibold uppercase tracking-wider text-white transition-colors hover:bg-accent-700"
+            >
+              Get in touch
+            </Link>
+          </div>
+        )}
+      </Section>
 
-      {/* CTA Section */}
+      {/* Related Projects */}
+      {relatedProjects.length > 0 && (
+        <Section variant="light">
+          <SectionHeader
+            kicker="Featured Projects"
+            title={`Projects featuring ${domain.title.toLowerCase()}.`}
+            lead={`Recent CMS Group projects that supplied or installed ${domain.title.toLowerCase()} across hospitality, healthcare, education, and corporate sectors.`}
+          />
+
+          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {relatedProjects.map((project) => (
+              <ContentCard
+                key={project.id}
+                image={project.image}
+                imageAlt={project.title}
+                title={project.title}
+                description={project.description}
+                badge={project.sector ?? (project.type === 'residential' ? 'Residential' : undefined)}
+                meta={String(project.year)}
+                location={project.location}
+                aspect="video"
+              />
+            ))}
+          </div>
+
+          <div className="mt-12 text-center">
+            <Link
+              href="/trading"
+              className="inline-flex items-center gap-2 rounded-lg border border-neutral-300 px-6 py-3 text-sm font-semibold uppercase tracking-wider text-neutral-charcoal transition-colors hover:border-accent/40 hover:bg-accent-50 hover:text-accent"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              All Trading Domains
+            </Link>
+          </div>
+        </Section>
+      )}
+
       <ContactCTA />
     </>
   );

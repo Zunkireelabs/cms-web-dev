@@ -76,9 +76,9 @@ export const VENTURES: Venture[] = [
       '4R Technologies was founded in 2015 with a clear objective of promoting ecologically friendly and recyclable products. Our knowledge includes waste treatment solutions such as Sewage Treatment Plants (STP) and Effluent Treatment Plants (ETP). We also specialize in designing stunning water features such as fountains and waterfalls. Our product line includes a diverse range of solutions designed to maximize resource utilization while minimizing environmental impact — SMC panel tanks, Zinc Aluminum Bulk Tanks, Fuel Tanks, and more.',
     products: [
       { name: 'Architectural Fountains' },
-      { name: 'Bulk Water Storage Plants' },
-      { name: 'Swimming Pool Solutions' },
-      { name: 'Aerobic Sewage Treatment' },
+      { name: 'Bulk Water Storage Plants', image: '/images/ventures/4r-technologies/bulk-water-storage.jpg' },
+      { name: 'Swimming Pool Solutions', image: '/images/ventures/4r-technologies/swimming-pool.jpg' },
+      { name: 'Aerobic Sewage Treatment', image: '/images/ventures/4r-technologies/aerobic-sewage.jpg' },
       { name: 'Aerobic Sewage Treatment Plants' },
       { name: 'Effluent Treatment Plants' },
     ],

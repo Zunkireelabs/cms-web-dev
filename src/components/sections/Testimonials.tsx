@@ -1,22 +1,24 @@
 'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
+import Image from 'next/image';
 import { Container } from '@/components/ui/Container';
+import { KickerLabel } from '@/components/ui/KickerLabel';
 import {
+  Building2,
+  CalendarDays,
   ChevronLeft,
   ChevronRight,
+  Factory,
+  Globe2,
+  HardHat,
+  Home,
+  Hospital,
+  Landmark,
   MapPin,
-  CalendarDays,
+  PencilRuler,
   Quote,
   type LucideIcon,
-  Building2,
-  Hospital,
-  HardHat,
-  PencilRuler,
-  Factory,
-  Landmark,
-  Globe2,
-  Home,
 } from 'lucide-react';
 import {
   TESTIMONIALS,
@@ -47,87 +49,159 @@ const CLIENT_TYPE_LABELS: Record<ClientType, string> = {
   residential: 'Residential',
 };
 
+// Sector-themed bright fallback photos per client type
+const CLIENT_TYPE_PHOTO: Record<ClientType, string> = {
+  hotel: '/images/projects/hospitality.jpg',
+  hospital: '/images/projects/healthcare.jpg',
+  construction: '/images/projects/country-villa.jpg',
+  architecture: '/images/projects/residential.jpg',
+  industrial: '/images/projects/infrastructure.jpg',
+  government: '/images/projects/government.jpg',
+  international: '/images/projects/icimod.jpg',
+  residential: '/images/projects/residential.jpg',
+};
+
+// Direct project matches override the sector fallback
+const TESTIMONIAL_PHOTO_OVERRIDE: Record<string, string> = {
+  'ziec-bir-hospital': '/images/projects/bir-hospital.jpg',
+  'airtech-tiger-palace': '/images/projects/tiger-palace.jpg',
+  icimod: '/images/projects/icimod.jpg',
+  'adrisiya-nirman': '/images/projects/attorney-general.jpg',
+  'himalayan-builders': '/images/projects/government.jpg',
+  'maruti-cements': '/images/projects/infrastructure.jpg',
+  'nanc-police': '/images/projects/government.jpg',
+  'hama-iron-steel': '/images/projects/infrastructure.jpg',
+  'kemtex-nepal': '/images/projects/ncell-hq.jpg',
+  'kedia-construction': '/images/projects/country-villa.jpg',
+};
+
+// Use the actual signed reference letter scan when available; fall back to project photo
+function getTestimonialPhoto(t: Testimonial): { src: string; isLetter: boolean } {
+  if (t.scanImage) return { src: t.scanImage, isLetter: true };
+  const fallback = TESTIMONIAL_PHOTO_OVERRIDE[t.id] ?? CLIENT_TYPE_PHOTO[t.clientType];
+  return { src: fallback, isLetter: false };
+}
+
 function formatDate(iso: string): string {
   const date = new Date(iso);
   if (Number.isNaN(date.getTime())) return iso;
   return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
 }
 
-interface TestimonialCardProps {
-  testimonial: Testimonial;
-}
-
-function TestimonialCard({ testimonial }: TestimonialCardProps) {
+function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
   const Icon = CLIENT_TYPE_ICONS[testimonial.clientType];
+  const { src: photoSrc, isLetter } = getTestimonialPhoto(testimonial);
 
   return (
-    <div className="bg-white rounded-2xl p-6 md:p-8 shadow-sm h-full flex flex-col border border-neutral-100">
-      {/* Top: client + type */}
-      <div className="flex items-start justify-between gap-3 mb-4">
-        <div className="flex items-center gap-3 min-w-0">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-accent/10 text-accent">
-            <Icon className="h-5 w-5" strokeWidth={1.5} />
-          </div>
-          <div className="min-w-0">
-            <p className="font-semibold text-neutral-900 text-sm leading-tight truncate">
-              {testimonial.client}
-            </p>
-            <p className="text-[11px] uppercase tracking-wider text-neutral-400 mt-0.5">
-              {CLIENT_TYPE_LABELS[testimonial.clientType]}
-            </p>
-          </div>
-        </div>
-        <Quote className="h-6 w-6 text-accent/20 shrink-0" />
-      </div>
+    <article className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+      {/* Visual header — actual letter scan (portrait) or project photo (wide) */}
+      <div
+        className={`relative overflow-hidden bg-neutral-100 ${
+          isLetter ? 'aspect-[4/5]' : 'aspect-[16/10]'
+        }`}
+      >
+        <Image
+          src={photoSrc}
+          alt={`${testimonial.client} — ${
+            isLetter ? 'signed reference letter' : testimonial.project ?? testimonial.subject
+          }`}
+          fill
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          className={
+            isLetter
+              ? 'object-contain p-3'
+              : 'object-cover transition-transform duration-500 group-hover:scale-[1.04]'
+          }
+        />
 
-      {/* Subject */}
-      <h3 className="text-base font-semibold text-neutral-900 leading-snug">
-        {testimonial.subject}
-      </h3>
-
-      {/* Scope */}
-      <ul className="mt-4 space-y-1.5 flex-grow">
-        {testimonial.scope.slice(0, 4).map((item) => (
-          <li key={item} className="flex items-start gap-2 text-xs text-neutral-600">
-            <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-accent" />
-            <span className="leading-relaxed">{item}</span>
-          </li>
-        ))}
-        {testimonial.scope.length > 4 && (
-          <li className="text-[11px] text-neutral-400 pl-3">
-            + {testimonial.scope.length - 4} more
-          </li>
-        )}
-      </ul>
-
-      {/* Project + location */}
-      {(testimonial.project || testimonial.location) && (
-        <div className="mt-5 pt-4 border-t border-neutral-100 space-y-1.5">
-          {testimonial.project && (
-            <p className="text-xs font-medium text-neutral-700 leading-tight">
-              {testimonial.project}
-            </p>
-          )}
-          {testimonial.location && (
-            <div className="flex items-center gap-1.5 text-[11px] text-neutral-500">
-              <MapPin className="h-3 w-3" strokeWidth={1.5} />
-              <span>{testimonial.location}</span>
+        {/* For project photos: gradient overlay + project badge. For letters: clean overlay-free presentation. */}
+        {!isLetter && (
+          <>
+            <div className="absolute inset-0 bg-gradient-to-t from-neutral-charcoal/85 via-neutral-charcoal/30 to-transparent" />
+            <div className="absolute bottom-4 left-4 right-4">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-accent">
+                {CLIENT_TYPE_LABELS[testimonial.clientType]}
+              </p>
+              {testimonial.project && (
+                <p className="mt-1 truncate font-display text-base font-bold leading-tight text-white">
+                  {testimonial.project}
+                </p>
+              )}
             </div>
-          )}
-        </div>
-      )}
+          </>
+        )}
 
-      {/* Footer: delivered by + date */}
-      <div className="mt-4 flex items-center justify-between gap-3 text-[10px] uppercase tracking-wider">
-        <span className="font-semibold text-accent">
-          via {DELIVERING_VENTURE_LABELS[testimonial.deliveredBy]}
-        </span>
-        <span className="flex items-center gap-1 text-neutral-400">
-          <CalendarDays className="h-3 w-3" strokeWidth={1.5} />
-          {formatDate(testimonial.date)}
+        <span className="absolute top-4 left-4 inline-flex items-center gap-1.5 rounded-full bg-accent px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-white shadow-sm">
+          Signed Reference
         </span>
       </div>
-    </div>
+
+      <div className="relative flex flex-1 flex-col p-6 lg:p-7">
+        {/* Faint Quote watermark */}
+        <Quote
+          className="pointer-events-none absolute right-5 top-5 h-10 w-10 text-accent/15"
+          strokeWidth={1.25}
+        />
+
+        {/* Subject */}
+        <h3 className="font-display text-base font-bold leading-snug text-neutral-charcoal lg:text-lg">
+          {testimonial.subject}
+        </h3>
+
+        {/* Scope */}
+        {testimonial.scope.length > 0 && (
+          <ul className="mt-4 space-y-2">
+            {testimonial.scope.slice(0, 4).map((item) => (
+              <li
+                key={item}
+                className="flex items-start gap-2.5 text-sm leading-relaxed text-neutral-600"
+              >
+                <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent" />
+                <span>{item}</span>
+              </li>
+            ))}
+            {testimonial.scope.length > 4 && (
+              <li className="pl-4 text-xs text-neutral-400">
+                + {testimonial.scope.length - 4} more
+              </li>
+            )}
+          </ul>
+        )}
+
+        <div className="flex-1" />
+
+        {/* Footer: client + via venture + date */}
+        <div className="mt-5 flex items-end justify-between gap-3 border-t border-neutral-100 pt-5">
+          <div className="flex min-w-0 items-center gap-3">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-accent text-white">
+              <Icon className="h-4 w-4" strokeWidth={1.75} />
+            </div>
+            <div className="min-w-0">
+              <p className="truncate font-display text-sm font-bold leading-tight text-neutral-charcoal">
+                {testimonial.client}
+              </p>
+              {testimonial.location && (
+                <p className="mt-0.5 flex items-center gap-1 text-[10px] text-neutral-500">
+                  <MapPin className="h-2.5 w-2.5" strokeWidth={1.75} />
+                  {testimonial.location}
+                </p>
+              )}
+            </div>
+          </div>
+          <div className="text-right">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-accent">
+              via {DELIVERING_VENTURE_LABELS[testimonial.deliveredBy]}
+            </p>
+            <p className="mt-0.5 flex items-center justify-end gap-1 text-[10px] text-neutral-400">
+              <CalendarDays className="h-2.5 w-2.5" strokeWidth={1.75} />
+              {formatDate(testimonial.date)}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div className="absolute bottom-0 left-0 h-0.5 w-0 bg-accent transition-all duration-300 group-hover:w-full" />
+    </article>
   );
 }
 
@@ -183,16 +257,16 @@ export function Testimonials() {
   const visibleTestimonials = getVisibleTestimonials();
 
   return (
-    <section className="py-20 lg:py-28 bg-neutral-100">
+    <section className="bg-neutral-off-white py-20 lg:py-28">
       <Container>
-        <div className="mx-auto max-w-2xl text-center mb-12">
-          <span className="inline-block rounded-full bg-accent/10 px-4 py-1.5 text-sm font-semibold text-accent">
-            Client References
-          </span>
-          <h2 className="mt-4 text-3xl md:text-4xl lg:text-5xl font-medium text-neutral-900">
-            What Our Clients Say
+        <div className="mx-auto mb-14 max-w-3xl text-center">
+          <div className="flex justify-center">
+            <KickerLabel>Client References</KickerLabel>
+          </div>
+          <h2 className="mt-5 font-display text-3xl font-bold leading-[1.1] tracking-tight text-neutral-charcoal sm:text-4xl lg:text-5xl">
+            What our clients say.
           </h2>
-          <p className="text-lg text-neutral-600 mt-4">
+          <p className="mt-5 text-base leading-relaxed text-neutral-600 sm:text-lg">
             {totalSlides} signed reference letters from hotels, hospitals, government
             offices, and contractors across Nepal.
           </p>
@@ -205,7 +279,7 @@ export function Testimonials() {
               setIsAutoPlaying(false);
               setTimeout(() => setIsAutoPlaying(true), 5000);
             }}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 md:-translate-x-4 z-10 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center text-neutral-600 hover:text-accent hover:shadow-xl transition-all"
+            className="absolute left-0 top-1/2 z-10 flex h-12 w-12 -translate-x-2 -translate-y-1/2 items-center justify-center rounded-full bg-white text-neutral-600 shadow-lg transition-all hover:text-accent hover:shadow-xl md:-translate-x-4"
             aria-label="Previous testimonial"
           >
             <ChevronLeft className="h-6 w-6" />
@@ -216,7 +290,7 @@ export function Testimonials() {
               setIsAutoPlaying(false);
               setTimeout(() => setIsAutoPlaying(true), 5000);
             }}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 md:translate-x-4 z-10 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center text-neutral-600 hover:text-accent hover:shadow-xl transition-all"
+            className="absolute right-0 top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 translate-x-2 items-center justify-center rounded-full bg-white text-neutral-600 shadow-lg transition-all hover:text-accent hover:shadow-xl md:translate-x-4"
             aria-label="Next testimonial"
           >
             <ChevronRight className="h-6 w-6" />
@@ -225,35 +299,32 @@ export function Testimonials() {
           <div className="overflow-hidden px-8 md:px-16">
             <div
               ref={trackRef}
-              className="grid grid-cols-1 md:grid-cols-3 gap-6 transition-all duration-700 ease-in-out"
+              className="grid grid-cols-1 gap-6 transition-all duration-700 ease-in-out md:grid-cols-3"
             >
               {visibleTestimonials.map((testimonial, idx) => (
-                <div
-                  key={`${testimonial.id}-${currentIndex}-${idx}`}
-                  className="animate-fade-in"
-                >
+                <div key={`${testimonial.id}-${currentIndex}-${idx}`} className="animate-fade-in">
                   <TestimonialCard testimonial={testimonial} />
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="flex justify-center gap-2 mt-10">
+          <div className="mt-10 flex justify-center gap-2">
             {TESTIMONIALS.map((_, index) => (
               <button
                 key={index}
                 onClick={() => goToSlide(index)}
                 className={`h-2.5 rounded-full transition-all duration-300 ${
                   index === currentIndex
-                    ? 'bg-accent w-8'
-                    : 'bg-neutral-300 hover:bg-neutral-400 w-2.5'
+                    ? 'w-8 bg-accent'
+                    : 'w-2.5 bg-neutral-300 hover:bg-neutral-400'
                 }`}
                 aria-label={`Go to testimonial ${index + 1}`}
               />
             ))}
           </div>
 
-          <div className="text-center mt-4 text-sm text-neutral-500">
+          <div className="mt-4 text-center text-xs font-semibold uppercase tracking-[0.18em] text-neutral-400">
             {currentIndex + 1} / {TESTIMONIALS.length}
           </div>
         </div>

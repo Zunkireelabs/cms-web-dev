@@ -40,3 +40,6 @@ Thumbs.db
 temp_ss/
 temp-ss/
 *.tmp
+
+# Claude Code (keep .claude/skills/ shared, exclude user-local settings)
+.claude/settings.local.json

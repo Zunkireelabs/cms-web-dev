@@ -1,14 +1,14 @@
-import { Building2, GraduationCap, Plane, Briefcase, Hotel, Home } from 'lucide-react';
+import { Building2, GraduationCap, Plane, Briefcase, HeartPulse, Home } from 'lucide-react';
 import type { Sector } from '@/types';
 
 export const SECTORS: Sector[] = [
   {
-    name: 'Hospital',
-    slug: 'hospital',
+    name: 'Hospitality',
+    slug: 'hospitality',
     icon: Building2,
-    summary: 'High-quality services for hospital construction and finishing.',
+    summary: 'High-quality services for hospitality construction and finishing.',
     description:
-      'We provide various solutions to Hospitals, as we meet our standard of providing high quality services such as Water proofing, Expansion Joint, STP, Windows & Sensor Doors, Facade, Wooden/Fire/Acoustic Doors, Ceiling, Epoxy flooring, Vinyl flooring, verified tiles, toilet cubicle, door hardware, automatic censor doors, Sanitary fixtures, Fire rated metal doors for emergency exit, Wooden doors for common toilet, Alexa demountable partition, Windows Toilet cubicle, Parking Lift, fountain and water features, commercial storage tank, Fire Tank, engineering wood, laminate, carpet, SPC Floor Laminate, Solid wood.',
+      'We provide various solutions to Hospitality projects, as we meet our standard of providing high quality services such as Water proofing, Expansion Joint, STP, Windows & Sensor Doors, Facade, Wooden/Fire/Acoustic Doors, Ceiling, Epoxy flooring, Vinyl flooring, verified tiles, toilet cubicle, door hardware, automatic censor doors, Sanitary fixtures, Fire rated metal doors for emergency exit, Wooden doors for common toilet, Alexa demountable partition, Windows Toilet cubicle, Parking Lift, fountain and water features, commercial storage tank, Fire Tank, engineering wood, laminate, carpet, SPC Floor Laminate, Solid wood.',
   },
   {
     name: 'Education',
@@ -35,12 +35,12 @@ export const SECTORS: Sector[] = [
       'Our Company also provides services to Offices. We provide various services such as Office furniture, Office Partition, Expansion joint, Sewage Treatment Plant, Windows, Façade, Wooden/Fire/Acoustic Doors, Ceiling, Flooring, wood coating, toilet cubicle, Aluminum & Glass railing, digital & RFID locks, door hardware, acoustic movable walls, automatic censor doors, Sanitary fixtures, Water proofing, Verified tiles, fountain and water features, commercial storage tank, Fire Tank, engineering wood, laminate, carpet, SPC Floor Laminate, and Solid wood.',
   },
   {
-    name: 'Hotel',
-    slug: 'hotel',
-    icon: Hotel,
-    summary: 'Premium finishes and systems for hospitality projects.',
+    name: 'Healthcare',
+    slug: 'healthcare',
+    icon: HeartPulse,
+    summary: 'Specialised finishes and systems for hospitals and medical facilities.',
     description:
-      'We also provide services to Hotels with our high quality products and services such as Furniture, Windows & Sensor Doors, acoustic movable walls, automatic censor doors, Facade, Wooden/Fire/Acoustic Doors, Ceiling, Flooring, wood coating, toilet cubicle, Aluminum & Glass railing, digital & RFID locks, door hardware, Sanitary fixtures, Water proofing, Expansion joint, Sewage Treatment Plant, Roofing, Sanitary fixtures, Parking Lifts, Verified tiles, fountain and water features, commercial storage tank, engineering wood, laminate, Carpet, SPC Floor Laminate, Solid wood, and Fire Tank.',
+      'We deliver healthcare-grade construction and finishing solutions for hospitals, clinics, and diagnostic centres. Our services include Water proofing, Expansion Joint, Sewage Treatment Plant, Façade, Windows & Sensor Doors, Wooden/Fire/Acoustic Doors, Fire rated metal doors for emergency exit, antibacterial Ceiling systems, Epoxy and Vinyl flooring suited to clinical environments, SPC Floor Laminate, verified tiles, toilet cubicles, Aluminum & Glass railing, automatic sensor doors, digital & RFID locks, door hardware, Sanitary fixtures, demountable partitions, Parking Lifts, commercial storage tank, Fire Tank, engineering wood, laminate, carpet, and Solid wood — all specified to meet the hygiene, durability, and safety standards healthcare facilities demand.',
   },
   {
     name: 'Residence',

@@ -1,9 +1,13 @@
 'use client';
 
 import { useState, useRef, useMemo } from 'react';
+import Image from 'next/image';
 import { motion, useInView } from 'framer-motion';
 import { Container } from '@/components/ui/Container';
+import { PageHero } from '@/components/ui/PageHero';
+import { Section } from '@/components/ui/Section';
 import { ContactCTA } from '@/components/sections';
+import { fadeUp } from '@/lib/motion';
 import {
   EVENTS,
   EVENT_CATEGORY_LABELS,
@@ -12,6 +16,7 @@ import {
 } from '@/data/events';
 import {
   Calendar,
+  CalendarOff,
   Flag,
   GraduationCap,
   Handshake,
@@ -42,15 +47,6 @@ const CATEGORY_GRADIENTS: Record<EventCategory, string> = {
 const ALL_FILTER = 'all' as const;
 type FilterValue = EventCategory | typeof ALL_FILTER;
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 25 },
-  visible: (delay: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5, delay, ease: [0.25, 0.46, 0.45, 0.94] },
-  }),
-};
-
 function EventCard({ event, index }: { event: CMSEvent; index: number }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-50px' });
@@ -63,36 +59,47 @@ function EventCard({ event, index }: { event: CMSEvent; index: number }) {
       initial="hidden"
       animate={isInView ? 'visible' : 'hidden'}
       custom={index * 0.04}
-      className="group flex flex-col overflow-hidden rounded-xl border border-neutral-200 bg-white transition-shadow hover:shadow-lg"
+      className="group flex flex-col overflow-hidden rounded-xl border border-neutral-200 bg-white transition-all hover:-translate-y-1 hover:shadow-lg"
     >
-      {/* Visual block (gradient + icon, no real photo asset yet) */}
-      <div className={`relative aspect-[16/10] bg-gradient-to-br ${CATEGORY_GRADIENTS[event.category]} bg-neutral-900`}>
-        <div className="absolute inset-0 flex items-center justify-center">
-          <Icon className="h-16 w-16 text-white/40" strokeWidth={1.2} />
-        </div>
-        <div className="absolute top-4 left-4">
-          <span className="inline-block px-3 py-1 bg-white/95 text-neutral-900 text-xs font-semibold rounded-full">
-            {EVENT_CATEGORY_LABELS[event.category]}
-          </span>
-        </div>
-        {/* Date badge — overlay style matching PDF gallery cards */}
-        <div className="absolute bottom-4 left-4">
-          <div className="flex items-center bg-accent text-white rounded-lg overflow-hidden shadow-lg">
-            <div className="px-3 py-2 text-center border-r border-white/20">
-              <div className="text-[10px] font-semibold uppercase tracking-wider opacity-90">
-                {event.month}
-              </div>
-              <div className="text-lg font-bold leading-none">{event.year}</div>
+      <div
+        className={`relative aspect-[16/10] overflow-hidden ${
+          event.image ? '' : `bg-gradient-to-br ${CATEGORY_GRADIENTS[event.category]} bg-neutral-charcoal`
+        }`}
+      >
+        {event.image ? (
+          <Image
+            src={event.image}
+            alt={event.title}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+          />
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <Icon className="h-16 w-16 text-white/40" strokeWidth={1.2} />
+          </div>
+        )}
+
+        <span className="absolute top-4 left-4 z-10 inline-block rounded-full bg-white/95 px-3 py-1 text-xs font-semibold text-neutral-charcoal shadow-sm">
+          {EVENT_CATEGORY_LABELS[event.category]}
+        </span>
+
+        {/* Date stamp — accent block */}
+        <div className="absolute bottom-4 left-4 z-10 flex items-center overflow-hidden rounded-lg bg-accent text-white shadow-lg">
+          <div className="px-3 py-2 text-center">
+            <div className="text-[10px] font-semibold uppercase tracking-wider opacity-90">
+              {event.month}
             </div>
+            <div className="font-display text-lg font-bold leading-none">{event.year}</div>
           </div>
         </div>
       </div>
 
-      <div className="flex flex-col flex-1 p-6">
-        <h3 className="text-lg font-semibold text-neutral-900 leading-tight group-hover:text-accent transition-colors">
+      <div className="flex flex-1 flex-col p-6">
+        <h3 className="font-display text-lg font-bold leading-tight text-neutral-charcoal transition-colors group-hover:text-accent sm:text-xl">
           {event.title}
         </h3>
-        <p className="mt-3 text-sm text-neutral-600 leading-relaxed flex-1">
+        <p className="mt-3 flex-1 text-sm leading-relaxed text-neutral-600">
           {event.description}
         </p>
         <div className="mt-5 flex items-center gap-2 text-xs text-neutral-400">
@@ -118,118 +125,91 @@ export default function NewsroomPage() {
     [selectedCategory],
   );
 
-  const categoryEntries = (Object.entries(EVENT_CATEGORY_LABELS) as [EventCategory, string][]).map(
-    ([value, label]) => ({ value, label }),
-  );
+  const categoryEntries = (
+    Object.entries(EVENT_CATEGORY_LABELS) as [EventCategory, string][]
+  ).map(([value, label]) => ({ value, label }));
 
   return (
     <>
-      {/* Hero */}
-      <section className="relative overflow-hidden bg-neutral-900 py-20 lg:py-28">
-        <div className="absolute inset-0 opacity-10">
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage: `radial-gradient(circle at 1px 1px, white 1px, transparent 0)`,
-              backgroundSize: '32px 32px',
-            }}
-          />
-        </div>
-
-        <Container className="relative">
-          <div className="mx-auto max-w-3xl text-center">
-            <motion.span
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="inline-block rounded-full bg-white/10 px-4 py-1.5 text-sm font-medium text-white backdrop-blur-sm"
-            >
-              Newsroom
-            </motion.span>
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="mt-4 text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl"
-            >
-              Events, Training &amp; Community
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="mt-6 text-xl text-neutral-300 leading-relaxed"
-            >
-              Product launches, partner training, trade shows, and CSR initiatives —
-              moments from across CMS Group ventures since 2017.
-            </motion.p>
-          </div>
-        </Container>
-      </section>
+      <PageHero
+        kicker="Newsroom"
+        title="Events, training & community."
+        subtitle="Product launches, partner training, trade shows, and CSR initiatives — moments from across CMS Group ventures since 2017."
+        image="/images/projects/lumbini-convention.jpg"
+        imageAlt="CMS Group events and community"
+        size="tall"
+      />
 
       {/* Featured Event */}
       {featuredEvent && (
-        <section className="py-12 lg:py-16 bg-neutral-50">
-          <Container>
-            <motion.article
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="group bg-white rounded-2xl overflow-hidden border border-neutral-200 shadow-lg"
-            >
-              <div className="grid lg:grid-cols-2">
-                <div className={`relative aspect-[16/10] lg:aspect-auto bg-gradient-to-br ${CATEGORY_GRADIENTS[featuredEvent.category]} bg-neutral-900`}>
+        <Section variant="soft" compact>
+          <motion.article
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-80px' }}
+            transition={{ duration: 0.6 }}
+            className="group overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-card"
+          >
+            <div className="grid lg:grid-cols-2">
+              <div
+                className={`relative aspect-[16/10] bg-gradient-to-br lg:aspect-auto ${CATEGORY_GRADIENTS[featuredEvent.category]} bg-neutral-charcoal`}
+              >
+                {featuredEvent.image ? (
+                  <Image
+                    src={featuredEvent.image}
+                    alt={featuredEvent.title}
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    className="object-cover"
+                  />
+                ) : (
                   <div className="absolute inset-0 flex items-center justify-center">
                     {(() => {
                       const Icon = CATEGORY_ICONS[featuredEvent.category];
                       return <Icon className="h-24 w-24 text-white/40" strokeWidth={1.2} />;
                     })()}
                   </div>
-                  <div className="absolute top-4 left-4">
-                    <span className="inline-block px-4 py-1.5 bg-accent text-white text-sm font-semibold rounded-full">
-                      Featured
-                    </span>
-                  </div>
-                </div>
-
-                <div className="p-8 lg:p-10 flex flex-col justify-center">
-                  <div className="flex items-center gap-3 text-sm text-neutral-500 mb-4">
-                    <span className="inline-flex items-center gap-1 px-3 py-1 bg-neutral-100 rounded-full">
-                      {EVENT_CATEGORY_LABELS[featuredEvent.category]}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Calendar className="w-4 h-4" />
-                      {featuredEvent.date}
-                    </span>
-                  </div>
-                  <h2 className="text-2xl lg:text-3xl font-bold text-neutral-900 mb-4 group-hover:text-accent transition-colors">
-                    {featuredEvent.title}
-                  </h2>
-                  <p className="text-neutral-600 leading-relaxed">
-                    {featuredEvent.description}
-                  </p>
-                </div>
+                )}
+                <span className="absolute top-4 left-4 inline-block rounded-full bg-accent px-4 py-1.5 text-sm font-semibold uppercase tracking-wider text-white shadow-sm">
+                  Featured
+                </span>
               </div>
-            </motion.article>
-          </Container>
-        </section>
+
+              <div className="flex flex-col justify-center p-8 lg:p-10">
+                <div className="mb-4 flex items-center gap-3 text-sm text-neutral-500">
+                  <span className="inline-flex items-center gap-1 rounded-full bg-neutral-100 px-3 py-1 text-xs font-semibold uppercase tracking-wider">
+                    {EVENT_CATEGORY_LABELS[featuredEvent.category]}
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <Calendar className="h-4 w-4" />
+                    {featuredEvent.date}
+                  </span>
+                </div>
+                <h2 className="font-display text-2xl font-bold leading-tight text-neutral-charcoal transition-colors group-hover:text-accent sm:text-3xl lg:text-4xl">
+                  {featuredEvent.title}
+                </h2>
+                <p className="mt-5 leading-relaxed text-neutral-600">
+                  {featuredEvent.description}
+                </p>
+              </div>
+            </div>
+          </motion.article>
+        </Section>
       )}
 
       {/* Category Filter */}
-      <section className="py-6 bg-white border-b border-neutral-200 sticky top-16 z-20 lg:top-20">
+      <section className="sticky top-16 z-20 border-y border-neutral-200 bg-white/95 py-4 backdrop-blur-md lg:top-20">
         <Container>
           <div className="flex items-center gap-2 overflow-x-auto pb-1">
             <button
               onClick={() => setSelectedCategory(ALL_FILTER)}
-              className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
+              className={`whitespace-nowrap rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
                 selectedCategory === ALL_FILTER
                   ? 'bg-accent text-white'
                   : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
               }`}
             >
               All Events
-              <span className="ml-1.5 text-xs opacity-70">
-                ({EVENTS.filter((e) => !e.featured).length})
-              </span>
             </button>
             {categoryEntries.map(({ value, label }) => {
               const count = EVENTS.filter((e) => !e.featured && e.category === value).length;
@@ -238,14 +218,13 @@ export default function NewsroomPage() {
                 <button
                   key={value}
                   onClick={() => setSelectedCategory(value)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
+                  className={`whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition-colors ${
                     selectedCategory === value
                       ? 'bg-accent text-white'
                       : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
                   }`}
                 >
                   {label}
-                  <span className="ml-1.5 text-xs opacity-70">({count})</span>
                 </button>
               );
             })}
@@ -254,49 +233,54 @@ export default function NewsroomPage() {
       </section>
 
       {/* Events Grid */}
-      <section className="py-16 lg:py-20 bg-neutral-50">
-        <Container>
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {filteredEvents.map((event, index) => (
-              <EventCard key={event.id} event={event} index={index} />
-            ))}
-          </div>
+      <Section variant="soft">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {filteredEvents.map((event, index) => (
+            <EventCard key={event.id} event={event} index={index} />
+          ))}
+        </div>
 
-          {filteredEvents.length === 0 && (
-            <div className="text-center py-12">
-              <p className="text-neutral-500">No events found in this category.</p>
+        {filteredEvents.length === 0 && (
+          <div className="rounded-2xl border border-dashed border-neutral-300 bg-white px-8 py-16 text-center">
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-accent-50 text-accent">
+              <CalendarOff className="h-6 w-6" strokeWidth={1.5} />
             </div>
-          )}
-        </Container>
-      </section>
+            <h3 className="mt-5 font-display text-xl font-bold text-neutral-charcoal">
+              No events in this category
+            </h3>
+            <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-neutral-600">
+              Try a different category, or browse all events.
+            </p>
+          </div>
+        )}
+      </Section>
 
       {/* Newsletter CTA */}
-      <section className="py-20 bg-white">
-        <Container>
-          <div className="max-w-2xl mx-auto text-center">
-            <h2 className="text-3xl font-bold text-neutral-900 mb-4">Stay Informed</h2>
-            <p className="text-neutral-600 mb-8">
-              Get notified about upcoming events, product launches, and CSR initiatives
-              across CMS Group ventures.
-            </p>
-            <form className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="flex-1 px-4 py-3 border border-neutral-300 rounded-full focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
-              />
-              <button
-                type="submit"
-                className="px-6 py-3 bg-accent text-white font-semibold rounded-full hover:bg-accent-700 transition-colors"
-              >
-                Subscribe
-              </button>
-            </form>
-          </div>
-        </Container>
-      </section>
+      <Section variant="light" compact>
+        <div className="mx-auto max-w-2xl text-center">
+          <h2 className="font-display text-3xl font-bold leading-tight tracking-tight text-neutral-charcoal sm:text-4xl">
+            Stay informed.
+          </h2>
+          <p className="mt-4 leading-relaxed text-neutral-600">
+            Get notified about upcoming events, product launches, and CSR initiatives across
+            CMS Group ventures.
+          </p>
+          <form className="mx-auto mt-8 flex max-w-md flex-col gap-3 sm:flex-row">
+            <input
+              type="email"
+              placeholder="Enter your email"
+              className="flex-1 rounded-full border border-neutral-300 px-5 py-3 text-sm focus:border-transparent focus:outline-none focus:ring-2 focus:ring-accent"
+            />
+            <button
+              type="submit"
+              className="rounded-full bg-accent px-6 py-3 text-sm font-semibold uppercase tracking-wider text-white transition-colors hover:bg-accent-700"
+            >
+              Subscribe
+            </button>
+          </form>
+        </div>
+      </Section>
 
-      {/* Contact CTA */}
       <ContactCTA />
     </>
   );

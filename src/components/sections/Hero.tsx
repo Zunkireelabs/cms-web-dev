@@ -124,7 +124,7 @@ export function Hero() {
                 src={HERO_SLIDES[currentSlide].image!}
                 alt={HERO_SLIDES[currentSlide].alt}
                 fill
-                priority={currentSlide === 0}
+                priority={currentSlide <= 1}
                 className="object-cover"
                 sizes="100vw"
                 onError={(e) => {

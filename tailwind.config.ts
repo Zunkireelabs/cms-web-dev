@@ -110,7 +110,7 @@ const config: Config = {
       fontFamily: {
         sans: ['var(--font-source-sans)', 'system-ui', 'sans-serif'],
         serif: ['var(--font-source-sans)', 'system-ui', 'sans-serif'],
-        display: ['var(--font-source-sans)', 'system-ui', 'sans-serif'],
+        display: ['var(--font-manrope)', 'var(--font-source-sans)', 'system-ui', 'sans-serif'],
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-out',

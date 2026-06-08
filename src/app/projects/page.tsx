@@ -1,9 +1,13 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Container } from '@/components/ui/Container';
+import { PageHero } from '@/components/ui/PageHero';
+import { Section } from '@/components/ui/Section';
+import { StatBlock } from '@/components/ui/StatBlock';
 import { ContactCTA } from '@/components/sections';
 import { cn } from '@/lib/utils';
 import {
@@ -13,17 +17,23 @@ import {
   type ProjectType,
   type CommercialSector,
 } from '@/data/projects';
-import Image from 'next/image';
-import { MapPin, Calendar, Maximize, Building2, Home } from 'lucide-react';
+import {
+  MapPin,
+  Maximize,
+  Building2,
+  Home,
+  Eye,
+  X,
+  Calendar,
+  ArrowRight,
+} from 'lucide-react';
 
 const SECTOR_IMAGES: Record<string, string> = {
   office: '/images/projects/office.jpg',
-  government: '/images/projects/government.jpg',
   hospitality: '/images/projects/hospitality.jpg',
   airports: '/images/projects/airport.jpg',
   healthcare: '/images/projects/healthcare.jpg',
   education: '/images/projects/education.jpg',
-  infrastructure: '/images/projects/infrastructure.jpg',
   residential: '/images/projects/residential.jpg',
 };
 
@@ -34,12 +44,7 @@ const TABS: { value: ProjectType; label: string; icon: React.ReactNode }[] = [
 
 const containerVariants = {
   hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.05,
-    },
-  },
+  visible: { opacity: 1, transition: { staggerChildren: 0.05 } },
 };
 
 const itemVariants = {
@@ -48,130 +53,276 @@ const itemVariants = {
     opacity: 1,
     y: 0,
     scale: 1,
-    transition: {
-      type: 'spring',
-      stiffness: 300,
-      damping: 24,
-    },
+    transition: { type: 'spring', stiffness: 300, damping: 24 },
   },
-  exit: {
-    opacity: 0,
-    y: -20,
-    scale: 0.95,
-    transition: {
-      duration: 0.2,
-    },
-  },
+  exit: { opacity: 0, y: -20, scale: 0.95, transition: { duration: 0.2 } },
 };
 
-function ProjectCard({ project }: { project: Project }) {
+function getProjectImageSrc(project: Project): string {
   const imageKey = project.sector || project.type;
-  const imageSrc = SECTOR_IMAGES[imageKey] || SECTOR_IMAGES.office;
+  return project.image ?? SECTOR_IMAGES[imageKey] ?? SECTOR_IMAGES.office;
+}
+
+function ProjectCard({
+  project,
+  onOpen,
+}: {
+  project: Project;
+  onOpen: (project: Project) => void;
+}) {
+  const imageSrc = getProjectImageSrc(project);
 
   return (
-    <motion.div
+    <motion.button
+      type="button"
       variants={itemVariants}
       layout
-      className="group relative overflow-hidden rounded-2xl border border-neutral-border bg-white shadow-card transition-shadow duration-300 hover:shadow-card-hover"
+      onClick={() => onOpen(project)}
+      aria-label={`Preview ${project.title}`}
+      className="group relative flex flex-col overflow-hidden rounded-xl border border-neutral-200 bg-white text-left transition-all duration-300 hover:-translate-y-1 hover:shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
     >
-      {/* Project Image */}
-      <div className="relative h-48 overflow-hidden bg-gradient-to-br from-brand-100 to-brand-50">
+      <div className="relative aspect-[16/10] overflow-hidden bg-neutral-100">
         <Image
           src={imageSrc}
           alt={project.title}
           fill
-          className="object-cover transition-transform duration-500 group-hover:scale-110"
+          className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
 
-        {/* Featured Badge */}
+        {/* Dim overlay on hover */}
+        <div className="pointer-events-none absolute inset-0 bg-neutral-charcoal/0 transition-colors duration-300 group-hover:bg-neutral-charcoal/25" />
+
+        {/* Eye preview cue — centered on image */}
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+          <div className="flex h-12 w-12 scale-75 items-center justify-center rounded-full bg-white/95 text-neutral-charcoal opacity-0 shadow-lg backdrop-blur-sm transition-all duration-300 group-hover:scale-100 group-hover:opacity-100">
+            <Eye className="h-5 w-5" strokeWidth={1.75} />
+          </div>
+        </div>
+
         {project.featured && (
-          <div className="absolute left-4 top-4">
-            <span className="rounded-full bg-brand-600 px-3 py-1 text-xs font-semibold text-white">
-              Featured
-            </span>
-          </div>
-        )}
-
-        {/* Year Badge */}
-        <div className="absolute right-4 top-4">
-          <span className="rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-neutral-charcoal backdrop-blur-sm">
-            {project.year}
+          <span className="absolute top-4 left-4 inline-block rounded-full bg-accent px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-white shadow-sm">
+            Featured
           </span>
-        </div>
-
-        {/* Hover Overlay */}
-        <div className="absolute inset-0 bg-brand-900/80 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-          <div className="flex h-full flex-col items-center justify-center p-4 text-center">
-            <p className="text-sm text-white/90">{project.description}</p>
-          </div>
-        </div>
+        )}
+        <span className="absolute top-4 right-4 inline-block rounded-full bg-neutral-charcoal/80 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white backdrop-blur-sm">
+          {project.year}
+        </span>
       </div>
 
-      {/* Content */}
-      <div className="p-6">
-        {/* Sector Tag */}
-        {project.sector && (
-          <span className="inline-block rounded-full bg-brand-50 px-2.5 py-0.5 text-xs font-medium capitalize text-brand-700">
-            {project.sector}
+      <div className="flex flex-1 flex-col p-6">
+        {(project.sector || project.type === 'residential') && (
+          <span className="inline-block w-fit rounded-full bg-accent-50 px-2.5 py-0.5 text-[11px] font-semibold capitalize text-accent">
+            {project.sector ?? 'Residential'}
           </span>
         )}
 
-        <h3 className="mt-3 text-lg font-semibold text-neutral-charcoal transition-colors group-hover:text-brand-600">
+        <h3 className="mt-3 font-display text-lg font-bold leading-tight text-neutral-charcoal transition-colors group-hover:text-accent sm:text-xl">
           {project.title}
         </h3>
+        <p className="mt-1 text-sm font-medium text-neutral-500">{project.client}</p>
 
-        <p className="mt-1 text-sm text-neutral-600">{project.client}</p>
-
-        {/* Meta Info */}
-        <div className="mt-4 flex flex-wrap gap-4 text-sm text-neutral-400">
-          <div className="flex items-center gap-1.5">
-            <MapPin className="h-3.5 w-3.5" />
-            <span>{project.location}</span>
-          </div>
+        <div className="mt-4 flex flex-wrap gap-x-4 gap-y-1.5 text-xs text-neutral-500">
+          <span className="flex items-center gap-1.5">
+            <MapPin className="h-3 w-3 text-accent shrink-0" strokeWidth={1.75} />
+            {project.location}
+          </span>
           {project.area && (
-            <div className="flex items-center gap-1.5">
-              <Maximize className="h-3.5 w-3.5" />
-              <span>{project.area}</span>
-            </div>
+            <span className="flex items-center gap-1.5">
+              <Maximize className="h-3 w-3 text-accent shrink-0" strokeWidth={1.75} />
+              {project.area}
+            </span>
           )}
         </div>
 
-        {/* Scope Tags */}
-        <div className="mt-4 flex flex-wrap gap-1.5">
-          {project.scope.slice(0, 3).map((item) => (
-            <span
-              key={item}
-              className="rounded bg-neutral-surface px-2 py-0.5 text-xs text-neutral-600"
-            >
-              {item}
-            </span>
-          ))}
-          {project.scope.length > 3 && (
-            <span className="rounded bg-neutral-surface px-2 py-0.5 text-xs text-neutral-400">
-              +{project.scope.length - 3}
-            </span>
-          )}
-        </div>
+        <p className="mt-4 line-clamp-3 flex-1 text-sm leading-relaxed text-neutral-600">
+          {project.description}
+        </p>
+
+        {project.scope.length > 0 && (
+          <div className="mt-5 flex flex-wrap gap-1.5">
+            {project.scope.slice(0, 3).map((item) => (
+              <span
+                key={item}
+                className="rounded bg-neutral-100 px-2 py-0.5 text-[11px] text-neutral-600"
+              >
+                {item}
+              </span>
+            ))}
+            {project.scope.length > 3 && (
+              <span className="rounded bg-neutral-100 px-2 py-0.5 text-[11px] text-neutral-400">
+                +{project.scope.length - 3}
+              </span>
+            )}
+          </div>
+        )}
       </div>
 
-      {/* Bottom accent */}
-      <div className="absolute bottom-0 left-0 h-1 w-0 bg-brand-600 transition-all duration-300 group-hover:w-full" />
-    </motion.div>
+      <div className="absolute bottom-0 left-0 h-0.5 w-0 bg-accent transition-all duration-300 group-hover:w-full" />
+    </motion.button>
+  );
+}
+
+function ProjectDetailModal({
+  project,
+  onClose,
+}: {
+  project: Project | null;
+  onClose: () => void;
+}) {
+  const closeBtnRef = useRef<HTMLButtonElement>(null);
+
+  // Lock body scroll, listen for ESC, focus close button on open
+  useEffect(() => {
+    if (!project) return;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', onKey);
+    closeBtnRef.current?.focus();
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [project, onClose]);
+
+  return (
+    <AnimatePresence>
+      {project && (
+        <motion.div
+          key="project-modal"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-neutral-charcoal/70 backdrop-blur-sm p-4 sm:p-6"
+          onClick={onClose}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="project-modal-title"
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.96, y: 12 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.96, y: 12 }}
+            transition={{ duration: 0.25, ease: [0.25, 0.46, 0.45, 0.94] }}
+            onClick={(e) => e.stopPropagation()}
+            className="relative grid w-full max-w-5xl overflow-hidden rounded-2xl bg-white shadow-2xl md:grid-cols-[55fr_45fr] max-h-[90vh]"
+          >
+            {/* Image side */}
+            <div className="relative aspect-[4/3] w-full bg-neutral-100 md:aspect-auto md:h-full md:min-h-[480px]">
+              <Image
+                src={getProjectImageSrc(project)}
+                alt={project.title}
+                fill
+                sizes="(max-width: 768px) 100vw, 55vw"
+                className="object-cover"
+                priority
+              />
+              {project.featured && (
+                <span className="absolute top-4 left-4 inline-block rounded-full bg-accent px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-white shadow-sm">
+                  Featured
+                </span>
+              )}
+            </div>
+
+            {/* Detail side */}
+            <div className="relative flex flex-col overflow-y-auto p-6 sm:p-8 md:p-10">
+              <button
+                ref={closeBtnRef}
+                type="button"
+                onClick={onClose}
+                aria-label="Close"
+                className="absolute top-4 right-4 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-neutral-100 text-neutral-600 transition-colors hover:bg-neutral-200 hover:text-neutral-charcoal focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+              >
+                <X className="h-4 w-4" strokeWidth={2} />
+              </button>
+
+              {(project.sector || project.type === 'residential') && (
+                <span className="inline-block w-fit rounded-full bg-accent-50 px-3 py-1 text-[11px] font-semibold capitalize text-accent">
+                  {project.sector ?? 'Residential'}
+                </span>
+              )}
+
+              <h2
+                id="project-modal-title"
+                className="mt-4 pr-12 font-display text-2xl font-bold leading-tight text-neutral-charcoal sm:text-3xl"
+              >
+                {project.title}
+              </h2>
+              <p className="mt-1.5 text-sm font-medium text-neutral-500">{project.client}</p>
+
+              <div className="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-sm text-neutral-600">
+                <span className="flex items-center gap-1.5">
+                  <MapPin className="h-3.5 w-3.5 text-accent shrink-0" strokeWidth={1.75} />
+                  {project.location}
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <Calendar className="h-3.5 w-3.5 text-accent shrink-0" strokeWidth={1.75} />
+                  {project.year}
+                </span>
+                {project.area && (
+                  <span className="flex items-center gap-1.5">
+                    <Maximize className="h-3.5 w-3.5 text-accent shrink-0" strokeWidth={1.75} />
+                    {project.area}
+                  </span>
+                )}
+              </div>
+
+              <p className="mt-6 text-sm leading-relaxed text-neutral-600 sm:text-[15px]">
+                {project.description}
+              </p>
+
+              {project.scope.length > 0 && (
+                <>
+                  <h3 className="mt-7 text-[11px] font-semibold uppercase tracking-[0.18em] text-accent">
+                    Services Provided
+                  </h3>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {project.scope.map((item) => (
+                      <span
+                        key={item}
+                        className="rounded-md bg-neutral-100 px-3 py-1.5 text-xs font-medium text-neutral-700"
+                      >
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              <div className="mt-8 border-t border-neutral-100 pt-6">
+                <p className="text-xs text-neutral-500">
+                  Interested in similar work for your project?
+                </p>
+                <Link
+                  href="/contact"
+                  className="mt-3 inline-flex items-center gap-2 rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold uppercase tracking-wider text-white transition-colors hover:bg-accent-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+                >
+                  Get a Quote
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }
 
 export default function ProjectsPage() {
   const [activeTab, setActiveTab] = useState<ProjectType>('commercial');
   const [activeSector, setActiveSector] = useState<CommercialSector | 'all'>('all');
+  const [activeProject, setActiveProject] = useState<Project | null>(null);
 
   const filteredProjects = useMemo(() => {
     let projects = PROJECTS.filter((p) => p.type === activeTab);
-
     if (activeTab === 'commercial' && activeSector !== 'all') {
       projects = projects.filter((p) => p.sector === activeSector);
     }
-
     return projects;
   }, [activeTab, activeSector]);
 
@@ -182,82 +333,39 @@ export default function ProjectsPage() {
 
   return (
     <>
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-neutral-charcoal via-neutral-800 to-brand-900 py-20 lg:py-28">
-        <div className="absolute inset-0 opacity-10">
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage: `radial-gradient(circle at 1px 1px, white 1px, transparent 0)`,
-              backgroundSize: '32px 32px',
-            }}
-          />
-        </div>
+      <PageHero
+        kicker="Our Portfolio"
+        title="Featured projects across Nepal."
+        subtitle="Commercial and residential projects delivered through CMS Group ventures — from Tiger Palace Resort and Bir Hospital to NRB headquarters and ICIMOD's green campus."
+        image="/images/projects/tiger-palace.jpg"
+        imageAlt="CMS Group featured projects"
+        size="tall"
+      />
 
-        <Container className="relative">
-          <div className="mx-auto max-w-3xl text-center">
-            <motion.span
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="inline-block rounded-full bg-white/10 px-4 py-1.5 text-sm font-medium text-white backdrop-blur-sm"
-            >
-              Our Portfolio
-            </motion.span>
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="mt-4 text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl"
-            >
-              Featured Projects
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="mt-6 text-xl text-neutral-300"
-            >
-              Explore our diverse portfolio of commercial and residential projects
-              delivered across Nepal.
-            </motion.p>
-          </div>
-        </Container>
-      </section>
+      {/* Stat anchor — hidden */}
 
       {/* Tabs & Filters */}
-      <section className="sticky top-16 z-30 border-b border-neutral-border bg-white/95 backdrop-blur-md lg:top-20">
+      <section className="sticky top-16 z-30 border-y border-neutral-200 bg-white/95 backdrop-blur-md lg:top-20">
         <Container>
           <div className="flex flex-col gap-4 py-4 sm:flex-row sm:items-center sm:justify-between">
-            {/* Tabs */}
             <div className="flex gap-2">
               {TABS.map((tab) => (
                 <button
                   key={tab.value}
                   onClick={() => handleTabChange(tab.value)}
                   className={cn(
-                    'relative flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium transition-all',
+                    'relative flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition-all',
                     activeTab === tab.value
-                      ? 'bg-brand-600 text-white'
-                      : 'bg-neutral-surface text-neutral-600 hover:bg-neutral-200'
+                      ? 'bg-accent text-white'
+                      : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200',
                   )}
                 >
                   {tab.icon}
                   {tab.label}
-                  <span
-                    className={cn(
-                      'ml-1 rounded-full px-2 py-0.5 text-xs',
-                      activeTab === tab.value
-                        ? 'bg-white/20 text-white'
-                        : 'bg-neutral-200 text-neutral-500'
-                    )}
-                  >
-                    {PROJECTS.filter((p) => p.type === tab.value).length}
-                  </span>
                 </button>
               ))}
             </div>
 
-            {/* Sector Filters (Commercial only) */}
             <AnimatePresence mode="wait">
               {activeTab === 'commercial' && (
                 <motion.div
@@ -271,15 +379,15 @@ export default function ProjectsPage() {
                     className={cn(
                       'rounded-full px-3 py-1.5 text-sm font-medium transition-all',
                       activeSector === 'all'
-                        ? 'bg-brand-100 text-brand-700'
-                        : 'bg-neutral-surface text-neutral-600 hover:bg-neutral-200'
+                        ? 'bg-accent-50 text-accent'
+                        : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200',
                     )}
                   >
                     All Sectors
                   </button>
                   {COMMERCIAL_SECTORS.map((sector) => {
                     const count = PROJECTS.filter(
-                      (p) => p.type === 'commercial' && p.sector === sector.value
+                      (p) => p.type === 'commercial' && p.sector === sector.value,
                     ).length;
                     return (
                       <button
@@ -288,12 +396,11 @@ export default function ProjectsPage() {
                         className={cn(
                           'rounded-full px-3 py-1.5 text-sm font-medium transition-all',
                           activeSector === sector.value
-                            ? 'bg-brand-100 text-brand-700'
-                            : 'bg-neutral-surface text-neutral-600 hover:bg-neutral-200'
+                            ? 'bg-accent-50 text-accent'
+                            : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200',
                         )}
                       >
                         {sector.label}
-                        <span className="ml-1 text-xs opacity-60">({count})</span>
                       </button>
                     );
                   })}
@@ -305,33 +412,9 @@ export default function ProjectsPage() {
       </section>
 
       {/* Projects Grid */}
-      <section className="py-12 lg:py-16">
+      <section className="py-12 lg:py-16 bg-neutral-off-white">
         <Container>
-          {/* Results Count */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="mb-8 flex items-center justify-between"
-          >
-            <p className="text-neutral-600">
-              Showing{' '}
-              <span className="font-semibold text-neutral-charcoal">
-                {filteredProjects.length}
-              </span>{' '}
-              {filteredProjects.length === 1 ? 'project' : 'projects'}
-              {activeSector !== 'all' && (
-                <span>
-                  {' '}
-                  in{' '}
-                  <span className="font-semibold capitalize text-brand-600">
-                    {activeSector}
-                  </span>
-                </span>
-              )}
-            </p>
-          </motion.div>
 
-          {/* Grid */}
           <AnimatePresence mode="wait">
             <motion.div
               key={`${activeTab}-${activeSector}`}
@@ -342,12 +425,15 @@ export default function ProjectsPage() {
               className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
             >
               {filteredProjects.map((project) => (
-                <ProjectCard key={project.id} project={project} />
+                <ProjectCard
+                  key={project.id}
+                  project={project}
+                  onOpen={setActiveProject}
+                />
               ))}
             </motion.div>
           </AnimatePresence>
 
-          {/* Empty State */}
           {filteredProjects.length === 0 && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -355,18 +441,17 @@ export default function ProjectsPage() {
               className="py-20 text-center"
             >
               <Building2 className="mx-auto h-16 w-16 text-neutral-300" />
-              <h3 className="mt-4 text-lg font-semibold text-neutral-charcoal">
+              <h3 className="mt-4 font-display text-lg font-bold text-neutral-charcoal">
                 No projects found
               </h3>
-              <p className="mt-2 text-neutral-600">
-                Try selecting a different sector or tab.
-              </p>
+              <p className="mt-2 text-neutral-600">Try selecting a different sector or tab.</p>
             </motion.div>
           )}
         </Container>
       </section>
 
-      {/* CTA Section */}
+      <ProjectDetailModal project={activeProject} onClose={() => setActiveProject(null)} />
+
       <ContactCTA />
     </>
   );
