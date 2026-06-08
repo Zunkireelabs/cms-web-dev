@@ -120,29 +120,6 @@ export function ProductsServices() {
         ))}
       </motion.div>
 
-      <motion.div
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: '-50px' }}
-        variants={fadeUp}
-        custom={0.4}
-        className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row"
-      >
-        <Link
-          href="/trading"
-          className="inline-flex items-center gap-2 rounded-lg bg-accent px-8 py-3.5 text-sm font-semibold uppercase tracking-wider text-white transition-colors hover:bg-accent-700"
-        >
-          Trading Division
-          <ArrowRight className="h-4 w-4" />
-        </Link>
-        <Link
-          href="/contracting"
-          className="inline-flex items-center gap-2 rounded-lg border-2 border-accent px-8 py-3.5 text-sm font-semibold uppercase tracking-wider text-accent transition-all hover:bg-accent hover:text-white"
-        >
-          Contracting Division
-          <ArrowRight className="h-4 w-4" />
-        </Link>
-      </motion.div>
     </Section>
   );
 }

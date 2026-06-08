@@ -64,7 +64,9 @@ function PartnerCard({ brand }: { brand: Brand }) {
           <p className="mt-1 text-xs font-semibold uppercase tracking-[0.18em] text-neutral-400">
             {brand.country}
           </p>
-          <p className="mt-4 text-base font-semibold text-accent">{brand.specialty}</p>
+          {brand.specialty && brand.specialty !== brand.name && (
+            <p className="mt-4 text-base font-semibold text-accent">{brand.specialty}</p>
+          )}
           <p className="mt-3 leading-relaxed text-neutral-600">{brand.description}</p>
 
           <div className="mt-7 flex flex-wrap gap-3">

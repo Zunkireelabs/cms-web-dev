@@ -64,7 +64,7 @@ export const BRANDS: BrandEntry[] = [
 
   // Baba Muktinath — Roofing
   {
-    name: 'Gerard Stone Coated Roofing',
+    name: 'Stone Coated Metal Roofing',
     slug: 'gerard',
     country: 'New Zealand',
     founded: 1957,
