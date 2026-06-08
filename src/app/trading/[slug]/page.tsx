@@ -13,6 +13,7 @@ import {
   type ProductDomain,
 } from '@/data/products';
 import { PROJECTS, type Project } from '@/data/projects';
+import { getProjectImageSrc } from '@/lib/project-image';
 import Link from 'next/link';
 import { ArrowLeft, Building2, ExternalLink, Eye, FileDown, Sparkles } from 'lucide-react';
 
@@ -229,7 +230,7 @@ export default async function TradingSlugPage({ params }: PageProps) {
             {relatedProjects.map((project) => (
               <ContentCard
                 key={project.id}
-                image={project.image}
+                image={getProjectImageSrc(project)}
                 imageAlt={project.title}
                 title={project.title}
                 description={project.description}
