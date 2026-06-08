@@ -64,7 +64,7 @@ const STORY_META = [
   { label: 'Head Office', value: 'Kathmandu' },
 ];
 
-const STORY_SECTORS = ['Hospitality', 'Education', 'Airport', 'Office', 'Hotel', 'Residence'];
+const STORY_SECTORS = ['Hospitality', 'Education', 'Airport', 'Office Spaces', 'Healthcare', 'Residence'];
 
 const MISSION_POINTS = [
   'To deliver end-to-end trading and contracting solutions by combining globally recognized products with precise project execution.',
@@ -551,9 +551,9 @@ export default function AboutPage() {
                 Sectors served
               </p>
               <div className="mt-3 flex flex-wrap gap-2">
-                {STORY_SECTORS.map((sector) => (
+                {STORY_SECTORS.map((sector, i) => (
                   <span
-                    key={sector}
+                    key={`${sector}-${i}`}
                     className="inline-block rounded-full border border-neutral-200 bg-white px-3 py-1 text-xs font-semibold text-neutral-700"
                   >
                     {sector}
@@ -563,9 +563,8 @@ export default function AboutPage() {
             </div>
 
             <p className="mt-8 text-base leading-relaxed text-neutral-600 sm:text-lg">
-              The group spans six associated ventures — Bath N Room, Baba Muktinath
-              Fabricators, 4R Technologies, Techwood, Prime Ceramics, and Cubic Meter —
-              delivering integrated solutions across the country.
+              The group spans six associated ventures, delivering integrated solutions
+              across the country.
             </p>
           </motion.div>
 

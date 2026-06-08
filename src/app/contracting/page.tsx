@@ -48,7 +48,6 @@ export default function ContractingPage() {
         image="/images/projects/dusit-thani.jpg"
         imageAlt="Cubic Meter contracting projects"
         primaryCta={{ label: 'View Services', href: '#services' }}
-        secondaryCta={{ label: 'Trading Division', href: '/trading' }}
         size="tall"
       />
 
