@@ -61,9 +61,6 @@ function PartnerCard({ brand }: { brand: Brand }) {
           <h3 className="font-display text-2xl font-bold leading-tight tracking-tight text-neutral-charcoal lg:text-3xl">
             {brand.name}
           </h3>
-          <p className="mt-1 text-xs font-semibold uppercase tracking-[0.18em] text-neutral-400">
-            {brand.country}
-          </p>
           {brand.specialty && brand.specialty !== brand.name && (
             <p className="mt-4 text-base font-semibold text-accent">{brand.specialty}</p>
           )}
