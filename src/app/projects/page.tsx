@@ -93,57 +93,19 @@ function ProjectCard({
             Featured
           </span>
         )}
-        <span className="absolute top-4 right-4 inline-block rounded-full bg-neutral-charcoal/80 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white backdrop-blur-sm">
-          {project.year}
-        </span>
       </div>
 
       <div className="flex flex-1 flex-col p-6">
-        {(project.sector || project.type === 'residential') && (
-          <span className="inline-block w-fit rounded-full bg-accent-50 px-2.5 py-0.5 text-[11px] font-semibold capitalize text-accent">
-            {project.sector ?? 'Residential'}
-          </span>
-        )}
-
-        <h3 className="mt-3 font-display text-lg font-bold leading-tight text-neutral-charcoal transition-colors group-hover:text-accent sm:text-xl">
+        <h3 className="font-display text-lg font-bold leading-tight text-neutral-charcoal transition-colors group-hover:text-accent sm:text-xl">
           {project.title}
         </h3>
-        <p className="mt-1 text-sm font-medium text-neutral-500">{project.client}</p>
 
-        <div className="mt-4 flex flex-wrap gap-x-4 gap-y-1.5 text-xs text-neutral-500">
+        <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1.5 text-xs text-neutral-500">
           <span className="flex items-center gap-1.5">
             <MapPin className="h-3 w-3 text-accent shrink-0" strokeWidth={1.75} />
             {project.location}
           </span>
-          {project.area && (
-            <span className="flex items-center gap-1.5">
-              <Maximize className="h-3 w-3 text-accent shrink-0" strokeWidth={1.75} />
-              {project.area}
-            </span>
-          )}
         </div>
-
-        <p className="mt-4 line-clamp-3 flex-1 text-sm leading-relaxed text-neutral-600">
-          {project.description}
-        </p>
-
-        {project.scope.length > 0 && (
-          <div className="mt-5 flex flex-wrap gap-1.5">
-            {project.scope.slice(0, 3).map((item) => (
-              <span
-                key={item}
-                className="rounded bg-neutral-100 px-2 py-0.5 text-[11px] text-neutral-600"
-              >
-                {item}
-              </span>
-            ))}
-            {project.scope.length > 3 && (
-              <span className="rounded bg-neutral-100 px-2 py-0.5 text-[11px] text-neutral-400">
-                +{project.scope.length - 3}
-              </span>
-            )}
-          </div>
-        )}
       </div>
 
       <div className="absolute bottom-0 left-0 h-0.5 w-0 bg-accent transition-all duration-300 group-hover:w-full" />

@@ -21,13 +21,13 @@ export interface BrandEntry {
 export const BRANDS: BrandEntry[] = [
   // 4R Technologies
   {
-    name: 'Sintex — Aqua Nishihara',
+    name: 'Sintex',
     slug: 'sintex',
     country: 'Japan',
     founded: 1931,
     segments: ['Sewage Treatment Plant'],
     description:
-      'A trusted name in wastewater management, Sintex — Aqua Nishihara delivers advanced sewage treatment plant solutions for residential, commercial, and industrial projects, ensuring clean and compliant water disposal.',
+      'A trusted name in wastewater management, Sintex delivers advanced sewage treatment plant solutions for residential, commercial, and industrial projects, ensuring clean and compliant water disposal.',
     venture: '4r-technologies',
     tradingDomains: ['wastewater-management'],
     website: 'https://www.sintexonline.com',
@@ -73,7 +73,8 @@ export const BRANDS: BrandEntry[] = [
       'Gerard is a New Zealand manufacturer of premium stone-coated steel roofing tiles — combining the beauty of traditional roof tiles with the strength and longevity of steel, trusted for residential and commercial buildings worldwide.',
     venture: 'baba-muktinath',
     tradingDomains: ['roofing'],
-    website: 'https://www.gerard.com',
+    website: 'https://www.sangobuild.com/stone-coated-roof/',
+    logoUrl: '/images/brands/sangobuild.png',
   },
   {
     name: 'IKO',
@@ -294,7 +295,7 @@ export const BRANDS: BrandEntry[] = [
       'Argil specialises in wide plank flooring, delivering natural hardwood and engineered wood floors with a distinctive architectural aesthetic for premium residential and commercial interiors.',
     venture: 'techwood',
     tradingDomains: ['flooring'],
-    website: 'https://wideplankflooring.com/our-floors/',
+    website: 'https://argiltiles.com/',
     logoUrl: '/images/brands/argil.png',
   },
   {
