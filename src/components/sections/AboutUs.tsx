@@ -47,7 +47,7 @@ export function AboutUs() {
           >
             The Trading & Contracting Division of CMS Group is a specialized business unit delivering
             integrated solutions across facets of building and infrastructure domains. With strong
-            capabilities in both trading and contract execution, we support projects from material supply
+            capabilities in both trading and contracting execution, we support projects from material supply
             through to on-site implementation, ensuring consistency, quality, and reliability at every
             stage.
           </motion.p>

@@ -54,7 +54,6 @@ const COMPANY_STATS: { value: number; suffix: string; label: string; icon: Lucid
 
 const TRUST_PILLARS = [
   'Since 2002',
-  'Our Ventures',
   'Global Brands',
   'Projects Delivered',
 ];
@@ -140,7 +139,7 @@ const MILESTONES: {
     year: '2003',
     title: 'First Brand Collaborations',
     description:
-      'Bath N Room Trade Concern established — first authorised partnerships with global sanitaryware and bathroom solution leaders.',
+      'First authorised partnerships with global sanitaryware and bathroom solution leaders.',
     icon: Bath,
     brands: ['American Standard', 'Grohe'],
   },
@@ -148,7 +147,7 @@ const MILESTONES: {
     year: '2010',
     title: 'Major Brand Expansion',
     description:
-      'Baba Muktinath Fabricators established — onboarding world-class roofing, ceiling, facade, hardware, and waterproofing brands.',
+      'Onboarding world-class roofing, ceiling, facade, hardware, and waterproofing brands.',
     icon: Wrench,
     brands: ['IKO', 'Kalzip', 'Armstrong', 'Hunter Douglas', 'Tostem', 'Dormakaba', 'ICA', 'Zolon', 'Navair', 'Schomburg'],
   },
@@ -156,7 +155,7 @@ const MILESTONES: {
     year: '2015',
     title: 'Sustainability & Water Management',
     description:
-      '4R Technologies established — expanding into ecologically friendly wastewater management and treatment solutions.',
+      'Expanding into ecologically friendly wastewater management and treatment solutions.',
     icon: Recycle,
     brands: ['Sintex'],
   },
@@ -164,7 +163,7 @@ const MILESTONES: {
     year: '2019',
     title: 'Flooring & Furniture Portfolio',
     description:
-      'Techwood established — adding premium flooring and modular office furniture brands to the T&C Division portfolio.',
+      'Adding premium flooring and modular office furniture brands to the T&C Division portfolio.',
     icon: Armchair,
     brands: ['AGT', 'Tarkett', 'Argil', 'KLK', 'Welspun', 'SOS'],
   },
@@ -486,7 +485,7 @@ export default function AboutPage() {
       <PageHero
         kicker="About CMS Group"
         title="Construction Material Solutions, since 2002."
-        subtitle="Nepal's trusted partner for premium building materials, finishing systems, and integrated contracting — across six specialised ventures."
+        subtitle="Nepal's trusted partner for premium building materials, finishing systems, and integrated contracting."
         image="/images/projects/bir-hospital.jpg"
         imageAlt="Bir Hospital — a flagship CMS Group project"
         size="tall"

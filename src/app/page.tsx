@@ -30,7 +30,7 @@ export default function HomePage() {
         <SectionHeader
           kicker="Project Overview"
           title="Projects delivered across Nepal."
-          lead="Hospitals, hotels, airports, offices, education, and residential — six sectors, one trusted partner. Hover or tap a marker to view the project list."
+          lead="Health Care, Hospitality, Offices, Airports, Education and Residential"
           align="center"
           className="mx-auto"
         />
