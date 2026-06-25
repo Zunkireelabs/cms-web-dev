@@ -33,7 +33,7 @@ jobs:
             cd "${{ secrets.DEV_DEPLOY_PATH }}"
             echo "==> Pulling latest from origin/main"
             git fetch --all --prune
-            git reset --hard origin/main
+            git checkout -B main origin/main
             echo "==> Running deploy.sh"
             chmod +x deploy.sh
             ./deploy.sh
