@@ -3,7 +3,8 @@ import { Source_Sans_3, Manrope } from 'next/font/google';
 import { Providers } from '@/providers/Providers';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
-import { fetchProductDomains } from '@/lib/cms';
+import { fetchProductDomains, fetchSiteConfig } from '@/lib/cms';
+import { SiteConfigProvider } from '@/components/providers/SiteConfigProvider';
 import './globals.css';
 
 const sourceSans = Source_Sans_3({
@@ -102,7 +103,10 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const productDomains = await fetchProductDomains();
+  const [productDomains, siteConfig] = await Promise.all([
+    fetchProductDomains(),
+    fetchSiteConfig(),
+  ]);
 
   return (
     <html
@@ -112,11 +116,13 @@ export default async function RootLayout({
     >
       <body className="min-h-screen bg-neutral-off-white font-sans text-neutral-charcoal antialiased">
         <Providers>
-          <div className="flex min-h-screen flex-col">
-            <Header productDomains={productDomains} />
-            <main className="flex-1 pt-16 lg:pt-20">{children}</main>
-            <Footer />
-          </div>
+          <SiteConfigProvider value={siteConfig}>
+            <div className="flex min-h-screen flex-col">
+              <Header productDomains={productDomains} />
+              <main className="flex-1 pt-16 lg:pt-20">{children}</main>
+              <Footer />
+            </div>
+          </SiteConfigProvider>
         </Providers>
       </body>
     </html>

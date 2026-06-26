@@ -5,7 +5,8 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
-import { NAV_ITEMS, SITE_CONFIG, CONTRACTING_SERVICES } from '@/lib/constants';
+import { NAV_ITEMS, SITE_CONFIG_FALLBACK, CONTRACTING_SERVICES } from '@/lib/constants';
+import { useSiteConfig } from '@/components/providers/SiteConfigProvider';
 import type { CmsProductDomain } from '@/lib/cms';
 import { ChevronDown } from 'lucide-react';
 
@@ -66,6 +67,7 @@ function isProductsActive(pathname: string) {
 }
 
 export function MobileMenu({ onClose, productDomains }: MobileMenuProps) {
+  const cfg = useSiteConfig() ?? SITE_CONFIG_FALLBACK;
   const pathname = usePathname();
   const [isProductsExpanded, setIsProductsExpanded] = useState(false);
 
@@ -224,16 +226,16 @@ export function MobileMenu({ onClose, productDomains }: MobileMenuProps) {
           >
             <p className="text-sm text-neutral-400">Contact Us</p>
             <a
-              href={`tel:${SITE_CONFIG.phone.replace(/\s/g, '')}`}
+              href={`tel:${cfg.phone.replace(/\s/g, '')}`}
               className="mt-2 block text-lg font-medium text-neutral-charcoal hover:text-accent"
             >
-              {SITE_CONFIG.phone}
+              {cfg.phone}
             </a>
             <a
-              href={`mailto:${SITE_CONFIG.email}`}
+              href={`mailto:${cfg.email}`}
               className="mt-1 block text-neutral-600 hover:text-accent"
             >
-              {SITE_CONFIG.email}
+              {cfg.email}
             </a>
           </motion.div>
         </div>

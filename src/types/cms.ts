@@ -180,6 +180,59 @@ export interface Address {
   postal?: string
 }
 
+export interface SiteConfigStats {
+  projectsDelivered?: number
+  projectsDeliveredLabel?: string
+  yearsOfExcellence?: number
+  yearsOfExcellenceLabel?: string
+  brandPartners?: number
+  brandPartnersLabel?: string
+  sectorsServed?: number
+  sectorsServedLabel?: string
+}
+
+export interface Showroom {
+  name: string
+  description?: string
+  address?: string
+}
+
+export interface CoreValue {
+  icon?: string
+  title: string
+  description: string
+  practice?: string
+}
+
+export interface TrustPillar {
+  title: string
+  description: string
+}
+
+export interface StoryMetaItem {
+  label: string
+  value: string
+}
+
+export interface WhyWorkWithUsItem {
+  icon?: string
+  title: string
+  description: string
+}
+
+export interface EmployeeStory {
+  name: string
+  role: string
+  tenure?: string
+  quote: string
+}
+
+export interface ContractingService {
+  icon?: string
+  title: string
+  description: string
+}
+
 export interface SiteConfig {
   name: string
   shortName: string
@@ -199,6 +252,18 @@ export interface SiteConfig {
     tiktok?: string
     linkedin?: string
   }
+  stats?: SiteConfigStats
+  operatingHours?: string
+  showrooms?: Showroom[]
+  mission?: string[]
+  vision?: string[]
+  trustPillars?: TrustPillar[]
+  coreValues?: CoreValue[]
+  storyMeta?: StoryMetaItem[]
+  storySectors?: string[]
+  whyWorkWithUs?: WhyWorkWithUsItem[]
+  employeeStories?: EmployeeStory[]
+  contractingServices?: ContractingService[]
 }
 
 // ─── Sectors (CMS shape — icon is a string, not a component) ─────────────────

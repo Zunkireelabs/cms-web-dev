@@ -287,5 +287,36 @@ export async function fetchMilestones(): Promise<Milestone[]> {
 // ─── Site Config ──────────────────────────────────────────────────────────────
 
 export async function fetchSiteConfig(): Promise<SiteConfig | null> {
-  return fetchGlobal<SiteConfig>('site-config')
+  const raw = await fetchGlobal<any>('site-config')
+  if (!raw) return null
+  // Unwrap Payload array shapes: {point: 'x'} → 'x', {name: 'x'} → 'x'.
+  const unwrapStrings = (arr: any[] | undefined, key: string): string[] =>
+    Array.isArray(arr) ? arr.map((a) => a?.[key]).filter(Boolean) : []
+  return {
+    name: raw.name,
+    shortName: raw.shortName,
+    legalName: raw.legalName,
+    tagline: raw.tagline,
+    description: raw.description,
+    url: raw.url,
+    phone: raw.phone,
+    phoneSecondary: raw.phoneSecondary,
+    phoneMobile: raw.phoneMobile,
+    email: raw.email,
+    address: raw.address,
+    mapsUrl: raw.mapsUrl,
+    social: raw.social,
+    stats: raw.stats,
+    operatingHours: raw.operatingHours,
+    showrooms: Array.isArray(raw.showrooms) ? raw.showrooms : [],
+    mission: unwrapStrings(raw.mission, 'point'),
+    vision: unwrapStrings(raw.vision, 'point'),
+    trustPillars: Array.isArray(raw.trustPillars) ? raw.trustPillars : [],
+    coreValues: Array.isArray(raw.coreValues) ? raw.coreValues : [],
+    storyMeta: Array.isArray(raw.storyMeta) ? raw.storyMeta : [],
+    storySectors: unwrapStrings(raw.storySectors, 'name'),
+    whyWorkWithUs: Array.isArray(raw.whyWorkWithUs) ? raw.whyWorkWithUs : [],
+    employeeStories: Array.isArray(raw.employeeStories) ? raw.employeeStories : [],
+    contractingServices: Array.isArray(raw.contractingServices) ? raw.contractingServices : [],
+  }
 }

@@ -1,7 +1,10 @@
+'use client';
+
 import Link from 'next/link';
 import { Container } from '@/components/ui/Container';
 import { Logo } from '@/components/ui/Logo';
-import { SITE_CONFIG, FOOTER_LINKS } from '@/lib/constants';
+import { FOOTER_LINKS, SITE_CONFIG_FALLBACK } from '@/lib/constants';
+import { useSiteConfig } from '@/components/providers/SiteConfigProvider';
 
 function LinkedInIcon({ className }: { className?: string }) {
   return (
@@ -35,31 +38,15 @@ function TikTokIcon({ className }: { className?: string }) {
   );
 }
 
-const socialLinks = [
-  {
-    name: 'Instagram',
-    href: 'https://www.instagram.com/cmsgroup_official',
-    icon: InstagramIcon,
-  },
-  {
-    name: 'Facebook',
-    href: 'https://www.facebook.com/share/1D22PUVwS5/',
-    icon: FacebookIcon,
-  },
-  {
-    name: 'TikTok',
-    href: 'https://www.tiktok.com/@cms.group.official',
-    icon: TikTokIcon,
-  },
-  {
-    name: 'LinkedIn',
-    href: 'https://www.linkedin.com/company/cmsgrp',
-    icon: LinkedInIcon,
-  },
-];
-
 export function Footer() {
   const currentYear = new Date().getFullYear();
+  const cfg = useSiteConfig() ?? SITE_CONFIG_FALLBACK;
+  const socialLinks = [
+    { name: 'Instagram', href: cfg.social?.instagram, icon: InstagramIcon },
+    { name: 'Facebook', href: cfg.social?.facebook, icon: FacebookIcon },
+    { name: 'TikTok', href: cfg.social?.tiktok, icon: TikTokIcon },
+    { name: 'LinkedIn', href: cfg.social?.linkedin, icon: LinkedInIcon },
+  ].filter((s): s is { name: string; href: string; icon: typeof InstagramIcon } => Boolean(s.href));
 
   return (
     <footer
@@ -73,13 +60,13 @@ export function Footer() {
               <Link
                 href="/"
                 className="inline-flex items-center gap-2"
-                aria-label={`${SITE_CONFIG.name} - Home`}
+                aria-label={`${cfg.name} - Home`}
               >
                 <Logo variant="white" />
-                <span className="text-xl font-bold">{SITE_CONFIG.shortName}</span>
+                <span className="text-xl font-bold">{cfg.shortName}</span>
               </Link>
               <p className="mt-4 max-w-sm leading-relaxed text-neutral-400">
-                {SITE_CONFIG.description}
+                {cfg.description}
               </p>
 
               <div className="mt-6 flex gap-3">
@@ -145,9 +132,9 @@ export function Footer() {
                       Address
                     </span>
                     <address className="mt-1 not-italic text-neutral-400">
-                      {SITE_CONFIG.address.street}
+                      {cfg.address.street}
                       <br />
-                      {SITE_CONFIG.address.city}, {SITE_CONFIG.address.country}
+                      {cfg.address.city}, {cfg.address.country}
                     </address>
                   </li>
                   <li>
@@ -155,10 +142,10 @@ export function Footer() {
                       Phone
                     </span>
                     <a
-                      href={`tel:${SITE_CONFIG.phone.replace(/\s/g, '')}`}
+                      href={`tel:${cfg.phone.replace(/\s/g, '')}`}
                       className="mt-1 block text-neutral-400 transition-colors hover:text-white"
                     >
-                      {SITE_CONFIG.phone}
+                      {cfg.phone}
                     </a>
                   </li>
                   <li>
@@ -166,10 +153,10 @@ export function Footer() {
                       Email
                     </span>
                     <a
-                      href={`mailto:${SITE_CONFIG.email}`}
+                      href={`mailto:${cfg.email}`}
                       className="mt-1 block text-neutral-400 transition-colors hover:text-white"
                     >
-                      {SITE_CONFIG.email}
+                      {cfg.email}
                     </a>
                   </li>
                 </ul>
@@ -184,7 +171,7 @@ export function Footer() {
           <div className="flex flex-col gap-3 text-sm text-neutral-400 md:flex-row md:items-center md:justify-between">
             {/* Row 1 on mobile: copyright + developed by side by side */}
             <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 md:justify-start">
-              <p>&copy; {currentYear} {SITE_CONFIG.name}. All rights reserved.</p>
+              <p>&copy; {currentYear} {cfg.name}. All rights reserved.</p>
               <span className="hidden md:inline text-neutral-600">|</span>
               <p className="flex items-center gap-1.5">
                 Developed by

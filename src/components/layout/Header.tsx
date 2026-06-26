@@ -5,7 +5,8 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
-import { NAV_ITEMS, SITE_CONFIG, CONTRACTING_SERVICES } from '@/lib/constants';
+import { NAV_ITEMS, SITE_CONFIG_FALLBACK, CONTRACTING_SERVICES } from '@/lib/constants';
+import { useSiteConfig } from '@/components/providers/SiteConfigProvider';
 import type { CmsProductDomain } from '@/lib/cms';
 import { Container } from '@/components/ui/Container';
 import { Logo } from '@/components/ui/Logo';
@@ -39,6 +40,7 @@ function isProductsActive(pathname: string) {
 }
 
 export function Header({ productDomains }: { productDomains: CmsProductDomain[] }) {
+  const cfg = useSiteConfig() ?? SITE_CONFIG_FALLBACK;
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMegaMenuOpen, setIsMegaMenuOpen] = useState(false);
@@ -101,7 +103,7 @@ export function Header({ productDomains }: { productDomains: CmsProductDomain[] 
             <Link
               href="/"
               className="relative z-10 flex items-center"
-              aria-label={`${SITE_CONFIG.name} - Home`}
+              aria-label={`${cfg.name} - Home`}
             >
               <Logo variant={isSolid ? 'dark' : 'white'} />
             </Link>
