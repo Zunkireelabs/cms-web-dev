@@ -5,7 +5,8 @@ import { motion } from 'framer-motion';
 import { Container } from '@/components/ui/Container';
 import { PageHero } from '@/components/ui/PageHero';
 import { Section } from '@/components/ui/Section';
-import { SITE_CONFIG } from '@/lib/constants';
+import { SITE_CONFIG_FALLBACK } from '@/lib/constants';
+import { useSiteConfig } from '@/components/providers/SiteConfigProvider';
 import { fadeUp } from '@/lib/motion';
 import { cn } from '@/lib/utils';
 import type { CmsSector } from '@/types/cms';
@@ -21,48 +22,56 @@ import {
   Store,
 } from 'lucide-react';
 
-const CONTACT_INFO = [
-  {
-    icon: Phone,
-    label: 'Office',
-    value: `${SITE_CONFIG.phone}${SITE_CONFIG.phoneSecondary ? ` · ${SITE_CONFIG.phoneSecondary}` : ''}`,
-    href: `tel:${SITE_CONFIG.phone.replace(/\s/g, '')}`,
-  },
-  ...(SITE_CONFIG.phoneMobile
-    ? [
-        {
-          icon: Phone,
-          label: 'Mobile',
-          value: SITE_CONFIG.phoneMobile,
-          href: `tel:${SITE_CONFIG.phoneMobile.replace(/\s/g, '')}`,
-        },
-      ]
-    : []),
-  {
-    icon: Mail,
-    label: 'Email',
-    value: SITE_CONFIG.email,
-    href: `mailto:${SITE_CONFIG.email}`,
-  },
-  {
-    icon: MapPin,
-    label: 'Head Office',
-    value: `${SITE_CONFIG.address.street}, ${SITE_CONFIG.address.city}, ${SITE_CONFIG.address.country}`,
-    href: SITE_CONFIG.mapsUrl ?? null,
-  },
-  {
-    icon: Store,
-    label: 'TOSTEM Studio Showroom',
-    value: 'Kathmandu — experiential studio for TOSTEM aluminium window & door systems (opened June 2023)',
-    href: null,
-  },
-  {
-    icon: Clock,
-    label: 'Working Hours',
-    value: 'Sun – Thu: 8:00 AM – 5:00 PM',
-    href: null,
-  },
-];
+import type { SiteConfig } from '@/types/cms';
+
+function buildContactInfo(cfg: SiteConfig) {
+  return [
+    {
+      icon: Phone,
+      label: 'Office',
+      value: `${cfg.phone}${cfg.phoneSecondary ? ` · ${cfg.phoneSecondary}` : ''}`,
+      href: `tel:${cfg.phone.replace(/\s/g, '')}`,
+    },
+    ...(cfg.phoneMobile
+      ? [
+          {
+            icon: Phone,
+            label: 'Mobile',
+            value: cfg.phoneMobile,
+            href: `tel:${cfg.phoneMobile.replace(/\s/g, '')}`,
+          },
+        ]
+      : []),
+    {
+      icon: Mail,
+      label: 'Email',
+      value: cfg.email,
+      href: `mailto:${cfg.email}`,
+    },
+    {
+      icon: MapPin,
+      label: 'Head Office',
+      value: `${cfg.address.street}, ${cfg.address.city}, ${cfg.address.country}`,
+      href: cfg.mapsUrl ?? null,
+    },
+    ...(cfg.showrooms ?? []).map((s) => ({
+      icon: Store,
+      label: s.name,
+      value: s.description ?? s.address ?? '',
+      href: null as string | null,
+    })),
+    ...(cfg.operatingHours
+      ? [
+          {
+            icon: Clock,
+            label: 'Working Hours',
+            value: cfg.operatingHours,
+            href: null as string | null,
+          },
+        ]
+      : []),
+  ];
+}
 
 interface FormData {
   name: string;
@@ -86,6 +95,8 @@ const inputBase =
   'mt-2 block w-full rounded-lg border bg-white px-4 py-3 text-neutral-charcoal placeholder-neutral-400 transition-colors focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30';
 
 export function ContactClient({ sectors }: { sectors: CmsSector[] }) {
+  const cfg = useSiteConfig() ?? SITE_CONFIG_FALLBACK;
+  const CONTACT_INFO = buildContactInfo(cfg);
   const SERVICE_OPTIONS = [
     { value: '', label: 'Select an inquiry type' },
     { value: 'trading', label: 'Trading — Material Supply' },
@@ -159,7 +170,7 @@ export function ContactClient({ sectors }: { sectors: CmsSector[] }) {
         image="/images/projects/icimod.jpg"
         imageAlt="CMS Group head office"
         primaryCta={{ label: 'Send a Message', href: '#contact-form' }}
-        secondaryCta={{ label: `Call ${SITE_CONFIG.phone}`, href: `tel:${SITE_CONFIG.phone.replace(/\s/g, '')}` }}
+        secondaryCta={{ label: `Call ${cfg.phone}`, href: `tel:${cfg.phone.replace(/\s/g, '')}` }}
         size="compact"
       />
 
@@ -407,9 +418,9 @@ export function ContactClient({ sectors }: { sectors: CmsSector[] }) {
                 </div>
               ))}
 
-              {SITE_CONFIG.mapsUrl && (
+              {cfg.mapsUrl && (
                 <a
-                  href={SITE_CONFIG.mapsUrl}
+                  href={cfg.mapsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group block overflow-hidden rounded-xl border border-neutral-border transition-all hover:-translate-y-0.5 hover:border-accent/40 hover:shadow-card"
@@ -423,7 +434,7 @@ export function ContactClient({ sectors }: { sectors: CmsSector[] }) {
                         View on Google Maps
                       </p>
                       <p className="mt-1 text-xs text-neutral-500">
-                        {SITE_CONFIG.address.city}, {SITE_CONFIG.address.country}
+                        {cfg.address.city}, {cfg.address.country}
                       </p>
                     </div>
                   </div>
@@ -455,11 +466,11 @@ export function ContactClient({ sectors }: { sectors: CmsSector[] }) {
             requirements.
           </p>
           <a
-            href={`tel:${SITE_CONFIG.phone.replace(/\s/g, '')}`}
+            href={`tel:${cfg.phone.replace(/\s/g, '')}`}
             className="mt-8 inline-flex items-center gap-2 rounded-lg bg-accent px-7 py-3.5 text-sm font-semibold uppercase tracking-wider text-white transition-colors hover:bg-accent-700"
           >
             <Phone className="h-5 w-5" />
-            {SITE_CONFIG.phone}
+            {cfg.phone}
           </a>
         </div>
       </Section>

@@ -16,6 +16,8 @@ import type {
   Venture,
   SiteConfig,
   CmsSector,
+  HeroSlide,
+  Job,
 } from '@/types/cms'
 
 export type {
@@ -36,6 +38,8 @@ export type {
   Venture,
   SiteConfig,
   CmsSector,
+  HeroSlide,
+  Job,
 }
 
 const CMS_URL = process.env.CMS_URL || 'http://localhost:3001'
@@ -152,6 +156,9 @@ export interface CmsProductDomain {
   image: string
   imagePosition: 'object-center' | 'object-top' | 'object-bottom'
   projectKeywords: string[]
+  installedAreaSqFt?: number
+  metricLabel?: string
+  icon?: string
 }
 
 export async function fetchProductDomains(): Promise<CmsProductDomain[]> {
@@ -164,6 +171,9 @@ export async function fetchProductDomains(): Promise<CmsProductDomain[]> {
     image: d.externalImageUrl || mediaUrl(d.image?.url) || '',
     imagePosition: (d.imagePosition ?? 'object-center') as CmsProductDomain['imagePosition'],
     projectKeywords: (d.projectKeywords ?? []).map((k: any) => k.value as string),
+    installedAreaSqFt: d.installedAreaSqFt as number | undefined,
+    metricLabel: d.metricLabel as string | undefined,
+    icon: d.icon as string | undefined,
   }))
 }
 
@@ -284,8 +294,74 @@ export async function fetchMilestones(): Promise<Milestone[]> {
   }))
 }
 
+// ─── Hero Slides ─────────────────────────────────────────────────────────────
+
+export async function fetchHeroSlides(): Promise<HeroSlide[]> {
+  const docs = await fetchDocs<any>('hero-slides', { sort: 'order' })
+  return docs.map((d) => ({
+    id: d.id as number,
+    order: d.order as number,
+    title: d.title as string,
+    alt: d.alt as string,
+    image: mediaUrl(d.image?.url),
+    video: mediaUrl(d.video?.url),
+  }))
+}
+
+// ─── Jobs ─────────────────────────────────────────────────────────────────────
+
+export async function fetchJobs(): Promise<Job[]> {
+  const docs = await fetchDocs<any>('jobs', { sort: '-postedAt' })
+  return docs
+    .filter((d) => d.active !== false)
+    .map((d) => ({
+      id: d.id as number,
+      title: d.title as string,
+      slug: d.slug as string,
+      location: d.location as string,
+      type: d.type as Job['type'],
+      description: d.description as string,
+      responsibilities: Array.isArray(d.responsibilities)
+        ? d.responsibilities.map((r: any) => r.item as string).filter(Boolean)
+        : [],
+      postedAt: d.postedAt as string,
+      active: d.active !== false,
+    }))
+}
+
 // ─── Site Config ──────────────────────────────────────────────────────────────
 
 export async function fetchSiteConfig(): Promise<SiteConfig | null> {
-  return fetchGlobal<SiteConfig>('site-config')
+  const raw = await fetchGlobal<any>('site-config')
+  if (!raw) return null
+  // Unwrap Payload array shapes: {point: 'x'} → 'x', {name: 'x'} → 'x'.
+  const unwrapStrings = (arr: any[] | undefined, key: string): string[] =>
+    Array.isArray(arr) ? arr.map((a) => a?.[key]).filter(Boolean) : []
+  return {
+    name: raw.name,
+    shortName: raw.shortName,
+    legalName: raw.legalName,
+    tagline: raw.tagline,
+    description: raw.description,
+    url: raw.url,
+    phone: raw.phone,
+    phoneSecondary: raw.phoneSecondary,
+    phoneMobile: raw.phoneMobile,
+    email: raw.email,
+    address: raw.address,
+    mapsUrl: raw.mapsUrl,
+    social: raw.social,
+    stats: raw.stats,
+    operatingHours: raw.operatingHours,
+    showrooms: Array.isArray(raw.showrooms) ? raw.showrooms : [],
+    mission: unwrapStrings(raw.mission, 'point'),
+    vision: unwrapStrings(raw.vision, 'point'),
+    trustPillars: Array.isArray(raw.trustPillars) ? raw.trustPillars : [],
+    coreValues: Array.isArray(raw.coreValues) ? raw.coreValues : [],
+    storyMeta: Array.isArray(raw.storyMeta) ? raw.storyMeta : [],
+    storySectors: unwrapStrings(raw.storySectors, 'name'),
+    whyWorkWithUs: Array.isArray(raw.whyWorkWithUs) ? raw.whyWorkWithUs : [],
+    employeeStories: Array.isArray(raw.employeeStories) ? raw.employeeStories : [],
+    contractingServices: Array.isArray(raw.contractingServices) ? raw.contractingServices : [],
+  }
 }

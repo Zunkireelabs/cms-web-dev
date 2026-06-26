@@ -1,7 +1,13 @@
 import type { NavItem } from '@/types'
 import type { SiteConfig, CommercialSector, EventCategory, DeliveringVenture, VentureSlug } from '@/types/cms'
 
-export const SITE_CONFIG: SiteConfig = {
+/**
+ * Fallback values used only when the CMS API is unreachable at render time.
+ * In normal operation, every consumer reads from `useSiteConfig()` which is
+ * populated from `fetchSiteConfig()` in `src/app/layout.tsx`. Edit production
+ * values in the CMS admin (Settings → Site Config), not here.
+ */
+export const SITE_CONFIG_FALLBACK: SiteConfig = {
   name: 'CMS Group',
   shortName: 'CMS Group',
   legalName: 'Construction Material Solutions',

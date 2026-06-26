@@ -13,7 +13,8 @@ import {
   Shield,
 } from 'lucide-react';
 import { Container } from '@/components/ui/Container';
-import { SITE_CONFIG } from '@/lib/constants';
+import { SITE_CONFIG_FALLBACK } from '@/lib/constants';
+import { useSiteConfig } from '@/components/providers/SiteConfigProvider';
 import { fadeUp } from '@/lib/motion';
 
 const TRUST_POINTS = [
@@ -23,6 +24,7 @@ const TRUST_POINTS = [
 ];
 
 export function ContactCTA() {
+  const cfg = useSiteConfig() ?? SITE_CONFIG_FALLBACK;
   return (
     <section className="bg-accent-50 py-14 lg:py-16">
       <Container>
@@ -108,7 +110,7 @@ export function ContactCTA() {
             {/* Compact row — Email + Call */}
             <div className="grid grid-cols-2 gap-3">
               <a
-                href={`mailto:${SITE_CONFIG.email}`}
+                href={`mailto:${cfg.email}`}
                 className="flex items-center gap-2.5 rounded-xl border border-neutral-100 bg-white p-4 shadow-sm transition-colors hover:border-accent/30"
               >
                 <Mail className="h-4 w-4 shrink-0 text-accent" strokeWidth={1.75} />
@@ -117,13 +119,13 @@ export function ContactCTA() {
                     Email Us
                   </span>
                   <span className="block truncate text-[10px] text-neutral-400">
-                    {SITE_CONFIG.email}
+                    {cfg.email}
                   </span>
                 </div>
               </a>
 
               <a
-                href={`tel:${SITE_CONFIG.phone}`}
+                href={`tel:${cfg.phone}`}
                 className="flex items-center gap-2.5 rounded-xl border border-neutral-100 bg-white p-4 shadow-sm transition-colors hover:border-accent/30"
               >
                 <Phone className="h-4 w-4 shrink-0 text-accent" strokeWidth={1.75} />
@@ -132,7 +134,7 @@ export function ContactCTA() {
                     Call Us
                   </span>
                   <span className="block truncate text-[10px] text-neutral-400">
-                    {SITE_CONFIG.phone}
+                    {cfg.phone}
                   </span>
                 </div>
               </a>

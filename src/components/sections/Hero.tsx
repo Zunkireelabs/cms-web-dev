@@ -7,39 +7,15 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { Container } from '@/components/ui/Container';
 import { ArrowRight } from 'lucide-react';
+import type { HeroSlide } from '@/types/cms';
 
-interface HeroSlide {
-  id: number;
-  image?: string;
-  video?: string;
-  alt: string;
-  title?: string;
-}
-
-const HERO_SLIDES: HeroSlide[] = [
+const SAFETY_SLIDES: HeroSlide[] = [
   {
-    id: 1,
-    video: '/images/videos/307398.mp4',
-    alt: 'CMS Group projects across Nepal',
+    id: 0,
+    order: 0,
     title: 'Trading & Contracting Since 2002',
-  },
-  {
-    id: 2,
-    image: '/images/hero/project-3.jpg',
-    alt: 'Hospital and healthcare projects',
-    title: 'Hospital & Healthcare',
-  },
-  {
-    id: 3,
-    image: '/images/hero/project-5.jpg',
-    alt: 'Hotel and hospitality projects',
-    title: 'Hotel & Hospitality',
-  },
-  {
-    id: 4,
-    image: '/images/hero/project-6.jpg',
-    alt: 'Office and commercial projects',
-    title: 'Office & Commercial',
+    alt: 'CMS Group projects across Nepal',
+    video: '/images/videos/307398.mp4',
   },
 ];
 
@@ -58,18 +34,24 @@ const fadeUpVariants = {
   }),
 };
 
-export function Hero() {
+interface HeroProps {
+  slides?: HeroSlide[];
+}
+
+export function Hero({ slides }: HeroProps) {
+  const activeSlides = slides && slides.length > 0 ? slides : SAFETY_SLIDES;
+
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
 
   const paginate = useCallback((newDirection: number) => {
     setCurrentSlide((prev) => {
       const nextSlide = prev + newDirection;
-      if (nextSlide < 0) return HERO_SLIDES.length - 1;
-      if (nextSlide >= HERO_SLIDES.length) return 0;
+      if (nextSlide < 0) return activeSlides.length - 1;
+      if (nextSlide >= activeSlides.length) return 0;
       return nextSlide;
     });
-  }, []);
+  }, [activeSlides.length]);
 
   const goToSlide = useCallback((index: number) => {
     setCurrentSlide(index);
@@ -84,6 +66,8 @@ export function Hero() {
 
     return () => clearInterval(interval);
   }, [isAutoPlaying, paginate]);
+
+  const slide = activeSlides[currentSlide];
 
   return (
     <section
@@ -110,19 +94,19 @@ export function Hero() {
             }}
             className="absolute inset-0 bg-neutral-900"
           >
-            {HERO_SLIDES[currentSlide].video ? (
+            {slide.video ? (
               <video
-                src={HERO_SLIDES[currentSlide].video}
+                src={slide.video}
                 autoPlay
                 muted
                 loop
                 playsInline
                 className="absolute inset-0 h-full w-full object-cover"
               />
-            ) : (
+            ) : slide.image ? (
               <Image
-                src={HERO_SLIDES[currentSlide].image!}
-                alt={HERO_SLIDES[currentSlide].alt}
+                src={slide.image}
+                alt={slide.alt}
                 fill
                 priority={currentSlide <= 1}
                 className="object-cover"
@@ -131,6 +115,9 @@ export function Hero() {
                   e.currentTarget.style.display = 'none';
                 }}
               />
+            ) : (
+              // Solid color background as last resort
+              <div className="absolute inset-0 bg-neutral-800" />
             )}
           </motion.div>
         </motion.div>
@@ -221,7 +208,7 @@ export function Hero() {
               transition={{ duration: 0.3 }}
               className="mt-10 text-xs font-medium uppercase tracking-widest text-white/40"
             >
-              {HERO_SLIDES[currentSlide].title}
+              {slide.title}
             </motion.p>
           </AnimatePresence>
         </div>
@@ -229,15 +216,15 @@ export function Hero() {
 
       {/* Slide Indicators - Bottom Center */}
       <div className="absolute bottom-10 left-1/2 z-20 flex -translate-x-1/2 gap-2.5">
-        {HERO_SLIDES.map((slide, index) => (
+        {activeSlides.map((s, index) => (
           <button
-            key={slide.id}
+            key={s.id}
             onClick={() => goToSlide(index)}
             className={cn(
               'group relative h-[3px] overflow-hidden transition-all duration-300',
               index === currentSlide ? 'w-10 bg-white/40' : 'w-5 bg-white/20 hover:bg-white/30'
             )}
-            aria-label={`Go to slide ${index + 1}: ${slide.title}`}
+            aria-label={`Go to slide ${index + 1}: ${s.title}`}
             aria-current={index === currentSlide ? 'true' : 'false'}
           >
             {index === currentSlide && isAutoPlaying && (

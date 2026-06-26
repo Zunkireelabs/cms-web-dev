@@ -6,6 +6,7 @@ import { motion, useInView, useSpring, useTransform } from 'framer-motion';
 import { Container } from '@/components/ui/Container';
 import { KickerLabel } from '@/components/ui/KickerLabel';
 import { ArrowUpRight } from 'lucide-react';
+import type { SiteConfigStats } from '@/types/cms';
 
 interface Metric {
   id: string;
@@ -14,13 +15,42 @@ interface Metric {
   label: string;
 }
 
-const METRICS: Metric[] = [
+const FALLBACK_METRICS: Metric[] = [
   { id: 'projects', value: 500, suffix: '+', label: 'Projects Delivered' },
   { id: 'years', value: 24, suffix: '+', label: 'Years of Excellence' },
   { id: 'sectors', value: 6, suffix: '', label: 'Sectors Served' },
   { id: 'partners', value: 50, suffix: '+', label: 'Global Brand Partners' },
 ];
 
+function buildMetrics(stats: SiteConfigStats | undefined): Metric[] {
+  if (!stats) return FALLBACK_METRICS;
+  return [
+    {
+      id: 'projects',
+      value: stats.projectsDelivered ?? 500,
+      suffix: '+',
+      label: stats.projectsDeliveredLabel ?? 'Projects Delivered',
+    },
+    {
+      id: 'years',
+      value: stats.yearsOfExcellence ?? 24,
+      suffix: '+',
+      label: stats.yearsOfExcellenceLabel ?? 'Years of Excellence',
+    },
+    {
+      id: 'sectors',
+      value: stats.sectorsServed ?? 6,
+      suffix: '',
+      label: stats.sectorsServedLabel ?? 'Sectors Served',
+    },
+    {
+      id: 'partners',
+      value: stats.brandPartners ?? 50,
+      suffix: '+',
+      label: stats.brandPartnersLabel ?? 'Global Brand Partners',
+    },
+  ];
+}
 
 function AnimatedCounter({ value, suffix }: { value: number; suffix: string }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -45,9 +75,14 @@ function AnimatedCounter({ value, suffix }: { value: number; suffix: string }) {
   );
 }
 
-export function ImpactMetrics() {
+interface ImpactMetricsProps {
+  stats?: SiteConfigStats;
+}
+
+export function ImpactMetrics({ stats }: ImpactMetricsProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: '-100px' });
+  const metrics = buildMetrics(stats);
 
   return (
     <section
@@ -81,7 +116,7 @@ export function ImpactMetrics() {
 
         {/* Stat strip */}
         <div className="mt-14 grid grid-cols-2 gap-y-12 lg:mt-20 lg:grid-cols-4 lg:gap-12">
-          {METRICS.map((metric, index) => (
+          {metrics.map((metric, index) => (
             <motion.div
               key={metric.id}
               initial={{ opacity: 0, y: 20 }}

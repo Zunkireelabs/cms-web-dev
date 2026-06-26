@@ -5,10 +5,10 @@ import { Section } from '@/components/ui/Section';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { ContentCard } from '@/components/ui/ContentCard';
 import { ContactCTA } from '@/components/sections';
-import { fetchProjects, fetchSectors } from '@/lib/cms';
+import { fetchProjects, fetchSectors, fetchSiteConfig } from '@/lib/cms';
 import { getProjectImageSrc } from '@/lib/project-image';
 import { resolveIcon } from '@/lib/icon-map';
-import { ArrowRight, Hammer, HardHat, Leaf } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Contracting Division',
@@ -16,21 +16,21 @@ export const metadata: Metadata = {
     'Comprehensive interior contracting through Cubic Meter — full-service partner for hotels, hospitals, offices, airports, and residential projects across Nepal.',
 };
 
-const SERVICES = [
+const FALLBACK_SERVICES = [
   {
-    icon: Hammer,
+    icon: 'Wrench',
     title: 'Interior Contracting & Fit-Out',
     description:
       'End-to-end interior fit-out for commercial, hospitality, and institutional projects — flooring, ceiling, partitions, doors, hardware, sanitaryware, and bespoke finishes.',
   },
   {
-    icon: HardHat,
+    icon: 'Shield',
     title: 'Project Execution & Management',
     description:
       'Globally trained installers, structured project management, and stringent quality control. We deliver on time and to specification, from material procurement through commissioning.',
   },
   {
-    icon: Leaf,
+    icon: 'Recycle',
     title: 'Renovation & Sustainable Solutions',
     description:
       'Renovation contracting that brings ageing assets up to current codes, with eco-friendly material sourcing and energy-efficient systems aligned to green-building standards.',
@@ -38,7 +38,16 @@ const SERVICES = [
 ];
 
 export default async function ContractingPage() {
-  const [allProjects, sectors] = await Promise.all([fetchProjects(), fetchSectors()]);
+  const [allProjects, sectors, siteConfig] = await Promise.all([
+    fetchProjects(),
+    fetchSectors(),
+    fetchSiteConfig(),
+  ]);
+
+  const services =
+    siteConfig?.contractingServices && siteConfig.contractingServices.length > 0
+      ? siteConfig.contractingServices
+      : FALLBACK_SERVICES;
   const featuredProjects = allProjects.filter((p) => p.featured).slice(0, 6);
 
   return (
@@ -64,22 +73,25 @@ export default async function ContractingPage() {
         />
 
         <div className="mt-14 grid gap-6 md:grid-cols-3">
-          {SERVICES.map((service) => (
-            <div
-              key={service.title}
-              className="rounded-2xl border border-neutral-border bg-white p-8 shadow-card transition-all duration-300 hover:-translate-y-0.5 hover:shadow-card-hover"
-            >
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent-50 text-accent">
-                <service.icon className="h-6 w-6" strokeWidth={1.5} />
+          {services.map((service) => {
+            const Icon = resolveIcon(service.icon ?? '');
+            return (
+              <div
+                key={service.title}
+                className="rounded-2xl border border-neutral-border bg-white p-8 shadow-card transition-all duration-300 hover:-translate-y-0.5 hover:shadow-card-hover"
+              >
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent-50 text-accent">
+                  <Icon className="h-6 w-6" strokeWidth={1.5} />
+                </div>
+                <h3 className="mt-6 font-display text-xl font-bold leading-tight tracking-tight text-neutral-charcoal">
+                  {service.title}
+                </h3>
+                <p className="mt-3 text-sm leading-relaxed text-neutral-600">
+                  {service.description}
+                </p>
               </div>
-              <h3 className="mt-6 font-display text-xl font-bold leading-tight tracking-tight text-neutral-charcoal">
-                {service.title}
-              </h3>
-              <p className="mt-3 text-sm leading-relaxed text-neutral-600">
-                {service.description}
-              </p>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </Section>
 

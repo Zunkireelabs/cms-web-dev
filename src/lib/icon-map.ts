@@ -12,6 +12,11 @@ import {
   Armchair,
   Award,
   Trophy,
+  Shield,
+  Users,
+  TrendingUp,
+  Handshake,
+  CheckCircle,
   type LucideIcon,
 } from 'lucide-react'
 
@@ -29,6 +34,11 @@ export const ICON_MAP: Record<string, LucideIcon> = {
   Armchair,
   Award,
   Trophy,
+  Shield,
+  Users,
+  TrendingUp,
+  Handshake,
+  CheckCircle,
 }
 
 export function resolveIcon(name: string): LucideIcon {
