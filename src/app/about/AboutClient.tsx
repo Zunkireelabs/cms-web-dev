@@ -8,27 +8,23 @@ import { Section } from '@/components/ui/Section';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { KickerLabel } from '@/components/ui/KickerLabel';
 import { ContactCTA } from '@/components/sections';
-import type { Certification, Milestone } from '@/types/cms';
+import { ChairmanMessage } from '@/components/sections/ChairmanMessage';
+import type { Certification, Milestone, SiteConfig, Director } from '@/types/cms';
 import { resolveIcon } from '@/lib/icon-map';
+import { SITE_CONFIG_FALLBACK } from '@/lib/constants';
 import { fadeUp, stagger } from '@/lib/motion';
 import {
   Target,
   Eye,
-  Shield,
-  Users,
-  Award,
-  Handshake,
-  CheckCircle,
-  TrendingUp,
   MapPin,
   Calendar,
-  Boxes,
   Building2,
   Globe,
   Layers,
   X,
   ChevronLeft,
   ChevronRight,
+  User2,
   type LucideIcon,
 } from 'lucide-react';
 import { useSpring, useTransform } from 'framer-motion';
@@ -37,74 +33,52 @@ import { useInView } from 'framer-motion';
 const FOUNDED_YEAR = 2002;
 const YEARS_IN_BUSINESS = new Date().getFullYear() - FOUNDED_YEAR;
 
-const COMPANY_STATS: { value: number; suffix: string; label: string; icon: LucideIcon }[] = [
-  { value: YEARS_IN_BUSINESS, suffix: '+', label: 'Years of Experience', icon: Calendar },
-  { value: 500, suffix: '+', label: 'Projects Delivered', icon: Building2 },
-  { value: 50, suffix: '+', label: 'Global Brand Partners', icon: Globe },
-  { value: 6, suffix: '', label: 'Sectors Served', icon: Layers },
+// ─── Fallback constants (used when CMS fields are absent) ────────────────────
+
+const defaultTrustPillars = [
+  { title: 'Since 2002', description: '' },
+  { title: 'Global Brands', description: '' },
+  { title: 'Projects Delivered', description: '' },
 ];
 
-const TRUST_PILLARS = [
-  'Since 2002',
-  'Global Brands',
-  'Projects Delivered',
-];
-
-const STORY_META = [
-  { label: 'Founded', value: '2002' },
-  { label: 'Head Office', value: 'Kathmandu' },
-];
-
-const STORY_SECTORS = ['Hospitality', 'Education', 'Airport', 'Office Spaces', 'Healthcare', 'Residence'];
-
-const MISSION_POINTS = [
-  'To deliver end-to-end trading and contracting solutions by combining globally recognized products with precise project execution.',
-  'To uphold the highest standards of quality, safety, and integrity in every stage of our operations.',
-  'To build long-term partnerships with clients, suppliers, and stakeholders through reliability and performance.',
-];
-
-const VISION_POINTS = [
-  'To be a trusted and preferred trading and contracting partner, recognized for delivering integrated building solutions with technical excellence, global brand partnerships, and sustainable value across every project we undertake.',
-];
-
-const CORE_VALUES = [
+const defaultCoreValues = [
   {
-    icon: Shield,
+    icon: 'Shield',
     title: 'Integrity',
     description:
       'Honesty, integrity, and moral behaviour are the cornerstone of our commercial operations — incorporated into every facet of how the organisation operates.',
     practice: 'Single source-of-truth pricing across all six ventures',
   },
   {
-    icon: Award,
+    icon: 'Award',
     title: 'Excellence',
     description:
       'Competitive excellence through high-quality products and services, maintaining worldwide quality standards across every venture in the group.',
     practice: 'ISO-aligned quality control on every brand we distribute',
   },
   {
-    icon: Users,
+    icon: 'Users',
     title: 'Customer Satisfaction',
     description:
       'Customer satisfaction is our top priority — we exceed expectations, cultivate long-term partnerships, and constantly improve services for clients at every level.',
     practice: 'Dedicated account manager assigned to every active project',
   },
   {
-    icon: TrendingUp,
+    icon: 'TrendingUp',
     title: 'Innovation',
     description:
       'We foster growth through creativity and innovation, continuously seeking new ideas, technologies, and techniques that drive progress and add client value.',
     practice: 'Annual factory visits with international brand partners',
   },
   {
-    icon: Handshake,
+    icon: 'Handshake',
     title: 'Trust & Partnership',
     description:
       'Strong, long-lasting partnerships are the keystone of our business. We earn trust by keeping commitments and exceeding expectations.',
     practice: '55+ brand partnerships maintained over two decades',
   },
   {
-    icon: CheckCircle,
+    icon: 'CheckCircle',
     title: 'Sustainability',
     description:
       'We actively engage in sourcing materials from sustainable and eco-friendly sources, aligning operations with responsible practices and contributing to a greener future.',
@@ -413,9 +387,13 @@ function CertLightbox({
 export function AboutClient({
   certifications,
   milestones,
+  siteConfig,
+  leadership,
 }: {
   certifications: Certification[];
   milestones: Milestone[];
+  siteConfig: SiteConfig | null;
+  leadership: Director[];
 }) {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
@@ -437,6 +415,71 @@ export function AboutClient({
     setLightboxIndex((i) => (i !== null && i < certifications.length - 1 ? i + 1 : i));
   }, [certifications.length]);
 
+  // ─── Derive values from CMS siteConfig, falling back to hardcoded defaults ──
+  const cfg = siteConfig ?? SITE_CONFIG_FALLBACK;
+
+  const companyStats: { value: number; suffix: string; label: string; icon: LucideIcon }[] = [
+    {
+      value: cfg.stats?.yearsOfExcellence ?? YEARS_IN_BUSINESS,
+      suffix: '+',
+      label: cfg.stats?.yearsOfExcellenceLabel ?? 'Years of Experience',
+      icon: Calendar,
+    },
+    {
+      value: cfg.stats?.projectsDelivered ?? 500,
+      suffix: '+',
+      label: cfg.stats?.projectsDeliveredLabel ?? 'Projects Delivered',
+      icon: Building2,
+    },
+    {
+      value: cfg.stats?.brandPartners ?? 50,
+      suffix: '+',
+      label: cfg.stats?.brandPartnersLabel ?? 'Global Brand Partners',
+      icon: Globe,
+    },
+    {
+      value: cfg.stats?.sectorsServed ?? 6,
+      suffix: '',
+      label: cfg.stats?.sectorsServedLabel ?? 'Sectors Served',
+      icon: Layers,
+    },
+  ];
+
+  const trustPillars = cfg.trustPillars?.length ? cfg.trustPillars : defaultTrustPillars;
+
+  const storyMeta = cfg.storyMeta?.length
+    ? cfg.storyMeta
+    : [
+        { label: 'Founded', value: '2002' },
+        { label: 'Head Office', value: 'Kathmandu' },
+      ];
+
+  const storySectors = cfg.storySectors?.length
+    ? cfg.storySectors
+    : ['Hospitality', 'Education', 'Airport', 'Office Spaces', 'Healthcare', 'Residence'];
+
+  const missionPoints = cfg.mission?.length
+    ? cfg.mission
+    : [
+        'To deliver end-to-end trading and contracting solutions by combining globally recognized products with precise project execution.',
+        'To uphold the highest standards of quality, safety, and integrity in every stage of our operations.',
+        'To build long-term partnerships with clients, suppliers, and stakeholders through reliability and performance.',
+      ];
+
+  const visionPoints = cfg.vision?.length
+    ? cfg.vision
+    : [
+        'To be a trusted and preferred trading and contracting partner, recognized for delivering integrated building solutions with technical excellence, global brand partnerships, and sustainable value across every project we undertake.',
+      ];
+
+  const coreValues = cfg.coreValues?.length ? cfg.coreValues : defaultCoreValues;
+
+  // ─── Leadership split ────────────────────────────────────────────────────────
+  const chairman = leadership.find((l) => l.order === 0);
+  const directors = leadership
+    .filter((l) => l.order > 0)
+    .sort((a, b) => a.order - b.order);
+
   return (
     <>
       <PageHero
@@ -451,12 +494,12 @@ export function AboutClient({
       {/* Trust strip */}
       <section className="border-b border-neutral-200 bg-white py-5 lg:py-6">
         <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-center gap-x-6 gap-y-3 px-4 sm:gap-x-10">
-          {TRUST_PILLARS.map((pillar, idx) => (
-            <div key={pillar} className="flex items-center gap-3 sm:gap-6">
+          {trustPillars.map((pillar, idx) => (
+            <div key={pillar.title} className="flex items-center gap-3 sm:gap-6">
               <span className="text-[11px] font-bold uppercase tracking-[0.22em] text-neutral-charcoal sm:text-xs">
-                {pillar}
+                {pillar.title}
               </span>
-              {idx < TRUST_PILLARS.length - 1 && (
+              {idx < trustPillars.length - 1 && (
                 <span className="hidden h-3 w-px bg-accent/50 sm:inline-block" />
               )}
             </div>
@@ -487,7 +530,7 @@ export function AboutClient({
             </p>
 
             <dl className="mt-8 grid grid-cols-2 gap-4 rounded-xl border border-neutral-200 bg-neutral-50 p-5">
-              {STORY_META.map((item) => (
+              {storyMeta.map((item) => (
                 <div key={item.label} className="border-l-2 border-accent/40 pl-4">
                   <dt className="text-[10px] font-semibold uppercase tracking-[0.18em] text-accent">
                     {item.label}
@@ -504,7 +547,7 @@ export function AboutClient({
                 Sectors served
               </p>
               <div className="mt-3 flex flex-wrap gap-2">
-                {STORY_SECTORS.map((sector, i) => (
+                {storySectors.map((sector, i) => (
                   <span
                     key={`${sector}-${i}`}
                     className="inline-block rounded-full border border-neutral-200 bg-white px-3 py-1 text-xs font-semibold text-neutral-700"
@@ -575,7 +618,7 @@ export function AboutClient({
                 Our Mission
               </h3>
               <ul className="mt-5 space-y-4">
-                {MISSION_POINTS.map((point, idx) => (
+                {missionPoints.map((point, idx) => (
                   <li key={point} className="flex gap-3">
                     <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent-50 font-display text-[10px] font-bold tabular-nums text-accent">
                       {String(idx + 1).padStart(2, '0')}
@@ -601,7 +644,7 @@ export function AboutClient({
                 Our Vision
               </h3>
               <ul className="mt-5 space-y-4">
-                {VISION_POINTS.map((point, idx) => (
+                {visionPoints.map((point, idx) => (
                   <li key={point} className="flex gap-3">
                     <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent-50 font-display text-[10px] font-bold tabular-nums text-accent">
                       {String(idx + 1).padStart(2, '0')}
@@ -632,38 +675,106 @@ export function AboutClient({
           variants={stagger}
           className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
         >
-          {CORE_VALUES.map((value, index) => (
-            <motion.div
-              key={value.title}
-              variants={fadeUp}
-              custom={index * 0.04}
-              className="group relative overflow-hidden rounded-xl border border-neutral-200 bg-white p-7 transition-all hover:-translate-y-1 hover:shadow-lg"
-            >
-              <div className="flex items-start justify-between">
-                <span className="font-display text-5xl font-bold leading-none text-accent/60 tabular-nums">
-                  {String(index + 1).padStart(2, '0')}
-                </span>
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-accent-50 text-accent transition-colors group-hover:bg-accent group-hover:text-white">
-                  <value.icon className="h-5 w-5" strokeWidth={1.75} />
+          {coreValues.map((value, index) => {
+            const Icon = resolveIcon(value.icon ?? 'Award');
+            return (
+              <motion.div
+                key={value.title}
+                variants={fadeUp}
+                custom={index * 0.04}
+                className="group relative overflow-hidden rounded-xl border border-neutral-200 bg-white p-7 transition-all hover:-translate-y-1 hover:shadow-lg"
+              >
+                <div className="flex items-start justify-between">
+                  <span className="font-display text-5xl font-bold leading-none text-accent/60 tabular-nums">
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+                  <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-accent-50 text-accent transition-colors group-hover:bg-accent group-hover:text-white">
+                    <Icon className="h-5 w-5" strokeWidth={1.75} />
+                  </div>
                 </div>
-              </div>
-              <h3 className="mt-6 font-display text-lg font-bold leading-tight text-neutral-charcoal">
-                {value.title}
-              </h3>
-              <p className="mt-3 text-sm leading-relaxed text-neutral-600">
-                {value.description}
-              </p>
-              <div className="mt-5 flex items-start gap-2 border-t border-neutral-100 pt-4 text-[11px]">
-                <span className="font-semibold uppercase tracking-[0.18em] text-accent">
-                  In practice
-                </span>
-                <span className="text-neutral-500">{value.practice}</span>
-              </div>
-              <div className="absolute bottom-0 left-0 h-0.5 w-0 bg-accent transition-all duration-300 group-hover:w-full" />
-            </motion.div>
-          ))}
+                <h3 className="mt-6 font-display text-lg font-bold leading-tight text-neutral-charcoal">
+                  {value.title}
+                </h3>
+                <p className="mt-3 text-sm leading-relaxed text-neutral-600">
+                  {value.description}
+                </p>
+                {value.practice && (
+                  <div className="mt-5 flex items-start gap-2 border-t border-neutral-100 pt-4 text-[11px]">
+                    <span className="font-semibold uppercase tracking-[0.18em] text-accent">
+                      In practice
+                    </span>
+                    <span className="text-neutral-500">{value.practice}</span>
+                  </div>
+                )}
+                <div className="absolute bottom-0 left-0 h-0.5 w-0 bg-accent transition-all duration-300 group-hover:w-full" />
+              </motion.div>
+            );
+          })}
         </motion.div>
       </Section>
+
+      {/* Chairman Message */}
+      {chairman && <ChairmanMessage chairman={chairman} />}
+
+      {/* Directors Grid */}
+      {directors.length > 0 && (
+        <Section variant="soft" id="leadership">
+          <SectionHeader
+            kicker="Our Leadership"
+            title="The team behind CMS Group."
+            lead="Experienced professionals driving growth, excellence, and innovation across all ventures."
+            align="center"
+            className="mx-auto"
+          />
+
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-80px' }}
+            variants={stagger}
+            className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+          >
+            {directors.map((director, index) => (
+              <motion.div
+                key={director.name}
+                variants={fadeUp}
+                custom={index * 0.04}
+                className="group overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg"
+              >
+                {/* Photo */}
+                <div className="relative h-64 overflow-hidden bg-neutral-100">
+                  {director.photo ? (
+                    <Image
+                      src={director.photo}
+                      alt={director.name}
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
+                    />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center">
+                      <User2 className="h-16 w-16 text-neutral-300" strokeWidth={1.2} />
+                    </div>
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-neutral-charcoal/30 via-transparent to-transparent" />
+                </div>
+
+                {/* Info */}
+                <div className="p-5">
+                  <h3 className="font-display text-base font-bold leading-tight text-neutral-charcoal">
+                    {director.name}
+                  </h3>
+                  <p className="mt-0.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-accent">
+                    {director.title}
+                  </p>
+                  <p className="mt-1 text-[11px] text-neutral-400">{director.company}</p>
+                </div>
+                <div className="h-0.5 w-0 bg-accent transition-all duration-300 group-hover:w-full" />
+              </motion.div>
+            ))}
+          </motion.div>
+        </Section>
+      )}
 
       {/* Milestones */}
       <Section variant="dark">
