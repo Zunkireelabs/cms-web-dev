@@ -3,7 +3,7 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 import nepalPaths from '@/data/nepal-paths.json';
-import { PROJECTS, type Project } from '@/data/projects';
+import type { Project } from '@/types/cms';
 import { Calendar, MapPin, Maximize2, X } from 'lucide-react';
 
 interface ProvincePath {
@@ -71,9 +71,9 @@ function resolveMapAnchor(location: string): string | null {
   return null;
 }
 
-function getProjectLocations() {
+function getProjectLocations(projects: Project[]) {
   const locationMap = new Map<string, { projects: Project[] }>();
-  PROJECTS.forEach((project) => {
+  projects.forEach((project) => {
     const anchor = resolveMapAnchor(project.location);
     if (!anchor) return;
     const existing = locationMap.get(anchor);
@@ -230,7 +230,7 @@ function ProjectPopover({
   );
 }
 
-export function ProjectMap() {
+export function ProjectMap({ projects }: { projects: Project[] }) {
   const { width, height, paths } = nepalPaths as {
     width: number;
     height: number;
@@ -245,7 +245,7 @@ export function ProjectMap() {
   const [pinnedLocation, setPinnedLocation] = useState<string | null>(null);
   const [containerRect, setContainerRect] = useState<DOMRect | null>(null);
   const [markerScreen, setMarkerScreen] = useState<{ x: number; y: number } | null>(null);
-  const projectLocations = useMemo(() => getProjectLocations(), []);
+  const projectLocations = useMemo(() => getProjectLocations(projects), [projects]);
 
   const mapOffsetX = (WIDTH - width) / 2 + 25;
   const mapOffsetY = (HEIGHT - height) / 2;

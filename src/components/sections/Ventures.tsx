@@ -16,7 +16,7 @@ import {
 import { Section } from '@/components/ui/Section';
 import { KickerLabel } from '@/components/ui/KickerLabel';
 import { fadeUp, stagger } from '@/lib/motion';
-import { VENTURES } from '@/data/ventures';
+import type { Venture } from '@/types/cms';
 
 const VENTURE_ICONS: Record<string, LucideIcon> = {
   'bath-n-room': Bath,
@@ -45,7 +45,7 @@ const TYPE_STYLES: Record<VentureType, string> = {
   'Joint Venture': 'bg-amber-50 text-amber-700',
 };
 
-export function Ventures() {
+export function Ventures({ ventures }: { ventures: Venture[] }) {
   return (
     <Section variant="light">
       <motion.div
@@ -80,7 +80,7 @@ export function Ventures() {
         variants={stagger}
         className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:gap-6 lg:grid-cols-3"
       >
-        {VENTURES.map((venture, index) => {
+        {ventures.map((venture, index) => {
           const Icon = VENTURE_ICONS[venture.slug] ?? Layers;
           const type = VENTURE_TYPES[venture.slug] ?? 'Trading';
           const productCount = venture.products.length;

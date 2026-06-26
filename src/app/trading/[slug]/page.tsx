@@ -7,12 +7,14 @@ import { SectionHeader } from '@/components/ui/SectionHeader';
 import { ContentCard } from '@/components/ui/ContentCard';
 import { ContactCTA } from '@/components/sections';
 import {
-  getProductDomain,
-  getAllProductSlugs,
-  type Brand,
-  type ProductDomain,
-} from '@/data/products';
-import { PROJECTS, type Project } from '@/data/projects';
+  fetchProductDomains,
+  fetchBrands,
+  fetchProjects,
+  getBrandsByTradingDomain,
+  type CmsProductDomain,
+  type BrandEntry,
+} from '@/lib/cms';
+import type { Project } from '@/types/cms';
 import { getProjectImageSrc } from '@/lib/project-image';
 import Link from 'next/link';
 import { ArrowLeft, Building2, ExternalLink, Eye, FileDown, Sparkles } from 'lucide-react';
@@ -22,12 +24,14 @@ interface PageProps {
 }
 
 export async function generateStaticParams() {
-  return getAllProductSlugs().map((slug) => ({ slug }));
+  const domains = await fetchProductDomains();
+  return domains.map((d) => ({ slug: d.slug }));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const domain = getProductDomain(slug);
+  const domains = await fetchProductDomains();
+  const domain = domains.find((d) => d.slug === slug);
 
   if (!domain) {
     return { title: 'Not Found' };
@@ -43,16 +47,31 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-function getRelatedProjects(domain: ProductDomain): Project[] {
+function getRelatedProjects(domain: CmsProductDomain, projects: Project[]): Project[] {
   if (!domain.projectKeywords || domain.projectKeywords.length === 0) return [];
   const lowerKeywords = domain.projectKeywords.map((k) => k.toLowerCase());
-  return PROJECTS.filter((p) => {
-    const haystack = [p.description, ...p.scope, p.title].join(' ').toLowerCase();
-    return lowerKeywords.some((kw) => haystack.includes(kw));
-  }).slice(0, 6);
+  return projects
+    .filter((p) => {
+      const haystack = [p.description, ...p.scope, p.title].join(' ').toLowerCase();
+      return lowerKeywords.some((kw) => haystack.includes(kw));
+    })
+    .slice(0, 6);
 }
 
-function PartnerCard({ brand }: { brand: Brand }) {
+function brandEntryToDisplay(entry: BrandEntry) {
+  return {
+    name: entry.name,
+    specialty: entry.segments[0] ?? '',
+    description: entry.segments.length > 1 ? entry.segments.slice(1).join(' • ') : entry.description,
+    brochureUrl: entry.website ?? '#',
+    country: entry.country,
+    website: entry.website,
+    catalogueUrl: entry.website,
+    logo: entry.logoUrl,
+  };
+}
+
+function PartnerCard({ brand }: { brand: ReturnType<typeof brandEntryToDisplay> }) {
   const hasBrochure = Boolean(brand.brochureUrl) && brand.brochureUrl !== '#';
 
   return (
@@ -151,14 +170,19 @@ function PartnerCard({ brand }: { brand: Brand }) {
 
 export default async function TradingSlugPage({ params }: PageProps) {
   const { slug } = await params;
-  const domain = getProductDomain(slug);
 
-  if (!domain) {
-    notFound();
-  }
+  const [domains, allBrands, allProjects] = await Promise.all([
+    fetchProductDomains(),
+    fetchBrands(),
+    fetchProjects(),
+  ]);
 
-  const relatedProjects = getRelatedProjects(domain);
-  const partnerCount = domain.brands.length;
+  const domain = domains.find((d) => d.slug === slug);
+  if (!domain) notFound();
+
+  const domainBrands = getBrandsByTradingDomain(allBrands, slug).map(brandEntryToDisplay);
+  const relatedProjects = getRelatedProjects(domain, allProjects);
+  const partnerCount = domainBrands.length;
 
   return (
     <>
@@ -191,7 +215,7 @@ export default async function TradingSlugPage({ params }: PageProps) {
 
         {partnerCount > 0 ? (
           <div className="mt-12 space-y-8">
-            {domain.brands.map((brand) => (
+            {domainBrands.map((brand) => (
               <PartnerCard key={brand.name} brand={brand} />
             ))}
           </div>

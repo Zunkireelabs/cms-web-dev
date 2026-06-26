@@ -9,6 +9,16 @@ const nextConfig = {
     imageSizes: [16, 32, 64, 128, 256],
     remotePatterns: [
       {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '3001',
+      },
+      {
+        protocol: 'https',
+        hostname: 'admin-cms.zunkireelabs.com',
+        pathname: '/api/media/**',
+      },
+      {
         protocol: 'https',
         hostname: 'cmstc.com',
       },

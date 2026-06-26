@@ -5,12 +5,13 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
-import { NAV_ITEMS, SITE_CONFIG } from '@/lib/constants';
-import { PRODUCT_DOMAINS, CONTRACTING_SERVICES } from '@/data/products';
+import { NAV_ITEMS, SITE_CONFIG, CONTRACTING_SERVICES } from '@/lib/constants';
+import type { CmsProductDomain } from '@/lib/cms';
 import { ChevronDown } from 'lucide-react';
 
 interface MobileMenuProps {
   onClose: () => void;
+  productDomains: CmsProductDomain[];
 }
 
 const menuVariants = {
@@ -64,7 +65,7 @@ function isProductsActive(pathname: string) {
   return pathname.startsWith('/trading') || pathname.startsWith('/contracting');
 }
 
-export function MobileMenu({ onClose }: MobileMenuProps) {
+export function MobileMenu({ onClose, productDomains }: MobileMenuProps) {
   const pathname = usePathname();
   const [isProductsExpanded, setIsProductsExpanded] = useState(false);
 
@@ -141,7 +142,7 @@ export function MobileMenu({ onClose }: MobileMenuProps) {
                             <p className="px-4 py-2 text-xs font-semibold text-neutral-400 uppercase tracking-wider">
                               Trading
                             </p>
-                            {PRODUCT_DOMAINS.slice(0, 6).map((domain) => (
+                            {productDomains.slice(0, 6).map((domain) => (
                               <Link
                                 key={domain.id}
                                 href={`/trading/${domain.slug}`}

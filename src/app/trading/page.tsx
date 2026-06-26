@@ -5,23 +5,25 @@ import { SectionHeader } from '@/components/ui/SectionHeader';
 import { StatBlock } from '@/components/ui/StatBlock';
 import { ContentCard } from '@/components/ui/ContentCard';
 import { ContactCTA } from '@/components/sections';
-import { PRODUCT_DOMAINS } from '@/data/products';
-import { BRANDS, TOTAL_BRAND_COUNT } from '@/data/brands';
-
-const COUNTRY_COUNT = new Set(BRANDS.map((b) => b.country.split(' ')[0])).size;
+import { fetchProductDomains, fetchBrands } from '@/lib/cms';
 
 export const metadata: Metadata = {
   title: 'Trading Division',
-  description: `CMS Group Trading — premium building materials from ${TOTAL_BRAND_COUNT}+ global brand partners across ${PRODUCT_DOMAINS.length} specialized domains, distributed in Nepal through Bath N Room, Baba Muktinath Fabricators, 4R Technologies, Techwood, and Prime Ceramics.`,
+  description:
+    'CMS Group Trading — premium building materials from global brand partners across specialized domains, distributed in Nepal through Bath N Room, Baba Muktinath Fabricators, 4R Technologies, Techwood, and Prime Ceramics.',
 };
 
-export default function TradingPage() {
+export default async function TradingPage() {
+  const [domains, brands] = await Promise.all([fetchProductDomains(), fetchBrands()]);
+  const totalBrandCount = brands.length;
+  const countryCount = new Set(brands.map((b) => b.country.split(' ')[0])).size;
+
   return (
     <>
       <PageHero
         kicker="Trading Division"
         title="Premium building materials, distributed in Nepal."
-        subtitle={`${TOTAL_BRAND_COUNT}+ authorised partner brands across ${PRODUCT_DOMAINS.length} specialised domains — sanitary, roofing, ceilings, hardware, flooring, tiles, and more.`}
+        subtitle={`${totalBrandCount}+ authorised partner brands across ${domains.length} specialised domains — sanitary, roofing, ceilings, hardware, flooring, tiles, and more.`}
         image="/images/products/sanitaryware.jpg"
         imageAlt="CMS Group Trading — premium building materials"
         primaryCta={{ label: 'Explore Domains', href: '#domains' }}
@@ -32,13 +34,13 @@ export default function TradingPage() {
       <Section variant="soft" compact>
         <div className="grid grid-cols-3 gap-x-6 gap-y-12 sm:gap-12">
           <div className="border-l border-accent/40 pl-5 lg:pl-6">
-            <StatBlock value={`${TOTAL_BRAND_COUNT}+`} label="Brand Partners" size="md" />
+            <StatBlock value={`${totalBrandCount}+`} label="Brand Partners" size="md" />
           </div>
           <div className="border-l border-accent/40 pl-5 lg:pl-6">
-            <StatBlock value={`${PRODUCT_DOMAINS.length}`} label="Product Domains" size="md" />
+            <StatBlock value={`${domains.length}`} label="Product Domains" size="md" />
           </div>
           <div className="border-l border-accent/40 pl-5 lg:pl-6">
-            <StatBlock value={`${COUNTRY_COUNT}+`} label="Countries of Origin" size="md" />
+            <StatBlock value={`${countryCount}+`} label="Countries of Origin" size="md" />
           </div>
         </div>
       </Section>
@@ -54,24 +56,27 @@ export default function TradingPage() {
         />
 
         <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {PRODUCT_DOMAINS.map((domain) => (
-            <ContentCard
-              key={domain.slug}
-              href={`/trading/${domain.slug}`}
-              image={domain.image}
-              imageAlt={domain.title}
-              title={domain.title}
-              description={domain.description}
-              subtitle={
-                domain.brands.length === 0
-                  ? 'Coming soon'
-                  : domain.brands.length === 1
-                    ? '1 brand partner'
-                    : `${domain.brands.length} brand partners`
-              }
-              aspect="video"
-            />
-          ))}
+          {domains.map((domain) => {
+            const domainBrands = brands.filter((b) => b.tradingDomains?.includes(domain.slug));
+            return (
+              <ContentCard
+                key={domain.slug}
+                href={`/trading/${domain.slug}`}
+                image={domain.image}
+                imageAlt={domain.title}
+                title={domain.title}
+                description={domain.description}
+                subtitle={
+                  domainBrands.length === 0
+                    ? 'Coming soon'
+                    : domainBrands.length === 1
+                      ? '1 brand partner'
+                      : `${domainBrands.length} brand partners`
+                }
+                aspect="video"
+              />
+            );
+          })}
         </div>
       </Section>
 

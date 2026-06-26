@@ -1,4 +1,4 @@
-import type { Project } from '@/data/projects';
+import type { Project } from '@/types/cms';
 
 const SECTOR_IMAGES: Record<string, string> = {
   office: '/images/projects/office.jpg',
