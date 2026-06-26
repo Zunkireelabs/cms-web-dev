@@ -2,14 +2,9 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { motion, useInView, useSpring, useTransform } from 'framer-motion';
-import { Layers, Home, DoorOpen, Footprints } from 'lucide-react';
-
-const DOMAIN_METRICS = [
-  { id: 'ceiling',   value: 200000, label: 'False Ceiling Installed',    icon: Layers   },
-  { id: 'roofing',   value: 300000, label: 'Roofing Installed',          icon: Home     },
-  { id: 'aluminium', value: 90000,  label: 'Aluminium Doors & Windows',  icon: DoorOpen },
-  { id: 'flooring',  value: 250000, label: 'Flooring Installed',         icon: Footprints },
-];
+import { Layers } from 'lucide-react';
+import { resolveIcon } from '@/lib/icon-map';
+import type { CmsProductDomain } from '@/lib/cms';
 
 function AnimatedCounter({ value }: { value: number }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -33,7 +28,17 @@ function AnimatedCounter({ value }: { value: number }) {
   );
 }
 
-export function DomainMetricsStrip() {
+interface DomainMetricsStripProps {
+  domains: CmsProductDomain[];
+}
+
+export function DomainMetricsStrip({ domains }: DomainMetricsStripProps) {
+  const metricsToShow = domains
+    .filter((d) => d.installedAreaSqFt && d.metricLabel)
+    .slice(0, 4);
+
+  if (metricsToShow.length === 0) return null;
+
   return (
     <section className="relative overflow-hidden border-b border-neutral-100 bg-neutral-50 py-10 lg:py-12">
       {/* Subtle accent line at top */}
@@ -46,11 +51,11 @@ export function DomainMetricsStrip() {
         </p>
 
         <div className="grid grid-cols-2 gap-px bg-neutral-200 lg:grid-cols-4">
-          {DOMAIN_METRICS.map((metric, index) => {
-            const Icon = metric.icon;
+          {metricsToShow.map((domain, index) => {
+            const Icon = domain.icon ? resolveIcon(domain.icon) : Layers;
             return (
               <motion.div
-                key={metric.id}
+                key={domain.id}
                 initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-20px' }}
@@ -64,7 +69,7 @@ export function DomainMetricsStrip() {
 
                 {/* Number */}
                 <div className="font-display text-2xl font-bold leading-none tracking-tight text-neutral-charcoal tabular-nums sm:text-3xl lg:text-[2.6rem]">
-                  <AnimatedCounter value={metric.value} />
+                  <AnimatedCounter value={domain.installedAreaSqFt!} />
                   <span className="text-accent">+</span>
                 </div>
 
@@ -73,7 +78,7 @@ export function DomainMetricsStrip() {
 
                 {/* Label */}
                 <div className="mt-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-neutral-500 sm:text-[11px]">
-                  {metric.label}
+                  {domain.metricLabel}
                 </div>
 
                 {/* Hover bottom accent */}

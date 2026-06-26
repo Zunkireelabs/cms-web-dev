@@ -275,3 +275,28 @@ export interface CmsSector {
   summary: string
   description: string
 }
+
+// ─── Hero Slides ──────────────────────────────────────────────────────────────
+
+export interface HeroSlide {
+  id: number
+  order: number
+  title: string
+  alt: string
+  image?: string  // resolved URL from mediaUrl()
+  video?: string  // resolved URL from mediaUrl()
+}
+
+// ─── Jobs ─────────────────────────────────────────────────────────────────────
+
+export interface Job {
+  id: number
+  title: string
+  slug: string
+  location: string
+  type: 'full-time' | 'part-time' | 'contract' | 'internship'
+  description: string
+  responsibilities: string[]
+  postedAt: string
+  active: boolean
+}

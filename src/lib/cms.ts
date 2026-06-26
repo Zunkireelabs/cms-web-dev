@@ -16,6 +16,8 @@ import type {
   Venture,
   SiteConfig,
   CmsSector,
+  HeroSlide,
+  Job,
 } from '@/types/cms'
 
 export type {
@@ -36,6 +38,8 @@ export type {
   Venture,
   SiteConfig,
   CmsSector,
+  HeroSlide,
+  Job,
 }
 
 const CMS_URL = process.env.CMS_URL || 'http://localhost:3001'
@@ -152,6 +156,9 @@ export interface CmsProductDomain {
   image: string
   imagePosition: 'object-center' | 'object-top' | 'object-bottom'
   projectKeywords: string[]
+  installedAreaSqFt?: number
+  metricLabel?: string
+  icon?: string
 }
 
 export async function fetchProductDomains(): Promise<CmsProductDomain[]> {
@@ -164,6 +171,9 @@ export async function fetchProductDomains(): Promise<CmsProductDomain[]> {
     image: d.externalImageUrl || mediaUrl(d.image?.url) || '',
     imagePosition: (d.imagePosition ?? 'object-center') as CmsProductDomain['imagePosition'],
     projectKeywords: (d.projectKeywords ?? []).map((k: any) => k.value as string),
+    installedAreaSqFt: d.installedAreaSqFt as number | undefined,
+    metricLabel: d.metricLabel as string | undefined,
+    icon: d.icon as string | undefined,
   }))
 }
 
@@ -282,6 +292,41 @@ export async function fetchMilestones(): Promise<Milestone[]> {
     brands: Array.isArray(d.brands) ? d.brands.map((b: any) => b.name as string) : [],
     logo: mediaUrl(d.logo?.url),
   }))
+}
+
+// ─── Hero Slides ─────────────────────────────────────────────────────────────
+
+export async function fetchHeroSlides(): Promise<HeroSlide[]> {
+  const docs = await fetchDocs<any>('hero-slides', { sort: 'order' })
+  return docs.map((d) => ({
+    id: d.id as number,
+    order: d.order as number,
+    title: d.title as string,
+    alt: d.alt as string,
+    image: mediaUrl(d.image?.url),
+    video: mediaUrl(d.video?.url),
+  }))
+}
+
+// ─── Jobs ─────────────────────────────────────────────────────────────────────
+
+export async function fetchJobs(): Promise<Job[]> {
+  const docs = await fetchDocs<any>('jobs', { sort: '-postedAt' })
+  return docs
+    .filter((d) => d.active !== false)
+    .map((d) => ({
+      id: d.id as number,
+      title: d.title as string,
+      slug: d.slug as string,
+      location: d.location as string,
+      type: d.type as Job['type'],
+      description: d.description as string,
+      responsibilities: Array.isArray(d.responsibilities)
+        ? d.responsibilities.map((r: any) => r.item as string).filter(Boolean)
+        : [],
+      postedAt: d.postedAt as string,
+      active: d.active !== false,
+    }))
 }
 
 // ─── Site Config ──────────────────────────────────────────────────────────────
