@@ -5,9 +5,9 @@ import { Section } from '@/components/ui/Section';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { ContentCard } from '@/components/ui/ContentCard';
 import { ContactCTA } from '@/components/sections';
-import { PROJECTS } from '@/data/projects';
+import { fetchProjects, fetchSectors } from '@/lib/cms';
 import { getProjectImageSrc } from '@/lib/project-image';
-import { SECTORS } from '@/data/sectors';
+import { resolveIcon } from '@/lib/icon-map';
 import { ArrowRight, Hammer, HardHat, Leaf } from 'lucide-react';
 
 export const metadata: Metadata = {
@@ -37,9 +37,10 @@ const SERVICES = [
   },
 ];
 
-const FEATURED_PROJECTS = PROJECTS.filter((p) => p.featured).slice(0, 6);
+export default async function ContractingPage() {
+  const [allProjects, sectors] = await Promise.all([fetchProjects(), fetchSectors()]);
+  const featuredProjects = allProjects.filter((p) => p.featured).slice(0, 6);
 
-export default function ContractingPage() {
   return (
     <>
       <PageHero
@@ -93,25 +94,28 @@ export default function ContractingPage() {
         />
 
         <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {SECTORS.map((sector) => (
-            <Link
-              key={sector.slug}
-              href={`/services#${sector.slug}`}
-              className="group flex items-start gap-4 rounded-xl border border-neutral-border bg-white p-6 transition-all hover:-translate-y-0.5 hover:border-accent/40 hover:shadow-card"
-            >
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-accent-50 text-accent">
-                <sector.icon className="h-5 w-5" strokeWidth={1.5} />
-              </div>
-              <div>
-                <h3 className="font-display text-lg font-bold leading-tight text-neutral-charcoal transition-colors group-hover:text-accent">
-                  {sector.name}
-                </h3>
-                <p className="mt-1.5 text-sm leading-relaxed text-neutral-600">
-                  {sector.summary}
-                </p>
-              </div>
-            </Link>
-          ))}
+          {sectors.map((sector) => {
+            const Icon = resolveIcon(sector.icon);
+            return (
+              <Link
+                key={sector.slug}
+                href={`/services#${sector.slug}`}
+                className="group flex items-start gap-4 rounded-xl border border-neutral-border bg-white p-6 transition-all hover:-translate-y-0.5 hover:border-accent/40 hover:shadow-card"
+              >
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-accent-50 text-accent">
+                  <Icon className="h-5 w-5" strokeWidth={1.5} />
+                </div>
+                <div>
+                  <h3 className="font-display text-lg font-bold leading-tight text-neutral-charcoal transition-colors group-hover:text-accent">
+                    {sector.name}
+                  </h3>
+                  <p className="mt-1.5 text-sm leading-relaxed text-neutral-600">
+                    {sector.summary}
+                  </p>
+                </div>
+              </Link>
+            );
+          })}
         </div>
       </Section>
 
@@ -133,7 +137,7 @@ export default function ContractingPage() {
         </div>
 
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {FEATURED_PROJECTS.map((project) => (
+          {featuredProjects.map((project) => (
             <ContentCard
               key={project.id}
               image={getProjectImageSrc(project)}
