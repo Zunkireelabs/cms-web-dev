@@ -5,12 +5,14 @@ import {
   AboutUs,
   ContactCTA,
   Hero,
-  ImpactMetrics,
   ProductsServices,
   ProjectMap,
 } from '@/components/sections';
+import { fetchProjects } from '@/lib/cms';
 
-export default function HomePage() {
+export default async function HomePage() {
+  const projects = await fetchProjects();
+
   return (
     <>
       {/* 1. Identity — cinematic hero */}
@@ -18,9 +20,6 @@ export default function HomePage() {
 
       {/* 2. Story — who we are */}
       <AboutUs />
-
-      {/* 3. Proof — animated counters (dark reset) */}
-      {/* <ImpactMetrics /> */}
 
       {/* 4. Substance — fourteen product domains */}
       <ProductsServices />
@@ -36,7 +35,7 @@ export default function HomePage() {
         />
 
         <div className="mt-12">
-          <ProjectMap />
+          <ProjectMap projects={projects} />
         </div>
 
         <div className="mt-10 text-center">

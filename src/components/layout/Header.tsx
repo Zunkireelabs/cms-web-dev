@@ -5,8 +5,8 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
-import { NAV_ITEMS, SITE_CONFIG } from '@/lib/constants';
-import { PRODUCT_DOMAINS, CONTRACTING_SERVICES } from '@/data/products';
+import { NAV_ITEMS, SITE_CONFIG, CONTRACTING_SERVICES } from '@/lib/constants';
+import type { CmsProductDomain } from '@/lib/cms';
 import { Container } from '@/components/ui/Container';
 import { Logo } from '@/components/ui/Logo';
 import { MobileMenu } from './MobileMenu';
@@ -38,7 +38,7 @@ function isProductsActive(pathname: string) {
   return pathname.startsWith('/trading') || pathname.startsWith('/contracting');
 }
 
-export function Header() {
+export function Header({ productDomains }: { productDomains: CmsProductDomain[] }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMegaMenuOpen, setIsMegaMenuOpen] = useState(false);
@@ -292,7 +292,7 @@ export function Header() {
                       </div>
 
                       <div className="grid grid-cols-2 gap-x-2 gap-y-0">
-                        {PRODUCT_DOMAINS.map((domain) => (
+                        {productDomains.map((domain) => (
                           <Link
                             key={domain.id}
                             href={`/trading/${domain.slug}`}
@@ -370,7 +370,7 @@ export function Header() {
 
       <AnimatePresence>
         {isMobileMenuOpen && (
-          <MobileMenu onClose={() => setIsMobileMenuOpen(false)} />
+          <MobileMenu onClose={() => setIsMobileMenuOpen(false)} productDomains={productDomains} />
         )}
       </AnimatePresence>
     </>

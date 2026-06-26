@@ -20,12 +20,8 @@ import {
   Quote,
   type LucideIcon,
 } from 'lucide-react';
-import {
-  TESTIMONIALS,
-  DELIVERING_VENTURE_LABELS,
-  type Testimonial,
-  type ClientType,
-} from '@/data/testimonials';
+import { DELIVERING_VENTURE_LABELS } from '@/lib/constants';
+import type { Testimonial, ClientType } from '@/types/cms';
 
 const CLIENT_TYPE_ICONS: Record<ClientType, LucideIcon> = {
   hotel: Building2,
@@ -75,7 +71,6 @@ const TESTIMONIAL_PHOTO_OVERRIDE: Record<string, string> = {
   'kedia-construction': '/images/projects/country-villa.jpg',
 };
 
-// Use the actual signed reference letter scan when available; fall back to project photo
 function getTestimonialPhoto(t: Testimonial): { src: string; isLetter: boolean } {
   if (t.scanImage) return { src: t.scanImage, isLetter: true };
   const fallback = TESTIMONIAL_PHOTO_OVERRIDE[t.id] ?? CLIENT_TYPE_PHOTO[t.clientType];
@@ -114,7 +109,6 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
           }
         />
 
-        {/* For project photos: gradient overlay + project badge. For letters: clean overlay-free presentation. */}
         {!isLetter && (
           <>
             <div className="absolute inset-0 bg-gradient-to-t from-neutral-charcoal/85 via-neutral-charcoal/30 to-transparent" />
@@ -205,14 +199,14 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
   );
 }
 
-export function Testimonials() {
+export function Testimonials({ testimonials }: { testimonials: Testimonial[] }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const trackRef = useRef<HTMLDivElement>(null);
 
   const visibleCards = 3;
-  const totalSlides = TESTIMONIALS.length;
+  const totalSlides = testimonials.length;
 
   const nextSlide = useCallback(() => {
     if (isTransitioning) return;
@@ -249,12 +243,14 @@ export function Testimonials() {
     const visible: (Testimonial & { displayIndex: number })[] = [];
     for (let i = 0; i < visibleCards; i++) {
       const index = (currentIndex + i) % totalSlides;
-      visible.push({ ...TESTIMONIALS[index], displayIndex: index });
+      visible.push({ ...testimonials[index], displayIndex: index });
     }
     return visible;
   };
 
   const visibleTestimonials = getVisibleTestimonials();
+
+  if (totalSlides === 0) return null;
 
   return (
     <section className="bg-neutral-off-white py-20 lg:py-28">
@@ -310,7 +306,7 @@ export function Testimonials() {
           </div>
 
           <div className="mt-10 flex justify-center gap-2">
-            {TESTIMONIALS.map((_, index) => (
+            {testimonials.map((_, index) => (
               <button
                 key={index}
                 onClick={() => goToSlide(index)}
@@ -325,7 +321,7 @@ export function Testimonials() {
           </div>
 
           <div className="mt-4 text-center text-xs font-semibold uppercase tracking-[0.18em] text-neutral-400">
-            {currentIndex + 1} / {TESTIMONIALS.length}
+            {currentIndex + 1} / {testimonials.length}
           </div>
         </div>
       </Container>

@@ -3,6 +3,7 @@ import { Source_Sans_3, Manrope } from 'next/font/google';
 import { Providers } from '@/providers/Providers';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
+import { fetchProductDomains } from '@/lib/cms';
 import './globals.css';
 
 const sourceSans = Source_Sans_3({
@@ -96,11 +97,13 @@ export const viewport: Viewport = {
   maximumScale: 5,
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const productDomains = await fetchProductDomains();
+
   return (
     <html
       lang="en"
@@ -110,7 +113,7 @@ export default function RootLayout({
       <body className="min-h-screen bg-neutral-off-white font-sans text-neutral-charcoal antialiased">
         <Providers>
           <div className="flex min-h-screen flex-col">
-            <Header />
+            <Header productDomains={productDomains} />
             <main className="flex-1 pt-16 lg:pt-20">{children}</main>
             <Footer />
           </div>

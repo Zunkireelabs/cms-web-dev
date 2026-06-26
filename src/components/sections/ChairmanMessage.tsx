@@ -6,13 +6,13 @@ import { motion } from 'framer-motion';
 import { ArrowRight, Quote, User2 } from 'lucide-react';
 import { Section } from '@/components/ui/Section';
 import { KickerLabel } from '@/components/ui/KickerLabel';
-import { CHAIRMAN } from '@/data/leadership';
 import { fadeUp } from '@/lib/motion';
+import type { Director } from '@/types/cms';
 
 const PULL_QUOTE =
   'We endeavour to meet the different needs of our esteemed clientele by emphasising integration and complete solutions — setting new standards in the Nepalese market.';
 
-export function ChairmanMessage() {
+export function ChairmanMessage({ chairman }: { chairman: Director }) {
   return (
     <Section variant="light">
       <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-20">
@@ -32,10 +32,10 @@ export function ChairmanMessage() {
             <div className="absolute -left-2 -top-2 z-10 h-8 w-8 rounded-tl-lg border-l-2 border-t-2 border-accent" />
 
             <div className="relative aspect-[4/5] sm:aspect-[3/4] overflow-hidden rounded-2xl bg-white ring-1 ring-neutral-charcoal/5">
-              {CHAIRMAN.photo ? (
+              {chairman.photo ? (
                 <Image
-                  src={CHAIRMAN.photo}
-                  alt={CHAIRMAN.name}
+                  src={chairman.photo}
+                  alt={chairman.name}
                   fill
                   sizes="(max-width: 1024px) 80vw, 320px"
                   className="object-contain object-top transition-transform duration-700 ease-out group-hover:scale-[1.03]"
@@ -83,10 +83,10 @@ export function ChairmanMessage() {
             <div className="h-px w-12 bg-accent" />
             <div>
               <div className="font-display text-base font-bold text-neutral-charcoal">
-                {CHAIRMAN.name}
+                {chairman.name}
               </div>
               <div className="mt-0.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-neutral-500">
-                {CHAIRMAN.title} · {CHAIRMAN.company}
+                {chairman.title} · {chairman.company}
               </div>
             </div>
           </motion.div>
