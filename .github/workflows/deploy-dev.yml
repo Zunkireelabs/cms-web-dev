@@ -34,6 +34,11 @@ jobs:
             echo "==> Pulling latest from origin/main"
             git fetch --all --prune
             git checkout -B main origin/main
+            echo "==> Writing .env"
+            cat > .env << 'ENVEOF'
+            CMS_URL=${{ secrets.PROD_CMS_URL }}
+            REVALIDATE_SECRET=${{ secrets.PROD_REVALIDATE_SECRET }}
+            ENVEOF
             echo "==> Running deploy.sh"
             chmod +x deploy.sh
             ./deploy.sh

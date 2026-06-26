@@ -3,6 +3,7 @@ services:
     build: .
     container_name: cms-web-dev
     restart: unless-stopped
+    env_file: .env
     networks:
       - hosting
     labels:
