@@ -276,7 +276,10 @@ export async function fetchMilestones(): Promise<Milestone[]> {
   return docs.map((d) => ({
     year: d.year as number,
     venture: d.venture as string,
+    title: d.title as string | undefined,
     description: d.description as string,
+    icon: d.icon as string | undefined,
+    brands: Array.isArray(d.brands) ? d.brands.map((b: any) => b.name as string) : [],
     logo: mediaUrl(d.logo?.url),
   }))
 }

@@ -8,7 +8,8 @@ import { Section } from '@/components/ui/Section';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { KickerLabel } from '@/components/ui/KickerLabel';
 import { ContactCTA } from '@/components/sections';
-import type { Certification } from '@/types/cms';
+import type { Certification, Milestone } from '@/types/cms';
+import { resolveIcon } from '@/lib/icon-map';
 import { fadeUp, stagger } from '@/lib/motion';
 import {
   Target,
@@ -21,12 +22,7 @@ import {
   TrendingUp,
   MapPin,
   Calendar,
-  Sparkles,
-  Bath,
-  Wrench,
-  Recycle,
   Boxes,
-  Armchair,
   Building2,
   Globe,
   Layers,
@@ -116,54 +112,7 @@ const CORE_VALUES = [
   },
 ];
 
-const MILESTONES: {
-  year: string;
-  title: string;
-  description: string;
-  icon: LucideIcon;
-  brands: string[];
-}[] = [
-  {
-    year: '2002',
-    title: 'T&C Division Established',
-    description:
-      'CMS Group founded as a construction trade firm. Trading & Contracting Division commences operations in Nepal.',
-    icon: Sparkles,
-    brands: [],
-  },
-  {
-    year: '2003',
-    title: 'First Brand Collaborations',
-    description:
-      'First authorised partnerships with global sanitaryware and bathroom solution leaders.',
-    icon: Bath,
-    brands: ['American Standard', 'Grohe'],
-  },
-  {
-    year: '2010',
-    title: 'Major Brand Expansion',
-    description:
-      'Onboarding world-class roofing, ceiling, facade, hardware, and waterproofing brands.',
-    icon: Wrench,
-    brands: ['IKO', 'Kalzip', 'Armstrong', 'Hunter Douglas', 'Tostem', 'Dormakaba', 'ICA', 'Zolon', 'Navair', 'Schomburg'],
-  },
-  {
-    year: '2015',
-    title: 'Sustainability & Water Management',
-    description:
-      'Expanding into ecologically friendly wastewater management and treatment solutions.',
-    icon: Recycle,
-    brands: ['Sintex'],
-  },
-  {
-    year: '2019',
-    title: 'Flooring & Furniture Portfolio',
-    description:
-      'Adding premium flooring and modular office furniture brands to the T&C Division portfolio.',
-    icon: Armchair,
-    brands: ['AGT', 'Tarkett', 'Argil', 'KLK', 'Welspun', 'SOS'],
-  },
-];
+// Milestones come from the CMS via fetchMilestones(); see /about/page.tsx.
 
 function AnimatedCounter({ value, suffix }: { value: number; suffix: string }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -461,7 +410,13 @@ function CertLightbox({
   );
 }
 
-export function AboutClient({ certifications }: { certifications: Certification[] }) {
+export function AboutClient({
+  certifications,
+  milestones,
+}: {
+  certifications: Certification[];
+  milestones: Milestone[];
+}) {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   const openLightbox = useCallback((idx: number) => {
@@ -725,12 +680,12 @@ export function AboutClient({ certifications }: { certifications: Certification[
           <div className="absolute left-4 top-0 bottom-0 w-px bg-accent/30 lg:left-1/2 lg:-translate-x-px" />
 
           <div className="space-y-12 lg:space-y-16">
-            {MILESTONES.map((milestone, index) => {
+            {milestones.map((milestone, index) => {
               const isLeft = index % 2 === 0;
-              const Icon = milestone.icon;
+              const Icon = resolveIcon(milestone.icon ?? 'Sparkles');
               return (
                 <motion.div
-                  key={milestone.year}
+                  key={`${milestone.year}-${milestone.venture}`}
                   initial="hidden"
                   whileInView="visible"
                   viewport={{ once: true, margin: '-80px' }}
@@ -759,7 +714,7 @@ export function AboutClient({ certifications }: { certifications: Certification[
                         </span>
                       </div>
                       <h3 className="mt-3 font-display text-lg font-bold leading-tight text-white">
-                        {milestone.title}
+                        {milestone.title || milestone.venture}
                       </h3>
                       <p className="mt-2 text-sm leading-relaxed text-white/70">
                         {milestone.description}

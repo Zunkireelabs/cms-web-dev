@@ -145,7 +145,10 @@ export interface Director {
 export interface Milestone {
   year: number
   venture: string
+  title?: string
   description: string
+  icon?: string
+  brands: string[]
   logo?: string
 }
 
