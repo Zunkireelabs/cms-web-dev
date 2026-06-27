@@ -57,28 +57,32 @@ else
     exit 1
 fi
 
-# Step 1: Build Next.js
+# Step 1: Install dependencies
+echo -e "${YELLOW}Installing dependencies...${NC}"
+npm ci
+
+# Step 2: Build Next.js
 echo -e "${YELLOW}Building Next.js application...${NC}"
 npm run build
 
-# Step 2: Check if .next directory exists
+# Step 3: Check if .next directory exists
 if [ ! -d ".next" ]; then
     echo -e "${RED}Build failed - '.next' directory not found${NC}"
     exit 1
 fi
 
-# Step 3: Build Docker image
+# Step 4: Build Docker image
 echo -e "${YELLOW}Building Docker image...${NC}"
 docker compose -f $COMPOSE_FILE build --no-cache
 
-# Step 4: Stop existing container (if running)
+# Step 5: Stop existing container (if running)
 echo -e "${YELLOW}Restarting container...${NC}"
 docker compose -f $COMPOSE_FILE down 2>/dev/null || true
 
-# Step 5: Start new container
+# Step 6: Start new container
 docker compose -f $COMPOSE_FILE up -d
 
-# Step 6: Verify container is running
+# Step 7: Verify container is running
 sleep 2
 if docker ps | grep -q $CONTAINER_NAME; then
     echo -e "${GREEN}Deployment complete!${NC}"
