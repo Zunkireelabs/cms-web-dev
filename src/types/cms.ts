@@ -45,6 +45,7 @@ export interface BrandEntry {
   tradingDomains?: string[]
   website?: string
   logoUrl?: string
+  brochureUrl?: string
 }
 
 // ─── Events ──────────────────────────────────────────────────────────────────

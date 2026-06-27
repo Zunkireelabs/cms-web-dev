@@ -63,7 +63,7 @@ function brandEntryToDisplay(entry: BrandEntry) {
     name: entry.name,
     specialty: entry.segments[0] ?? '',
     description: entry.segments.length > 1 ? entry.segments.slice(1).join(' • ') : entry.description,
-    brochureUrl: entry.website ?? '#',
+    brochureUrl: entry.brochureUrl ?? '#',
     country: entry.country,
     website: entry.website,
     catalogueUrl: entry.website,
