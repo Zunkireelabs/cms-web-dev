@@ -325,7 +325,9 @@ function latLngToMarker(lat: number, lng: number): { x: number; y: number } {
 
 export async function fetchMapLocations(): Promise<MapLocation[]> {
   const docs = await fetchDocs<any>('map-locations', { sort: 'name' })
-  return docs.map((d) => {
+
+  // First pass: compute marker positions from lat/lng + parse the rest.
+  const base = docs.map((d) => {
     const lat = Number(d.latitude)
     const lng = Number(d.longitude)
     const { x: markerX, y: markerY } = latLngToMarker(lat, lng)
@@ -334,14 +336,43 @@ export async function fetchMapLocations(): Promise<MapLocation[]> {
       name: d.name as string,
       markerX,
       markerY,
-      labelX: markerX + 90,
-      labelY: markerY,
       direction: (d.direction === 'down' ? 'down' : 'up') as 'up' | 'down',
       keywords: Array.isArray(d.keywords)
         ? d.keywords.map((k: any) => String(k.value ?? '').toLowerCase()).filter(Boolean)
         : [],
     }
   })
+
+  // Second pass: collision-aware label placement.
+  // The Nepal map clusters cities (Kathmandu valley = 4 cities within 10 px),
+  // so a naive "label at markerX + 90" overlaps. We stack labels vertically
+  // by shifting labelY down 26 px until no overlap with an already-placed label.
+  // Process top-to-bottom (smaller markerY first) for visually consistent stacking.
+  const labelWidth = 130
+  const labelHeight = 22
+  const verticalGap = 26
+  const sorted = [...base].sort((a, b) => a.markerY - b.markerY)
+  const placed: MapLocation[] = []
+
+  for (const loc of sorted) {
+    const labelX = loc.markerX + 90
+    let labelY = loc.markerY
+    let safety = 0
+    while (
+      safety < 20 &&
+      placed.some(
+        (p) =>
+          Math.abs(p.labelX - labelX) < labelWidth &&
+          Math.abs(p.labelY - labelY) < labelHeight,
+      )
+    ) {
+      labelY += verticalGap
+      safety++
+    }
+    placed.push({ ...loc, labelX, labelY })
+  }
+
+  return placed
 }
 
 // ─── Jobs ─────────────────────────────────────────────────────────────────────
