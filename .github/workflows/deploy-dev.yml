@@ -1,0 +1,53 @@
+name: Deploy to Dev
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-dev
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Build & deploy on VPS
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.DEV_SSH_HOST }}
+          username: ${{ secrets.DEV_SSH_USER }}
+          key: ${{ secrets.DEV_SSH_KEY }}
+          port: ${{ secrets.DEV_SSH_PORT || 22 }}
+          script_stop: true
+          script: |
+            set -e
+            cd "${{ secrets.DEV_DEPLOY_PATH }}"
+            echo "==> Pulling latest from origin/main"
+            git fetch --all --prune
+            git checkout -B main origin/main
+            echo "==> Running deploy.sh"
+            chmod +x deploy.sh
+            ./deploy.sh
+            echo "==> Verifying container"
+            docker ps --filter "name=cms-web-dev" --format "table {{.Names}}\t{{.Status}}"
+
+      - name: Health check
+        run: |
+          echo "Waiting 5s for container warmup..."
+          sleep 5
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://cms-dev.zunkireelabs.com/ || echo "000")
+          echo "HTTP status: $STATUS"
+          if [ "$STATUS" != "200" ] && [ "$STATUS" != "301" ] && [ "$STATUS" != "302" ]; then
+            echo "::error::Health check failed with status $STATUS"
+            exit 1
+          fi
+          echo "✓ Dev site is responding"
