@@ -312,20 +312,36 @@ export async function fetchHeroSlides(): Promise<HeroSlide[]> {
 
 // ─── Map Locations ────────────────────────────────────────────────────────────
 
+// Approximate lat/lng → SVG-coord conversion for the hand-drawn Nepal map.
+// Anchored on Kathmandu (27.7172°N, 85.3240°E → markerX 650, markerY 375)
+// with ~70 px per degree. The SVG is not a true projection, so pins land
+// within ~20-50 px of the geographically-exact spot.
+function latLngToMarker(lat: number, lng: number): { x: number; y: number } {
+  return {
+    x: Math.round(650 + (lng - 85.32) * 70),
+    y: Math.round(375 + (27.72 - lat) * 70),
+  }
+}
+
 export async function fetchMapLocations(): Promise<MapLocation[]> {
   const docs = await fetchDocs<any>('map-locations', { sort: 'name' })
-  return docs.map((d) => ({
-    id: d.id as number,
-    name: d.name as string,
-    markerX: Number(d.markerX),
-    markerY: Number(d.markerY),
-    labelX: Number(d.labelX),
-    labelY: Number(d.labelY),
-    direction: (d.direction === 'down' ? 'down' : 'up') as 'up' | 'down',
-    keywords: Array.isArray(d.keywords)
-      ? d.keywords.map((k: any) => String(k.value ?? '').toLowerCase()).filter(Boolean)
-      : [],
-  }))
+  return docs.map((d) => {
+    const lat = Number(d.latitude)
+    const lng = Number(d.longitude)
+    const { x: markerX, y: markerY } = latLngToMarker(lat, lng)
+    return {
+      id: d.id as number,
+      name: d.name as string,
+      markerX,
+      markerY,
+      labelX: markerX + 90,
+      labelY: markerY,
+      direction: (d.direction === 'down' ? 'down' : 'up') as 'up' | 'down',
+      keywords: Array.isArray(d.keywords)
+        ? d.keywords.map((k: any) => String(k.value ?? '').toLowerCase()).filter(Boolean)
+        : [],
+    }
+  })
 }
 
 // ─── Jobs ─────────────────────────────────────────────────────────────────────
