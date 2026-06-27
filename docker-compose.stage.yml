@@ -1,0 +1,17 @@
+services:
+  cms-web-stage:
+    build: .
+    container_name: cms-web-stage
+    restart: unless-stopped
+    networks:
+      - hosting
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.cms-web-stage.rule=Host(`stage-branch.zunkireelabs.com`)"
+      - "traefik.http.routers.cms-web-stage.entrypoints=websecure"
+      - "traefik.http.routers.cms-web-stage.tls.certresolver=letsencrypt"
+      - "traefik.http.services.cms-web-stage.loadbalancer.server.port=3000"
+
+networks:
+  hosting:
+    external: true

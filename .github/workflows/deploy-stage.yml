@@ -1,0 +1,59 @@
+name: Deploy to Stage
+
+on:
+  push:
+    branches:
+      - stage
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-stage
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Build & deploy on VPS
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.DEV_SSH_HOST }}
+          username: ${{ secrets.DEV_SSH_USER }}
+          key: ${{ secrets.DEV_SSH_KEY }}
+          port: ${{ secrets.DEV_SSH_PORT || 22 }}
+          script_stop: true
+          script: |
+            set -e
+            # Bootstrap: clone on first push if directory doesn't exist
+            if [ ! -d "${{ secrets.STAGE_DEPLOY_PATH }}" ]; then
+              echo "==> First deployment — cloning repo"
+              mkdir -p "${{ secrets.STAGE_DEPLOY_PATH }}"
+              git clone -b stage git@github.com:Zunkireelabs/cms-web-dev.git "${{ secrets.STAGE_DEPLOY_PATH }}"
+            fi
+            cd "${{ secrets.STAGE_DEPLOY_PATH }}"
+            echo "==> Pulling latest from origin/stage"
+            git fetch --all --prune
+            git checkout -B stage origin/stage
+            echo "==> Running deploy-stage.sh"
+            chmod +x deploy-stage.sh
+            ./deploy-stage.sh
+            echo "==> Verifying container"
+            docker ps --filter "name=cms-web-stage" --format "table {{.Names}}\t{{.Status}}"
+
+      - name: Health check
+        run: |
+          echo "Waiting 5s for container warmup..."
+          sleep 5
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://stage-branch.zunkireelabs.com/ || echo "000")
+          echo "HTTP status: $STATUS"
+          if [ "$STATUS" != "200" ] && [ "$STATUS" != "301" ] && [ "$STATUS" != "302" ]; then
+            echo "::error::Health check failed with status $STATUS"
+            exit 1
+          fi
+          echo "✓ Stage site is responding"
