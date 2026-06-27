@@ -11,15 +11,39 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  deploy:
-    name: Build & deploy on VPS
+  build:
+    name: Build & push image to GHCR
     runs-on: ubuntu-latest
-    timeout-minutes: 30
-
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      packages: write
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ghcr.io/zunkireelabs/cms-web-dev:stage
+          cache-from: type=gha,scope=stage
+          cache-to: type=gha,mode=max,scope=stage
+
+  deploy:
+    name: Deploy on VPS
+    runs-on: ubuntu-latest
+    needs: build
+    timeout-minutes: 10
+    steps:
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.2.0
         with:
@@ -33,25 +57,27 @@ jobs:
             # Bootstrap: clone on first push if directory doesn't exist
             if [ ! -d "${{ secrets.STAGE_DEPLOY_PATH }}" ]; then
               echo "==> First deployment — cloning repo"
-              mkdir -p "${{ secrets.STAGE_DEPLOY_PATH }}"
               git clone -b stage git@github.com:Zunkireelabs/cms-web-dev.git "${{ secrets.STAGE_DEPLOY_PATH }}"
             fi
             cd "${{ secrets.STAGE_DEPLOY_PATH }}"
-            echo "==> Pulling latest from origin/stage"
             git fetch --all --prune
             git reset --hard HEAD
             git checkout -B stage origin/stage
-            echo "==> Running deploy-stage.sh"
-            chmod +x deploy-stage.sh
-            ./deploy-stage.sh
-            echo "==> Verifying container"
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+            docker compose -f docker-compose.stage.yml pull
+            docker compose -f docker-compose.stage.yml up -d
             docker ps --filter "name=cms-web-stage" --format "table {{.Names}}\t{{.Status}}"
 
-      - name: Health check
+  health-check:
+    name: Health check
+    runs-on: ubuntu-latest
+    needs: deploy
+    steps:
+      - name: Verify site is up
         run: |
           echo "Waiting 5s for container warmup..."
           sleep 5
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://stage-branch.zunkireelabs.com/ || echo "000")
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 10 https://stage-branch.zunkireelabs.com/ || echo "000")
           echo "HTTP status: $STATUS"
           if [ "$STATUS" != "200" ] && [ "$STATUS" != "301" ] && [ "$STATUS" != "302" ]; then
             echo "::error::Health check failed with status $STATUS"
