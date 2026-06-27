@@ -8,12 +8,13 @@ import {
   ProductsServices,
   ProjectMap,
 } from '@/components/sections';
-import { fetchProjects, fetchHeroSlides } from '@/lib/cms';
+import { fetchProjects, fetchHeroSlides, fetchMapLocations } from '@/lib/cms';
 
 export default async function HomePage() {
-  const [projects, heroSlides] = await Promise.all([
+  const [projects, heroSlides, mapLocations] = await Promise.all([
     fetchProjects(),
     fetchHeroSlides(),
+    fetchMapLocations(),
   ]);
 
   return (
@@ -41,7 +42,7 @@ export default async function HomePage() {
         />
 
         <div className="mt-12">
-          <ProjectMap projects={projects} />
+          <ProjectMap projects={projects} mapLocations={mapLocations} />
         </div>
 
         <div className="mt-10 text-center">

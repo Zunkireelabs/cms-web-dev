@@ -3,7 +3,7 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 import nepalPaths from '@/data/nepal-paths.json';
-import type { Project } from '@/types/cms';
+import type { Project, MapLocation } from '@/types/cms';
 import { Calendar, MapPin, Maximize2, X } from 'lucide-react';
 
 interface ProvincePath {
@@ -21,7 +21,9 @@ interface LocationConfig {
 const WIDTH = 1150;
 const HEIGHT = 580;
 
-const LOCATIONS: Record<string, LocationConfig> = {
+// Fallback location set — used only when the CMS returns no map-locations,
+// so the map is never empty in dev or during a CMS outage.
+const FALLBACK_LOCATIONS: Record<string, LocationConfig> = {
   'Nepalgunj, Nepal': { marker: [345, 330], label: [155, 275], direction: 'up' },
   'Pokhara, Nepal': { marker: [500, 300], label: [380, 225], direction: 'up' },
   'Gorkha, Nepal': { marker: [555, 310], label: [555, 235], direction: 'up' },
@@ -32,6 +34,13 @@ const LOCATIONS: Record<string, LocationConfig> = {
   'Bhaktapur, Nepal': { marker: [675, 388], label: [780, 395], direction: 'down' },
   'Lalitpur, Nepal': { marker: [645, 400], label: [780, 450], direction: 'down' },
   'Biratnagar, Nepal': { marker: [840, 460], label: [920, 405], direction: 'up' },
+};
+
+const FALLBACK_KEYWORDS: Record<string, string[]> = {
+  'Bhairahawa, Nepal': ['lumbini', 'bhairahawa'],
+  'Chitwan, Nepal':    ['nawalparasi'],
+  'Dhulikhel, Nepal':  ['namo buddha', 'kavre'],
+  'Bhaktapur, Nepal':  ['nagarkot'],
 };
 
 const SECTOR_CHIP: Record<string, { bg: string; text: string }> = {
@@ -57,24 +66,31 @@ function getElbowPath(
   return `M ${mx},${my} L ${mx},${bendY} L ${lx - 4},${bendY}`;
 }
 
-function resolveMapAnchor(location: string): string | null {
-  if (LOCATIONS[location]) return location;
+function resolveMapAnchor(
+  location: string,
+  locations: Record<string, LocationConfig>,
+  keywords: Record<string, string[]>,
+): string | null {
+  if (locations[location]) return location;
   const lower = location.toLowerCase();
-  if (lower.includes('lumbini') || lower.includes('bhairahawa')) return 'Bhairahawa, Nepal';
-  if (lower.includes('nagarkot')) return 'Bhaktapur, Nepal';
-  if (lower.includes('namo buddha') || lower.includes('kavre')) return 'Dhulikhel, Nepal';
-  if (lower.includes('nawalparasi')) return 'Chitwan, Nepal';
-  for (const key of Object.keys(LOCATIONS)) {
+  for (const [anchor, kws] of Object.entries(keywords)) {
+    if (kws.some((kw) => lower.includes(kw))) return anchor;
+  }
+  for (const key of Object.keys(locations)) {
     const city = key.split(',')[0].trim().toLowerCase();
     if (lower.includes(city)) return key;
   }
   return null;
 }
 
-function getProjectLocations(projects: Project[]) {
+function getProjectLocations(
+  projects: Project[],
+  locations: Record<string, LocationConfig>,
+  keywords: Record<string, string[]>,
+) {
   const locationMap = new Map<string, { projects: Project[] }>();
   projects.forEach((project) => {
-    const anchor = resolveMapAnchor(project.location);
+    const anchor = resolveMapAnchor(project.location, locations, keywords);
     if (!anchor) return;
     const existing = locationMap.get(anchor);
     if (existing) existing.projects.push(project);
@@ -82,7 +98,7 @@ function getProjectLocations(projects: Project[]) {
   });
   return Array.from(locationMap.entries()).map(([location, data]) => ({
     location,
-    config: LOCATIONS[location],
+    config: locations[location],
     projects: data.projects,
   }));
 }
@@ -230,7 +246,13 @@ function ProjectPopover({
   );
 }
 
-export function ProjectMap({ projects }: { projects: Project[] }) {
+export function ProjectMap({
+  projects,
+  mapLocations,
+}: {
+  projects: Project[];
+  mapLocations?: MapLocation[];
+}) {
   const { width, height, paths } = nepalPaths as {
     width: number;
     height: number;
@@ -245,7 +267,28 @@ export function ProjectMap({ projects }: { projects: Project[] }) {
   const [pinnedLocation, setPinnedLocation] = useState<string | null>(null);
   const [containerRect, setContainerRect] = useState<DOMRect | null>(null);
   const [markerScreen, setMarkerScreen] = useState<{ x: number; y: number } | null>(null);
-  const projectLocations = useMemo(() => getProjectLocations(projects), [projects]);
+
+  const { locations, keywords } = useMemo(() => {
+    if (!mapLocations || mapLocations.length === 0) {
+      return { locations: FALLBACK_LOCATIONS, keywords: FALLBACK_KEYWORDS };
+    }
+    const locs: Record<string, LocationConfig> = {};
+    const kws: Record<string, string[]> = {};
+    for (const l of mapLocations) {
+      locs[l.name] = {
+        marker: [l.markerX, l.markerY],
+        label: [l.labelX, l.labelY],
+        direction: l.direction,
+      };
+      if (l.keywords.length > 0) kws[l.name] = l.keywords;
+    }
+    return { locations: locs, keywords: kws };
+  }, [mapLocations]);
+
+  const projectLocations = useMemo(
+    () => getProjectLocations(projects, locations, keywords),
+    [projects, locations, keywords],
+  );
 
   const mapOffsetX = (WIDTH - width) / 2 + 25;
   const mapOffsetY = (HEIGHT - height) / 2;
@@ -264,7 +307,7 @@ export function ProjectMap({ projects }: { projects: Project[] }) {
     }
     const svg = svgRef.current;
     const container = containerRef.current;
-    const config = LOCATIONS[activeLocation];
+    const config = locations[activeLocation];
     if (!config) return;
 
     function update() {

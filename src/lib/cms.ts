@@ -18,6 +18,7 @@ import type {
   CmsSector,
   HeroSlide,
   Job,
+  MapLocation,
 } from '@/types/cms'
 
 export type {
@@ -40,6 +41,7 @@ export type {
   CmsSector,
   HeroSlide,
   Job,
+  MapLocation,
 }
 
 const CMS_URL = process.env.CMS_URL || 'http://localhost:3001'
@@ -305,6 +307,24 @@ export async function fetchHeroSlides(): Promise<HeroSlide[]> {
     alt: d.alt as string,
     image: mediaUrl(d.image?.url),
     video: mediaUrl(d.video?.url),
+  }))
+}
+
+// ─── Map Locations ────────────────────────────────────────────────────────────
+
+export async function fetchMapLocations(): Promise<MapLocation[]> {
+  const docs = await fetchDocs<any>('map-locations', { sort: 'name' })
+  return docs.map((d) => ({
+    id: d.id as number,
+    name: d.name as string,
+    markerX: Number(d.markerX),
+    markerY: Number(d.markerY),
+    labelX: Number(d.labelX),
+    labelY: Number(d.labelY),
+    direction: (d.direction === 'down' ? 'down' : 'up') as 'up' | 'down',
+    keywords: Array.isArray(d.keywords)
+      ? d.keywords.map((k: any) => String(k.value ?? '').toLowerCase()).filter(Boolean)
+      : [],
   }))
 }
 

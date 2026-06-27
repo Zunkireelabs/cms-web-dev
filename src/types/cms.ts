@@ -287,6 +287,19 @@ export interface HeroSlide {
   video?: string  // resolved URL from mediaUrl()
 }
 
+// ─── Map Locations ────────────────────────────────────────────────────────────
+
+export interface MapLocation {
+  id: number
+  name: string
+  markerX: number
+  markerY: number
+  labelX: number
+  labelY: number
+  direction: 'up' | 'down'
+  keywords: string[]
+}
+
 // ─── Jobs ─────────────────────────────────────────────────────────────────────
 
 export interface Job {
