@@ -39,6 +39,7 @@ jobs:
             cd "${{ secrets.STAGE_DEPLOY_PATH }}"
             echo "==> Pulling latest from origin/stage"
             git fetch --all --prune
+            git reset --hard HEAD
             git checkout -B stage origin/stage
             echo "==> Running deploy-stage.sh"
             chmod +x deploy-stage.sh
