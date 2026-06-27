@@ -75,8 +75,8 @@ jobs:
     steps:
       - name: Verify site is up
         run: |
-          echo "Waiting 5s for container warmup..."
-          sleep 5
+          echo "Waiting 15s for container warmup..."
+          sleep 15
           STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 10 https://stage-branch.zunkireelabs.com/ || echo "000")
           echo "HTTP status: $STATUS"
           if [ "$STATUS" != "200" ] && [ "$STATUS" != "301" ] && [ "$STATUS" != "302" ]; then
