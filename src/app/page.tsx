@@ -4,20 +4,16 @@ import { Section, SectionHeader } from '@/components/ui';
 import {
   AboutUs,
   ContactCTA,
-  DomainMetricsStrip,
   Hero,
-  ImpactMetrics,
   ProductsServices,
   ProjectMap,
 } from '@/components/sections';
-import { fetchProjects, fetchHeroSlides, fetchProductDomains, fetchSiteConfig } from '@/lib/cms';
+import { fetchProjects, fetchHeroSlides } from '@/lib/cms';
 
 export default async function HomePage() {
-  const [projects, heroSlides, domains, siteConfig] = await Promise.all([
+  const [projects, heroSlides] = await Promise.all([
     fetchProjects(),
     fetchHeroSlides(),
-    fetchProductDomains(),
-    fetchSiteConfig(),
   ]);
 
   return (
@@ -28,14 +24,11 @@ export default async function HomePage() {
       {/* 2. Story — who we are */}
       <AboutUs />
 
-      {/* 3. Domain metrics strip */}
-      <DomainMetricsStrip domains={domains} />
-
       {/* 4. Substance — fourteen product domains */}
       <ProductsServices />
 
-      {/* 5. Impact metrics */}
-      <ImpactMetrics stats={siteConfig?.stats} />
+      {/* 5. Impact metrics — hidden */}
+      {/* <ImpactMetrics stats={siteConfig?.stats} /> */}
 
       {/* 6. Execution — project map */}
       <Section variant="soft" id="projects-overview">

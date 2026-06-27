@@ -8,8 +8,7 @@ import { Section } from '@/components/ui/Section';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import { KickerLabel } from '@/components/ui/KickerLabel';
 import { ContactCTA } from '@/components/sections';
-import { ChairmanMessage } from '@/components/sections/ChairmanMessage';
-import type { Certification, Milestone, SiteConfig, Director } from '@/types/cms';
+import type { Certification, Milestone, SiteConfig } from '@/types/cms';
 import { resolveIcon } from '@/lib/icon-map';
 import { SITE_CONFIG_FALLBACK } from '@/lib/constants';
 import { fadeUp, stagger } from '@/lib/motion';
@@ -24,7 +23,6 @@ import {
   X,
   ChevronLeft,
   ChevronRight,
-  User2,
   type LucideIcon,
 } from 'lucide-react';
 import { useSpring, useTransform } from 'framer-motion';
@@ -388,12 +386,10 @@ export function AboutClient({
   certifications,
   milestones,
   siteConfig,
-  leadership,
 }: {
   certifications: Certification[];
   milestones: Milestone[];
   siteConfig: SiteConfig | null;
-  leadership: Director[];
 }) {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
@@ -474,11 +470,6 @@ export function AboutClient({
 
   const coreValues = cfg.coreValues?.length ? cfg.coreValues : defaultCoreValues;
 
-  // ─── Leadership split ────────────────────────────────────────────────────────
-  const chairman = leadership.find((l) => l.order === 0);
-  const directors = leadership
-    .filter((l) => l.order > 0)
-    .sort((a, b) => a.order - b.order);
 
   return (
     <>
@@ -712,69 +703,6 @@ export function AboutClient({
           })}
         </motion.div>
       </Section>
-
-      {/* Chairman Message */}
-      {chairman && <ChairmanMessage chairman={chairman} />}
-
-      {/* Directors Grid */}
-      {directors.length > 0 && (
-        <Section variant="soft" id="leadership">
-          <SectionHeader
-            kicker="Our Leadership"
-            title="The team behind CMS Group."
-            lead="Experienced professionals driving growth, excellence, and innovation across all ventures."
-            align="center"
-            className="mx-auto"
-          />
-
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-80px' }}
-            variants={stagger}
-            className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
-          >
-            {directors.map((director, index) => (
-              <motion.div
-                key={director.name}
-                variants={fadeUp}
-                custom={index * 0.04}
-                className="group overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg"
-              >
-                {/* Photo */}
-                <div className="relative h-64 overflow-hidden bg-neutral-100">
-                  {director.photo ? (
-                    <Image
-                      src={director.photo}
-                      alt={director.name}
-                      fill
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
-                    />
-                  ) : (
-                    <div className="flex h-full w-full items-center justify-center">
-                      <User2 className="h-16 w-16 text-neutral-300" strokeWidth={1.2} />
-                    </div>
-                  )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-neutral-charcoal/30 via-transparent to-transparent" />
-                </div>
-
-                {/* Info */}
-                <div className="p-5">
-                  <h3 className="font-display text-base font-bold leading-tight text-neutral-charcoal">
-                    {director.name}
-                  </h3>
-                  <p className="mt-0.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-accent">
-                    {director.title}
-                  </p>
-                  <p className="mt-1 text-[11px] text-neutral-400">{director.company}</p>
-                </div>
-                <div className="h-0.5 w-0 bg-accent transition-all duration-300 group-hover:w-full" />
-              </motion.div>
-            ))}
-          </motion.div>
-        </Section>
-      )}
 
       {/* Milestones */}
       <Section variant="dark">
