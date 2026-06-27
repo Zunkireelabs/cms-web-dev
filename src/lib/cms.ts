@@ -326,11 +326,15 @@ function latLngToMarker(lat: number, lng: number): { x: number; y: number } {
 export async function fetchMapLocations(): Promise<MapLocation[]> {
   const docs = await fetchDocs<any>('map-locations', { sort: 'name' })
 
-  // First pass: compute marker positions from lat/lng + parse the rest.
+  // First pass: compute marker + base label position from lat/lng.
+  // If the doc has a non-zero labelOffsetX/Y, use those (user dragged the
+  // label in the CMS picker) and skip auto-stacking for that doc.
   const base = docs.map((d) => {
     const lat = Number(d.latitude)
     const lng = Number(d.longitude)
     const { x: markerX, y: markerY } = latLngToMarker(lat, lng)
+    const offX = Number(d.labelOffsetX) || 0
+    const offY = Number(d.labelOffsetY) || 0
     return {
       id: d.id as number,
       name: d.name as string,
@@ -340,14 +344,16 @@ export async function fetchMapLocations(): Promise<MapLocation[]> {
       keywords: Array.isArray(d.keywords)
         ? d.keywords.map((k: any) => String(k.value ?? '').toLowerCase()).filter(Boolean)
         : [],
+      _hasUserOffset: offX !== 0 || offY !== 0,
+      _baseLabelX: markerX + 90 + offX,
+      _baseLabelY: markerY + offY,
     }
   })
 
   // Second pass: collision-aware label placement.
-  // The Nepal map clusters cities (Kathmandu valley = 4 cities within 10 px),
-  // so a naive "label at markerX + 90" overlaps. We stack labels vertically
-  // by shifting labelY down 26 px until no overlap with an already-placed label.
-  // Process top-to-bottom (smaller markerY first) for visually consistent stacking.
+  // For docs with a user-set offset, we trust the user — no stacking.
+  // For docs without an offset, we stack to avoid overlaps in clustered
+  // areas like the Kathmandu valley.
   const labelWidth = 130
   const labelHeight = 22
   const verticalGap = 26
@@ -355,21 +361,34 @@ export async function fetchMapLocations(): Promise<MapLocation[]> {
   const placed: MapLocation[] = []
 
   for (const loc of sorted) {
-    const labelX = loc.markerX + 90
-    let labelY = loc.markerY
-    let safety = 0
-    while (
-      safety < 20 &&
-      placed.some(
-        (p) =>
-          Math.abs(p.labelX - labelX) < labelWidth &&
-          Math.abs(p.labelY - labelY) < labelHeight,
-      )
-    ) {
-      labelY += verticalGap
-      safety++
+    let labelX = loc._baseLabelX
+    let labelY = loc._baseLabelY
+
+    if (!loc._hasUserOffset) {
+      let safety = 0
+      while (
+        safety < 20 &&
+        placed.some(
+          (p) =>
+            Math.abs(p.labelX - labelX) < labelWidth &&
+            Math.abs(p.labelY - labelY) < labelHeight,
+        )
+      ) {
+        labelY += verticalGap
+        safety++
+      }
     }
-    placed.push({ ...loc, labelX, labelY })
+
+    placed.push({
+      id: loc.id,
+      name: loc.name,
+      markerX: loc.markerX,
+      markerY: loc.markerY,
+      labelX,
+      labelY,
+      direction: loc.direction,
+      keywords: loc.keywords,
+    })
   }
 
   return placed
