@@ -56,7 +56,11 @@ async function fetchDocs<T>(path: string, params: Record<string, string> = {}): 
   const qs = new URLSearchParams({ limit: '500', depth: '1', ...params }).toString()
   try {
     const res = await fetch(`${CMS_URL}/api/${path}?${qs}`, {
-      next: { revalidate: 30, tags: [path.split('?')[0]] },
+      // 1 hour time-based TTL — long because the CMS afterChange/afterDelete
+      // hooks fire revalidateTag(<collection>) on every save, so edits show up
+      // in seconds via the webhook. The TTL is only a safety net for when the
+      // webhook silently fails (rare; both servers are on the same Docker net).
+      next: { revalidate: 3600, tags: [path.split('?')[0]] },
     })
     if (!res.ok) throw new Error(`CMS ${path}: ${res.status}`)
     const json = await res.json()
@@ -70,7 +74,11 @@ async function fetchDocs<T>(path: string, params: Record<string, string> = {}): 
 async function fetchGlobal<T>(slug: string): Promise<T | null> {
   try {
     const res = await fetch(`${CMS_URL}/api/globals/${slug}`, {
-      next: { revalidate: 60, tags: [`globals/${slug}`] },
+      // 24 hour time-based TTL — globals (e.g. site-config) change rarely and
+      // are fetched on every page render via layout.tsx, so a long TTL has a
+      // big perf payoff. Webhook revalidateTag(`globals/${slug}`) handles
+      // freshness on edit.
+      next: { revalidate: 86400, tags: [`globals/${slug}`] },
     })
     if (!res.ok) throw new Error(`CMS globals/${slug}: ${res.status}`)
     return res.json()
