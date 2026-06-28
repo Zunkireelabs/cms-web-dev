@@ -63,7 +63,8 @@ function brandEntryToDisplay(entry: BrandEntry) {
     name: entry.name,
     specialty: entry.segments[0] ?? '',
     description: entry.segments.length > 1 ? entry.segments.slice(1).join(' • ') : entry.description,
-    brochureUrl: entry.brochureUrl ?? '#',
+    viewBrochureUrl: entry.viewBrochureUrl,
+    downloadBrochureUrl: entry.downloadBrochureUrl,
     country: entry.country,
     website: entry.website,
     catalogueUrl: entry.website,
@@ -72,7 +73,8 @@ function brandEntryToDisplay(entry: BrandEntry) {
 }
 
 function PartnerCard({ brand }: { brand: ReturnType<typeof brandEntryToDisplay> }) {
-  const hasBrochure = Boolean(brand.brochureUrl) && brand.brochureUrl !== '#';
+  const hasView = Boolean(brand.viewBrochureUrl);
+  const hasDownload = Boolean(brand.downloadBrochureUrl);
 
   return (
     <div className="group relative overflow-hidden rounded-2xl border border-neutral-border bg-white shadow-card transition-all duration-300 hover:-translate-y-0.5 hover:shadow-card-hover">
@@ -99,48 +101,47 @@ function PartnerCard({ brand }: { brand: ReturnType<typeof brandEntryToDisplay> 
               </a>
             )}
 
-            {hasBrochure ? (
-              <>
-                <a
-                  href={brand.brochureUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-lg border border-neutral-300 px-6 py-3 text-sm font-semibold text-neutral-charcoal transition-colors hover:border-accent/40 hover:bg-accent-50 hover:text-accent"
-                >
-                  <Eye className="h-4 w-4" />
-                  View Brochure
-                </a>
-                <a
-                  href={brand.brochureUrl}
-                  download
-                  className="inline-flex items-center gap-2 rounded-lg border border-neutral-300 px-6 py-3 text-sm font-semibold text-neutral-charcoal transition-colors hover:border-accent/40 hover:bg-accent-50 hover:text-accent"
-                >
-                  <FileDown className="h-4 w-4" />
-                  Download Brochure
-                </a>
-              </>
+            {hasView ? (
+              <a
+                href={brand.viewBrochureUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-lg border border-neutral-300 px-6 py-3 text-sm font-semibold text-neutral-charcoal transition-colors hover:border-accent/40 hover:bg-accent-50 hover:text-accent"
+              >
+                <Eye className="h-4 w-4" />
+                View Brochure
+              </a>
             ) : (
-              <>
-                <button
-                  disabled
-                  className="inline-flex items-center gap-2 rounded-lg border border-neutral-200 px-6 py-3 text-sm font-semibold text-neutral-400 cursor-not-allowed"
-                  title="Brochure coming soon"
-                >
-                  <Eye className="h-4 w-4" />
-                  View Brochure
-                  <span className="ml-1 rounded bg-neutral-100 px-1.5 py-0.5 text-[10px] font-medium uppercase">
-                    Soon
-                  </span>
-                </button>
-                <button
-                  disabled
-                  className="inline-flex items-center gap-2 rounded-lg border border-neutral-200 px-6 py-3 text-sm font-semibold text-neutral-400 cursor-not-allowed"
-                  title="Brochure coming soon"
-                >
-                  <FileDown className="h-4 w-4" />
-                  Download Brochure
-                </button>
-              </>
+              <button
+                disabled
+                className="inline-flex items-center gap-2 rounded-lg border border-neutral-200 px-6 py-3 text-sm font-semibold text-neutral-400 cursor-not-allowed"
+                title="No view link set"
+              >
+                <Eye className="h-4 w-4" />
+                View Brochure
+                <span className="ml-1 rounded bg-neutral-100 px-1.5 py-0.5 text-[10px] font-medium uppercase">
+                  Soon
+                </span>
+              </button>
+            )}
+            {hasDownload ? (
+              <a
+                href={brand.downloadBrochureUrl}
+                download
+                className="inline-flex items-center gap-2 rounded-lg border border-neutral-300 px-6 py-3 text-sm font-semibold text-neutral-charcoal transition-colors hover:border-accent/40 hover:bg-accent-50 hover:text-accent"
+              >
+                <FileDown className="h-4 w-4" />
+                Download Brochure
+              </a>
+            ) : (
+              <button
+                disabled
+                className="inline-flex items-center gap-2 rounded-lg border border-neutral-200 px-6 py-3 text-sm font-semibold text-neutral-400 cursor-not-allowed"
+                title="No download file uploaded"
+              >
+                <FileDown className="h-4 w-4" />
+                Download Brochure
+              </button>
             )}
           </div>
         </div>

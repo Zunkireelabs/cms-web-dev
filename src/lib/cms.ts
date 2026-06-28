@@ -113,7 +113,8 @@ export async function fetchBrands(): Promise<BrandEntry[]> {
     description: d.description as string,
     website: d.website as string | undefined,
     logoUrl: mediaUrl(d.logo?.url),
-    brochureUrl: mediaUrl(d.brochure?.url),
+    viewBrochureUrl: (d.brochureUrl as string | undefined) || undefined,
+    downloadBrochureUrl: mediaUrl(d.brochure?.url),
     venture: (d.venture?.slug ?? d.venture) as VentureSlug,
     tradingDomains: (d.tradingDomains ?? []).map((td: any) =>
       typeof td === 'object' ? (td.slug as string) : (td as string)
