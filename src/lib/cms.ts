@@ -54,36 +54,63 @@ function mediaUrl(url: string | null | undefined): string | undefined {
 
 async function fetchDocs<T>(path: string, params: Record<string, string> = {}): Promise<T[]> {
   const qs = new URLSearchParams({ limit: '500', depth: '1', ...params }).toString()
+  const url = `${CMS_URL}/api/${path}?${qs}`
+  // First attempt: long-cached. On any failure or empty result, fall through
+  // to a no-store retry so we don't poison the page cache for an hour with a
+  // stale empty render.
   try {
-    const res = await fetch(`${CMS_URL}/api/${path}?${qs}`, {
-      // 1 hour time-based TTL — long because the CMS afterChange/afterDelete
-      // hooks fire revalidateTag(<collection>) on every save, so edits show up
-      // in seconds via the webhook. The TTL is only a safety net for when the
-      // webhook silently fails (rare; both servers are on the same Docker net).
+    const res = await fetch(url, {
       next: { revalidate: 3600, tags: [path.split('?')[0]] },
     })
+    if (res.ok) {
+      const json = await res.json()
+      const docs = (json?.docs ?? []) as T[]
+      if (docs.length > 0) return docs
+      console.warn(`[cms] fetchDocs(${path}) returned 0 docs from cached path — retrying with no-store to avoid caching empty state`)
+    } else {
+      console.warn(`[cms] fetchDocs(${path}) cached path HTTP ${res.status} — retrying with no-store`)
+    }
+  } catch (err) {
+    console.warn(`[cms] fetchDocs(${path}) cached path threw — retrying with no-store:`, err)
+  }
+  // Retry — bypasses fetch cache AND makes the enclosing page dynamic for
+  // this render, so we don't bake a 0-doc result into a 1-hour page cache.
+  try {
+    const res = await fetch(url, { cache: 'no-store' })
     if (!res.ok) throw new Error(`CMS ${path}: ${res.status}`)
     const json = await res.json()
-    return json.docs ?? []
+    return (json?.docs ?? []) as T[]
   } catch (err) {
-    console.error(`[cms] fetchDocs(${path}) failed:`, err)
+    console.error(`[cms] fetchDocs(${path}) failed on retry:`, err)
     return []
   }
 }
 
 async function fetchGlobal<T>(slug: string): Promise<T | null> {
+  const url = `${CMS_URL}/api/globals/${slug}`
   try {
-    const res = await fetch(`${CMS_URL}/api/globals/${slug}`, {
-      // 24 hour time-based TTL — globals (e.g. site-config) change rarely and
-      // are fetched on every page render via layout.tsx, so a long TTL has a
-      // big perf payoff. Webhook revalidateTag(`globals/${slug}`) handles
-      // freshness on edit.
+    const res = await fetch(url, {
       next: { revalidate: 86400, tags: [`globals/${slug}`] },
     })
-    if (!res.ok) throw new Error(`CMS globals/${slug}: ${res.status}`)
-    return res.json()
+    if (res.ok) {
+      const data = (await res.json()) as T
+      // Heuristic: if the global came back as an empty object, treat as
+      // suspicious and retry without cache. Globals typically have many
+      // fields; a totally-empty payload usually means transient CMS error.
+      if (data && Object.keys(data as object).length > 0) return data
+      console.warn(`[cms] fetchGlobal(${slug}) returned empty payload — retrying with no-store`)
+    } else {
+      console.warn(`[cms] fetchGlobal(${slug}) cached path HTTP ${res.status} — retrying with no-store`)
+    }
   } catch (err) {
-    console.error(`[cms] fetchGlobal(${slug}) failed:`, err)
+    console.warn(`[cms] fetchGlobal(${slug}) cached path threw — retrying with no-store:`, err)
+  }
+  try {
+    const res = await fetch(url, { cache: 'no-store' })
+    if (!res.ok) throw new Error(`CMS globals/${slug}: ${res.status}`)
+    return (await res.json()) as T
+  } catch (err) {
+    console.error(`[cms] fetchGlobal(${slug}) failed on retry:`, err)
     return null
   }
 }
