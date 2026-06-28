@@ -267,7 +267,9 @@ export async function fetchTestimonials(): Promise<Testimonial[]> {
 // ─── Certifications ───────────────────────────────────────────────────────────
 
 export async function fetchCertifications(): Promise<Certification[]> {
-  const docs = await fetchDocs<any>('certifications')
+  // Newest first so a freshly-added cert shows up at the start of the
+  // about-page carousel, not buried 18 cards in.
+  const docs = await fetchDocs<any>('certifications', { sort: '-createdAt' })
   return docs.map((d) => ({
     id: String(d.id),
     brand: d.brand as string,
