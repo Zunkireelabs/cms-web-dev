@@ -10,7 +10,7 @@ services:
       - hosting
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.cms-web-dev.rule=Host(`cmstnc.com`) || Host(`www.cmstnc.com`) || Host(`cms-dev.zunkireelabs.com`)"
+      - "traefik.http.routers.cms-web-dev.rule=Host(`cmstnc.com`) || Host(`www.cmstnc.com`)"
       - "traefik.http.routers.cms-web-dev.entrypoints=websecure"
       - "traefik.http.routers.cms-web-dev.tls.certresolver=letsencrypt"
       - "traefik.http.services.cms-web-dev.loadbalancer.server.port=3000"
