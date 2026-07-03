@@ -6,6 +6,8 @@ services:
     environment:
       - CMS_URL=${CMS_URL:-}
       - REVALIDATE_SECRET=${REVALIDATE_SECRET:-}
+    volumes:
+      - next-image-cache:/app/.next/cache/images
     networks:
       - hosting
     labels:
@@ -18,3 +20,6 @@ services:
 networks:
   hosting:
     external: true
+
+volumes:
+  next-image-cache:
