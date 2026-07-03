@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import { PageHero } from '@/components/ui/PageHero';
 import { Section } from '@/components/ui/Section';
 import { SectionHeader } from '@/components/ui/SectionHeader';
-import { StatBlock } from '@/components/ui/StatBlock';
 import { ContentCard } from '@/components/ui/ContentCard';
 import { ContactCTA } from '@/components/sections';
 import { fetchProductDomains, fetchBrands } from '@/lib/cms';
@@ -16,7 +15,6 @@ export const metadata: Metadata = {
 export default async function TradingPage() {
   const [domains, brands] = await Promise.all([fetchProductDomains(), fetchBrands()]);
   const totalBrandCount = brands.length;
-  const countryCount = new Set(brands.map((b) => b.country.split(' ')[0])).size;
 
   return (
     <>
@@ -29,21 +27,6 @@ export default async function TradingPage() {
         primaryCta={{ label: 'Explore Domains', href: '#domains' }}
         size="tall"
       />
-
-      {/* Stat anchor */}
-      <Section variant="soft" compact>
-        <div className="grid grid-cols-3 gap-x-6 gap-y-12 sm:gap-12">
-          <div className="border-l border-accent/40 pl-5 lg:pl-6">
-            <StatBlock value={`${totalBrandCount}+`} label="Brand Partners" size="md" />
-          </div>
-          <div className="border-l border-accent/40 pl-5 lg:pl-6">
-            <StatBlock value={`${domains.length}`} label="Product Domains" size="md" />
-          </div>
-          <div className="border-l border-accent/40 pl-5 lg:pl-6">
-            <StatBlock value={`${countryCount}+`} label="Countries of Origin" size="md" />
-          </div>
-        </div>
-      </Section>
 
       {/* Domains Grid */}
       <Section variant="light" id="domains">
