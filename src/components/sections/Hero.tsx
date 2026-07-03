@@ -9,15 +9,13 @@ import { Container } from '@/components/ui/Container';
 import { ArrowRight } from 'lucide-react';
 import type { HeroSlide } from '@/types/cms';
 
-const SAFETY_SLIDES: HeroSlide[] = [
-  {
-    id: 0,
-    order: 0,
-    title: 'Trading & Contracting Since 2002',
-    alt: 'CMS Group projects across Nepal',
-    video: '/images/videos/307398.mp4',
-  },
-];
+const FRONT_VIDEO_SLIDE: HeroSlide = {
+  id: 0,
+  order: 0,
+  title: 'Trading & Contracting Since 2002',
+  alt: 'CMS Group projects across Nepal',
+  video: '/images/videos/307398.mp4',
+};
 
 const SLIDE_DURATION = 6000;
 
@@ -39,7 +37,8 @@ interface HeroProps {
 }
 
 export function Hero({ slides }: HeroProps) {
-  const activeSlides = slides && slides.length > 0 ? slides : SAFETY_SLIDES;
+  // Video always leads; CMS image slides follow in the rotation.
+  const activeSlides = [FRONT_VIDEO_SLIDE, ...(slides ?? [])];
 
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
