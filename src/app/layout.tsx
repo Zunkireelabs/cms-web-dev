@@ -22,7 +22,7 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://cmsgrps.com'),
+  metadataBase: new URL('https://cmstnc.com'),
   title: {
     default: 'CMS Group | Construction Material Solutions in Nepal',
     template: '%s | CMS Group',
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://cmsgrps.com',
+    url: 'https://cmstnc.com',
     siteName: 'CMS Group',
     title: 'CMS Group | Construction Material Solutions in Nepal',
     description:

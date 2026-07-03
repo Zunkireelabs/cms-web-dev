@@ -71,7 +71,7 @@ jobs:
         run: |
           echo "Waiting 15s for container warmup..."
           sleep 15
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 10 https://cms-dev.zunkireelabs.com/ || echo "000")
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 10 https://cmstnc.com/ || echo "000")
           echo "HTTP status: $STATUS"
           if [ "$STATUS" != "200" ] && [ "$STATUS" != "301" ] && [ "$STATUS" != "302" ]; then
             echo "::error::Health check failed with status $STATUS"

@@ -14,7 +14,7 @@ export const SITE_CONFIG_FALLBACK: SiteConfig = {
   tagline: 'Delivering Exceptional Construction Solutions since 2002',
   description:
     "CMS Group is Nepal's leading provider of construction materials and building finishing solutions. Trusted partner since 2002 across hospital, education, airport, office, hotel, and residential projects.",
-  url: 'https://cmsgrps.com',
+  url: 'https://cmstnc.com',
   phone: '+977-1-4100235',
   phoneSecondary: '+977-1-4100236',
   phoneMobile: '+977-9820271896',
