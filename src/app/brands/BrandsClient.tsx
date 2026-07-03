@@ -128,8 +128,6 @@ function DomainSection({
 }
 
 export function BrandsClient({ brands }: { brands: BrandEntry[] }) {
-  const countryCount = new Set(brands.map((b) => b.country.split(' ')[0])).size;
-
   return (
     <>
       <PageHero
@@ -140,36 +138,6 @@ export function BrandsClient({ brands }: { brands: BrandEntry[] }) {
         imageAlt="Tiger Palace Resort — featuring Grohe, American Standard, Dormakaba"
         size="tall"
       />
-
-      {/* Stat row */}
-      <Section variant="soft" compact>
-        <div className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3 sm:gap-12">
-          <div className="border-l border-accent/40 pl-5 lg:pl-6">
-            <div className="font-display text-3xl font-extrabold text-neutral-charcoal">
-              {brands.length}+
-            </div>
-            <div className="mt-1 text-[11px] font-semibold uppercase tracking-wider text-neutral-500">
-              Brand Partners
-            </div>
-          </div>
-          <div className="border-l border-accent/40 pl-5 lg:pl-6">
-            <div className="font-display text-3xl font-extrabold text-neutral-charcoal">
-              {DOMAIN_ORDER.length}
-            </div>
-            <div className="mt-1 text-[11px] font-semibold uppercase tracking-wider text-neutral-500">
-              Product Domains
-            </div>
-          </div>
-          <div className="border-l border-accent/40 pl-5 lg:pl-6">
-            <div className="font-display text-3xl font-extrabold text-neutral-charcoal">
-              {countryCount}+
-            </div>
-            <div className="mt-1 text-[11px] font-semibold uppercase tracking-wider text-neutral-500">
-              Countries of Origin
-            </div>
-          </div>
-        </div>
-      </Section>
 
       {/* Brands Grouped by Trading Domain */}
       <Section variant="light">
