@@ -96,10 +96,12 @@ export function Hero({ slides }: HeroProps) {
             {slide.video ? (
               <video
                 src={slide.video}
+                poster="/images/hero/hero-poster.webp"
                 autoPlay
                 muted
                 loop
                 playsInline
+                preload="metadata"
                 className="absolute inset-0 h-full w-full object-cover"
               />
             ) : slide.image ? (
