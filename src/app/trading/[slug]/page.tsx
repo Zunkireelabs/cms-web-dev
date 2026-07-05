@@ -126,7 +126,9 @@ function PartnerCard({ brand }: { brand: ReturnType<typeof brandEntryToDisplay> 
             )}
             {hasDownload ? (
               <a
-                href={brand.downloadBrochureUrl}
+                href={`/api/download?url=${encodeURIComponent(brand.downloadBrochureUrl!)}&filename=${encodeURIComponent(`${brand.name} Brochure.pdf`)}`}
+                target="_blank"
+                rel="noopener noreferrer"
                 download
                 className="inline-flex items-center gap-2 rounded-lg border border-neutral-300 px-6 py-3 text-sm font-semibold text-neutral-charcoal transition-colors hover:border-accent/40 hover:bg-accent-50 hover:text-accent"
               >
