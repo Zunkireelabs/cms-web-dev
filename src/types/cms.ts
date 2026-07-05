@@ -45,7 +45,7 @@ export interface BrandEntry {
   tradingDomains?: string[]
   website?: string
   logoUrl?: string
-  viewBrochureUrl?: string       // external link → "View Brochure" button
+  viewBrochureUrl?: string       // external link → "View Brochure" button (falls back to the uploaded PDF if unset)
   downloadBrochureUrl?: string   // uploaded PDF → "Download Brochure" button
 }
 
