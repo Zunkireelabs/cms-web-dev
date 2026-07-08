@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
 import { PageHero } from '@/components/ui/PageHero';
 import { Section } from '@/components/ui/Section';
-import { SectionHeader } from '@/components/ui/SectionHeader';
 import { ContentCard } from '@/components/ui/ContentCard';
 import { ContactCTA } from '@/components/sections';
 import { fetchProductDomains, fetchBrands } from '@/lib/cms';
+import { DomainsKicker } from './DomainsKicker';
 
 export const metadata: Metadata = {
   title: 'Trading Division',
@@ -30,15 +30,9 @@ export default async function TradingPage() {
 
       {/* Domains Grid */}
       <Section variant="light" id="domains">
-        <SectionHeader
-          kicker="Specialised Domains"
-          title="Fourteen product domains, one trusted source."
-          lead="Each domain is anchored by world-leading manufacturers — chosen for engineering pedigree, design fidelity, and proven reliability across the projects we deliver."
-          align="center"
-          className="mx-auto"
-        />
+        <DomainsKicker />
 
-        <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {domains.map((domain) => {
             const domainBrands = brands.filter((b) => b.tradingDomains?.includes(domain.slug));
             return (
