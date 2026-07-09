@@ -57,6 +57,12 @@ jobs:
             cd "${{ secrets.DEV_DEPLOY_PATH }}"
             git fetch --all --prune
             git checkout -B main origin/main
+
+            cat > .env << 'ENVEOF'
+            CMS_URL=https://admin-cms.zunkireelabs.com
+            REVALIDATE_SECRET=${{ secrets.PROD_REVALIDATE_SECRET }}
+            ENVEOF
+
             echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
             docker compose -f docker-compose.dev.yml pull
             docker compose -f docker-compose.dev.yml up -d
