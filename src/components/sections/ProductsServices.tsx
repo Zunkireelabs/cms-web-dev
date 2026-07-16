@@ -11,11 +11,13 @@ import {
   Droplets,
   Fence,
   Footprints,
+  Grid3x3,
   Home,
   Layers,
   Lock,
   type LucideIcon,
   PaintBucket,
+  Package,
   ShieldAlert,
   Sofa,
   Trash2,
@@ -23,45 +25,48 @@ import {
 import { Section } from '@/components/ui/Section';
 import { KickerLabel } from '@/components/ui/KickerLabel';
 import { fadeUp, stagger } from '@/lib/motion';
+import type { CmsProductDomain } from '@/lib/cms';
 
-interface Product {
-  title: string;
-  icon: LucideIcon;
-  image: string;
-  link: string;
-}
+// The CMS has no icon field on Product Domains — icons are a design choice,
+// not editorial content, so they're kept here and matched by slug. New
+// domains without an entry fall back to a generic icon rather than crashing.
+const ICONS_BY_SLUG: Record<string, LucideIcon> = {
+  'roofing': Home,
+  'facade-solutions': Building,
+  'ceiling-systems': Layers,
+  'aluminum-doors-windows': Building2,
+  'wood-glass-metal-coating': PaintBucket,
+  'door-hardware': Lock,
+  'architectural-railings': Fence,
+  'waterproofing': Droplets,
+  'wastewater-management': Trash2,
+  'sanitaryware': Bath,
+  'flooring': Footprints,
+  'tiles': Grid3x3,
+  'fire-rated-doors': ShieldAlert,
+  'office-furnitures': Sofa,
+};
+const FALLBACK_ICON = Package;
 
-const PRODUCTS: Product[] = [
-  { title: 'Roofing Systems', icon: Home, image: '/images/products/product-roofing.jpg', link: '/trading/roofing' },
-  { title: 'Facade Solutions', icon: Building, image: '/images/products/product-facade-new.jpg', link: '/trading/facade-solutions' },
-  { title: 'Ceiling Systems', icon: Layers, image: '/images/products/product-ceiling-new.jpg', link: '/trading/ceiling-systems' },
-  { title: 'Aluminium Doors & Windows', icon: Building2, image: '/images/products/product-aluminium-new.jpg', link: '/trading/aluminum-doors-windows' },
-  { title: 'Wood & Glass Coating', icon: PaintBucket, image: '/images/products/product-coating-new.jpg', link: '/trading/wood-glass-metal-coating' },
-  { title: 'Door Hardware & Accessories', icon: Lock, image: '/images/products/product-door-hardware-new.jpg', link: '/trading/door-hardware' },
-  { title: 'Architectural Railings', icon: Fence, image: '/images/products/product-railings.jpg', link: '/trading/architectural-railings' },
-  { title: 'Waterproofing Systems', icon: Droplets, image: '/images/products/product-waterproofing.jpg', link: '/trading/waterproofing' },
-  { title: 'Wastewater Management', icon: Trash2, image: '/images/products/product-wastewater.jpg', link: '/trading/wastewater-management' },
-  { title: 'Sanitaryware', icon: Bath, image: '/images/products/product-sanitaryware.jpg', link: '/trading/sanitaryware' },
-  { title: 'Flooring', icon: Footprints, image: '/images/products/flooring-new.jpg', link: '/trading/flooring' },
-  { title: 'Fire Rated Doors', icon: ShieldAlert, image: '/images/products/fire-rated-doors-new.jpg', link: '/trading/fire-rated-doors' },
-  { title: 'Office Furnitures', icon: Sofa, image: '/images/products/product-office-furniture-new.jpg', link: '/trading/office-furnitures' },
-];
+function ProductCard({ product, index }: { product: CmsProductDomain; index: number }) {
+  const Icon = ICONS_BY_SLUG[product.slug] ?? FALLBACK_ICON;
 
-function ProductCard({ product, index }: { product: Product; index: number }) {
   return (
     <motion.div variants={fadeUp} custom={index * 0.04}>
       <Link
-        href={product.link}
+        href={`/trading/${product.slug}`}
         className="group block overflow-hidden rounded-xl bg-white shadow-sm transition-shadow duration-300 hover:shadow-lg"
       >
         <div className="relative aspect-[6/5] overflow-hidden bg-neutral-100">
-          <Image
-            src={product.image}
-            alt={product.title}
-            fill
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
-            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
-          />
+          {product.image && (
+            <Image
+              src={product.image}
+              alt={product.title}
+              fill
+              className="object-cover transition-transform duration-500 group-hover:scale-105"
+              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
+            />
+          )}
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
           <div className="absolute bottom-3 left-3 right-3 flex translate-y-2 items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-white opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
@@ -73,7 +78,7 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
         </div>
 
         <div className="flex items-center gap-2.5 px-3.5 py-3.5">
-          <product.icon className="h-4 w-4 shrink-0 text-accent" strokeWidth={1.5} />
+          <Icon className="h-4 w-4 shrink-0 text-accent" strokeWidth={1.5} />
           <span className="text-sm font-semibold leading-tight text-neutral-700 transition-colors group-hover:text-accent">
             {product.title}
           </span>
@@ -83,7 +88,7 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
   );
 }
 
-export function ProductsServices() {
+export function ProductsServices({ products }: { products: CmsProductDomain[] }) {
   return (
     <Section variant="soft">
       <motion.div
@@ -115,8 +120,8 @@ export function ProductsServices() {
         variants={stagger}
         className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 lg:gap-5"
       >
-        {PRODUCTS.map((product, index) => (
-          <ProductCard key={product.title} product={product} index={index} />
+        {products.map((product, index) => (
+          <ProductCard key={product.slug} product={product} index={index} />
         ))}
       </motion.div>
 

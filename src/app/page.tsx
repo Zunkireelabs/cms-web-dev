@@ -8,13 +8,14 @@ import {
   ProductsServices,
   ProjectMap,
 } from '@/components/sections';
-import { fetchProjects, fetchHeroSlides, fetchMapLocations } from '@/lib/cms';
+import { fetchProjects, fetchHeroSlides, fetchMapLocations, fetchProductDomains } from '@/lib/cms';
 
 export default async function HomePage() {
-  const [projects, heroSlides, mapLocations] = await Promise.all([
+  const [projects, heroSlides, mapLocations, productDomains] = await Promise.all([
     fetchProjects(),
     fetchHeroSlides(),
     fetchMapLocations(),
+    fetchProductDomains(),
   ]);
 
   return (
@@ -26,7 +27,7 @@ export default async function HomePage() {
       <AboutUs />
 
       {/* 4. Substance — fourteen product domains */}
-      <ProductsServices />
+      <ProductsServices products={productDomains} />
 
       {/* 5. Impact metrics — hidden */}
       {/* <ImpactMetrics stats={siteConfig?.stats} /> */}
