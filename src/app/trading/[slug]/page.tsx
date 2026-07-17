@@ -17,7 +17,8 @@ import {
 import type { Project } from '@/types/cms';
 import { getProjectImageSrc } from '@/lib/project-image';
 import Link from 'next/link';
-import { ArrowLeft, Building2, ExternalLink, Eye, FileDown, Sparkles } from 'lucide-react';
+import { ArrowLeft, Building2, ExternalLink, Sparkles } from 'lucide-react';
+import { BrochureActions } from './BrochureActions';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -71,109 +72,7 @@ function brandEntryToDisplay(entry: BrandEntry) {
   };
 }
 
-function ViewBrochureButton({ url }: { url?: string }) {
-  if (!url) {
-    return (
-      <button
-        disabled
-        className="inline-flex items-center gap-2 rounded-lg border border-neutral-200 px-6 py-3 text-sm font-semibold text-neutral-400 cursor-not-allowed"
-        title="No view link set"
-      >
-        <Eye className="h-4 w-4" />
-        View Brochure
-        <span className="ml-1 rounded bg-neutral-100 px-1.5 py-0.5 text-[10px] font-medium uppercase">
-          Soon
-        </span>
-      </button>
-    );
-  }
-  return (
-    <a
-      href={url}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="inline-flex items-center gap-2 rounded-lg border border-neutral-300 px-6 py-3 text-sm font-semibold text-neutral-charcoal transition-colors hover:border-accent/40 hover:bg-accent-50 hover:text-accent"
-    >
-      <Eye className="h-4 w-4" />
-      View Brochure
-    </a>
-  );
-}
-
-function DownloadBrochureButton({ url, filename }: { url?: string; filename: string }) {
-  if (!url) {
-    return (
-      <button
-        disabled
-        className="inline-flex items-center gap-2 rounded-lg border border-neutral-200 px-6 py-3 text-sm font-semibold text-neutral-400 cursor-not-allowed"
-        title="No download file uploaded"
-      >
-        <FileDown className="h-4 w-4" />
-        Download Brochure
-      </button>
-    );
-  }
-  return (
-    <a
-      href={`/api/download?url=${encodeURIComponent(url)}&filename=${encodeURIComponent(filename)}`}
-      target="_blank"
-      rel="noopener noreferrer"
-      download
-      className="inline-flex items-center gap-2 rounded-lg border border-neutral-300 px-6 py-3 text-sm font-semibold text-neutral-charcoal transition-colors hover:border-accent/40 hover:bg-accent-50 hover:text-accent"
-    >
-      <FileDown className="h-4 w-4" />
-      Download Brochure
-    </a>
-  );
-}
-
-function BrochureListRow({
-  brochure,
-  index,
-  brandName,
-}: {
-  brochure: BrandEntry['brochures'][number];
-  index: number;
-  brandName: string;
-}) {
-  const label = brochure.label || `Brochure ${index + 1}`;
-  return (
-    <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-neutral-200 px-4 py-3">
-      <span className="text-sm font-semibold text-neutral-charcoal">{label}</span>
-      <div className="flex flex-wrap gap-2">
-        {brochure.viewUrl && (
-          <a
-            href={brochure.viewUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 rounded-lg border border-neutral-300 px-4 py-2 text-xs font-semibold text-neutral-charcoal transition-colors hover:border-accent/40 hover:bg-accent-50 hover:text-accent"
-          >
-            <Eye className="h-3.5 w-3.5" />
-            View
-          </a>
-        )}
-        {brochure.downloadUrl && (
-          <a
-            href={`/api/download?url=${encodeURIComponent(brochure.downloadUrl)}&filename=${encodeURIComponent(`${brandName} - ${label}.pdf`)}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            download
-            className="inline-flex items-center gap-1.5 rounded-lg border border-neutral-300 px-4 py-2 text-xs font-semibold text-neutral-charcoal transition-colors hover:border-accent/40 hover:bg-accent-50 hover:text-accent"
-          >
-            <FileDown className="h-3.5 w-3.5" />
-            Download
-          </a>
-        )}
-      </div>
-    </div>
-  );
-}
-
 function PartnerCard({ brand }: { brand: ReturnType<typeof brandEntryToDisplay> }) {
-  const { brochures } = brand;
-  const showMultiList = brochures.length > 1;
-  const single = brochures[0];
-
   return (
     <div className="group relative overflow-hidden rounded-2xl border border-neutral-border bg-white shadow-card transition-all duration-300 hover:-translate-y-0.5 hover:shadow-card-hover">
       <div className="grid gap-8 p-8 lg:grid-cols-[1fr_auto] lg:p-10">
@@ -199,21 +98,8 @@ function PartnerCard({ brand }: { brand: ReturnType<typeof brandEntryToDisplay> 
               </a>
             )}
 
-            {!showMultiList && (
-              <>
-                <ViewBrochureButton url={single?.viewUrl} />
-                <DownloadBrochureButton url={single?.downloadUrl} filename={`${brand.name} Brochure.pdf`} />
-              </>
-            )}
+            <BrochureActions brochures={brand.brochures} brandName={brand.name} />
           </div>
-
-          {showMultiList && (
-            <div className="mt-4 space-y-2">
-              {brochures.map((brochure, index) => (
-                <BrochureListRow key={brochure.id} brochure={brochure} index={index} brandName={brand.name} />
-              ))}
-            </div>
-          )}
         </div>
 
         {/* Logo box */}
