@@ -34,6 +34,13 @@ export type VentureSlug =
   | 'techwood'
   | 'prime-ceramics'
 
+export interface BrandBrochure {
+  id: string
+  label?: string
+  viewUrl?: string       // external link → "View Brochure" (falls back to the uploaded PDF if unset)
+  downloadUrl?: string   // uploaded PDF → "Download Brochure"
+}
+
 export interface BrandEntry {
   name: string
   slug: string
@@ -45,8 +52,7 @@ export interface BrandEntry {
   tradingDomains?: string[]
   website?: string
   logoUrl?: string
-  viewBrochureUrl?: string       // external link → "View Brochure" button (falls back to the uploaded PDF if unset)
-  downloadBrochureUrl?: string   // uploaded PDF → "Download Brochure" button
+  brochures: BrandBrochure[]
 }
 
 // ─── Events ──────────────────────────────────────────────────────────────────

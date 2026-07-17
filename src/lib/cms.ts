@@ -148,8 +148,14 @@ export async function fetchBrands(): Promise<BrandEntry[]> {
     description: d.description as string,
     website: d.website as string | undefined,
     logoUrl: mediaUrl(d.logo?.url),
-    viewBrochureUrl: (d.brochureUrl as string | undefined) || mediaUrl(d.brochure?.url),
-    downloadBrochureUrl: mediaUrl(d.brochure?.url),
+    brochures: ((d.brochures ?? []) as any[])
+      .map((b) => ({
+        id: b.id as string,
+        label: (b.label as string | undefined) || undefined,
+        viewUrl: (b.url as string | undefined) || mediaUrl(b.file?.url),
+        downloadUrl: mediaUrl(b.file?.url),
+      }))
+      .filter((b) => b.viewUrl || b.downloadUrl),
     venture: (d.venture?.slug ?? d.venture) as VentureSlug,
     tradingDomains: (d.tradingDomains ?? []).map((td: any) =>
       typeof td === 'object' ? (td.slug as string) : (td as string)
