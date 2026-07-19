@@ -5,6 +5,7 @@ import { ContentCard } from '@/components/ui/ContentCard';
 import { ContactCTA } from '@/components/sections';
 import { fetchProductDomains, fetchBrands } from '@/lib/cms';
 import { DomainsKicker } from './DomainsKicker';
+import { tradingHref } from '@/lib/routes';
 
 export const metadata: Metadata = {
   title: 'Trading Division',
@@ -38,7 +39,7 @@ export default async function TradingPage() {
             return (
               <ContentCard
                 key={domain.slug}
-                href={`/trading/${domain.slug}`}
+                href={tradingHref(domain.slug)}
                 image={domain.image}
                 imageAlt={domain.title}
                 title={domain.title}

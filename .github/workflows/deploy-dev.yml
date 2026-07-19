@@ -21,6 +21,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Check trading slugs and redirects
+        run: node scripts/check-slugs.mjs
+
       - uses: docker/setup-buildx-action@v3
 
       - uses: docker/login-action@v3
@@ -91,3 +98,29 @@ jobs:
           done
           echo "::error::Health check failed after 10 attempts, last status $STATUS"
           exit 1
+
+      - name: Verify every trading page resolves
+        run: |
+          # The homepage returning 200 says nothing about the dynamic
+          # /trading/<slug> routes — a bad slug 404s only that one page while
+          # the listing still links to it. Walk every slug the CMS publishes.
+          FAILED=0
+          SLUGS=$(curl -s --max-time 15 \
+            "https://admin-cms.zunkireelabs.com/api/product-domains?limit=500&depth=0" \
+            | node -e "let d='';process.stdin.on('data',c=>d+=c).on('end',()=>{try{console.log(JSON.parse(d).docs.map(x=>x.slug).join('\n'))}catch{process.exit(0)}})")
+          if [ -z "$SLUGS" ]; then
+            echo "::warning::Could not list product domains — skipping trading smoke test"
+            exit 0
+          fi
+          while IFS= read -r slug; do
+            [ -z "$slug" ] && continue
+            CODE=$(curl -s -o /dev/null -w "%{http_code}" --max-time 10 \
+              --path-as-is "https://cmstnc.com/trading/$slug" || echo "000")
+            if [ "$CODE" = "200" ]; then
+              echo "  ok   $CODE  /trading/$slug"
+            else
+              echo "::error::/trading/$slug returned $CODE"
+              FAILED=1
+            fi
+          done <<< "$SLUGS"
+          exit $FAILED

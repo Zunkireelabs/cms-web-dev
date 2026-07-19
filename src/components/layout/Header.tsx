@@ -12,6 +12,7 @@ import { Container } from '@/components/ui/Container';
 import { Logo } from '@/components/ui/Logo';
 import { MobileMenu } from './MobileMenu';
 import { ChevronDown, Home, Building, DoorOpen, PaintBucket, Lock, Fence, Droplets, Trash2, Bath, Armchair, Layers, Building2, ClipboardCheck, Leaf, ArrowRight, ShieldAlert, Sofa } from 'lucide-react';
+import { tradingHref } from '@/lib/routes';
 
 const DOMAIN_ICONS: Record<string, React.ReactNode> = {
   roofing: <Home className="h-4 w-4" />,
@@ -297,7 +298,7 @@ export function Header({ productDomains }: { productDomains: CmsProductDomain[] 
                         {productDomains.map((domain) => (
                           <Link
                             key={domain.id}
-                            href={`/trading/${domain.slug}`}
+                            href={tradingHref(domain.slug)}
                             className="flex items-center gap-2.5 px-2.5 py-2 hover:bg-neutral-50 transition-all group border-l-2 border-l-transparent hover:border-l-accent"
                           >
                             <div className="flex-shrink-0 w-7 h-7 bg-accent/10 rounded-lg flex items-center justify-center text-accent">

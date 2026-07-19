@@ -12,6 +12,7 @@ import { fadeUp, stagger, inViewOptions } from '@/lib/motion';
 import { cn } from '@/lib/utils';
 import type { Venture, BrandEntry } from '@/types/cms';
 import type { VentureSlug } from '@/types/cms';
+import { sectionHref } from '@/lib/routes';
 import {
   ArrowRight,
   Armchair,
@@ -251,7 +252,7 @@ function VentureSection({
           <div className="mt-7 flex flex-wrap gap-2.5">
             {brandCount > 0 && (
               <Link
-                href={`/brands#${venture.slug}`}
+                href={sectionHref('/brands', venture.slug)}
                 className="inline-flex items-center gap-2 rounded-lg border border-neutral-200 bg-white px-4 py-2 text-sm transition-colors hover:border-accent/40 hover:bg-accent-50"
               >
                 <Sparkles className="h-3.5 w-3.5 text-accent" strokeWidth={1.75} />
