@@ -9,6 +9,7 @@ import { fetchProjects, fetchSectors, fetchSiteConfig } from '@/lib/cms';
 import { getProjectImageSrc } from '@/lib/project-image';
 import { resolveIcon } from '@/lib/icon-map';
 import { ArrowRight } from 'lucide-react';
+import { sectionHref } from '@/lib/routes';
 
 export const metadata: Metadata = {
   title: 'Contracting Division',
@@ -111,7 +112,7 @@ export default async function ContractingPage() {
             return (
               <Link
                 key={sector.slug}
-                href={`/services#${sector.slug}`}
+                href={sectionHref('/services', sector.slug)}
                 className="group flex items-start gap-4 rounded-xl border border-neutral-border bg-white p-6 transition-all hover:-translate-y-0.5 hover:border-accent/40 hover:shadow-card"
               >
                 <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-accent-50 text-accent">

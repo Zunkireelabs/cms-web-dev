@@ -26,6 +26,7 @@ import { Section } from '@/components/ui/Section';
 import { KickerLabel } from '@/components/ui/KickerLabel';
 import { fadeUp, stagger } from '@/lib/motion';
 import type { CmsProductDomain } from '@/lib/cms';
+import { tradingHref } from '@/lib/routes';
 
 // The CMS has no icon field on Product Domains — icons are a design choice,
 // not editorial content, so they're kept here and matched by slug. New
@@ -54,7 +55,7 @@ function ProductCard({ product, index }: { product: CmsProductDomain; index: num
   return (
     <motion.div variants={fadeUp} custom={index * 0.04}>
       <Link
-        href={`/trading/${product.slug}`}
+        href={tradingHref(product.slug)}
         className="group block overflow-hidden rounded-xl bg-white shadow-sm transition-shadow duration-300 hover:shadow-lg"
       >
         <div className="relative aspect-[6/5] overflow-hidden bg-neutral-100">

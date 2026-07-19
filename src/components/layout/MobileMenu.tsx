@@ -9,6 +9,7 @@ import { NAV_ITEMS, SITE_CONFIG_FALLBACK, CONTRACTING_SERVICES } from '@/lib/con
 import { useSiteConfig } from '@/components/providers/SiteConfigProvider';
 import type { CmsProductDomain } from '@/lib/cms';
 import { ChevronDown } from 'lucide-react';
+import { tradingHref } from '@/lib/routes';
 
 interface MobileMenuProps {
   onClose: () => void;
@@ -147,7 +148,7 @@ export function MobileMenu({ onClose, productDomains }: MobileMenuProps) {
                             {productDomains.slice(0, 6).map((domain) => (
                               <Link
                                 key={domain.id}
-                                href={`/trading/${domain.slug}`}
+                                href={tradingHref(domain.slug)}
                                 onClick={onClose}
                                 className="block rounded-lg px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-surface hover:text-accent transition-colors"
                               >

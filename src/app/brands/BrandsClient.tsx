@@ -12,6 +12,7 @@ import { DOMAIN_LABELS, DOMAIN_ORDER, type TradingDomainSlug } from '@/lib/const
 import { getBrandsByTradingDomain } from '@/lib/cms';
 import type { BrandEntry } from '@/types/cms';
 import { Building2, ExternalLink } from 'lucide-react';
+import { tradingHref } from '@/lib/routes';
 
 function BrandCard({ brand }: { brand: BrandEntry }) {
   const hasWebsite = Boolean(brand.website) && brand.website !== '#';
@@ -108,7 +109,7 @@ function DomainSection({
           </h3>
           <div className="flex items-center gap-4 text-xs text-neutral-500">
             <Link
-              href={`/trading/${domainSlug}`}
+              href={tradingHref(domainSlug)}
               className="inline-flex items-center gap-1 font-semibold uppercase tracking-wider text-accent transition-colors hover:text-accent-700"
             >
               View domain →

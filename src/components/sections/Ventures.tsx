@@ -17,6 +17,7 @@ import { Section } from '@/components/ui/Section';
 import { KickerLabel } from '@/components/ui/KickerLabel';
 import { fadeUp, stagger } from '@/lib/motion';
 import type { Venture } from '@/types/cms';
+import { sectionHref } from '@/lib/routes';
 
 const VENTURE_ICONS: Record<string, LucideIcon> = {
   'bath-n-room': Bath,
@@ -88,7 +89,7 @@ export function Ventures({ ventures }: { ventures: Venture[] }) {
           return (
             <motion.div key={venture.slug} variants={fadeUp} custom={index * 0.06}>
               <Link
-                href={`/ventures#${venture.slug}`}
+                href={sectionHref('/ventures', venture.slug)}
                 className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-neutral-200/80 bg-white p-7 lg:p-8 shadow-[0_1px_2px_rgba(0,0,0,0.04)] transition-all duration-500 hover:-translate-y-[3px] hover:border-accent/30 hover:shadow-[0_20px_50px_-20px_rgba(0,0,0,0.18)]"
               >
                 {/* Soft radial glow on hover */}
