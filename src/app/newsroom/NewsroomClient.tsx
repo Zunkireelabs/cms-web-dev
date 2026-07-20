@@ -131,7 +131,7 @@ export function NewsroomClient({ events }: { events: CMSEvent[] }) {
       <PageHero
         kicker="Newsroom"
         title="Events, training & community."
-        subtitle="Product launches, partner training, trade shows, and CSR initiatives — moments from across CMS Group ventures since 2017."
+        subtitle="Product launches, partner training, trade shows, and CSR initiatives — moments from across CMS Group since 2017."
         image="/images/projects/lumbini-convention.jpg"
         imageAlt="CMS Group events and community"
         size="tall"
@@ -260,7 +260,7 @@ export function NewsroomClient({ events }: { events: CMSEvent[] }) {
           </h2>
           <p className="mt-4 leading-relaxed text-neutral-600">
             Get notified about upcoming events, product launches, and CSR initiatives across
-            CMS Group ventures.
+            CMS Group.
           </p>
           <form className="mx-auto mt-8 flex max-w-md flex-col gap-3 sm:flex-row">
             <input

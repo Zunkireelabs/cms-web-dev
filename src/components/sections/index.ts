@@ -9,4 +9,3 @@ export { ImpactMetrics } from './ImpactMetrics';
 export { ProductsServices } from './ProductsServices';
 export { ProjectMap } from './ProjectMap';
 export { Testimonials } from './Testimonials';
-export { Ventures } from './Ventures';

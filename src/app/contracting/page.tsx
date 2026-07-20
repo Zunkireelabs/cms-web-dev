@@ -138,7 +138,7 @@ export default async function ContractingPage() {
           <SectionHeader
             kicker="Track Record"
             title="Featured contracting projects."
-            lead="A selection of recent work across hospitals, hotels, banks, and airports in Nepal — delivered through Cubic Meter and partner ventures."
+            lead="A selection of recent work across hospitals, hotels, banks, and airports in Nepal — delivered through Cubic Meter."
           />
           <Link
             href="/projects"

@@ -152,7 +152,7 @@ export function ContactCTA() {
                     Build your career with us
                   </span>
                   <span className="block text-[10px] text-neutral-400">
-                    Six ventures, 50+ partners — find your fit
+                    50+ partners — find your fit
                   </span>
                 </div>
               </div>

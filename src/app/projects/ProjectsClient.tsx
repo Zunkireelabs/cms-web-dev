@@ -277,7 +277,7 @@ export function ProjectsClient({ projects }: { projects: Project[] }) {
       <PageHero
         kicker="Our Portfolio"
         title="Featured projects across Nepal."
-        subtitle="Commercial and residential projects delivered through CMS Group ventures — from Tiger Palace Resort and Bir Hospital to NRB headquarters and ICIMOD's green campus."
+        subtitle="Commercial and residential projects — from Tiger Palace Resort and Bir Hospital to NRB headquarters and ICIMOD's green campus."
         image="/images/projects/tiger-palace.jpg"
         imageAlt="CMS Group featured projects"
         size="tall"

@@ -118,7 +118,7 @@ export function Highlights() {
               </h2>
               <p className="mt-5 text-sm leading-relaxed text-neutral-600 sm:text-base">
                 Brand partnerships, sector focus, contracting milestones — what&apos;s
-                been happening across CMS Group ventures lately.
+                been happening across CMS Group lately.
               </p>
             </div>
             <div className="mt-6">

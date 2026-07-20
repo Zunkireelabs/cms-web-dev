@@ -45,7 +45,7 @@ const defaultCoreValues = [
     title: 'Integrity',
     description:
       'Honesty, integrity, and moral behaviour are the cornerstone of our commercial operations — incorporated into every facet of how the organisation operates.',
-    practice: 'Single source-of-truth pricing across all six ventures',
+    practice: 'Single source-of-truth pricing across all businesses',
   },
   {
     icon: 'Award',
@@ -80,7 +80,7 @@ const defaultCoreValues = [
     title: 'Sustainability',
     description:
       'We actively engage in sourcing materials from sustainable and eco-friendly sources, aligning operations with responsible practices and contributing to a greener future.',
-    practice: 'Eco-friendly material sourcing across all six ventures',
+    practice: 'Eco-friendly material sourcing across all businesses',
   },
 ];
 
@@ -550,8 +550,7 @@ export function AboutClient({
             </div>
 
             <p className="mt-8 text-base leading-relaxed text-neutral-600 sm:text-lg">
-              The group spans six associated ventures, delivering integrated solutions
-              across the country.
+              The group delivers integrated solutions across the country.
             </p>
           </motion.div>
 

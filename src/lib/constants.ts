@@ -107,6 +107,7 @@ export type TradingDomainSlug =
   | 'flooring'
   | 'tiles'
   | 'fire-rated-doors'
+  | 'toilet-cubicals'
 
 export const DOMAIN_LABELS: Record<TradingDomainSlug, string> = {
   'roofing': 'Roofing Systems',
@@ -123,6 +124,7 @@ export const DOMAIN_LABELS: Record<TradingDomainSlug, string> = {
   'flooring': 'Flooring',
   'tiles': 'Tiles',
   'fire-rated-doors': 'Fire Rated Doors',
+  'toilet-cubicals': 'Toilet Cubical',
 }
 
 export const DOMAIN_ORDER: TradingDomainSlug[] = [
@@ -140,6 +142,7 @@ export const DOMAIN_ORDER: TradingDomainSlug[] = [
   'flooring',
   'tiles',
   'fire-rated-doors',
+  'toilet-cubicals',
 ]
 
 // ─── Static contracting services (not in CMS) ─────────────────────────────────
