@@ -8,9 +8,8 @@ import { SectionHeader } from '@/components/ui/SectionHeader';
 import { Section } from '@/components/ui/Section';
 import { ContactCTA } from '@/components/sections';
 import { fadeUp, stagger } from '@/lib/motion';
-import { DOMAIN_LABELS, DOMAIN_ORDER, type TradingDomainSlug } from '@/lib/constants';
 import { getBrandsByTradingDomain } from '@/lib/cms';
-import type { BrandEntry } from '@/types/cms';
+import type { BrandEntry, CmsProductDomain } from '@/lib/cms';
 import { Building2, ExternalLink } from 'lucide-react';
 import { tradingHref } from '@/lib/routes';
 
@@ -83,18 +82,18 @@ function BrandCard({ brand }: { brand: BrandEntry }) {
 }
 
 function DomainSection({
-  domainSlug,
+  domain,
   allBrands,
 }: {
-  domainSlug: TradingDomainSlug;
+  domain: CmsProductDomain;
   allBrands: BrandEntry[];
 }) {
-  const brands = getBrandsByTradingDomain(allBrands, domainSlug);
+  const brands = getBrandsByTradingDomain(allBrands, domain.slug);
   if (brands.length === 0) return null;
 
   return (
     <motion.div
-      id={domainSlug}
+      id={domain.slug}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: '-100px' }}
@@ -105,11 +104,11 @@ function DomainSection({
       <motion.div variants={fadeUp} custom={0} className="mb-8">
         <div className="flex flex-wrap items-baseline justify-between gap-4">
           <h3 className="font-display text-2xl font-bold leading-tight tracking-tight text-neutral-charcoal sm:text-3xl">
-            {DOMAIN_LABELS[domainSlug]}
+            {domain.title}
           </h3>
           <div className="flex items-center gap-4 text-xs text-neutral-500">
             <Link
-              href={tradingHref(domainSlug)}
+              href={tradingHref(domain.slug)}
               className="inline-flex items-center gap-1 font-semibold uppercase tracking-wider text-accent transition-colors hover:text-accent-700"
             >
               View domain →
@@ -128,13 +127,19 @@ function DomainSection({
   );
 }
 
-export function BrandsClient({ brands }: { brands: BrandEntry[] }) {
+export function BrandsClient({
+  brands,
+  domains,
+}: {
+  brands: BrandEntry[];
+  domains: CmsProductDomain[];
+}) {
   return (
     <>
       <PageHero
         kicker="Brand Partners"
         title="World-renowned brands, distributed in Nepal."
-        subtitle={`${brands.length}+ authorised partner brands across fourteen trading domains — Grohe, Hunter Douglas, Dormakaba, IKO, Tarkett, Armstrong, and more.`}
+        subtitle={`${brands.length}+ authorised partner brands across ${domains.length} trading domains — Grohe, Hunter Douglas, Dormakaba, IKO, Tarkett, Armstrong, and more.`}
         image="/images/projects/tiger-palace.jpg"
         imageAlt="Tiger Palace Resort — featuring Grohe, American Standard, Dormakaba"
         size="tall"
@@ -151,8 +156,8 @@ export function BrandsClient({ brands }: { brands: BrandEntry[] }) {
         />
 
         <div className="mt-14 space-y-10">
-          {DOMAIN_ORDER.map((domainSlug) => (
-            <DomainSection key={domainSlug} domainSlug={domainSlug} allBrands={brands} />
+          {domains.map((domain) => (
+            <DomainSection key={domain.slug} domain={domain} allBrands={brands} />
           ))}
         </div>
       </Section>

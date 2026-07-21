@@ -92,59 +92,6 @@ export const VENTURE_LABELS: Record<VentureSlug, string> = {
   'prime-ceramics': 'Prime Ceramics',
 }
 
-export type TradingDomainSlug =
-  | 'roofing'
-  | 'facade-solutions'
-  | 'ceiling-systems'
-  | 'aluminum-doors-windows'
-  | 'wood-glass-metal-coating'
-  | 'door-hardware'
-  | 'architectural-railings'
-  | 'waterproofing'
-  | 'wastewater-management'
-  | 'sanitaryware'
-  | 'office-furnitures'
-  | 'flooring'
-  | 'tiles'
-  | 'fire-rated-doors'
-  | 'toilet-cubicals'
-
-export const DOMAIN_LABELS: Record<TradingDomainSlug, string> = {
-  'roofing': 'Roofing Systems',
-  'facade-solutions': 'Facade Solutions',
-  'ceiling-systems': 'Ceiling Systems',
-  'aluminum-doors-windows': 'Aluminium Doors & Windows',
-  'wood-glass-metal-coating': 'Wood, Glass & Metal Coating',
-  'door-hardware': 'Access Control Solutions',
-  'architectural-railings': 'Architectural Railings',
-  'waterproofing': 'Waterproofing Systems',
-  'wastewater-management': 'Wastewater Management',
-  'sanitaryware': 'Sanitaryware & Bathroom Solutions',
-  'office-furnitures': 'Office Furnitures',
-  'flooring': 'Flooring',
-  'tiles': 'Tiles',
-  'fire-rated-doors': 'Fire Rated Doors',
-  'toilet-cubicals': 'Toilet Cubical',
-}
-
-export const DOMAIN_ORDER: TradingDomainSlug[] = [
-  'roofing',
-  'facade-solutions',
-  'ceiling-systems',
-  'aluminum-doors-windows',
-  'wood-glass-metal-coating',
-  'door-hardware',
-  'architectural-railings',
-  'waterproofing',
-  'wastewater-management',
-  'sanitaryware',
-  'office-furnitures',
-  'flooring',
-  'tiles',
-  'fire-rated-doors',
-  'toilet-cubicals',
-]
-
 // ─── Static contracting services (not in CMS) ─────────────────────────────────
 
 export interface ContractingService {
