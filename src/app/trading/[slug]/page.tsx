@@ -17,8 +17,16 @@ import {
 import type { Project } from '@/types/cms';
 import { getProjectImageSrc } from '@/lib/project-image';
 import Link from 'next/link';
-import { ArrowLeft, Building2, ExternalLink, Sparkles } from 'lucide-react';
+import { ArrowLeft, Building2, ExternalLink, Sparkles, Trash2, Container as ContainerIcon, FlaskConical, Flame } from 'lucide-react';
 import { BrochureActions } from './BrochureActions';
+import { TRADING_SUB_ITEMS } from '@/lib/constants';
+
+const SUB_SECTION_ICONS: Record<string, React.ReactNode> = {
+  'wastewater-management': <Trash2 className="h-6 w-6" />,
+  'water-storage-solutions': <ContainerIcon className="h-6 w-6" />,
+  'water-treatment-solutions': <FlaskConical className="h-6 w-6" />,
+  'hot-water-heating-solutions': <Flame className="h-6 w-6" />,
+};
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -140,6 +148,7 @@ export default async function TradingSlugPage({ params }: PageProps) {
   const domainBrands = getBrandsByTradingDomain(allBrands, slug).map(brandEntryToDisplay);
   const relatedProjects = getRelatedProjects(domain, allProjects);
   const partnerCount = domainBrands.length;
+  const subSections = TRADING_SUB_ITEMS[slug];
 
   return (
     <>
@@ -157,6 +166,37 @@ export default async function TradingSlugPage({ params }: PageProps) {
           { label: domain.title },
         ]}
       />
+
+      {/* Sub-solutions (only for domains with mega-menu sub-items) */}
+      {subSections && (
+        <Section variant="light">
+          <SectionHeader
+            kicker="What We Offer"
+            title={`Explore our ${domain.title.toLowerCase()}.`}
+            lead="A closer look at each solution area under this domain."
+          />
+
+          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {subSections.map((sub) => (
+              <div
+                key={sub.anchor}
+                id={sub.anchor}
+                className="scroll-mt-24 rounded-2xl border border-neutral-border bg-white p-6 shadow-card"
+              >
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/10 text-accent">
+                  {SUB_SECTION_ICONS[sub.anchor] ?? <Sparkles className="h-6 w-6" />}
+                </div>
+                <h3 className="mt-4 font-display text-lg font-bold text-neutral-charcoal">
+                  {sub.label}
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-neutral-600">
+                  Details for {sub.label.toLowerCase()} coming soon.
+                </p>
+              </div>
+            ))}
+          </div>
+        </Section>
+      )}
 
       {/* Brand Partners */}
       <Section variant="soft">

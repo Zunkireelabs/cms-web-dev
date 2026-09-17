@@ -92,6 +92,24 @@ export const VENTURE_LABELS: Record<VentureSlug, string> = {
   'prime-ceramics': 'Prime Ceramics',
 }
 
+// ─── Trading mega-menu sub-items (not in CMS) ─────────────────────────────────
+// Keyed by CMS product-domain slug. Only domains listed here show a hover
+// flyout in the mega menu; every other trading item behaves as before.
+
+export interface TradingSubItem {
+  label: string
+  anchor: string
+}
+
+export const TRADING_SUB_ITEMS: Record<string, TradingSubItem[]> = {
+  'water-and-wastewater-solutions': [
+    { label: 'Wastewater Management', anchor: 'wastewater-management' },
+    { label: 'Water Storage Solutions', anchor: 'water-storage-solutions' },
+    { label: 'Water Treatment Solutions', anchor: 'water-treatment-solutions' },
+    { label: 'Hot Water Heating Solutions', anchor: 'hot-water-heating-solutions' },
+  ],
+}
+
 // ─── Static contracting services (not in CMS) ─────────────────────────────────
 
 export interface ContractingService {

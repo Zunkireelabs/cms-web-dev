@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
-import { NAV_ITEMS, SITE_CONFIG_FALLBACK, CONTRACTING_SERVICES } from '@/lib/constants';
+import { NAV_ITEMS, SITE_CONFIG_FALLBACK, CONTRACTING_SERVICES, TRADING_SUB_ITEMS } from '@/lib/constants';
 import { useSiteConfig } from '@/components/providers/SiteConfigProvider';
 import type { CmsProductDomain } from '@/lib/cms';
 import { Container } from '@/components/ui/Container';
@@ -45,6 +45,7 @@ export function Header({ productDomains }: { productDomains: CmsProductDomain[] 
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMegaMenuOpen, setIsMegaMenuOpen] = useState(false);
+  const [hoveredDomainId, setHoveredDomainId] = useState<string | null>(null);
   const megaMenuRef = useRef<HTMLDivElement>(null);
   const megaMenuTriggerRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
@@ -294,22 +295,68 @@ export function Header({ productDomains }: { productDomains: CmsProductDomain[] 
                         </Link>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-x-2 gap-y-0">
-                        {productDomains.map((domain) => (
-                          <Link
-                            key={domain.id}
-                            href={tradingHref(domain.slug)}
-                            className="flex items-center gap-2.5 px-2.5 py-2 hover:bg-neutral-50 transition-all group border-l-2 border-l-transparent hover:border-l-accent"
-                          >
-                            <div className="flex-shrink-0 w-7 h-7 bg-accent/10 rounded-lg flex items-center justify-center text-accent">
-                              {DOMAIN_ICONS[domain.id] || <Building className="h-3.5 w-3.5" />}
+                      {(() => {
+                        const renderDomainRow = (domain: CmsProductDomain) => {
+                          const subItems = TRADING_SUB_ITEMS[domain.slug];
+                          const isOpen = Boolean(subItems) && hoveredDomainId === domain.id;
+                          return (
+                            <div key={domain.id}>
+                              <div
+                                onMouseEnter={() => subItems && setHoveredDomainId(domain.id)}
+                                onMouseLeave={() => subItems && setHoveredDomainId(null)}
+                              >
+                                <Link
+                                  href={tradingHref(domain.slug)}
+                                  className="flex items-center gap-2.5 px-2.5 py-2 hover:bg-neutral-50 transition-all group border-l-2 border-l-transparent hover:border-l-accent"
+                                >
+                                  <div className="flex-shrink-0 w-7 h-7 bg-accent/10 rounded-lg flex items-center justify-center text-accent">
+                                    {DOMAIN_ICONS[domain.id] || <Building className="h-3.5 w-3.5" />}
+                                  </div>
+                                  <span className="text-[13px] font-medium text-neutral-700 group-hover:text-accent transition-colors flex-1">
+                                    {domain.title}
+                                  </span>
+                                  {subItems && (
+                                    <ChevronDown
+                                      className={cn(
+                                        'h-3 w-3 text-neutral-400 transition-transform',
+                                        isOpen ? 'rotate-0' : '-rotate-90'
+                                      )}
+                                    />
+                                  )}
+                                </Link>
+                              </div>
+
+                              {isOpen && subItems && (
+                                <div
+                                  className="mb-1 space-y-0.5 rounded-lg bg-accent-50/60 p-2"
+                                  onMouseEnter={() => setHoveredDomainId(domain.id)}
+                                  onMouseLeave={() => setHoveredDomainId(null)}
+                                >
+                                  {subItems.map((sub) => (
+                                    <Link
+                                      key={sub.anchor}
+                                      href={`${tradingHref(domain.slug)}#${sub.anchor}`}
+                                      className="block rounded-md px-2.5 py-1.5 text-[12.5px] font-medium text-neutral-600 hover:bg-white hover:text-accent transition-colors"
+                                    >
+                                      {sub.label}
+                                    </Link>
+                                  ))}
+                                </div>
+                              )}
                             </div>
-                            <span className="text-[13px] font-medium text-neutral-700 group-hover:text-accent transition-colors">
-                              {domain.title}
-                            </span>
-                          </Link>
-                        ))}
-                      </div>
+                          );
+                        };
+
+                        const leftDomains = productDomains.filter((_, i) => i % 2 === 0);
+                        const rightDomains = productDomains.filter((_, i) => i % 2 === 1);
+
+                        return (
+                          <div className="grid grid-cols-2 gap-x-2">
+                            <div>{leftDomains.map(renderDomainRow)}</div>
+                            <div>{rightDomains.map(renderDomainRow)}</div>
+                          </div>
+                        );
+                      })()}
                     </div>
 
                     {/* Vertical Divider */}

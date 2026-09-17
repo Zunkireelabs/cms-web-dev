@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
-import { NAV_ITEMS, SITE_CONFIG_FALLBACK, CONTRACTING_SERVICES } from '@/lib/constants';
+import { NAV_ITEMS, SITE_CONFIG_FALLBACK, CONTRACTING_SERVICES, TRADING_SUB_ITEMS } from '@/lib/constants';
 import { useSiteConfig } from '@/components/providers/SiteConfigProvider';
 import type { CmsProductDomain } from '@/lib/cms';
 import { ChevronDown } from 'lucide-react';
@@ -71,6 +71,7 @@ export function MobileMenu({ onClose, productDomains }: MobileMenuProps) {
   const cfg = useSiteConfig() ?? SITE_CONFIG_FALLBACK;
   const pathname = usePathname();
   const [isProductsExpanded, setIsProductsExpanded] = useState(false);
+  const [expandedDomainId, setExpandedDomainId] = useState<string | null>(null);
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
@@ -145,16 +146,59 @@ export function MobileMenu({ onClose, productDomains }: MobileMenuProps) {
                             <p className="px-4 py-2 text-xs font-semibold text-neutral-400 uppercase tracking-wider">
                               Trading
                             </p>
-                            {productDomains.slice(0, 6).map((domain) => (
-                              <Link
-                                key={domain.id}
-                                href={tradingHref(domain.slug)}
-                                onClick={onClose}
-                                className="block rounded-lg px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-surface hover:text-accent transition-colors"
-                              >
-                                {domain.title}
-                              </Link>
-                            ))}
+                            {productDomains.slice(0, 6).map((domain) => {
+                              const subItems = TRADING_SUB_ITEMS[domain.slug];
+                              if (!subItems) {
+                                return (
+                                  <Link
+                                    key={domain.id}
+                                    href={tradingHref(domain.slug)}
+                                    onClick={onClose}
+                                    className="block rounded-lg px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-surface hover:text-accent transition-colors"
+                                  >
+                                    {domain.title}
+                                  </Link>
+                                );
+                              }
+
+                              const isExpanded = expandedDomainId === domain.id;
+                              return (
+                                <div key={domain.id}>
+                                  <button
+                                    type="button"
+                                    onClick={() => setExpandedDomainId(isExpanded ? null : domain.id)}
+                                    className="flex w-full items-center justify-between rounded-lg px-4 py-2 text-sm text-neutral-600 hover:bg-neutral-surface hover:text-accent transition-colors"
+                                  >
+                                    <span>{domain.title}</span>
+                                    <ChevronDown
+                                      className={cn('h-4 w-4 transition-transform', isExpanded && 'rotate-180')}
+                                    />
+                                  </button>
+                                  <AnimatePresence>
+                                    {isExpanded && (
+                                      <motion.div
+                                        variants={subMenuVariants}
+                                        initial="closed"
+                                        animate="open"
+                                        exit="closed"
+                                        className="overflow-hidden pl-4"
+                                      >
+                                        {subItems.map((sub) => (
+                                          <Link
+                                            key={sub.anchor}
+                                            href={`${tradingHref(domain.slug)}#${sub.anchor}`}
+                                            onClick={onClose}
+                                            className="block rounded-lg px-4 py-2 text-sm text-neutral-500 hover:bg-neutral-surface hover:text-accent transition-colors"
+                                          >
+                                            {sub.label}
+                                          </Link>
+                                        ))}
+                                      </motion.div>
+                                    )}
+                                  </AnimatePresence>
+                                </div>
+                              );
+                            })}
                             <Link
                               href="/trading"
                               onClick={onClose}
