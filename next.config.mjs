@@ -86,7 +86,7 @@ const nextConfig = {
         permanent: true,
       },
       { source: '/trading/roofing-systems', destination: '/trading/roofing', permanent: true },
-      { source: '/trading/waterproofing-systems', destination: '/trading/waterproofing', permanent: true },
+      { source: '/trading/waterproofing-systems', destination: '/trading/waterproofing-and-construction-chemicals', permanent: true },
       { source: '/trading/ceiling', destination: '/trading/ceiling-systems', permanent: true },
       { source: '/trading/facade', destination: '/trading/facade-solutions', permanent: true },
       { source: '/trading/wastewater', destination: '/trading/water-and-wastewater-solutions', permanent: true },
